@@ -1,11 +1,10 @@
 @import '~perfect-scrollbar/css/perfect-scrollbar.css';
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: 'Inter', "Helvetica Neue", sans-serif; }
 .page-wrapper.toggled .sidebar {
     left: -300px;
   }
-  
   // angular perfect scrollbar style
   .sidebar .ps.ps--scrolling-y>.ps__rail-y,
   .sidebar>.ps.ps--scrolling-x>.ps__rail-x,
@@ -17,16 +16,24 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   .ps .ps__rail-y.ps--clicking {
     background-color: transparent !important;
   }
-  
   .sidebar .ps.ps--active-y>.ps__rail-y:hover,
   .sidebar>.ps.ps--active-y>.ps__rail-y.ps--clicking {
     width: 10px !important;
   }
-  
   .ps__thumb-y {
     background-color: #fff !important;
     width: 6px!important;
     border-radius: 0px!important;
     opacity: .5;
-  
+  }
+
+  :root{
+    --main-color:rgb(60, 142, 249);
+    --main-light-color:rgba(60, 142, 249, 0.188);
+  }
+  .bg-main{
+    background-color:var(--main-color);
+  }
+  .bg-main-light{
+    background-color:var(--main-light-color);
   }
