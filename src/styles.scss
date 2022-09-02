@@ -1,7 +1,7 @@
 @import '~perfect-scrollbar/css/perfect-scrollbar.css';
 
 html, body { height: 100%; }
-body { margin: 0; font-family: 'Inter', "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: 'Inter', "Helvetica Neue", sans-serif;background-color: #F2F6FF; }
 .page-wrapper.toggled .sidebar {
     left: -300px;
   }
