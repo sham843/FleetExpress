@@ -47,6 +47,7 @@ body { margin: 0; font-family: 'Inter', "Helvetica Neue", sans-serif;background-
     background-color:var(--main-color);
     color: #fff;
   }
+  .btn-main:focus,
   .btn-main:hover{
     background:var(--main-gradient);
     color: #fff;
@@ -115,4 +116,16 @@ mat-form-field{
 .form-container .btn{
   font-size: 0.85rem !important;
   box-shadow: none !important;
+}
+.plain-card{
+  border:none;
+}
+.plain-card .card-header{
+  border-bottom:none;
+  background-color: transparent;
+  font-size: 0.85rem !important;
+  font-weight: 600;
+}
+.plain-card .card-body{
+  font-size: 0.85rem !important;
 }
