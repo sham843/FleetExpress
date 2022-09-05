@@ -7,7 +7,7 @@
       transition: padding-left .3s ease;
   
       @media screen and (min-width: 768px) {
-        padding-left: 60px;
+        padding-left: 64px;
       }
   
       .overlay {
@@ -52,13 +52,5 @@
   }
   
 .main-content{
-  padding: 10px;
-}
-footer{
-  position: fixed;
-  bottom: 0;
-  background-color: #eee;
-  width: 100%;
-  padding: 10px;
-  font-size: 0.8rem;
+  padding: 15px;
 }
