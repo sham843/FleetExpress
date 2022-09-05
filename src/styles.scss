@@ -1,4 +1,5 @@
 @import '~perfect-scrollbar/css/perfect-scrollbar.css';
+@import '../node_modules/@angular/material/prebuilt-themes/indigo-pink.css';
 
 html, body { height: 100%; }
 body { margin: 0; font-family: 'Inter', "Helvetica Neue", sans-serif;background-color: #F2F6FF; }
@@ -30,6 +31,7 @@ body { margin: 0; font-family: 'Inter', "Helvetica Neue", sans-serif;background-
   :root{
     --main-color:rgb(60, 142, 249);
     --main-light-color:rgba(60, 142, 249, 0.188);
+    --main-gradient:linear-gradient(90deg, rgba(60,142,249,1) 0%, rgba(47,199,170,1) 100%);;
   }
   .light-mode{
     --bg-color:rgb(255,255,255);
@@ -40,6 +42,76 @@ body { margin: 0; font-family: 'Inter', "Helvetica Neue", sans-serif;background-
   .bg-main{
     background-color:var(--main-color);
   }
+  .btn-main{
+    background-color:var(--main-color);
+    color: #fff;
+  }
+  .btn-main:hover{
+    background:var(--main-gradient);
+    color: #fff;
+  }
   .bg-main-light{
     background-color:var(--main-light-color);
   }
+  .bg-main-gradient{
+    background: var(--main-gradient);
+    color: #fff;
+  }
+  #pills-tab .nav-link{
+    font-size: 0.85rem;
+    color: #fff;
+    text-transform: capitalize;
+    margin-right: 1rem;
+  }
+  #pills-tab .nav-link.active{
+    background-color: rgba(255,255,255,0.2);
+  }
+.report-list .report-name p{
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+.report-list .report-name small{
+  font-size: 0.8rem;
+  color: #333;
+}
+.report-list .list-group-item{
+  padding:15px 10px 15px 0px;
+  background-color:transparent;
+}
+.report-list .list-group-item.active{
+  background-color: transparent;
+  border-bottom: solid 1px rgba(0,0,0,0.125);
+}
+.report-list .list-group-item .report-name{
+  padding-left:15px;
+}
+.report-list .list-group-item .report-name{
+  border-left: solid 3px transparent;
+}
+.report-list .list-group-item:hover .report-name,
+.report-list .list-group-item.active .report-name{
+  border-left: solid 3px var(--main-color);
+}
+.report-list .list-group-item:hover p,
+.report-list .list-group-item.active p{
+  color: var(--main-color);
+}
+.report-list .list-group-item:hover mat-icon,
+.report-list .list-group-item.active mat-icon{
+  color: var(--main-color);
+}
+.form-container .form-label{
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+.mat-option-text,
+.mat-select-value-text,
+mat-form-field{
+  font-size: 0.85rem !important;
+  font-family: "Inter", sans-serif !important;
+}
+.form-container .btn{
+  font-size: 0.85rem !important;
+  box-shadow: none !important;
+}

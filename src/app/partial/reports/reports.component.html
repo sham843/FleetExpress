@@ -1,1 +1,375 @@
-<p>reports works!</p>
+<p class="fw-bold small mb-2">Reports</p>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="bg-main-gradient py-2 px-3 rounded mb-3">
+            <ul class="nav nav-pills mb-0" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pills-stoppage-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-stoppage" type="button" role="tab" aria-controls="pills-stoppage"
+                        aria-selected="true">stoppage</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-distance-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-distance" type="button" role="tab" aria-controls="pills-distance"
+                        aria-selected="false">distance</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-tools-tab" data-bs-toggle="pill" data-bs-target="#pills-tools"
+                        type="button" role="tab" aria-controls="pills-tools" aria-selected="false">tools</button>
+                </li>
+            </ul>
+        </div>
+        <div class="card border-0 rounded">
+            <div class="card-body">
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-stoppage" role="tabpanel"
+                        aria-labelledby="pills-stoppage-tab" tabindex="0">
+                        <div class="row justify-content-between">
+                            <div class="col-sm-6 ps-0">
+                                <div class="list-group list-group-flush report-list">
+                                    <a routerLink="#" routerLinkActive="active"
+                                        class="list-group-item d-flex justify-content-between align-items-center list-group-item-action active"
+                                        aria-current="true">
+                                        <div class="report-name">
+                                            <p class="mb-0">Stoppage Report</p>
+                                            <small>All the stoppages of a vehicles with certain stoppage time at a
+                                                particular location</small>
+                                        </div>
+                                        <mat-icon>
+                                            keyboard_double_arrow_right
+                                        </mat-icon>
+                                    </a>
+                                    <a routerLink="#" routerLinkActive="active"
+                                        class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+                                        <div class="report-name">
+                                            <p class="mb-0">Daywise Stoppage Report</p>
+                                            <small>Report for stoppages of a vehicle in a day</small>
+                                        </div>
+                                        <mat-icon>
+                                            keyboard_double_arrow_right
+                                        </mat-icon>
+                                    </a>
+                                    <a routerLink="#" routerLinkActive="active"
+                                        class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+                                        <div class="report-name">
+                                            <p class="mb-0">Locationwise Stoppage Report</p>
+                                            <small>All the stoppages of a vehicles, at a particular location</small>
+                                        </div>
+                                        <mat-icon>
+                                            keyboard_double_arrow_right
+                                        </mat-icon>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <div class="form-container">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label class="form-label">Start Date</label>
+                                            <div class="d-block">
+                                                <mat-form-field appearance="fill" class="w-100">
+                                                    <input matInput [matDatepicker]="picker">
+                                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker></mat-datepicker>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="form-label">End Date</label>
+                                            <div class="d-block">
+                                                <mat-form-field appearance="fill" class="w-100">
+                                                    <input matInput [matDatepicker]="picker">
+                                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker></mat-datepicker>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-6">
+                                            <label class="form-label">Vehicle Number</label>
+                                            <div class="d-block">
+                                                <mat-form-field appearance="fill" class="w-100">
+                                                    <mat-select>
+                                                      <mat-option *ngFor="let food of foods" [value]="food.value">
+                                                        {{food.viewValue}}
+                                                      </mat-option>
+                                                    </mat-select>
+                                                  </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="form-label">Time Period</label>
+                                            <div class="d-block">
+                                                <mat-form-field appearance="fill" class="w-100">
+                                                    <mat-select>
+                                                      <mat-option *ngFor="let food of foods" [value]="food.value">
+                                                        {{food.viewValue}}
+                                                      </mat-option>
+                                                    </mat-select>
+                                                  </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <button class="btn btn-main">Search</button>
+                                        <button class="btn btn-outline-secondary mx-2">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline-secondary" [matMenuTriggerFor]="menu">
+                                            <i class="fa-solid fa-download"></i>
+                                        </button>
+                                        <mat-menu #menu="matMenu">
+                                            <button mat-menu-item>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span>PDF</span>
+                                                    <span class="text-danger"><i class="fa-solid fa-file-pdf"></i></span>
+                                                </div>
+                                            </button>
+                                            <button mat-menu-item>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span>Excel</span>
+                                                    <span class="text-success"><i class="fa-solid fa-file-excel"></i></span>
+                                                </div>
+                                            </button>
+                                          </mat-menu>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="pills-distance" role="tabpanel" aria-labelledby="pills-distance-tab"
+                        tabindex="0">
+                        <div class="row justify-content-between">
+                            <div class="col-sm-6 ps-0">
+                                <div class="list-group list-group-flush report-list">
+                                    <a routerLink="#" routerLinkActive="active"
+                                        class="list-group-item d-flex justify-content-between align-items-center list-group-item-action active"
+                                        aria-current="true">
+                                        <div class="report-name">
+                                            <p class="mb-0">Day Distance Report</p>
+                                            <small>Report for distance covered by the vehicle in a day (24 Hrs)</small>
+                                        </div>
+                                        <mat-icon>
+                                            keyboard_double_arrow_right
+                                        </mat-icon>
+                                    </a>
+                                    <a routerLink="#" routerLinkActive="active"
+                                        class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+                                        <div class="report-name">
+                                            <p class="mb-0">Distance Report</p>
+                                            <small>Report for distance covered by the vehicle between provided given time</small>
+                                        </div>
+                                        <mat-icon>
+                                            keyboard_double_arrow_right
+                                        </mat-icon>
+                                    </a>
+                                    <a routerLink="#" routerLinkActive="active"
+                                        class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+                                        <div class="report-name">
+                                            <p class="mb-0">Summary Report</p>
+                                            <small>Report of tolls crossed by vehicle in selected timeframe</small>
+                                        </div>
+                                        <mat-icon>
+                                            keyboard_double_arrow_right
+                                        </mat-icon>
+                                    </a>
+                                    <a routerLink="#" routerLinkActive="active"
+                                        class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+                                        <div class="report-name">
+                                            <p class="mb-0">Trip Report</p>
+                                            <small>Report of ac temperatures of vehicle in selected timeframe</small>
+                                        </div>
+                                        <mat-icon>
+                                            keyboard_double_arrow_right
+                                        </mat-icon>
+                                    </a>
+                                    <a routerLink="#" routerLinkActive="active"
+                                        class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+                                        <div class="report-name">
+                                            <p class="mb-0">Address Report</p>
+                                            <small>Report of door lock of vehicle in selected timeframe</small>
+                                        </div>
+                                        <mat-icon>
+                                            keyboard_double_arrow_right
+                                        </mat-icon>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <div class="form-container">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label class="form-label">Start Date</label>
+                                            <div class="d-block">
+                                                <mat-form-field appearance="fill" class="w-100">
+                                                    <input matInput [matDatepicker]="picker">
+                                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker></mat-datepicker>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="form-label">End Date</label>
+                                            <div class="d-block">
+                                                <mat-form-field appearance="fill" class="w-100">
+                                                    <input matInput [matDatepicker]="picker">
+                                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker></mat-datepicker>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-6">
+                                            <label class="form-label">Vehicle Number</label>
+                                            <div class="d-block">
+                                                <mat-form-field appearance="fill" class="w-100">
+                                                    <mat-select>
+                                                      <mat-option *ngFor="let food of foods" [value]="food.value">
+                                                        {{food.viewValue}}
+                                                      </mat-option>
+                                                    </mat-select>
+                                                  </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <button class="btn btn-main">Search</button>
+                                        <button class="btn btn-outline-secondary mx-2">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline-secondary" [matMenuTriggerFor]="menu">
+                                            <i class="fa-solid fa-download"></i>
+                                        </button>
+                                        <mat-menu #menu="matMenu">
+                                            <button mat-menu-item>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span>PDF</span>
+                                                    <span class="text-danger"><i class="fa-solid fa-file-pdf"></i></span>
+                                                </div>
+                                            </button>
+                                            <button mat-menu-item>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span>Excel</span>
+                                                    <span class="text-success"><i class="fa-solid fa-file-excel"></i></span>
+                                                </div>
+                                            </button>
+                                          </mat-menu>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="pills-tools" role="tabpanel" aria-labelledby="pills-tools-tab"
+                        tabindex="0">
+                        <div class="row justify-content-between">
+                            <div class="col-sm-6 ps-0">
+                                <div class="list-group list-group-flush report-list">
+                                    <a routerLink="#" routerLinkActive="active"
+                                        class="list-group-item d-flex justify-content-between align-items-center list-group-item-action active"
+                                        aria-current="true">
+                                        <div class="report-name">
+                                            <p class="mb-0">Overspeed Report</p>
+                                            <small>Report for vehicle over-speeding over certain value in selected timeframe</small>
+                                        </div>
+                                        <mat-icon>
+                                            keyboard_double_arrow_right
+                                        </mat-icon>
+                                    </a>
+                                    <a routerLink="#" routerLinkActive="active"
+                                        class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+                                        <div class="report-name">
+                                            <p class="mb-0">Speed Range Report</p>
+                                            <small>Report of temperature inside container at different time in selected timeframe</small>
+                                        </div>
+                                        <mat-icon>
+                                            keyboard_double_arrow_right
+                                        </mat-icon>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <div class="form-container">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label class="form-label">Start Date</label>
+                                            <div class="d-block">
+                                                <mat-form-field appearance="fill" class="w-100">
+                                                    <input matInput [matDatepicker]="picker">
+                                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker></mat-datepicker>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="form-label">End Date</label>
+                                            <div class="d-block">
+                                                <mat-form-field appearance="fill" class="w-100">
+                                                    <input matInput [matDatepicker]="picker">
+                                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker></mat-datepicker>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-6">
+                                            <label class="form-label">Vehicle Number</label>
+                                            <div class="d-block">
+                                                <mat-form-field appearance="fill" class="w-100">
+                                                    <mat-select>
+                                                      <mat-option *ngFor="let food of foods" [value]="food.value">
+                                                        {{food.viewValue}}
+                                                      </mat-option>
+                                                    </mat-select>
+                                                  </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="form-label">Overspeed</label>
+                                            <div class="d-block">
+                                                <mat-form-field appearance="fill" class="w-100">
+                                                    <mat-select>
+                                                      <mat-option *ngFor="let food of foods" [value]="food.value">
+                                                        {{food.viewValue}}
+                                                      </mat-option>
+                                                    </mat-select>
+                                                  </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <button class="btn btn-main">Search</button>
+                                        <button class="btn btn-outline-secondary mx-2">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline-secondary" [matMenuTriggerFor]="menu">
+                                            <i class="fa-solid fa-download"></i>
+                                        </button>
+                                        <mat-menu #menu="matMenu">
+                                            <button mat-menu-item>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span>PDF</span>
+                                                    <span class="text-danger"><i class="fa-solid fa-file-pdf"></i></span>
+                                                </div>
+                                            </button>
+                                            <button mat-menu-item>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span>Excel</span>
+                                                    <span class="text-success"><i class="fa-solid fa-file-excel"></i></span>
+                                                </div>
+                                            </button>
+                                          </mat-menu>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
