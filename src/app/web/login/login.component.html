@@ -1,1 +1,53 @@
-<p>login works!</p>
+<div class="container pt-5">
+    <div class="row justify-content-center" id="loginbox">
+        <div class="col-sm-4">
+            <div class="text-center mb-4">
+                <img src="assets/images/FleetExpress-Login-logo.svg">
+            </div>
+            <div class="card card-body">
+                <h4>LOGIN</h4>
+                <div class="form-container">
+                    <div class="mb-0">
+                        <!-- <label class="form-label">Username</label> -->
+                        <div class="d-block">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Username</mat-label>
+                                <input matInput placeholder="Username">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="mb-0">
+                        <mat-form-field appearance="outline"  class="w-100">
+                            <mat-label>Password</mat-label>
+                            <input matInput [type]="hide ? 'password' : 'text'">
+                            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                                [attr.aria-pressed]="hide">
+                                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            </button>
+                        </mat-form-field>
+                    </div>
+                    <div class="mb-0">
+                        <label class="form-label">Enter Captcha</label>
+                        <div class="row gx-1 align-items-center">
+                            <div class="col-sm-6">
+                                captcha
+                            </div>
+                            <div class="col-sm-6">
+                                <mat-form-field appearance="outline" class="w-100">
+                                    <mat-label>Enter Captcha</mat-label>
+                                    <input matInput placeholder="Enter Captcha">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-0">
+                        <button class="btn btn-main w-100">LOGIN</button>
+                    </div>
+                    <div class="text-end mt-2">
+                        <a routerLink="#">Forget Password</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
