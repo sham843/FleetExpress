@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="84.653" height="82" viewBox="0 0 84.653 82">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#2fc7aa"/>
+      <stop offset="1" stop-color="#3c8ef9"/>
+    </linearGradient>
+    <filter id="Ellipse_362" x="46.653" y="44" width="38" height="38" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-color="#3e6394" flood-opacity="0.522"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Add_Profile_Photo" data-name="Add Profile Photo" transform="translate(-575.347 -274)">
+    <g id="user_1_" data-name="user (1)" transform="translate(575.348 274)">
+      <path id="Path_73" data-name="Path 73" d="M22.709,56.527,11.272,62.765a10.277,10.277,0,0,0-1.835,1.306,38.3,38.3,0,0,0,49.214.127,10.146,10.146,0,0,0-2.016-1.351L44.389,56.725a4.67,4.67,0,0,1-2.582-4.177v-4.8a18.5,18.5,0,0,0,1.159-1.49,28.178,28.178,0,0,0,3.807-7.671A3.846,3.846,0,0,0,49.5,34.923V29.794a3.829,3.829,0,0,0-1.281-2.842V19.538S49.742,8,34.117,8s-14.1,11.537-14.1,11.537v7.414a3.824,3.824,0,0,0-1.281,2.842v5.129a3.845,3.845,0,0,0,1.773,3.227,25.451,25.451,0,0,0,4.637,9.594V52.43A4.675,4.675,0,0,1,22.709,56.527Z" transform="translate(4.212 3.571)" fill="#e7eced"/>
+      <g id="Group_58" data-name="Group 58" transform="translate(0 0)">
+        <path id="Path_74" data-name="Path 74" d="M38.983.006A38.3,38.3,0,0,0,13.665,67.631a10.185,10.185,0,0,1,1.818-1.293L26.919,60.1A4.672,4.672,0,0,0,29.353,56V51.313a25.427,25.427,0,0,1-4.637-9.594,3.847,3.847,0,0,1-1.773-3.227V33.364a3.829,3.829,0,0,1,1.281-2.842V23.108S22.7,11.571,38.326,11.571s14.1,11.537,14.1,11.537v7.414a3.824,3.824,0,0,1,1.281,2.842v5.129a3.846,3.846,0,0,1-2.728,3.659,28.178,28.178,0,0,1-3.807,7.671,18.5,18.5,0,0,1-1.159,1.49v4.8A4.668,4.668,0,0,0,48.6,60.295l12.246,6.122a10.2,10.2,0,0,1,2.01,1.348A38.319,38.319,0,0,0,38.983.006Z" transform="translate(0 0)" fill="url(#linear-gradient)"/>
+      </g>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, 575.35, 274)" filter="url(#Ellipse_362)">
+      <circle id="Ellipse_362-2" data-name="Ellipse 362" cx="10" cy="10" r="10" transform="translate(55.65 53)" fill="#fff"/>
+    </g>
+    <path id="add_2_" data-name="add (2)" d="M9.013,4.065h-3a.177.177,0,0,1-.177-.177v-3a.884.884,0,0,0-1.767,0v3a.177.177,0,0,1-.177.177h-3a.884.884,0,0,0,0,1.767h3a.177.177,0,0,1,.177.177v3a.884.884,0,0,0,1.767,0v-3a.177.177,0,0,1,.177-.177h3a.884.884,0,0,0,0-1.767Zm0,0" transform="translate(636.051 332.052)" fill="#3c8ef9"/>
+  </g>
+</svg>
