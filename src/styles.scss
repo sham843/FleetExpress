@@ -31,6 +31,12 @@ body { margin: 0; font-family: 'Inter', "Helvetica Neue", sans-serif;background-
     --main-color:rgb(60, 142, 249);
     --main-light-color:rgba(60, 142, 249, 0.188);
   }
+  .light-mode{
+    --bg-color:rgb(255,255,255);
+  }
+  .dark-mode{
+    --bg-color:rgb(35, 35, 35);
+  }
   .bg-main{
     background-color:var(--main-color);
   }
