@@ -12,5 +12,12 @@
     border-radius: 5px;
 }
 .navbar{
+    padding-block: 5px;
+}
+.navbar .btn{
     font-size: 0.85rem;
+    color: #575757;
+}
+.navbar .btn:hover{
+    color: #000;
 }
