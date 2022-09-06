@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { TrackingRoutingModule } from './tracking-routing.module';
 import { TrackingComponent } from './tracking.component';
-
+import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.module';
 
 @NgModule({
   declarations: [
@@ -11,7 +11,8 @@ import { TrackingComponent } from './tracking.component';
   ],
   imports: [
     CommonModule,
-    TrackingRoutingModule
+    TrackingRoutingModule,
+    MaterialModule,
   ]
 })
 export class TrackingModule { }
