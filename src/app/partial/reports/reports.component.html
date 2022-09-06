@@ -7,22 +7,142 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="pills-stoppage-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-stoppage" type="button" role="tab" aria-controls="pills-stoppage"
-                        aria-selected="true">stoppage</button>
+                        aria-selected="true" (click)="selectedTab('stoppage')">stoppage</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-distance-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-distance" type="button" role="tab" aria-controls="pills-distance"
-                        aria-selected="false">distance</button>
+                        aria-selected="false" (click)="selectedTab('distance')">distance</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-tools-tab" data-bs-toggle="pill" data-bs-target="#pills-tools"
-                        type="button" role="tab" aria-controls="pills-tools" aria-selected="false">tools</button>
+                        type="button" role="tab" aria-controls="pills-tools" aria-selected="false" (click)="selectedTab('tools')">tools</button>
                 </li>
             </ul>
         </div>
         <div class="card border-0 rounded">
             <div class="card-body">
-                <div class="tab-content" id="pills-tabContent">
+                <form [formGroup]="reportForm"> 
+                <div class="row justify-content-between">
+                    <div class="col-sm-6 ps-0">
+                        <div class="list-group list-group-flush report-list">
+                            <a routerLink="#" routerLinkActive="active" *ngFor="let item of tabArrayData; let i = index"
+                                class="list-group-item d-flex justify-content-between align-items-center list-group-item-action "
+                                aria-current="true" [class.active]="selectedIndex === i"  (click)="setIndex(i)">
+                                <div class="report-name">
+                                    <!--fromControlName="reportType" 
+                                        <p class="mb-0">Stoppage Report</p>
+                                    <small>All the stoppages of a vehicles with certain stoppage time at a
+                                        particular location</small> -->
+                                        <p class="mb-0">{{item.label}}</p>
+                                        <small>{{item.disc}}</small> 
+                                </div>
+                                <mat-icon>
+                                    keyboard_double_arrow_right
+                                </mat-icon>
+                            </a>
+                            <!-- <a routerLink="#" routerLinkActive="active"
+                                class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+                                <div class="report-name">
+                                    <p class="mb-0">Daywise Stoppage Report</p>
+                                    <small>Report for stoppages of a vehicle in a day</small>
+                                </div>
+                                <mat-icon>
+                                    keyboard_double_arrow_right
+                                </mat-icon>
+                            </a>
+                            <a routerLink="#" routerLinkActive="active"
+                                class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+                                <div class="report-name">
+                                    <p class="mb-0">Locationwise Stoppage Report</p>
+                                    <small>All the stoppages of a vehicles, at a particular location</small>
+                                </div>
+                                <mat-icon>
+                                    keyboard_double_arrow_right
+                                </mat-icon>
+                            </a> -->
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                            <div class="form-container">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label class="form-label">Start Date</label>
+                                        <div class="d-block">
+                                            <mat-form-field appearance="fill" class="w-100">
+                                                <input matInput [matDatepicker]="dtpstoppagestartdate" formControlName="startDate" required>
+                                                <mat-datepicker-toggle matSuffix [for]="dtpstoppagestartdate"></mat-datepicker-toggle>
+                                                <mat-datepicker #dtpstoppagestartdate></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="form-label">End Date</label>
+                                        <div class="d-block">
+                                            <mat-form-field appearance="fill" class="w-100" >
+                                                <input matInput [matDatepicker]="dtpstoppageenddate" formControlName="endDate" required>
+                                                <mat-datepicker-toggle matSuffix [for]="dtpstoppageenddate"></mat-datepicker-toggle>
+                                                <mat-datepicker #dtpstoppageenddate></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-6">
+                                        <label class="form-label">Vehicle Number</label>
+                                        <div class="d-block">
+                                            <mat-form-field appearance="fill" class="w-100">
+                                                <mat-select  formControlName="vehicleNo" required>
+                                                  <mat-option *ngFor="let vehicle of VehicleDtArr" [value]="vehicle.vehicleNo">
+                                                    {{vehicle.vehicleNo}}
+                                                  </mat-option>
+                                                </mat-select>
+                                              </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="form-label">Time Period</label>
+                                        <div class="d-block">
+                                            <mat-form-field appearance="fill" class="w-100">
+                                                <mat-select formControlName="timePeriod" required>
+                                                  <mat-option *ngFor="let food of foods" [value]="food.value">
+                                                    {{food.viewValue}}
+                                                  </mat-option>
+                                                </mat-select>
+                                              </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-main" (click)="SearchStoppageReport()">Search</button>
+                                    <button class="btn btn-outline-secondary mx-2">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-outline-secondary" [matMenuTriggerFor]="menu">
+                                        <i class="fa-solid fa-download"></i>
+                                    </button>
+                                    <mat-menu #menu="matMenu">
+                                        <button mat-menu-item>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>PDF</span>
+                                                <span class="text-danger"><i class="fa-solid fa-file-pdf"></i></span>
+                                            </div>
+                                        </button>
+                                        <button mat-menu-item>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>Excel</span>
+                                                <span class="text-success"><i class="fa-solid fa-file-excel"></i></span>
+                                            </div>
+                                        </button>
+                                      </mat-menu>
+                                </div>
+                            </div>
+                      
+                       
+                    </div>
+                </div>
+            </form>
+                <!-- <div class="tab-content" id="pills-tabContent">
                     <div class="tab-pane fade show active" id="pills-stoppage" role="tabpanel"
                         aria-labelledby="pills-stoppage-tab" tabindex="0">
                         <div class="row justify-content-between">
@@ -367,9 +487,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
-
     </div>
 </div>

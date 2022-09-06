@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import { ReportsRoutingModule } from './reports-routing.module';
 import { ReportsComponent } from './reports.component';
 import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.module';
-
+import { ReportsService } from './reports.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,10 @@ import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.mo
   imports: [
     CommonModule,
     ReportsRoutingModule,
-    MaterialModule
-  ]
+    MaterialModule,
+    FormsModule, 
+    ReactiveFormsModule
+  ],
+  providers:[ReportsService]
 })
 export class ReportsModule { }
