@@ -30,7 +30,8 @@ body { margin: 0; font-family: 'Inter', "Helvetica Neue", sans-serif;background-
 
   :root{
     --main-color:rgb(60, 142, 249);
-    --main-light-color:rgba(60, 142, 249, 0.188);
+    --main-light-color:rgb(183, 214, 255);
+    --main-dark-color:rgb(1, 91, 208);
     --main-gradient:linear-gradient(90deg, rgba(60,142,249,1) 0%, rgba(47,199,170,1) 100%);;
   }
   .light-mode{
@@ -46,6 +47,7 @@ body { margin: 0; font-family: 'Inter', "Helvetica Neue", sans-serif;background-
     background-color:var(--main-color);
     color: #fff;
   }
+  .btn-main:focus,
   .btn-main:hover{
     background:var(--main-gradient);
     color: #fff;
@@ -114,4 +116,17 @@ mat-form-field{
 .form-container .btn{
   font-size: 0.85rem !important;
   box-shadow: none !important;
+}
+.plain-card{
+  border:none;
+}
+.plain-card .card-header{
+  border-bottom:none;
+  background-color: transparent;
+  font-size: 0.85rem !important;
+  font-weight: 600;
+  padding: 15px;
+}
+.plain-card .card-body{
+  font-size: 0.85rem !important;
 }

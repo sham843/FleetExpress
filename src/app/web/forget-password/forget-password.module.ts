@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ManageVehicleRoutingModule } from './manage-vehicle-routing.module';
-import { ManageVehicleComponent } from './manage-vehicle.component';
+import { ForgetPasswordRoutingModule } from './forget-password-routing.module';
+import { ForgetPasswordComponent } from './forget-password.component';
 import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.module';
 
 
 @NgModule({
   declarations: [
-    ManageVehicleComponent
+    ForgetPasswordComponent
   ],
   imports: [
     CommonModule,
-    ManageVehicleRoutingModule,
+    ForgetPasswordRoutingModule,
     MaterialModule
   ]
 })
-export class ManageVehicleModule { }
+export class ForgetPasswordModule { }
