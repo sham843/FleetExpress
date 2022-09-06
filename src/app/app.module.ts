@@ -12,10 +12,14 @@ import { FooterComponent } from './partial/partial-layout/footer/footer.componen
 import { HeaderComponent } from './partial/partial-layout/header/header.component';
 import { SidebarComponent } from './partial/partial-layout/sidebar/sidebar.component';
 import { MaterialModule } from './shared/angularMaterialModule/material.module';
-
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { AccessDenideComponent } from './error/access-denide/access-denide.component';
+import { PageNotFoundComponent } from './error/page-not-found/page-not-found.component';
+import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+// import { ToastrModule } from 'ngx-toastr';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -26,7 +30,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PartialLayoutComponent,
     FooterComponent,
     HeaderComponent,
-    SidebarComponent
+    SidebarComponent,
+    AccessDenideComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -36,12 +42,22 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     FormsModule,
     MatNativeDateModule,
     ReactiveFormsModule,
-    PerfectScrollbarModule
-  ],
+    PerfectScrollbarModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
+   /*  ToastrModule.forRoot({
+      timeOut: 2000,
+      closeButton: true,
+      progressBar:true,
+      preventDuplicates: true,
+    }),*/
+  ], 
   providers: [ {
     provide: PERFECT_SCROLLBAR_CONFIG,
     useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
-  }],
+  },
+  DatePipe, { provide: MAT_DATE_LOCALE, useValue: 'en-GB'}, CurrencyPipe, TitleCasePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

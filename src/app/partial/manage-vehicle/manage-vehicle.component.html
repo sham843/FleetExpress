@@ -1,1 +1,105 @@
-<p>manage-vehicle works!</p>
+<p class="fw-bold small mb-2">Manage Vehicle</p>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="bg-main-gradient py-2 px-3 rounded mb-3">
+            <div class="d-flex">
+                <div class="px-3">Total Vehicles</div>
+                <div>220</div>
+            </div>
+        </div>
+
+        <mat-card>
+            <div class="card border-1 rounded">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span>Vehicle List</span>
+                        </div>
+                        <div class="col-3">
+                            <input type="search" class="form-control" id="exampleFormControlInput1"
+                                placeholder="Search">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr class="">
+                                <th scope="col">SR.No</th>
+                                <th scope="col">VEHICLE NO.</th>
+                                <th scope="col">DRIVER NAME</th>
+                                <th scope="col">MOBILE NO</th>
+                                <th scope="col">UPDATE DRIVER</th>
+                                <th scope="col">BLOCK/UNBLCOK</th>
+                                <th scope="col">ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>
+                                    <div class="d-flex">
+                                        <img src="../../../assets/images/Idle-vehicle.svg" alt="">
+                                        <p class="small mb-0 px-2">MH12 AB 1234</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="">
+                                        <p class="small mb-0 px-2">Tushar Jadhav</p>
+                                    </div>
+                                </td>
+                                <td>8669264767</td>
+                                <td>
+                                    <button mat-stroked-button color="primary" data-bs-toggle="modal" id="openmodal" data-bs-target="#exampleModal">
+                                        Assign Driver
+                                    </button>
+                                </td>
+                                <td>
+                                    <mat-slide-toggle></mat-slide-toggle>
+                                </td>
+                                <td>
+                                    <mat-icon>edit</mat-icon>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </mat-card>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-main-gradient py-3 px-3 mb-3">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Assign Driver
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="">
+                        <h4>MH 12 AB 1234</h4>
+                        <p>Driver Name</p>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Select Driver Name</mat-label>
+                            <mat-select>
+                              <mat-option *ngFor="let food of foods" [value]="food.value">
+                                {{food.viewValue}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                    </div>
+                </div>
+                <div class="modal-footer px-1 mb-3 border-0">
+                    <button mat-stroked-button color="primary" data-bs-dismiss="modal">Cancel</button>
+                    <button mat-raised-button color="primary" class="btn btn-primary mx-2">Assign</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
