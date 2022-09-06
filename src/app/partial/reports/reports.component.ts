@@ -104,9 +104,14 @@ export class ReportsComponent implements OnInit {
     this.comman.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200") {
         this.VehicleDtArr = responseData.responseData;
+        this._snackBar.open('Message archived', 'Undo', {
+          duration: 1000,
+          panelClass:'custom_sneak_bar'
+
+        });
       }
       else if (responseData.statusCode === "409") {
-        // this.toastrService.error(responseData.statusMessage);
+        
       }
       else {
         // this.toastrService.error(responseData.statusMessage);
@@ -127,6 +132,6 @@ export class ReportsComponent implements OnInit {
   let timeStampYesterday = timeStamp - (24 * 3600);
   let is24 = date1 >= new Date(timeStampYesterday * 1000).getTime();
   if(!is24){
-    console.log("Date difference does not exceed 24hr.");
+            this._snackBar.open("Date difference does not exceed 24hr.");
   } */
 }
