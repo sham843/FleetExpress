@@ -144,6 +144,7 @@ mat-form-field{
 .plain-card .card-body{
   font-size: 0.85rem !important;
 }
+<<<<<<< HEAD
 .cdk-overlay-container{
   z-index: 9999;
 }
@@ -166,4 +167,13 @@ mat-form-field{
   border-radius: 10px;
 	background-color: var(--main-color);
   transition:all 1s ease-in-out;
+=======
+#captcha {
+  margin-left: -25px;
+  margin-top: 2px;
+  background-image: url(assets/captcha-bg.jpg);
+  padding-left: 3px;
+  /* width: 85%; */
+  height: 34px;
+>>>>>>> 4e2c27bbc31c74dd973ca335de62816ad6fd9b15
 }

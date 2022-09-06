@@ -22,15 +22,16 @@
         </div>
         <div class="card border-0 rounded">
             <div class="card-body">
-                <form [formGroup]="frm" (ngSubmit)="onSubmit()"> 
+                <form [formGroup]="reportForm"> 
                 <div class="row justify-content-between">
                     <div class="col-sm-6 ps-0">
                         <div class="list-group list-group-flush report-list">
                             <a routerLink="#" routerLinkActive="active" *ngFor="let item of tabArrayData; let i = index"
                                 class="list-group-item d-flex justify-content-between align-items-center list-group-item-action "
-                                aria-current="true" [class.active]="selectedIndex === i" fromControlName="reportType" (click)="setIndex(i)">
+                                aria-current="true" [class.active]="selectedIndex === i"  (click)="setIndex(i, item.label)">
                                 <div class="report-name">
-                                    <!-- <p class="mb-0">Stoppage Report</p>
+                                    <!--fromControlName="reportType" 
+                                        <p class="mb-0">Stoppage Report</p>
                                     <small>All the stoppages of a vehicles with certain stoppage time at a
                                         particular location</small> -->
                                         <p class="mb-0">{{item.label}}</p>
@@ -69,7 +70,7 @@
                                         <label class="form-label">Start Date</label>
                                         <div class="d-block">
                                             <mat-form-field appearance="fill" class="w-100">
-                                                <input matInput [matDatepicker]="dtpstoppagestartdate" formControlName="fromDate">
+                                                <input matInput [matDatepicker]="dtpstoppagestartdate" formControlName="startDate" required>
                                                 <mat-datepicker-toggle matSuffix [for]="dtpstoppagestartdate"></mat-datepicker-toggle>
                                                 <mat-datepicker #dtpstoppagestartdate></mat-datepicker>
                                             </mat-form-field>
@@ -79,7 +80,7 @@
                                         <label class="form-label">End Date</label>
                                         <div class="d-block">
                                             <mat-form-field appearance="fill" class="w-100" >
-                                                <input matInput [matDatepicker]="dtpstoppageenddate" formControlName="toDate">
+                                                <input matInput [matDatepicker]="dtpstoppageenddate" formControlName="endDate" required>
                                                 <mat-datepicker-toggle matSuffix [for]="dtpstoppageenddate"></mat-datepicker-toggle>
                                                 <mat-datepicker #dtpstoppageenddate></mat-datepicker>
                                             </mat-form-field>
@@ -91,19 +92,19 @@
                                         <label class="form-label">Vehicle Number</label>
                                         <div class="d-block">
                                             <mat-form-field appearance="fill" class="w-100">
-                                                <mat-select  formControlName="vehicleNumber">
-                                                  <mat-option *ngFor="let food of foods" [value]="food.value">
-                                                    {{food.viewValue}}
+                                                <mat-select  formControlName="vehicleNo" required>
+                                                  <mat-option *ngFor="let vehicle of VehicleDtArr" [value]="vehicle.vehicleNo">
+                                                    {{vehicle.vehicleNo}}
                                                   </mat-option>
                                                 </mat-select>
                                               </mat-form-field>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-6" *ngIf="showTimePeriod">
                                         <label class="form-label">Time Period</label>
                                         <div class="d-block">
                                             <mat-form-field appearance="fill" class="w-100">
-                                                <mat-select formControlName="timePeriod">
+                                                <mat-select formControlName="timePeriod" required>
                                                   <mat-option *ngFor="let food of foods" [value]="food.value">
                                                     {{food.viewValue}}
                                                   </mat-option>
@@ -113,7 +114,7 @@
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-end">
-                                    <button class="btn btn-main">Search</button>
+                                    <button class="btn btn-main" (click)="SearchStoppageReport()">Search</button>
                                     <button class="btn btn-outline-secondary mx-2">
                                         <i class="fa-solid fa-eye"></i>
                                     </button>
