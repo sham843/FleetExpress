@@ -130,3 +130,11 @@ mat-form-field{
 .plain-card .card-body{
   font-size: 0.85rem !important;
 }
+#captcha {
+  margin-left: -25px;
+  margin-top: 2px;
+  background-image: url(assets/captcha-bg.jpg);
+  padding-left: 3px;
+  /* width: 85%; */
+  height: 34px;
+}
