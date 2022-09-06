@@ -21,6 +21,7 @@ export class ReportsComponent implements OnInit {
   maxEndDate:any=new Date();
   EndDateFilter:any;
   VehicleDtArr:any;
+  showTimePeriod:boolean=true;
   foods: Food[] = [
     {value: 'steak-0', viewValue: 'Steak'},
     {value: 'pizza-1', viewValue: 'Pizza'},
@@ -35,7 +36,7 @@ export class ReportsComponent implements OnInit {
   ngOnInit(): void {
     this.getStoppageData();
     this.selectedTab('stoppage');
-    this.setIndex(0);
+    // this.setIndex(0,'Stopage Report');
     // this.getVehicleList();
     this.getVehicleData();
   }
@@ -54,7 +55,9 @@ export class ReportsComponent implements OnInit {
         label:'Locationwise Stoppage Report',
         disc:'All the stoppages of a vehicles, at a particular location'
       },
-    ]; break;
+    ];
+    this.setIndex(0,'Stopage Report');
+     break;
       case 'distance': this.tabArrayData=[{
         label:'Day Distance Report',
         disc:'Report for distance covered by the vehicle in a day (24 Hrs)'
@@ -75,7 +78,9 @@ export class ReportsComponent implements OnInit {
         label:'Address Report',
         disc:'Report of door lock of vehicle in selected timeframe'
       },
-    ]; break;
+     
+    ]; this.setIndex(0,'Day Distance Report');
+     break;
       case 'tools':  this.tabArrayData=[{
         label:'Overspeed Report',
         disc:'Report for vehicle over-speeding over certain value in selected timeframe'
@@ -84,11 +89,14 @@ export class ReportsComponent implements OnInit {
         label:'Speed Range Report',
         disc:'Report of temperature inside container at different time in selected timeframe'
       },
-    ]; break;
+     
+    ];  this.setIndex(0,'Overspeed Report');
+    break;
     }
   }
-  setIndex(index: number) {
+  setIndex(index: number, label:any) {
     this.selectedIndex = index;
+    this.showTimePeriod=(label=='Stopage Report'||label=='Overspeed Report'||label=='Speed Range Report')?true:false;
  }
   getStoppageData(){
     this.reportForm = this.fb.group({

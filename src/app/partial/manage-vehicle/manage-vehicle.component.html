@@ -51,7 +51,9 @@
                                 </td>
                                 <td>8669264767</td>
                                 <td>
-                                    <button mat-stroked-button color="primary">Assign Driver</button>
+                                    <button mat-stroked-button color="primary" data-bs-toggle="modal" id="openmodal" data-bs-target="#exampleModal">
+                                        Assign Driver
+                                    </button>
                                 </td>
                                 <td>
                                     <mat-slide-toggle></mat-slide-toggle>
@@ -67,4 +69,37 @@
         </mat-card>
 
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-main-gradient py-3 px-3 mb-3">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Assign Driver
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="">
+                        <h4>MH 12 AB 1234</h4>
+                        <p>Driver Name</p>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Select Driver Name</mat-label>
+                            <mat-select>
+                              <mat-option *ngFor="let food of foods" [value]="food.value">
+                                {{food.viewValue}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                    </div>
+                </div>
+                <div class="modal-footer px-1 mb-3 border-0">
+                    <button mat-stroked-button color="primary" data-bs-dismiss="modal">Cancel</button>
+                    <button mat-raised-button color="primary" class="btn btn-primary mx-2">Assign</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

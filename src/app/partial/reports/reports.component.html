@@ -28,7 +28,7 @@
                         <div class="list-group list-group-flush report-list">
                             <a routerLink="#" routerLinkActive="active" *ngFor="let item of tabArrayData; let i = index"
                                 class="list-group-item d-flex justify-content-between align-items-center list-group-item-action "
-                                aria-current="true" [class.active]="selectedIndex === i"  (click)="setIndex(i)">
+                                aria-current="true" [class.active]="selectedIndex === i"  (click)="setIndex(i, item.label)">
                                 <div class="report-name">
                                     <!--fromControlName="reportType" 
                                         <p class="mb-0">Stoppage Report</p>
@@ -100,7 +100,7 @@
                                               </mat-form-field>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-6" *ngIf="showTimePeriod">
                                         <label class="form-label">Time Period</label>
                                         <div class="d-block">
                                             <mat-form-field appearance="fill" class="w-100">
