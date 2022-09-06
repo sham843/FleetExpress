@@ -52,11 +52,17 @@
     border-radius: 50%;
     width: 150px;
     height: 150px;
-    padding: 30px;
+    padding: 40px 30px;
     text-align: center;
+    transform: scale(1);
+    transform-origin: 50% 50%;
+    transition: transform 0.25s ease-out;
+}
+#dash-stats .card:hover .alerts{
+    transform: scale(1.8);
 }
 #dash-stats .alerts h4{
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin-bottom:0;
     font-weight: 600;
 }
