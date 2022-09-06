@@ -6,7 +6,6 @@ import { ReportsComponent } from './reports.component';
 import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.module';
 import { ReportsService } from './reports.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -15,8 +14,9 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     CommonModule,
     ReportsRoutingModule,
-    MaterialModule,HttpClientModule ,
-    FormsModule, ReactiveFormsModule
+    MaterialModule,
+    FormsModule, 
+    ReactiveFormsModule
   ],
   providers:[ReportsService]
 })

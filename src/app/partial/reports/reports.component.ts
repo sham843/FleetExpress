@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { CommanService } from 'src/app/services/comman.service';
 import { ReportsService } from './reports.service';
 
 interface Food {
@@ -14,6 +16,11 @@ interface Food {
   styleUrls: ['./reports.component.scss']
 })
 export class ReportsComponent implements OnInit {
+  reportForm!:FormGroup;
+  formData:any;
+  maxEndDate:any=new Date();
+  EndDateFilter:any;
+  VehicleDtArr:any;
   foods: Food[] = [
     {value: 'steak-0', viewValue: 'Steak'},
     {value: 'pizza-1', viewValue: 'Pizza'},
@@ -21,32 +28,17 @@ export class ReportsComponent implements OnInit {
   ];
   tabArrayData:any[]=[];
   selectedIndex: any;
-  frm!:FormGroup;
-  get f() { return this.frm.controls};
-  constructor(private fb:FormBuilder, private reportsService:ReportsService) { }
+
+  constructor(private fb:FormBuilder, private reportsService:ReportsService,private comman:CommanService,
+    private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.frm = this.fb.group({
-      reportType:[],
-      fromDate:['', Validators.required],
-      toDate:['', Validators.required],
-      vehicleNumber:['', Validators.required],
-      timePeriod:[],
-     
-    }) 
+    this.getStoppageData();
     this.selectedTab('stoppage');
     this.setIndex(0);
-    this.getVehicleList();
+    // this.getVehicleList();
+    this.getVehicleData();
   }
-  getVehicleList(){
-    this.reportsService.getvehiclelist().subscribe((res:any)=>{
-      console.log(res)
-    })
-  }
-  setIndex(index: number) {
-    console.log(this.frm.value)
-    this.selectedIndex = index;
- }
   selectedTab(tab:any){
     this.tabArrayData=[];
     switch (tab) {
@@ -95,8 +87,46 @@ export class ReportsComponent implements OnInit {
     ]; break;
     }
   }
-  onSubmit(){
-    
+  setIndex(index: number) {
+    this.selectedIndex = index;
+ }
+  getStoppageData(){
+    this.reportForm = this.fb.group({
+      // reportType:[''],
+      startDate:['',Validators.required],
+      endDate:['',Validators.required],
+      vehicleNo:['',Validators.required],
+      timePeriod:['',Validators.required]
+    })
+  }
+  getVehicleData(){
+    this.comman.setHttp('get', 'vehicle-tracking/dashboard/get-vehicles-list?UserId=35898', true, false, false, 'VehicleListBaseUrlApi');
+    this.comman.getHttp().subscribe((responseData: any) => {
+      if (responseData.statusCode === "200") {
+        this.VehicleDtArr = responseData.responseData;
+      }
+      else if (responseData.statusCode === "409") {
+        // this.toastrService.error(responseData.statusMessage);
+      }
+      else {
+        // this.toastrService.error(responseData.statusMessage);
+      }
+    })
   }
 
+  SearchStoppageReport(){
+  
+  }
+
+  get f() { return this.reportForm.controls};
+/* this.formData=this.reportForm.value;
+  let fromDate:any = this.datePipe.transform(this.formData.startDate, 'yyyy-MM-dd HH:mm');
+  let todate:any = this.datePipe.transform(this.formData.endDate, 'yyyy-MM-dd HH:mm');
+  let date1: any = new Date(fromDate);
+  let timeStamp = Math.round(new Date(todate).getTime() / 1000);
+  let timeStampYesterday = timeStamp - (24 * 3600);
+  let is24 = date1 >= new Date(timeStampYesterday * 1000).getTime();
+  if(!is24){
+    console.log("Date difference does not exceed 24hr.");
+  } */
 }
