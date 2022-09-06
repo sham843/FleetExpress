@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ManageVehicleRoutingModule } from './manage-vehicle-routing.module';
 import { ManageVehicleComponent } from './manage-vehicle.component';
+import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.module';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { ManageVehicleComponent } from './manage-vehicle.component';
   ],
   imports: [
     CommonModule,
-    ManageVehicleRoutingModule
+    ManageVehicleRoutingModule,
+    MaterialModule
   ]
 })
 export class ManageVehicleModule { }
