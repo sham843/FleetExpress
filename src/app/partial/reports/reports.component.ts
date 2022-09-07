@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import * as moment from 'moment';
 import { CommanService } from 'src/app/services/comman.service';
 import { ReportsService } from './reports.service';
 
-interface Food {
+interface timePeriodArray {
   value: string;
   viewValue: string;
 }
@@ -22,14 +23,17 @@ export class ReportsComponent implements OnInit {
   EndDateFilter:any;
   VehicleDtArr:any;
   showTimePeriod:boolean=true;
-  foods: Food[] = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'},
+  currentDate=moment().toISOString();
+  timePeriodArray: timePeriodArray[] = [
+    {value: '1', viewValue: 'Today'},
+    {value: '2', viewValue: '24hr'},
+    {value: '3', viewValue: 'Weekly'},
+    {value: '4', viewValue: 'Custom'},
   ];
+  maxTodayDate:any;
   tabArrayData:any[]=[];
   selectedIndex: any;
-
+  get f() { return this.reportForm.controls};
   constructor(private fb:FormBuilder, private reportsService:ReportsService,private comman:CommanService,
     private _snackBar: MatSnackBar) { }
 
@@ -39,6 +43,14 @@ export class ReportsComponent implements OnInit {
     // this.setIndex(0,'Stopage Report');
     // this.getVehicleList();
     this.getVehicleData();
+  }
+  getStoppageData(){
+    this.reportForm = this.fb.group({
+      fromDate:['',Validators.required],
+      toDate:['',Validators.required],
+      vehicleNo:['',Validators.required],
+      timePeriod:['',Validators.required]
+    })
   }
   selectedTab(tab:any){
     this.tabArrayData=[];
@@ -97,16 +109,14 @@ export class ReportsComponent implements OnInit {
   setIndex(index: number, label:any) {
     this.selectedIndex = index;
     this.showTimePeriod=(label=='Stopage Report'||label=='Overspeed Report'||label=='Speed Range Report')?true:false;
+    if(label=='Stopage Report'||label=='Overspeed Report'||label=='Speed Range Report'){
+      this.reportForm.controls["timePeriod"].setValidators([Validators.required]); 
+    }else{
+      this.reportForm.controls["timePeriod"].clearValidators(); 
+    }
+    this.reportForm.controls["timePeriod"].updateValueAndValidity();
  }
-  getStoppageData(){
-    this.reportForm = this.fb.group({
-      // reportType:[''],
-      startDate:['',Validators.required],
-      endDate:['',Validators.required],
-      vehicleNo:['',Validators.required],
-      timePeriod:['',Validators.required]
-    })
-  }
+  
   getVehicleData(){
     this.comman.setHttp('get', 'vehicle-tracking/dashboard/get-vehicles-list?UserId=35898', true, false, false, 'VehicleListBaseUrlApi');
     this.comman.getHttp().subscribe((responseData: any) => {
@@ -121,12 +131,50 @@ export class ReportsComponent implements OnInit {
       }
     })
   }
-
-  SearchStoppageReport(){
-  
+  selectTimePeriod(value:any){
+    switch (value) {
+      case "1":  
+      this.reportForm.patchValue({
+        fromDate:moment.utc().startOf('day').toISOString(),
+        toDate:moment.utc().toISOString(),
+      })
+     break;
+     case "2":var time = moment.duration("24:00:00");
+      var date = moment();
+      const oneDaySpan =date.subtract(time); 
+      this.reportForm.patchValue({
+        fromDate:moment(oneDaySpan).toISOString(),
+        toDate:moment.utc().toISOString(),
+      })
+     break;
+     case "3": 
+     const startweek =moment().subtract(7, 'days').calendar(); 
+     this.reportForm.patchValue({
+       fromDate:moment(startweek).toISOString(),
+       toDate:moment.utc().toISOString(),
+     })
+    break;
+    case "4": 
+     this.reportForm.patchValue({
+       fromDate:'',
+       toDate:'',
+     })
+    break;
+    }
+  }
+  settodate(fromDate:any){
+    const maxTodayDate=moment(fromDate).add(7, 'days').calendar();
+    this.maxTodayDate=moment(maxTodayDate).toISOString() < moment().toISOString()?moment(maxTodayDate).toISOString():moment().toISOString() ;
   }
 
-  get f() { return this.reportForm.controls};
+  SearchReport(){
+    if(this.reportForm.invalid){
+        return;
+    }else{
+      console.log(this.reportForm.value);
+    }
+  }
+
 /* this.formData=this.reportForm.value;
   let fromDate:any = this.datePipe.transform(this.formData.startDate, 'yyyy-MM-dd HH:mm');
   let todate:any = this.datePipe.transform(this.formData.endDate, 'yyyy-MM-dd HH:mm');
