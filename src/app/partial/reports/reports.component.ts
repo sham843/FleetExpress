@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import * as moment from 'moment';
 import { CommanService } from 'src/app/services/comman.service';
+import { ExcelPdfDownloadedService } from 'src/app/services/excel-pdf-downloaded.service';
 import { ReportsService } from './reports.service';
 
 interface timePeriodArray {
@@ -24,6 +24,7 @@ export class ReportsComponent implements OnInit {
   VehicleDtArr:any;
   showTimePeriod:boolean=true;
   currentDate=moment().toISOString();
+
   timePeriodArray: timePeriodArray[] = [
     {value: '1', viewValue: 'Today'},
     {value: '2', viewValue: '24hr'},
@@ -35,7 +36,7 @@ export class ReportsComponent implements OnInit {
   selectedIndex: any;
   get f() { return this.reportForm.controls};
   constructor(private fb:FormBuilder, private reportsService:ReportsService,private comman:CommanService,
-    private _snackBar: MatSnackBar) { }
+private excelService:ExcelPdfDownloadedService) {}
 
   ngOnInit(): void {
     this.getStoppageData();
@@ -122,11 +123,6 @@ export class ReportsComponent implements OnInit {
     this.comman.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200") {
         this.VehicleDtArr = responseData.responseData;
-        this._snackBar.open('Message archived', 'Undo', {
-          duration: 1000,
-          panelClass:'custom_sneak_bar'
-
-        });
       }
       else if (responseData.statusCode === "409") {
         
@@ -191,11 +187,6 @@ export class ReportsComponent implements OnInit {
       if (responseData.statusCode === "200") {
         console.log(responseData.responseData)
         // this.VehicleDtArr = responseData.responseData;
-        this._snackBar.open('Message archived', 'Undo', {
-          duration: 1000,
-          panelClass:'custom_sneak_bar'
-
-        });
       }
       else if (responseData.statusCode === "409") {
         
@@ -206,15 +197,10 @@ export class ReportsComponent implements OnInit {
     })
     }
   }
-
-/* this.formData=this.reportForm.value;
-  let fromDate:any = this.datePipe.transform(this.formData.startDate, 'yyyy-MM-dd HH:mm');
-  let todate:any = this.datePipe.transform(this.formData.endDate, 'yyyy-MM-dd HH:mm');
-  let date1: any = new Date(fromDate);
-  let timeStamp = Math.round(new Date(todate).getTime() / 1000);
-  let timeStampYesterday = timeStamp - (24 * 3600);
-  let is24 = date1 >= new Date(timeStampYesterday * 1000).getTime();
-  if(!is24){
-            this._snackBar.open("Date difference does not exceed 24hr.");
-  } */
+  onDownloadPDF(){
+ this.excelService.downLoadPdf();
+  }
+  onDownloadExcel(){
+    this.excelService.exportAsExcelFile();
+  }
 }
