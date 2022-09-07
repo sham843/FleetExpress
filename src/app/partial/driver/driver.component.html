@@ -1,1 +1,134 @@
-<p>driver works!</p>
+<p class="fw-bold small mb-2">Driver</p>
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="bg-main-gradient py-2 px-3 rounded mb-3">
+            <div class="d-flex">
+                <div class="px-3">Total Vehicles</div>
+                <div>220</div>
+            </div>
+        </div>
+
+        <mat-card>
+            <div class="text-center justify-content-center">
+                <img src="../../../assets/images/No-Driver-Registration.svg" alt="">
+                <p>No Driver Registration</p>
+                <button mat-raised-button color="primary" data-bs-toggle="modal" data-bs-target="#AddDriverModal">
+                    Add Driver
+                </button>
+            </div>
+        </mat-card>
+
+    </div>
+
+
+    <div class="col-sm-12">
+        <!-- Modal -->
+        <div class="modal fade" id="AddDriverModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-main-gradient py-2 px-3 mb-3">
+                        <h5 class="modal-title" id="exampleModalLabel">Driver Registration</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="profile d-flex">
+                                    <img src="../../../assets/images/Driver-profile.svg" alt="">
+                                    <p>Add Profile Photo</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <mat-form-field class="w-100" appearance="fill">
+                                    <mat-label>Mobile Number</mat-label>
+                                    <input matInput placeholder="Mobile Number" value="">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-6">
+                                <mat-form-field class="w-100" appearance="fill">
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput placeholder="First Name" value="">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-6">
+                                <mat-form-field class="w-100" appearance="fill">
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput placeholder="Last Name" value="">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-6">
+                                <mat-form-field class="w-100" appearance="fill">
+                                    <mat-label>Date of Birth</mat-label>
+                                    <input matInput [matDatepicker]="picker">
+                                    <mat-hint>MM/DD/YYYY</mat-hint>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="d-flex">
+                                    <div class="w-100 me-2">
+                                        <mat-form-field class="w-100" appearance="fill">
+                                            <mat-label>License Number</mat-label>
+                                            <input matInput placeholder="License Number" value="">
+                                        </mat-form-field>
+                                    </div>
+                                    <div>
+                                        <img src="../../../assets/images/upload.svg" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="d-flex">
+                                    <div class="w-100 me-2">
+                                        <mat-form-field class="w-100" appearance="fill">
+                                            <mat-label>Aadhaar Number</mat-label>
+                                            <input matInput placeholder="Aadhaar Number" value="">
+                                        </mat-form-field>
+                                    </div>
+                                    <div>
+                                        <img src="../../../assets/images/upload.svg" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="d-flex">
+                                    <div class="w-100 me-2">
+
+                                        <mat-form-field class="w-100" appearance="fill">
+                                            <mat-label>PAN Number</mat-label>
+                                            <input matInput placeholder="PAN Number" value="">
+                                        </mat-form-field>
+                                    </div>
+                                    <div>
+                                        <img src="../../../assets/images/upload.svg" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <mat-form-field class="w-100" appearance="fill">
+                                    <mat-label>Present Address</mat-label>
+                                    <input matInput placeholder="Present Address" value="">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-6">
+                                <mat-form-field class="w-100" appearance="fill">
+                                    <mat-label>Permanent Address</mat-label>
+                                    <input matInput placeholder="Permenant Address" value="">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0">
+                        <button mat-stroked-button class="mx-2" color="primary" data-bs-dismiss="modal">Cancel</button>
+                        <button mat-raised-button color="primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -6,4 +6,8 @@ import { Injectable } from '@angular/core';
 export class ValidationService {
 
   constructor() { }
+  noSpaces(event: any) {
+    const maskSeperator = new RegExp('^[ ]+|[ ]+$', 'gm');
+    return !maskSeperator.test(event.key);
+}
 }
