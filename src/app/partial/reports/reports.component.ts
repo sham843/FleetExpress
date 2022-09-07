@@ -202,7 +202,7 @@ export class ReportsComponent implements OnInit {
     // this.comman.setHttp('get', 'tracking/get-tracking-address-mob'+ this.getQueryString(), true, false, false, 'vehicletrackingBaseUrlApi');// address report
     // this.comman.setHttp('get', 'reports/get-vehicle-details-for-overspeed'+ this.getQueryString(), true, false, false, 'vehicletrackingBaseUrlApi');// overspeed report
     // this.comman.setHttp('get', 'reports/get-overspeed-report-speedrange'+ this.getQueryString(), true, false, false, 'vehicletrackingBaseUrlApi');// speeed range report
-    this.comman.setHttp('get', url+ this.getQueryString(), true, false, false, 'vehicletrackingBaseUrlApi');
+    this.comman.setHttp('get', url+ this.getQueryString()+'&UserId=35898&VehicleOwnerId=1725', true, false, false, 'vehicletrackingBaseUrlApi');
       this.comman.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200") {
         console.log(responseData.responseData)
