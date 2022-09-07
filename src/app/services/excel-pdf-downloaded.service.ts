@@ -17,7 +17,7 @@ export class ExcelPdfDownloadedService {
   }
   exportAsExcelFile() {
          this.dataToExportExel.push({
-           "Sr No":1,
+       /*     "Sr No":1,
            "Thana Name":"vaishali",
            "Zone": "zoneName",
            "Division": "division",
@@ -28,7 +28,7 @@ export class ExcelPdfDownloadedService {
            "Latitude":"latitude",
            "Longitude":"longitude",
            "Polygon Text": "polygonText",
-           "Geofence Approved Status":"geofenceApprovedStatus",
+           "Geofence Approved Status":"geofenceApprovedStatus", */
          });
          const fileName = 'GeofenceDetails' + '.xlsx';
          const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.dataToExportExel);
