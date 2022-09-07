@@ -9,10 +9,10 @@ export class CommanService {
   UserLoginDetails: any;
   userObj: any;
   tokanExpiredFlag: boolean = false;
-  accessToken:any="eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMzU4OTgiLCJleHAiOjE2NjI1NDEzNTcsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2OTAiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjU2NjkwIn0.fYYxBql-zJYyqi-Q29Wc96S0gDrvT8q4IOIvJHPCI1A";
+  accessToken:any="eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMzU4OTgiLCJleHAiOjE2NjI2MTQ1OTMsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2OTAiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjU2NjkwIn0.9cbrOUg9BykoonGXbMQr-tetqr-fDuV6BI732BYmyIA";
   getBaseurl(url: string) {
     switch (url) {
-      case 'VehicleListBaseUrlApi': return 'http://awsvehicletracking.mahamining.com/'; break;  
+      case 'vehicletrackingBaseUrlApi': return 'http://awsvehicletracking.mahamining.com/vehicle-tracking/'; break   
        default: return '';break;
     }
   }
@@ -98,6 +98,7 @@ export class CommanService {
     this.httpObj.url = this.getBaseurl(baseUrl) + url;
     if (isHeader) {
       let tempObj: any = {
+        "UserId": "35898",
         "Authorization": "Bearer " + this.accessToken // token set
       };
      

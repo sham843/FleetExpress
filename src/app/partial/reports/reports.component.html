@@ -80,8 +80,7 @@
                                                 <mat-datepicker #dtpstoppagestartdate></mat-datepicker>
                                             </mat-form-field>
                                             <mat-error *ngIf="f['timePeriod'].value.errors">
-                                                <span class="text-danger" *ngIf="f['timePeriod'].value.hasError('required')">Please
-                                                    enter old Password</span>
+                                                <span class="text-danger" *ngIf="f['timePeriod'].value.hasError('required')">This field is required</span>
                                             </mat-error>
                                         </div>
                                     </div>
@@ -103,7 +102,7 @@
                                         <label class="form-label">Vehicle Number</label>
                                         <div class="d-block">
                                             <mat-form-field appearance="fill" class="w-100">
-                                                <mat-select formControlName="vehicleNo" required>
+                                                <mat-select formControlName="VehicleNumber" required>
                                                     <mat-option *ngFor="let vehicle of VehicleDtArr"
                                                         [value]="vehicle.vehicleNo">
                                                         {{vehicle.vehicleNo}}
