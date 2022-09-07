@@ -23,6 +23,7 @@ export class ReportsComponent implements OnInit {
   EndDateFilter:any;
   VehicleDtArr:any;
   showTimePeriod:boolean=true;
+  selectedTablabel:any;
   currentDate=moment().toISOString();
   timePeriodArray: timePeriodArray[] = [
     {value: '1', viewValue: 'Today'},
@@ -48,7 +49,7 @@ export class ReportsComponent implements OnInit {
     this.reportForm = this.fb.group({
       fromDate:['',Validators.required],
       toDate:['',Validators.required],
-      vehicleNo:['',Validators.required],
+      VehicleNumber:['',Validators.required],
       timePeriod:['',Validators.required]
     })
   }
@@ -107,6 +108,7 @@ export class ReportsComponent implements OnInit {
     }
   }
   setIndex(index: number, label:any) {
+    this.selectedTablabel=label;
     this.selectedIndex = index;
     this.showTimePeriod=(label=='Stopage Report'||label=='Overspeed Report'||label=='Speed Range Report')?true:false;
     if(label=='Stopage Report'||label=='Overspeed Report'||label=='Speed Range Report'){
@@ -118,7 +120,7 @@ export class ReportsComponent implements OnInit {
  }
   
   getVehicleData(){
-    this.comman.setHttp('get', 'vehicle-tracking/dashboard/get-vehicles-list?UserId=35898', true, false, false, 'VehicleListBaseUrlApi');
+    this.comman.setHttp('get', 'dashboard/get-vehicles-list?UserId=35898', true, false, false, 'vehicletrackingBaseUrlApi');
     this.comman.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200") {
         this.VehicleDtArr = responseData.responseData;
@@ -171,12 +173,53 @@ export class ReportsComponent implements OnInit {
     const maxTodayDate=moment(fromDate).add(7, 'days').calendar();
     this.maxTodayDate=moment(maxTodayDate).toISOString() < moment().toISOString()?moment(maxTodayDate).toISOString():moment().toISOString() ;
   }
-
+  getQueryString() {
+    const reportData=this.reportForm.value
+    let str = "?";
+    const isVenicleNumber=(this.selectedTablabel=='Summary Report' || this.selectedTablabel=='Trip Report')?true:false
+    this.reportForm && reportData.fromDate && (str += "fromDate=" +moment(new Date(reportData.fromDate)).utc().startOf('day').toISOString())
+    this.reportForm && reportData.toDate && (str += "&toDate=" +new Date(reportData.toDate).toISOString())
+    this.reportForm && reportData.VehicleNumber && (str += (isVenicleNumber?"&VehicleNumber=":"&VehicleNo=") +
+    'MH12AC1111'//  reportData.VehicleNumber
+     )
+    return str;
+  }
   SearchReport(){
     if(this.reportForm.invalid){
         return;
     }else{
-      console.log(this.reportForm.value);
+      var url:any
+      switch (this.selectedTablabel) {
+        case "Summary Report": url = 'tracking/get-summary-report'; break;
+        case "Trip Report": url = 'tracking/get-trip-report-web'; break;
+        case "Address Report": url = 'tracking/get-tracking-address-mob'; break;
+        case "Overspeed Report": url = 'reports/get-vehicle-details-for-overspeed'; break;
+        case "Speed Range Report": url = 'reports/get-overspeed-report-speedrange'; break;
+      }
+     
+    // this.comman.setHttp('get', 'tracking/get-summary-report'+ this.getQueryString(), true, false, false, 'vehicletrackingBaseUrlApi');// summery report
+    // this.comman.setHttp('get', 'tracking/get-trip-report-web'+ this.getQueryString(), true, false, false, 'vehicletrackingBaseUrlApi');// trip report
+    // this.comman.setHttp('get', 'tracking/get-tracking-address-mob'+ this.getQueryString(), true, false, false, 'vehicletrackingBaseUrlApi');// address report
+    // this.comman.setHttp('get', 'reports/get-vehicle-details-for-overspeed'+ this.getQueryString(), true, false, false, 'vehicletrackingBaseUrlApi');// overspeed report
+    // this.comman.setHttp('get', 'reports/get-overspeed-report-speedrange'+ this.getQueryString(), true, false, false, 'vehicletrackingBaseUrlApi');// speeed range report
+    this.comman.setHttp('get', url+ this.getQueryString(), true, false, false, 'vehicletrackingBaseUrlApi');
+      this.comman.getHttp().subscribe((responseData: any) => {
+      if (responseData.statusCode === "200") {
+        console.log(responseData.responseData)
+        // this.VehicleDtArr = responseData.responseData;
+        this._snackBar.open('Message archived', 'Undo', {
+          duration: 1000,
+          panelClass:'custom_sneak_bar'
+
+        });
+      }
+      else if (responseData.statusCode === "409") {
+        
+      }
+      else {
+        // this.toastrService.error(responseData.statusMessage);
+      }
+    })
     }
   }
 
