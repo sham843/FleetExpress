@@ -38,7 +38,8 @@
     <div class="col-sm-4">
         <div class="card border-0 rounded">
             <div class="card-body fixed-height p-0">
-                <a class="d-flex vehicle p-3" routerLink="#" routerLinkActive="active">
+                <a class="d-flex vehicle p-3" routerLink="#" routerLinkActive="active"  data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
                     <div class="flex-shrink-0">
                         <div class="bg-success bg-opacity-25 text-success rounded-circle vehicle-icon">
                             <i class="fa-solid fa-car"></i>
@@ -230,7 +231,52 @@
         </div>
     </div>
     <div class="col-sm-8">
-        asdf
+        <div class="card card-body p-0">
+            <div class="mapouter">
+                <div class="gmap_canvas"><iframe id="gmap_canvas"
+                        src="https://maps.google.com/maps?q=shaurya%20technosoft&t=&z=19&ie=UTF8&iwloc=&output=embed"
+                        frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                </div>
+            </div>
+            <div class="offcanvas offcanvas-bottom position-absolute shadow-lg" data-bs-scroll="true"
+                data-bs-backdrop="false" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <div class="offcanvas-body p-1">
+                    <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="Itinerary-tab" data-bs-toggle="tab"
+                                data-bs-target="#Itinerary-tab-pane" type="button" role="tab" aria-controls="Itinerary-tab-pane"
+                                aria-selected="true">Itinerary</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="Driver-information-tab" data-bs-toggle="tab"
+                                data-bs-target="#Driver-information-tab-pane" type="button" role="tab"
+                                aria-controls="Driver-information-tab-pane" aria-selected="false">Driver information</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="Vehicle-Details-tab" data-bs-toggle="tab"
+                                data-bs-target="#Vehicle-Details-tab-pane" type="button" role="tab"
+                                aria-controls="Vehicle-Details-tab-pane" aria-selected="false">Vehicle Details</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="near-by-vehicles-tab" data-bs-toggle="tab"
+                                data-bs-target="#near-by-vehicles-tab-pane" type="button" role="tab"
+                                aria-controls="near-by-vehicles-tab-pane" aria-selected="false">Near By Vehicles</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="Itinerary-tab-pane" role="tabpanel"
+                            aria-labelledby="Itinerary-tab" tabindex="0">...</div>
+                        <div class="tab-pane fade" id="Driver-information-tab-pane" role="tabpanel" aria-labelledby="Driver-information-tab"
+                            tabindex="0">...</div>
+                        <div class="tab-pane fade" id="Vehicle-Details-tab-pane" role="tabpanel" aria-labelledby="Vehicle-Details-tab"
+                            tabindex="0">...</div>
+                        <div class="tab-pane fade" id="near-by-vehicles-tab-pane" role="tabpanel" aria-labelledby="near-by-vehicles-tab"
+                            tabindex="0">...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
