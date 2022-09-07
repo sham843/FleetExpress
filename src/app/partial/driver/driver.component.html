@@ -130,5 +130,64 @@
             </div>
         </div>
     </div>
+<br>
+    <div class="col-sm-12">
+        <mat-card>
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between ">
+                        <div class="row align-items-center">
+                            <div class="col-sm-4">
+                                <p>Driver List</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <mat-form-field class="w-100" appearance="fill">
+                                    <mat-label>Search</mat-label>
+                                    <input matInput placeholder="Search">
+                                  </mat-form-field>
+                            </div>
+                        </div>
+                        <div>
+                            <button mat-fab color="primary" aria-label="Example icon button with a delete icon">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">SR.NO</th>
+                            <th scope="col">NAME</th>
+                            <th scope="col">MOBILE NUMBER</th>
+                            <th scope="col">BLOCK/UNBLOCK</th>
+                            <th scope="col">ACTION</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="row">1</th>
+                            <td>
+                                <img src="../../../assets/images/Driver-profile.svg" alt="">
+                                Nilesh Rajashi
+                            </td>
+                            <td>8669264767</td>
+                            <td>
+                                <mat-slide-toggle></mat-slide-toggle>
+                            </td>
+                            <td>
+                                <div class="d-flex">
+                                    <mat-icon color="primary" class="me-5">edit</mat-icon>
+                                    <mat-icon color="primary">delete</mat-icon>
+                                </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+        </mat-card>
+    </div>
 
 </div>
