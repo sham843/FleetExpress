@@ -97,6 +97,7 @@ body { margin: 0; font-family: 'Inter', "Helvetica Neue", sans-serif;background-
 .report-list .list-group-item.active{
   background-color: transparent;
   border-bottom: solid 1px rgba(0,0,0,0.125);
+  border-top: none;
 }
 .report-list .list-group-item .report-name{
   padding-left:15px;
