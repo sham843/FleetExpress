@@ -41,6 +41,9 @@ body { margin: 0; font-family: 'Inter', "Helvetica Neue", sans-serif;background-
   .dark-mode{
     --bg-color:rgb(35, 35, 35);
   }
+  .text-main{
+    color:var(--main-color);
+  }
   .bg-main{
     background-color:var(--main-color);
   }
@@ -176,4 +179,29 @@ mat-form-field{
   padding-left: 3px;
   /* width: 85%; */
   height: 34px;
+}
+.mat-menu-content,
+.mat-menu-content:not(:empty){
+    padding: 0 !important;
+}
+.mat-menu-content .mat-menu-item,
+.mat-menu-content:not(:empty) .mat-menu-item{
+    line-height: 36px !important;
+    height: 36px !important;
+}
+.dashboard-table{
+  font-size: 0.85rem;
+}
+.dashboard-table th{
+  background-color:#eee;
+}
+.dashboard-table th,
+.dashboard-table td{
+  vertical-align: middle;
+}
+.dashboard-table td .btn{
+  font-size: 0.8rem;
+  height: 33px;
+  width: 33px;
+  text-align: center;
 }

@@ -38,8 +38,8 @@
     <div class="col-sm-4">
         <div class="card border-0 rounded">
             <div class="card-body fixed-height p-0">
-                <a class="d-flex vehicle p-3" routerLink="#" routerLinkActive="active"  data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
+                <a class="d-flex vehicle p-3 active" routerLink="#" routerLinkActive="active" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
                     <div class="flex-shrink-0">
                         <div class="bg-success bg-opacity-25 text-success rounded-circle vehicle-icon">
                             <i class="fa-solid fa-car"></i>
@@ -232,7 +232,45 @@
     </div>
     <div class="col-sm-8">
         <div class="card card-body p-0">
-            <div class="mapouter">
+            <div class="mapouter position-relative">
+                <div class="distance-details d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <img src="assets/images/Tracking/Current-Location.svg" alt="Current Location">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p>Current Location</p>
+                            <small>Route I - 75</small>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <img src="assets/images/Tracking/Last-stop.svg" alt="Last Stop">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p>Last stop</p>
+                            <small>6h ago</small>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <img src="assets/images/Tracking/Distance.svg" alt="Distance">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p>Distance</p>
+                            <small>120/80</small>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <img src="assets/images/Tracking/Current-Speed.svg" alt="Current Speed">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p>Current Speed</p>
+                            <small>76 mph</small>
+                        </div>
+                    </div>
+                </div>
                 <div class="gmap_canvas"><iframe id="gmap_canvas"
                         src="https://maps.google.com/maps?q=shaurya%20technosoft&t=&z=19&ie=UTF8&iwloc=&output=embed"
                         frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
@@ -245,13 +283,14 @@
                     <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="Itinerary-tab" data-bs-toggle="tab"
-                                data-bs-target="#Itinerary-tab-pane" type="button" role="tab" aria-controls="Itinerary-tab-pane"
-                                aria-selected="true">Itinerary</button>
+                                data-bs-target="#Itinerary-tab-pane" type="button" role="tab"
+                                aria-controls="Itinerary-tab-pane" aria-selected="true">Itinerary</button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="Driver-information-tab" data-bs-toggle="tab"
                                 data-bs-target="#Driver-information-tab-pane" type="button" role="tab"
-                                aria-controls="Driver-information-tab-pane" aria-selected="false">Driver information</button>
+                                aria-controls="Driver-information-tab-pane" aria-selected="false">Driver
+                                information</button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="Vehicle-Details-tab" data-bs-toggle="tab"
@@ -261,18 +300,403 @@
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="near-by-vehicles-tab" data-bs-toggle="tab"
                                 data-bs-target="#near-by-vehicles-tab-pane" type="button" role="tab"
-                                aria-controls="near-by-vehicles-tab-pane" aria-selected="false">Near By Vehicles</button>
+                                aria-controls="near-by-vehicles-tab-pane" aria-selected="false">Near By
+                                Vehicles</button>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="Itinerary-tab-pane" role="tabpanel"
-                            aria-labelledby="Itinerary-tab" tabindex="0">...</div>
-                        <div class="tab-pane fade" id="Driver-information-tab-pane" role="tabpanel" aria-labelledby="Driver-information-tab"
-                            tabindex="0">...</div>
-                        <div class="tab-pane fade" id="Vehicle-Details-tab-pane" role="tabpanel" aria-labelledby="Vehicle-Details-tab"
-                            tabindex="0">...</div>
-                        <div class="tab-pane fade" id="near-by-vehicles-tab-pane" role="tabpanel" aria-labelledby="near-by-vehicles-tab"
-                            tabindex="0">...</div>
+                            aria-labelledby="Itinerary-tab" tabindex="0">
+                            <div class="container">
+                                <div class="row align-items-center mb-3">
+                                    <div class="col-sm-6">
+                                        <div class="d-flex">
+                                            <div class="itinerary-details">
+                                                <p class="text-main">All</p>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="veh-time">17 hrs : 8 main</div>
+                                                    <div class="veh-stops"> 0.49 km</div>
+                                                </div>
+                                            </div>
+                                            <div class="itinerary-details">
+                                                <p class="text-muted">Stopped</p>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="veh-time">16 hrs :29 min</div>
+                                                    <div class="veh-stops">3 stops</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="d-flex" id="itinerary-buttons">
+                                            <div class="input-group">
+                                                <label class="input-group-text" for="inputGroupSelect01">
+                                                    <i class="fa-solid fa-calendar-days"></i>
+                                                </label>
+                                                <select class="form-select" id="inputGroupSelect01">
+                                                    <option selected>Choose...</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                            </div>
+                                            <button class="btn" type="button">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fa-solid fa-circle me-1"></i>
+                                                    <span>REC</span>
+                                                </div>
+                                            </button>
+                                            <button class="btn" type="button"><i
+                                                    class="fa-solid fa-rotate"></i></button>
+                                            <button class="btn" type="button" data-bs-toggle="modal"
+                                                data-bs-target="#PlayRouteModal"><i
+                                                    class="fa-solid fa-play"></i></button>
+                                            <button class="btn" type="button" [matMenuTriggerFor]="menu"><i
+                                                    class="fa-solid fa-download"></i></button>
+                                            <mat-menu #menu="matMenu">
+                                                <button mat-menu-item>Item 1</button>
+                                                <button mat-menu-item>Item 2</button>
+                                            </mat-menu>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="fixed-height-table">
+                                    <table class="table dashboard-table mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <span class="text-primary">Stopped Since 14 hrs : 21 min</span>
+                                                </td>
+                                                <td>
+                                                    <span class="text-dark">Harjuna Post Office, Harjuna, Yavatmal,
+                                                        District, Maharashtra, 445002, India</span>
+                                                </td>
+                                                <td>
+                                                    <span class="text-muted">
+                                                        <i class="fa-regular fa-floppy-disk"></i>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="text-muted">
+                                                        25 Jul 2022, 16:37
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="text-danger">Stopped Since 14 hrs : 21 min</span>
+                                                </td>
+                                                <td>
+                                                    <span class="text-dark">Harjuna Post Office, Harjuna, Yavatmal,
+                                                        District, Maharashtra, 445002, India</span>
+                                                </td>
+                                                <td>
+                                                    <span class="text-muted">
+                                                        <i class="fa-regular fa-floppy-disk"></i>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="text-muted">
+                                                        25 Jul 2022, 16:37
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="text-success">Stopped Since 14 hrs : 21 min</span>
+                                                </td>
+                                                <td>
+                                                    <span class="text-dark">Harjuna Post Office, Harjuna, Yavatmal,
+                                                        District, Maharashtra, 445002, India</span>
+                                                </td>
+                                                <td>
+                                                    <span class="text-muted">
+                                                        <i class="fa-regular fa-floppy-disk"></i>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="text-muted">
+                                                        25 Jul 2022, 16:37
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="text-warning">Stopped Since 14 hrs : 21 min</span>
+                                                </td>
+                                                <td>
+                                                    <span class="text-dark">Harjuna Post Office, Harjuna, Yavatmal,
+                                                        District, Maharashtra, 445002, India</span>
+                                                </td>
+                                                <td>
+                                                    <span class="text-muted">
+                                                        <i class="fa-regular fa-floppy-disk"></i>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="text-muted">
+                                                        25 Jul 2022, 16:37
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="text-warning">Stopped Since 14 hrs : 21 min</span>
+                                                </td>
+                                                <td>
+                                                    <span class="text-dark">Harjuna Post Office, Harjuna, Yavatmal,
+                                                        District, Maharashtra, 445002, India</span>
+                                                </td>
+                                                <td>
+                                                    <span class="text-muted">
+                                                        <i class="fa-regular fa-floppy-disk"></i>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="text-muted">
+                                                        25 Jul 2022, 16:37
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="Driver-information-tab-pane" role="tabpanel"
+                            aria-labelledby="Driver-information-tab" tabindex="0">
+                            <div class="container">
+                                <div class="row driver-vehicle-info">
+                                    <div class="col-sm-2 text-center">
+                                        <img src="assets/images/user.jpg">
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <div class="d-flex mb-4">
+                                            <div class="driver-name">
+                                                <p>Nilesh Rajashi</p>
+                                                <small>+91 9768564567</small>
+                                            </div>
+                                        </div>
+                                        <div class="row driver-info">
+                                            <div class="col-sm">
+                                                <small>Aadhar Card No.</small>
+                                                <p>876543218976</p>
+                                                <i class="fa-solid fa-file-pdf"></i>
+                                            </div>
+                                            <div class="col-sm">
+                                                <small>PAN Card No.</small>
+                                                <p>ALWPG5809L</p>
+                                                <i class="fa-solid fa-file-pdf"></i>
+                                            </div>
+                                            <div class="col-sm">
+                                                <small>License No.</small>
+                                                <p>RJ-13/DLC/12/ 123456</p>
+                                                <i class="fa-solid fa-file-pdf"></i>
+                                            </div>
+                                            <div class="col-sm">
+                                                <small>License Expiry</small>
+                                                <p>06-09-2027</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="tab-pane fade" id="Vehicle-Details-tab-pane" role="tabpanel"
+                            aria-labelledby="Vehicle-Details-tab" tabindex="0">
+                            <div class="container">
+                                <div class="row driver-vehicle-info">
+                                    <div class="col-sm-2 text-center">
+                                        <img src="assets/images/user.jpg">
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <div class="d-flex mb-4">
+                                            <div class="driver-name">
+                                                <p>MH29T0444</p>
+                                                <small>Tata 207 EX Pickup</small>
+                                            </div>
+                                        </div>
+                                        <div class="row driver-info">
+                                            <div class="col-sm">
+                                                <small>Owner Name</small>
+                                                <p>Dilip Kumar</p>
+                                            </div>
+                                            <div class="col-sm">
+                                                <small>Chassis No.</small>
+                                                <p>ME4JF50AFKW078650</p>
+                                            </div>
+                                            <div class="col-sm">
+                                                <small>Engine No.</small>
+                                                <p>HF50Ew0054371</p>
+                                            </div>
+                                            <div class="col-sm">
+                                                <small>Fuel Type</small>
+                                                <p>Petrol</p>
+                                            </div>
+                                            <div class="col-sm">
+                                                <small>Insurance Date</small>
+                                                <p>30-Jun-2024</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="near-by-vehicles-tab-pane" role="tabpanel"
+                            aria-labelledby="near-by-vehicles-tab" tabindex="0">
+                            <div class="container">
+                                <div class="row align-items-center mb-3" id="near-by-vehicles">
+                                    <div class="col-sm-auto">
+                                        <p>Search Nearby Vehicles</p>
+                                    </div>
+                                    <div class="col-sm-auto">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="flexSwitchCheckDefault">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-auto">
+                                        <p>Enter Radius :</p>
+                                    </div>
+                                    <div class="col-sm-auto">
+                                        <input class="form-control border-primary" type="text"
+                                            placeholder="Enter Radius in KM">
+                                    </div>
+                                </div>
+                                <div class="fixed-height-table">
+                                    <table class="table dashboard-table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>VEHICLE NUMBER</th>
+                                                <th>CURRENT LOCATION</th>
+                                                <th>DISTANCE</th>
+                                                <th>LAST DATA RECEIVED</th>
+                                                <th>VEHICLE STATUS</th>
+                                                <th>ACTION</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>MH 09 HS 4028</td>
+                                                <td>Yavatmal District Maharashtra</td>
+                                                <td>02 km</td>
+                                                <td>26-08-2022 4:25 PM</td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                        <span class="text-success me-2"><i
+                                                                class="fa-solid fa-circle"></i></span>
+                                                        <span>Running</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                        <button class="btn btn-light-main text-main me-2">
+                                                            <i class="fa-solid fa-phone-volume"></i>
+                                                        </button>
+                                                        <button class="btn bg-success bg-opacity-10 text-success">
+                                                            <i class="fa-solid fa-route"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>MH 09 HS 4028</td>
+                                                <td>Yavatmal District Maharashtra</td>
+                                                <td>02 km</td>
+                                                <td>26-08-2022 4:25 PM</td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                        <span class="text-warning me-2"><i
+                                                                class="fa-solid fa-circle"></i></span>
+                                                        <span>Stopped</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                        <button class="btn btn-light-main text-main me-2">
+                                                            <i class="fa-solid fa-phone-volume"></i>
+                                                        </button>
+                                                        <button class="btn bg-success bg-opacity-10 text-success">
+                                                            <i class="fa-solid fa-route"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>MH 09 HS 4028</td>
+                                                <td>Yavatmal District Maharashtra</td>
+                                                <td>02 km</td>
+                                                <td>26-08-2022 4:25 PM</td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                        <span class="text-primary me-2"><i
+                                                                class="fa-solid fa-circle"></i></span>
+                                                        <span>Idle</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                        <button class="btn btn-light-main text-main me-2">
+                                                            <i class="fa-solid fa-phone-volume"></i>
+                                                        </button>
+                                                        <button class="btn bg-success bg-opacity-10 text-success">
+                                                            <i class="fa-solid fa-route"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>MH 09 HS 4028</td>
+                                                <td>Yavatmal District Maharashtra</td>
+                                                <td>02 km</td>
+                                                <td>26-08-2022 4:25 PM</td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                        <span class="text-danger me-2"><i
+                                                                class="fa-solid fa-circle"></i></span>
+                                                        <span>Offline</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                        <button class="btn btn-light-main text-main me-2">
+                                                            <i class="fa-solid fa-phone-volume"></i>
+                                                        </button>
+                                                        <button class="btn bg-success bg-opacity-10 text-success">
+                                                            <i class="fa-solid fa-route"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>MH 09 HS 4028</td>
+                                                <td>Yavatmal District Maharashtra</td>
+                                                <td>02 km</td>
+                                                <td>26-08-2022 4:25 PM</td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                        <span class="text-danger me-2"><i
+                                                                class="fa-solid fa-circle"></i></span>
+                                                        <span>Offline</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                        <button class="btn btn-light-main text-main me-2">
+                                                            <i class="fa-solid fa-phone-volume"></i>
+                                                        </button>
+                                                        <button class="btn bg-success bg-opacity-10 text-success">
+                                                            <i class="fa-solid fa-route"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -344,6 +768,22 @@
                         <button type="button" class="btn btn-main">Okay</button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="PlayRouteModal" tabindex="-1" aria-labelledby="PlayRouteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title mb-0" id="PlayRouteModalLabel">Play Route</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-2">
+                Video
             </div>
         </div>
     </div>
