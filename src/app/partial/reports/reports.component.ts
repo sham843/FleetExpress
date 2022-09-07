@@ -23,6 +23,7 @@ export class ReportsComponent implements OnInit {
   EndDateFilter:any;
   VehicleDtArr:any;
   showTimePeriod:boolean=true;
+  selectedTablabel:any;
   currentDate=moment().toISOString();
 
   timePeriodArray: timePeriodArray[] = [
@@ -108,6 +109,7 @@ private excelService:ExcelPdfDownloadedService) {}
     }
   }
   setIndex(index: number, label:any) {
+    this.selectedTablabel=label;
     this.selectedIndex = index;
     this.showTimePeriod=(label=='Stopage Report'||label=='Overspeed Report'||label=='Speed Range Report')?true:false;
     if(label=='Stopage Report'||label=='Overspeed Report'||label=='Speed Range Report'){
@@ -170,9 +172,10 @@ private excelService:ExcelPdfDownloadedService) {}
   getQueryString() {
     const reportData=this.reportForm.value
     let str = "?";
+    const isVenicleNumber=(this.selectedTablabel=='Summary Report' || this.selectedTablabel=='Trip Report')?true:false
     this.reportForm && reportData.fromDate && (str += "fromDate=" +moment(new Date(reportData.fromDate)).utc().startOf('day').toISOString())
     this.reportForm && reportData.toDate && (str += "&toDate=" +new Date(reportData.toDate).toISOString())
-    this.reportForm && reportData.VehicleNumber && (str += "&VehicleNumber=" +
+    this.reportForm && reportData.VehicleNumber && (str += (isVenicleNumber?"&VehicleNumber=":"&VehicleNo=") +
     'MH12AC1111'//  reportData.VehicleNumber
      )
     return str;
@@ -181,8 +184,21 @@ private excelService:ExcelPdfDownloadedService) {}
     if(this.reportForm.invalid){
         return;
     }else{
-      console.log(this.getQueryString())
-      this.comman.setHttp('get', 'tracking/get-summary-report'+ this.getQueryString(), true, false, false, 'vehicletrackingBaseUrlApi');
+      var url:any
+      switch (this.selectedTablabel) {
+        case "Summary Report": url = 'tracking/get-summary-report'; break;
+        case "Trip Report": url = 'tracking/get-trip-report-web'; break;
+        case "Address Report": url = 'tracking/get-tracking-address-mob'; break;
+        case "Overspeed Report": url = 'reports/get-vehicle-details-for-overspeed'; break;
+        case "Speed Range Report": url = 'reports/get-overspeed-report-speedrange'; break;
+      }
+     
+    // this.comman.setHttp('get', 'tracking/get-summary-report'+ this.getQueryString(), true, false, false, 'vehicletrackingBaseUrlApi');// summery report
+    // this.comman.setHttp('get', 'tracking/get-trip-report-web'+ this.getQueryString(), true, false, false, 'vehicletrackingBaseUrlApi');// trip report
+    // this.comman.setHttp('get', 'tracking/get-tracking-address-mob'+ this.getQueryString(), true, false, false, 'vehicletrackingBaseUrlApi');// address report
+    // this.comman.setHttp('get', 'reports/get-vehicle-details-for-overspeed'+ this.getQueryString(), true, false, false, 'vehicletrackingBaseUrlApi');// overspeed report
+    // this.comman.setHttp('get', 'reports/get-overspeed-report-speedrange'+ this.getQueryString(), true, false, false, 'vehicletrackingBaseUrlApi');// speeed range report
+    this.comman.setHttp('get', url+ this.getQueryString(), true, false, false, 'vehicletrackingBaseUrlApi');
       this.comman.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200") {
         console.log(responseData.responseData)

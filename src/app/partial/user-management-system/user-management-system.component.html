@@ -1,1 +1,181 @@
-<p>user-management-system works!</p>
+<p class="fw-bold small mb-2">User Management System</p>
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="bg-main-gradient py-2 px-3 rounded mb-3">
+            <ul class="nav nav-pills mb-0" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pills-stoppage-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-stoppage" type="button" role="tab" aria-controls="pills-stoppage"
+                        aria-selected="true">
+                        Users
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-distance-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-distance" type="button" role="tab" aria-controls="pills-distance"
+                        aria-selected="false">
+                        Role
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="card border-0 rounded">
+            <div class="card-body">
+                <div class="tab-content" id="pills-tabContent">
+
+
+                    <div class="tab-pane fade show active" id="pills-stoppage" role="tabpanel"
+                        aria-labelledby="pills-stoppage-tab" tabindex="0">
+                        <div class="text-center">
+                            <div>
+                                 <img src="../../../assets/images/No Users Created.svg">
+                            </div>
+                            <p>No Users Created</p>
+                            <button class="btn btn-main" mat-raised-button data-bs-toggle="modal"
+                                data-bs-target="#Modal_Toggle">
+                                New User
+                            </button>
+                        </div>
+                        <div class="modal fade modal-lg" id="Modal_Toggle" aria-hidden="true"
+                            aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalToggleLabel">Create User</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close">
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row justify-content-between">
+                                            <div class="col-sm-6">
+                                                <div>Full Name</div>
+                                                <mat-form-field appearance="fill" class="w-100">
+                                                    <mat-label>Enter Full Name</mat-label>
+                                                    <input matInput placeholder="Enter Full Name">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div>Mobile Number</div>
+                                                <mat-form-field appearance="fill" class="w-100">
+                                                    <mat-label>Enter Mobile Number</mat-label>
+                                                    <input matInput placeholder="EnterMobile Number">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-between">
+                                            <div class="col-sm-6">
+                                                <div class="d-flex align-items-center justify-content-between gap-2">
+                                                    <div>
+                                                        <label>Assign Vehicle</label>
+                                                        <mat-form-field appearance="fill" class="w-100">
+                                                            <mat-label>Select Vehicle</mat-label>
+                                                            <mat-select>
+                                                                <mat-option value="one">First option</mat-option>
+                                                                <mat-option value="two">Second option</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div>
+                                                        <button mat-stroked-button color="primary" role="button">
+                                                            <span>2</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="d-flex align-items-center justify-content-between gap-2">
+                                                    <div>
+                                                        <label>Assign Role</label>
+                                                        <mat-form-field appearance="fill" class="w-100">
+                                                            <mat-label>Select Vehicle</mat-label>
+                                                            <mat-select>
+                                                                <mat-option value="one">First option</mat-option>
+                                                                <mat-option value="two">Second option</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div>
+                                                        <button mat-stroked-button color="primary">
+                                                            Update Role
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ms-auto m-3">
+                                        <button mat-stroked-button color="primary" data-bs-toggle="modal">
+                                            Clear
+                                        </button>
+                                        <button mat-raised-button color="primary" data-bs-toggle="modal" class="btn-main ms-2">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="pills-distance" role="tabpanel" aria-labelledby="pills-distance-tab"
+                        tabindex="0">
+                        <div class="text-center">
+                            <div>
+                                <img src="../../../assets/images/No Users Role Created.svg">
+                           </div>
+                            <p>No Users Role Created</p>
+                            <button class="btn btn-main" mat-raised-button data-bs-toggle="modal"
+                                data-bs-target="#Modal_Toggle-A">
+                                New Role
+                            </button>
+                        </div>
+                        <div class="modal fade modal-lg" id="Modal_Toggle-A" aria-hidden="true"
+                            aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalToggleLabel">Create User Role</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close">
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row justify-content-between">
+                                            <div class="col-sm-6">
+                                                <div>Enter Role Name</div>
+                                                <mat-form-field appearance="fill" class="w-100">
+                                                    <mat-label>Enter Role Name</mat-label>
+                                                    <input matInput placeholder="Enter Role Name">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label>Assign Responsibilities</label>
+                                                <mat-form-field appearance="fill" class="w-100">
+                                                    <mat-label>Select </mat-label>
+                                                    <mat-select>
+                                                        <mat-option value="one">First option</mat-option>
+                                                        <mat-option value="two">Second option</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ms-auto m-3">
+                                        <button mat-stroked-button color="primary" data-bs-toggle="modal">
+                                            Clear
+                                        </button>
+                                        <button mat-raised-button color="primary" data-bs-toggle="modal" class="btn-main ms-2">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

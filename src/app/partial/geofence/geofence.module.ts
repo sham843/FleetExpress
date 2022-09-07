@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { GeofenceRoutingModule } from './geofence-routing.module';
 import { GeofenceComponent } from './geofence.component';
+import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.module';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { GeofenceComponent } from './geofence.component';
   ],
   imports: [
     CommonModule,
-    GeofenceRoutingModule
+    GeofenceRoutingModule,
+    MaterialModule
   ]
 })
 export class GeofenceModule { }
