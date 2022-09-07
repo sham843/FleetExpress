@@ -134,13 +134,13 @@
                                         <i class="fa-solid fa-download"></i>
                                     </button>
                                     <mat-menu #menu="matMenu">
-                                        <button mat-menu-item>
+                                        <button mat-menu-item (click)="onDownloadPDF()">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <span>PDF</span>
                                                 <span class="text-danger"><i class="fa-solid fa-file-pdf"></i></span>
                                             </div>
                                         </button>
-                                        <button mat-menu-item>
+                                        <button mat-menu-item (click)="onDownloadExcel()">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <span>Excel</span>
                                                 <span class="text-success"><i class="fa-solid fa-file-excel"></i></span>

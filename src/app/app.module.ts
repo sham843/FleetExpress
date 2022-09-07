@@ -46,12 +46,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule
-   /*  ToastrModule.forRoot({
-      timeOut: 2000,
-      closeButton: true,
-      progressBar:true,
-      preventDuplicates: true,
-    }),*/
   ], 
   providers: [ {
     provide: PERFECT_SCROLLBAR_CONFIG,
