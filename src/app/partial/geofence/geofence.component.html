@@ -1,1 +1,129 @@
-<p>geofence works!</p>
+<p class="fw-bold small mb-2">Geofence</p>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="bg-main-gradient py-2 px-3 rounded mb-3">
+            <div class="d-flex">
+                <div class="px-3">Total Geofence Vehicles</div>
+                <div>100</div>
+            </div>
+        </div>
+
+
+        <mat-card>
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-center">
+                        <img src="../../../assets/images/location-vehicle.svg" class="img-fluid" alt="">
+                        <p>No Geofence Created</p>
+                        <!-- Button trigger modal -->
+                        <!-- Button trigger modal -->
+                        <button mat-raised-button color="primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            New Geofence
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </mat-card>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg ">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            Create Geofence
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <p class="mb-0 small">Select Vehicle</p>
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Select Vehicle</mat-label>
+                                    <mat-select>
+                                        <mat-option *ngFor="let food of foods" [value]="food.value">
+                                            {{food.viewValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="mb-0 small">Search Area</p>
+                                <mat-form-field class="w-100" appearance="fill">
+                                    <mat-label>Search Area</mat-label>
+                                    <input matInput placeholder="Search" value="">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0">
+                        <button mat-stroked-button data-bs-dismiss="modal" class="mx-3">Close</button>
+                        <button mat-raised-button color="primary">Submit </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="col-sm-12 mt-3">
+        <!-- Total Geofence Vehicles -1 -->
+        <mat-card>
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <div class="col-sm-6">Geofence List</div>
+                            <!-- <p class="mb-0 small">Search</p> -->
+                            <mat-form-field class="w-100" appearance="fill">
+                                <mat-label>Search</mat-label>
+                                <input matInput placeholder="Search" value="">
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <button mat-fab color="primary" aria-label="Example icon button with a delete icon">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">SR.No</th>
+                                <th scope="col">VEHICLE NO</th>
+                                <th scope="col">LOCATION (AREA)</th>
+                                <th scope="col">ACTIVE</th>
+                                <th scope="col">ACTION <mat-checkbox class="example-margin"></mat-checkbox>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>MH 12 YT 1234</td>
+                                <td>SATARA</td>
+                                <td>
+                                    <mat-slide-toggle></mat-slide-toggle>
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <mat-icon color="primary" class="me-5">edit</mat-icon>
+                                        <mat-icon color="primary">delete</mat-icon>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </mat-card>
+    </div>
+
+
+</div>
