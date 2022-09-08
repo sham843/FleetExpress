@@ -194,14 +194,28 @@ mat-form-field{
 }
 .dashboard-table th{
   background-color:#eee;
+  font-weight: normal;
 }
 .dashboard-table th,
 .dashboard-table td{
   vertical-align: middle;
 }
-.dashboard-table td .btn{
+.dashboard-table td .btn-icon{
   font-size: 0.8rem;
   height: 33px;
   width: 33px;
   text-align: center;
+}
+.dashboard-table td .btn{
+  font-size: 0.8rem;
+  box-shadow: none;
+}
+.form-card .card-header{
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-bottom: none;
+}
+.form-card .form-control{
+  font-size: 0.85rem;
+  box-shadow: none;
 }
