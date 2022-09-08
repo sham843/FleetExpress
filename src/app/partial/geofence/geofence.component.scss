@@ -1,0 +1,28 @@
+.vehicle-chips{
+    font-size: 0.7rem;
+    padding:2px 5px;
+    background-color: var(--main-light-color);
+    color:#000;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+.vehicle-chips .btn-close{
+    background-size: 50%;
+    box-shadow: none;
+}
+.mapouter {
+    position: relative;
+    text-align: right;
+    height: 300px;
+    width: 100%;
+}
+.gmap_canvas {
+    overflow: hidden;
+    background: none !important;
+    height: 300px;
+    width: 100%;
+}
+#gmap_canvas{
+    height: 300px;
+    width: 100%;
+}

@@ -3,127 +3,161 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="bg-main-gradient py-2 px-3 rounded mb-3">
-            <div class="d-flex">
-                <div class="px-3">Total Geofence Vehicles</div>
-                <div>100</div>
+            <div class="d-flex align-items-center">
+                <div class="me-3">Total Geofence Vehicles</div>
+                <h5 class="fw-bold mb-0">120</h5>
             </div>
         </div>
+    </div>
+</div>
 
-
-        <mat-card>
-            <div class="card">
-                <div class="card-body">
-                    <div class="text-center">
-                        <img src="../../../assets/images/location-vehicle.svg" class="img-fluid" alt="">
-                        <p>No Geofence Created</p>
-                        <!-- Button trigger modal -->
-                        <!-- Button trigger modal -->
-                        <button mat-raised-button color="primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            New Geofence
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-body plain-card card-fullheight">
+            <div class="text-center justify-content-center">
+                <img src="../../../assets/images/Geofence.svg" alt="">
+                <p class="my-3">No Geofence Created</p>
+                <button class="btn btn-main" data-bs-toggle="modal" data-bs-target="#CreateGeofenceModal">
+                    New Geofence
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="card form-card">
+            <div class="card-header">
+                <div class="row justify-content-between">
+                    <div class="col-sm-4">
+                        <div class="row align-items-center">
+                            <div class="col-sm-auto">
+                                Geofence List
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <div class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></div>
+                                    <input type="text" class="form-control" placeholder="Search">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 text-end">
+                        <button class="btn btn-add" data-bs-toggle="modal" data-bs-target="#CreateGeofenceModal">
+                            <i class="fa-solid fa-plus"></i>
                         </button>
                     </div>
                 </div>
             </div>
-        </mat-card>
+            <div class="card-body p-0">
+                <table class="table dashboard-table mb-0">
+                    <thead>
+                        <tr>
+                            <th>SR. No</th>
+                            <th>VEHICLES NO</th>
+                            <th>LOCATION (AREA)</th>
+                            <th>ACTIVE</th>
+                            <th>ACTION</th>
+                            <th>
+                                <mat-checkbox class="example-margin"></mat-checkbox>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>MH 12 YT 1234</td>
+                            <td>SATARA</td>
+                            <td>
+                                <mat-slide-toggle></mat-slide-toggle>
+                            </td>
+                            <td>
+                                <div class="d-flex">
+                                    <button class="btn btn-light-main btn-icon me-2" data-bs-toggle="modal"
+                                        data-bs-target="#CreateGeofenceModal">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                    <button class="btn bg-danger bg-opacity-10 text-danger">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td>
+                                <mat-checkbox class="example-margin"></mat-checkbox>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg ">
-                <div class="modal-content">
-                    <div class="modal-header border-0">
-                        <h5 class="modal-title" id="exampleModalLabel">
-                            Create Geofence
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- Modal -->
+<div class="modal fade" id="CreateGeofenceModal" tabindex="-1" aria-labelledby="CreateGeofenceModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 bg-light-gradient text-dark">
+                <p class="modal-title mb-0" id="CreateGeofenceModalLabel">
+                    Create Geofence
+                </p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-1">
+                    <div class="col-sm-5">
+                        <mat-form-field appearance="standard" class="w-100">
+                            <mat-label>Select Vehicle</mat-label>
+                            <mat-select multiple>
+                                <mat-select-trigger>
+                                    {{toppings.value?.[0] || ''}}
+                                    <span *ngIf="(toppings.value?.length || 0) > 1">
+                                        (+{{(toppings.value?.length || 0) - 1}} {{toppings.value?.length === 2 ? 'other'
+                                        : 'others'}})
+                                    </span>
+                                </mat-select-trigger>
+                                <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div class="d-flex">
+                            <span class="vehicle-chips">
+                                MH12FT8523
+                                <button type="button" class="btn-close" aria-label="Close"></button>
+                            </span>
+                            <span class="vehicle-chips">
+                                MH12FT8523
+                                <button type="button" class="btn-close" aria-label="Close"></button>
+                            </span>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <p class="mb-0 small">Select Vehicle</p>
-                                <mat-form-field appearance="fill">
-                                    <mat-label>Select Vehicle</mat-label>
-                                    <mat-select>
-                                        <mat-option *ngFor="let food of foods" [value]="food.value">
-                                            {{food.viewValue}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                            <div class="col-sm-6">
-                                <p class="mb-0 small">Search Area</p>
-                                <mat-form-field class="w-100" appearance="fill">
-                                    <mat-label>Search Area</mat-label>
-                                    <input matInput placeholder="Search" value="">
-                                </mat-form-field>
+                    <div class="col-sm-7">
+                        <mat-form-field class="w-100" appearance="standard">
+                            <mat-label>Search Area</mat-label>
+                            <input matInput placeholder="Search" value="">
+                            <mat-icon matSuffix>search</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="mapouter">
+                            <div class="gmap_canvas"><iframe id="gmap_canvas"
+                                    src="https://maps.google.com/maps?q=shaurya%20tech&t=&z=19&ie=UTF8&iwloc=&output=embed"
+                                    frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer border-0">
-                        <button mat-stroked-button data-bs-dismiss="modal" class="mx-3">Close</button>
-                        <button mat-raised-button color="primary">Submit </button>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="form-container w-100">
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-light-main" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-main">Submit</button>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-
-
-    <div class="col-sm-12 mt-3">
-        <!-- Total Geofence Vehicles -1 -->
-        <mat-card>
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center">
-                            <div class="col-sm-6">Geofence List</div>
-                            <!-- <p class="mb-0 small">Search</p> -->
-                            <mat-form-field class="w-100" appearance="fill">
-                                <mat-label>Search</mat-label>
-                                <input matInput placeholder="Search" value="">
-                            </mat-form-field>
-                        </div>
-                        <div>
-                            <button mat-fab color="primary" aria-label="Example icon button with a delete icon">
-                                <mat-icon>add</mat-icon>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">SR.No</th>
-                                <th scope="col">VEHICLE NO</th>
-                                <th scope="col">LOCATION (AREA)</th>
-                                <th scope="col">ACTIVE</th>
-                                <th scope="col">ACTION <mat-checkbox class="example-margin"></mat-checkbox>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>MH 12 YT 1234</td>
-                                <td>SATARA</td>
-                                <td>
-                                    <mat-slide-toggle></mat-slide-toggle>
-                                </td>
-                                <td>
-                                    <div class="d-flex">
-                                        <mat-icon color="primary" class="me-5">edit</mat-icon>
-                                        <mat-icon color="primary">delete</mat-icon>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </mat-card>
-    </div>
-
-
 </div>
