@@ -27,7 +27,7 @@
                             </div>
                             <div class="col-3">
                                 <input type="search" class="form-control" id="exampleFormControlInput1"
-                                placeholder="Search">
+                                    placeholder="Search">
                             </div>
                         </div>
                     </div>
@@ -66,11 +66,104 @@
                         </table>
                     </div>
                     <div class="text-end m-3">
-                        <button mat-raised-button color="primary">Make Payment</button>
+                        <button class="btn btn-main" mat-raised-button data-bs-toggle="modal"
+                            data-bs-target="#Modal_Toggle">
+                            Make Payment
+                        </button>
                     </div>
                 </div>
-
             </div>
+
+
+            <div class="modal fade modal-lg" id="Modal_Toggle" aria-hidden="true"
+                            aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalToggleLabel">Make Payment</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close">
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <strong>Vehicles : MH 12 YT 3462</strong> 
+                                            </div>
+                                            <div class="col-sm-6">
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-between mt-4">
+                                            <div class="col-sm-6">
+                                                <div>Owner Name</div>
+                                                <mat-form-field appearance="fill" class="w-100">
+                                                    <mat-label>Enter Owner Name</mat-label>
+                                                    <input matInput placeholder="Enter Owner Name">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div>Mobile Number</div>
+                                                <mat-form-field appearance="fill" class="w-100">
+                                                    <mat-label>Enter Mobile Number</mat-label>
+                                                    <input matInput placeholder="EnterMobile Number">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-between">
+                                            <div class="col-sm-6">
+                                                <div>Email id</div>
+                                                <mat-form-field appearance="fill" class="w-100">
+                                                    <mat-label>Enter Email id</mat-label>
+                                                    <input matInput placeholder="Email id">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div>GSTIN</div>
+                                                <mat-form-field appearance="fill" class="w-100">
+                                                    <mat-label>Enter GSTIN</mat-label>
+                                                    <input matInput placeholder="GSTIN">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-between">
+                                            <div class="col-sm-6">
+                                                <div class="row justify-content-between">
+                                                    <div class="col-sm-6">
+                                                        <p class="mb-0">Basic Amount (₹) :</p>
+                                                        <p>3,000.00</p>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <p class="mb-0">GST (18%) :</p>
+                                                        <p>540.00</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row ">
+                                                    <div class="col-sm-7">
+                                                        <p class="mb-0">Transaction Cost (2.04%) :</p>
+                                                        <p>72.22</p>
+                                                    </div>
+                                                    <div class="col-sm-5">
+                                                        <p class="mb-0">Total Amount :</p>
+                                                        <p>3,612.22</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="ms-auto m-3">
+                                        <button mat-stroked-button color="primary" data-bs-toggle="modal">
+                                            Clear
+                                        </button>
+                                        <button mat-raised-button color="primary" data-bs-toggle="modal" class="btn-main ms-2">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
             <div class="tab-pane fade active" id="pills-payment-history">
                 <div class="card border-0 rounded">
