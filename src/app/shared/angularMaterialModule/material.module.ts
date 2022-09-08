@@ -28,6 +28,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import {MatSliderModule} from '@angular/material/slider';
 
 @NgModule({
   declarations: [],
@@ -62,7 +63,8 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
     MatAutocompleteModule,
     MatSlideToggleModule,
     MatStepperModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    MatSliderModule
   ],
   exports: [
     // Material
@@ -96,6 +98,7 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
     MatSlideToggleModule,
     MatStepperModule,
     MatBottomSheetModule,
+    MatSliderModule
   ]
 })
 export class MaterialModule { }

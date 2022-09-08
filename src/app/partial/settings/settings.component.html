@@ -3,21 +3,22 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <div class="bg-main-gradient py-2 px-3 rounded mb-3">
+        <div class="bg-main-gradient py-2 px-3 rounded mb-2">
             <ul class="nav nav-pills mb-0" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="pills-stoppage-tab" data-bs-toggle="pill"
-                        data-bs-target="#pills-stoppage" type="button" role="tab" aria-controls="pills-stoppage"
-                        aria-selected="true">Notifications</button>
+                    <button class="nav-link active" id="pills-notifications-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-notifications" type="button" role="tab"
+                        aria-controls="pills-notifications" aria-selected="true">Notifications</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-distance-tab" data-bs-toggle="pill"
-                        data-bs-target="#pills-distance" type="button" role="tab" aria-controls="pills-distance"
-                        aria-selected="false">Change Password</button>
+                    <button class="nav-link" id="pills-change-password-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-change-password" type="button" role="tab"
+                        aria-controls="pills-change-password" aria-selected="false">Change Password</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-tools-tab" data-bs-toggle="pill" data-bs-target="#pills-tools"
-                        type="button" role="tab" aria-controls="pills-tools" aria-selected="false">Vehicle
+                    <button class="nav-link" id="pills-vehicle-notifications-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-vehicle-notifications" type="button" role="tab"
+                        aria-controls="pills-vehicle-notifications" aria-selected="false">Vehicle
                         Notifications</button>
                 </li>
             </ul>
@@ -25,534 +26,340 @@
         <div class="card border-0 rounded">
             <div class="card-body">
                 <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane fade show active" id="pills-stoppage" role="tabpanel"
-                        aria-labelledby="pills-stoppage-tab" tabindex="0">
+                    <div class="tab-pane fade show active" id="pills-notifications" role="tabpanel"
+                        aria-labelledby="pills-notifications-tab" tabindex="0">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="noti-title">Boxopen-Off</span>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="flexSwitchCheckDefault">
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="noti-title">Geofence-In</span>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="flexSwitchCheckDefault">
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="noti-title">Ignition-Off</span>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="flexSwitchCheckDefault">
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="noti-title">Power-Cut</span>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="flexSwitchCheckDefault">
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="noti-title">Low-battery-removed</span>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="flexSwitchCheckDefault">
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="noti-title">Disconnect-Battery</span>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="flexSwitchCheckDefault">
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="noti-title">Over Speed</span>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                    id="flexSwitchCheckDefault">
+                                            </div>
+                                        </div>
+                                        <div class="d-flex w-100 justify-content-between align-items-center">
+                                            <mat-slider [tickInterval]="getSliderTickInterval()" [(ngModel)]="value" class="w-100"></mat-slider>
+                                            <span class="badge bg-extra-light text-dark p-2"><label>{{value}} kmph</label></span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-6">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="noti-title">Boxopen-On</span>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="flexSwitchCheckDefault">
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="noti-title">Geofence-Out</span>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="flexSwitchCheckDefault">
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="noti-title">Ignition-On</span>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="flexSwitchCheckDefault">
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="noti-title">Power-Connected</span>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="flexSwitchCheckDefault">
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="noti-title">Connect-back-to-main-Battery</span>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="flexSwitchCheckDefault">
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="noti-title">Low-battery</span>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="flexSwitchCheckDefault">
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="noti-title">Tilt</span>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                    id="flexSwitchCheckDefault">
+                                            </div>
+                                        </div>
+                                        <div class="d-flex w-100 justify-content-between align-items-center">
+                                            <mat-slider [tickInterval]="getSliderTickInterval()" [(ngModel)]="value" class="w-100"></mat-slider>
+                                            <span class="badge bg-extra-light text-dark p-2"><label>{{value}} degree</label></span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="tab-pane fade" id="pills-change-password" role="tabpanel"
+                        aria-labelledby="pills-change-password-tab" tabindex="0">
                         <div class="row justify-content-between">
-                            <div class="col-sm-6">
-                                <div class="row justify-content-between ">
-                                    <div class="col-sm-10">
-                                        <p>Boxopen-Off</p>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <mat-slide-toggle></mat-slide-toggle>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="row justify-content-between ">
-                                    <div class="col-sm-10">
-                                        <p>Boxopen-On</p>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <mat-slide-toggle></mat-slide-toggle>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <mat-divider></mat-divider>
-
-                        <div class="row justify-content-between mt-3">
-                            <div class="col-sm-6">
-                                <div class="row justify-content-between ">
-                                    <div class="col-sm-10">
-                                        <p>Geofence-In</p>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <mat-slide-toggle></mat-slide-toggle>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="row justify-content-between ">
-                                    <div class="col-sm-10">
-                                        <p>Geofence-Out</p>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <mat-slide-toggle></mat-slide-toggle>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <mat-divider></mat-divider>
-
-                        <div class="row justify-content-between mt-3">
-                            <div class="col-sm-6">
-                                <div class="row justify-content-between ">
-                                    <div class="col-sm-10">
-                                        <p>Ignition-Off</p>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <mat-slide-toggle></mat-slide-toggle>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="row justify-content-between ">
-                                    <div class="col-sm-10">
-                                        <p>Ignition-On</p>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <mat-slide-toggle></mat-slide-toggle>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <mat-divider></mat-divider>
-
-                        <div class="row justify-content-between mt-3">
-                            <div class="col-sm-6">
-                                <div class="row justify-content-between ">
-                                    <div class="col-sm-10">
-                                        <p>Over Speed</p>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <mat-slide-toggle></mat-slide-toggle>
-                                    </div>
-                                    <div class="col-sm-10">
-                                        slider
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="row justify-content-between ">
-                                    <div class="col-sm-10">
-                                        <p>Power-Connected</p>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <mat-slide-toggle></mat-slide-toggle>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <mat-divider></mat-divider>
-
-                        <div class="row justify-content-between mt-3">
-                            <div class="col-sm-6">
-                                <div class="row justify-content-between ">
-                                    <div class="col-sm-10">
-                                        <p>Power-Cut</p>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <mat-slide-toggle></mat-slide-toggle>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="row justify-content-between ">
-                                    <div class="col-sm-10">
-                                        <p>Connect-back-to-main-Battery</p>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <mat-slide-toggle></mat-slide-toggle>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <mat-divider></mat-divider>
-
-                        <div class="row justify-content-between mt-3">
-                            <div class="col-sm-6">
-                                <div class="row justify-content-between ">
-                                    <div class="col-sm-10">
-                                        <p>Low-battery-removed</p>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <mat-slide-toggle></mat-slide-toggle>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="row justify-content-between ">
-                                    <div class="col-sm-10">
-                                        <p>Low-battery</p>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <mat-slide-toggle></mat-slide-toggle>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <mat-divider></mat-divider>
-
-                        <div class="row justify-content-between mt-3">
-                            <div class="col-sm-6">
-                                <div class="row justify-content-between ">
-                                    <div class="col-sm-10">
-                                        <p>Disconnect-Battery</p>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <mat-slide-toggle></mat-slide-toggle>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="row justify-content-between ">
-                                    <div class="col-sm-10">
-                                        <p>Tilt</p>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <mat-slide-toggle></mat-slide-toggle>
-                                    </div>
-                                    <div class="col-sm-10">
-                                        slider
-                                    </div>
+                            <div class="col-sm-4 form-container">
+                                <mat-form-field appearance="standard" class="w-100">
+                                    <mat-label>Current password</mat-label>
+                                    <input matInput [type]="hide ? 'password' : 'text'">
+                                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                    </button>
+                                  </mat-form-field>
+                                  <mat-form-field appearance="standard" class="w-100">
+                                    <mat-label>New password</mat-label>
+                                    <input matInput [type]="hide ? 'password' : 'text'">
+                                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                    </button>
+                                  </mat-form-field>
+                                  <mat-form-field appearance="standard" class="w-100">
+                                    <mat-label>Retype password</mat-label>
+                                    <input matInput [type]="hide ? 'password' : 'text'">
+                                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                    </button>
+                                  </mat-form-field>
+                                <div class="text-end">
+                                    <button class="btn btn-main">Submit</button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
 
-                    <div class="tab-pane fade" id="pills-distance" role="tabpanel" aria-labelledby="pills-distance-tab"
-                        tabindex="0">
-                        <div class="row justify-content-between">
-                            <div class="col-sm-6">
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div>Current Password</div>
-                                        <mat-form-field appearance="fill" class="">
-                                            <mat-label>Enter your password</mat-label>
-                                            <input matInput>
-                                            <button mat-icon-button matSuffix [attr.aria-label]="'Hide password'">
-                                                <mat-icon></mat-icon>
-                                            </button>
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div>New Password</div>
-                                        <mat-form-field appearance="fill">
-                                            <mat-label>Enter your password</mat-label>
-                                            <input matInput>
-                                            <button mat-icon-button matSuffix [attr.aria-label]="'Hide password'">
-                                                <mat-icon></mat-icon>
-                                            </button>
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div>Confirm Password</div>
-                                        <mat-form-field appearance="fill">
-                                            <mat-label>Enter your password</mat-label>
-                                            <input matInput>
-                                            <button mat-icon-button matSuffix [attr.aria-label]="'Hide password'">
-                                                <mat-icon></mat-icon>
-                                            </button>
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-                                <button mat-raised-button color="primary" class="">Submit</button>
-                            </div>
-                            <div class="col-sm">
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="tab-pane fade" id="pills-tools" role="tabpanel" aria-labelledby="pills-tools-tab"
-                        tabindex="0">
+                    <div class="tab-pane fade" id="pills-vehicle-notifications" role="tabpanel"
+                        aria-labelledby="pills-vehicle-notifications-tab" tabindex="0">
                         <div class="row justify-content-between">
                             <div class="col-sm-12">
-                                <div class="card">
+                                <div class="card form-card">
                                     <div class="card-header">
-                                        <div class="row align-items-center">
-                                            <div class="col-auto">
-                                                <p class="mb-0">Vehicle Notifications List</p>
+                                        <div class="row justify-content-between">
+                                            <div class="col-sm-5">
+                                                <div class="row align-items-center">
+                                                    <div class="col-sm-auto">
+                                                        Vehicle Notifications List
+                                                    </div>
+                                                    <div class="col-sm-8">
+                                                        <div class="input-group">
+                                                            <div class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></div>
+                                                            <input type="text" class="form-control" placeholder="Search">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-3">
-                                                <input type="search" class="form-control" id="exampleFormControlInput1"
-                                                    placeholder="Search">
-                                            </div>
-                                            
                                         </div>
                                     </div>
-                                    <div class="card-body">
-                                        <table class="table">
+                                    <div class="card-body p-0">
+                                        <table class="table dashboard-table mb-0">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col">SR.NO</th>
-                                                    <th scope="col">VEHICLE NO</th>
-                                                    <th scope="col">VEHICLE TYPE</th>
+                                                    <th class="srno">SR.NO</th>
+                                                    <th class="srno"></th>
+                                                    <th>VEHICLE NO</th>
+                                                    <th>VEHICLE TYPE</th>
+                                                    <th class="srno"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                                                    aria-expanded="true" aria-controls="collapseOne">
-                                                    <th scope="row">1</th>
+                                                    aria-expanded="true" aria-controls="collapseOne" class="row-select">
+                                                    <td>1</td>
+                                                    <td><img src="../../../assets/images/Driver profile.svg" class="vehicle-image"></td>
                                                     <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="flex-shrink-0">
-                                                                <img src="../../../assets/images/Driver profile.svg"
-                                                                    alt="...">
-                                                            </div>
-                                                            <div class="flex-grow-1 ms-3">
-                                                                MH12 AB 1230
-                                                            </div>
-                                                        </div>
+                                                        MH12 AB 1230
                                                     </td>
+                                                    <td>Tuck</td>
                                                     <td>
-                                                        Tuck
-                                                        <mat-icon class="ms-2">
-                                                            arrow_drop_down
-                                                        </mat-icon>
+                                                        <div class="icon">
+                                                            <i class="fa-solid fa-chevron-down"></i>
+                                                        </div>
                                                     </td>
                                                 </tr>
 
                                                 <tr>
-                                                    <td colspan="12" class="p-0">
+                                                    <td colspan="4">
                                                         <div id="collapseOne" class="accordion-collapse collapse "
                                                             aria-labelledby="headingOne" data-bs-parent="#accordion">
-                                                            <div class="row justify-content-between">
+                                                            <div class="row">
                                                                 <div class="col-sm-6">
-                                                                    <div class="row justify-content-between ">
-                                                                        <div class="col-sm-10">
-                                                                            <p>Boxopen-Off</p>
-                                                                        </div>
-                                                                        <div class="col-sm-2">
-                                                                            <mat-slide-toggle></mat-slide-toggle>
-                                                                        </div>
-                                                                    </div>
+                                                                    <ul class="list-group list-group-flush">
+                                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                            <span class="noti-title">Boxopen-Off</span>
+                                                                            <div class="form-check form-switch">
+                                                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                                                    id="flexSwitchCheckDefault">
+                                                                            </div>
+                                                                        </li>
+                                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                            <span class="noti-title">Geofence-In</span>
+                                                                            <div class="form-check form-switch">
+                                                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                                                    id="flexSwitchCheckDefault">
+                                                                            </div>
+                                                                        </li>
+                                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                            <span class="noti-title">Ignition-Off</span>
+                                                                            <div class="form-check form-switch">
+                                                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                                                    id="flexSwitchCheckDefault">
+                                                                            </div>
+                                                                        </li>
+                                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                            <span class="noti-title">Power-Cut</span>
+                                                                            <div class="form-check form-switch">
+                                                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                                                    id="flexSwitchCheckDefault">
+                                                                            </div>
+                                                                        </li>
+                                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                            <span class="noti-title">Low-battery-removed</span>
+                                                                            <div class="form-check form-switch">
+                                                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                                                    id="flexSwitchCheckDefault">
+                                                                            </div>
+                                                                        </li>
+                                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                            <span class="noti-title">Disconnect-Battery</span>
+                                                                            <div class="form-check form-switch">
+                                                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                                                    id="flexSwitchCheckDefault">
+                                                                            </div>
+                                                                        </li>
+                                                                        <li class="list-group-item">
+                                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                                <span class="noti-title">Over Speed</span>
+                                                                                <div class="form-check form-switch">
+                                                                                    <input class="form-check-input" type="checkbox" role="switch"
+                                                                                        id="flexSwitchCheckDefault">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                                                                <mat-slider [tickInterval]="getSliderTickInterval()" [(ngModel)]="value" class="w-100"></mat-slider>
+                                                                                <span class="badge bg-extra-light text-dark p-2"><label>{{value}} kmph</label></span>
+                                                                            </div>
+                                                                        </li>
+                                                                    </ul>
                                                                 </div>
                                                                 <div class="col-sm-6">
-                                                                    <div class="row justify-content-between ">
-                                                                        <div class="col-sm-10">
-                                                                            <p>Boxopen-On</p>
-                                                                        </div>
-                                                                        <div class="col-sm-2">
-                                                                            <mat-slide-toggle></mat-slide-toggle>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <mat-divider></mat-divider>
-
-                                                            <div class="row justify-content-between mt-3">
-                                                                <div class="col-sm-6">
-                                                                    <div class="row justify-content-between ">
-                                                                        <div class="col-sm-10">
-                                                                            <p>Geofence-In</p>
-                                                                        </div>
-                                                                        <div class="col-sm-2">
-                                                                            <mat-slide-toggle></mat-slide-toggle>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-sm-6">
-                                                                    <div class="row justify-content-between ">
-                                                                        <div class="col-sm-10">
-                                                                            <p>Geofence-Out</p>
-                                                                        </div>
-                                                                        <div class="col-sm-2">
-                                                                            <mat-slide-toggle></mat-slide-toggle>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <mat-divider></mat-divider>
-
-                                                            <div class="row justify-content-between mt-3">
-                                                                <div class="col-sm-6">
-                                                                    <div class="row justify-content-between ">
-                                                                        <div class="col-sm-10">
-                                                                            <p>Ignition-Off</p>
-                                                                        </div>
-                                                                        <div class="col-sm-2">
-                                                                            <mat-slide-toggle></mat-slide-toggle>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-sm-6">
-                                                                    <div class="row justify-content-between ">
-                                                                        <div class="col-sm-10">
-                                                                            <p>Ignition-On</p>
-                                                                        </div>
-                                                                        <div class="col-sm-2">
-                                                                            <mat-slide-toggle></mat-slide-toggle>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <mat-divider></mat-divider>
-
-                                                            <div class="row justify-content-between mt-3">
-                                                                <div class="col-sm-6">
-                                                                    <div class="row justify-content-between ">
-                                                                        <div class="col-sm-10">
-                                                                            <p>Over Speed</p>
-                                                                        </div>
-                                                                        <div class="col-sm-2">
-                                                                            <mat-slide-toggle></mat-slide-toggle>
-                                                                        </div>
-                                                                        <div class="col-sm-10">
-                                                                            slider
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-sm-6">
-                                                                    <div class="row justify-content-between ">
-                                                                        <div class="col-sm-10">
-                                                                            <p>Power-Connected</p>
-                                                                        </div>
-                                                                        <div class="col-sm-2">
-                                                                            <mat-slide-toggle></mat-slide-toggle>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <mat-divider></mat-divider>
-
-                                                            <div class="row justify-content-between mt-3">
-                                                                <div class="col-sm-6">
-                                                                    <div class="row justify-content-between ">
-                                                                        <div class="col-sm-10">
-                                                                            <p>Power-Cut</p>
-                                                                        </div>
-                                                                        <div class="col-sm-2">
-                                                                            <mat-slide-toggle></mat-slide-toggle>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-sm-6">
-                                                                    <div class="row justify-content-between ">
-                                                                        <div class="col-sm-10">
-                                                                            <p>Connect-back-to-main-Battery</p>
-                                                                        </div>
-                                                                        <div class="col-sm-2">
-                                                                            <mat-slide-toggle></mat-slide-toggle>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <mat-divider></mat-divider>
-
-                                                            <div class="row justify-content-between mt-3">
-                                                                <div class="col-sm-6">
-                                                                    <div class="row justify-content-between ">
-                                                                        <div class="col-sm-10">
-                                                                            <p>Low-battery-removed</p>
-                                                                        </div>
-                                                                        <div class="col-sm-2">
-                                                                            <mat-slide-toggle></mat-slide-toggle>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-sm-6">
-                                                                    <div class="row justify-content-between ">
-                                                                        <div class="col-sm-10">
-                                                                            <p>Low-battery</p>
-                                                                        </div>
-                                                                        <div class="col-sm-2">
-                                                                            <mat-slide-toggle></mat-slide-toggle>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <mat-divider></mat-divider>
-
-                                                            <div class="row justify-content-between mt-3">
-                                                                <div class="col-sm-6">
-                                                                    <div class="row justify-content-between ">
-                                                                        <div class="col-sm-10">
-                                                                            <p>Disconnect-Battery</p>
-                                                                        </div>
-                                                                        <div class="col-sm-2">
-                                                                            <mat-slide-toggle></mat-slide-toggle>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-sm-6">
-                                                                    <div class="row justify-content-between ">
-                                                                        <div class="col-sm-10">
-                                                                            <p>Tilt</p>
-                                                                        </div>
-                                                                        <div class="col-sm-2">
-                                                                            <mat-slide-toggle></mat-slide-toggle>
-                                                                        </div>
-                                                                        <div class="col-sm-10">
-                                                                            slider
-                                                                        </div>
-                                                                    </div>
+                                                                    <ul class="list-group list-group-flush">
+                                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                            <span class="noti-title">Boxopen-On</span>
+                                                                            <div class="form-check form-switch">
+                                                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                                                    id="flexSwitchCheckDefault">
+                                                                            </div>
+                                                                        </li>
+                                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                            <span class="noti-title">Geofence-Out</span>
+                                                                            <div class="form-check form-switch">
+                                                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                                                    id="flexSwitchCheckDefault">
+                                                                            </div>
+                                                                        </li>
+                                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                            <span class="noti-title">Ignition-On</span>
+                                                                            <div class="form-check form-switch">
+                                                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                                                    id="flexSwitchCheckDefault">
+                                                                            </div>
+                                                                        </li>
+                                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                            <span class="noti-title">Power-Connected</span>
+                                                                            <div class="form-check form-switch">
+                                                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                                                    id="flexSwitchCheckDefault">
+                                                                            </div>
+                                                                        </li>
+                                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                            <span class="noti-title">Connect-back-to-main-Battery</span>
+                                                                            <div class="form-check form-switch">
+                                                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                                                    id="flexSwitchCheckDefault">
+                                                                            </div>
+                                                                        </li>
+                                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                            <span class="noti-title">Low-battery</span>
+                                                                            <div class="form-check form-switch">
+                                                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                                                    id="flexSwitchCheckDefault">
+                                                                            </div>
+                                                                        </li>
+                                                                        <li class="list-group-item">
+                                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                                <span class="noti-title">Tilt</span>
+                                                                                <div class="form-check form-switch">
+                                                                                    <input class="form-check-input" type="checkbox" role="switch"
+                                                                                        id="flexSwitchCheckDefault">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                                                                <mat-slider [tickInterval]="getSliderTickInterval()" [(ngModel)]="value" class="w-100"></mat-slider>
+                                                                                <span class="badge bg-extra-light text-dark p-2"><label>{{value}} degree</label></span>
+                                                                            </div>
+                                                                        </li>
+                                                                    </ul>
                                                                 </div>
                                                             </div>
                                                         </div>
-
                                                     </td>
                                                 </tr>
-
-                                                <tr>
-                                                    <th scope="row">2</th>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="flex-shrink-0">
-                                                                <img src="../../../assets/images/Driver profile.svg"
-                                                                    alt="...">
-                                                            </div>
-                                                            <div class="flex-grow-1 ms-3">
-                                                                MH12 AB 1230
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>Thornton</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">2</th>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="flex-shrink-0">
-                                                                <img src="../../../assets/images/Driver profile.svg"
-                                                                    alt="...">
-                                                            </div>
-                                                            <div class="flex-grow-1 ms-3">
-                                                                MH12 AB 1230
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>Thornton</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">2</th>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="flex-shrink-0">
-                                                                <img src="../../../assets/images/Driver profile.svg"
-                                                                    alt="...">
-                                                            </div>
-                                                            <div class="flex-grow-1 ms-3">
-                                                                MH12 AB 1230
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>Thornton</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">2</th>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="flex-shrink-0">
-                                                                <img src="../../../assets/images/Driver profile.svg"
-                                                                    alt="...">
-                                                            </div>
-                                                            <div class="flex-grow-1 ms-3">
-                                                                MH12 AB 1230
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>Thornton</td>
-                                                </tr>
-
                                             </tbody>
                                         </table>
                                     </div>
@@ -560,7 +367,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

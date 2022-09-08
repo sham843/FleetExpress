@@ -1,0 +1,25 @@
+.noti-title{
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+.form-switch{
+    font-size: 1.1rem;
+}
+.bg-extra-light{
+    background: #EFEFEF;
+}
+.srno{
+    width: 50px;
+}
+.row-select{
+    cursor:pointer;
+    position: relative;
+}
+.row-select .icon{
+    transform:rotate(0deg);
+    transition: all 1s ease-in-out;
+}
+.row-select:not(.collapsed) .icon{
+    transform: rotate(180deg);
+transition: .3s ease-in-out;
+}
