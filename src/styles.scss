@@ -2,7 +2,7 @@
 @import '../node_modules/@angular/material/prebuilt-themes/indigo-pink.css';
 
 html, body { height: 100%; }
-body { margin: 0; font-family: 'Inter', "Helvetica Neue", sans-serif;background-color: #F2F6FF; }
+body { margin: 0; font-family: 'Poppins', "Helvetica Neue", sans-serif;background-color: #F2F6FF; }
 .page-wrapper.toggled .sidebar {
     left: -300px;
   }
@@ -129,7 +129,7 @@ body { margin: 0; font-family: 'Inter', "Helvetica Neue", sans-serif;background-
 .mat-select-value-text,
 mat-form-field{
   font-size: 0.85rem !important;
-  font-family: "Inter", sans-serif !important;
+  font-family: "Poppins", sans-serif !important;
 }
 .form-container .btn{
   font-size: 0.85rem !important;
@@ -205,10 +205,15 @@ mat-form-field{
   height: 33px;
   width: 33px;
   text-align: center;
+  padding: 0.4rem 0.5rem;
 }
 .dashboard-table td .btn{
   font-size: 0.8rem;
   box-shadow: none;
+}
+.dashboard-table td .vehicle-image{
+  width: 40px;
+  height: 40px;
 }
 .form-card .card-header{
   font-size: 0.85rem;
@@ -218,4 +223,26 @@ mat-form-field{
 .form-card .form-control{
   font-size: 0.85rem;
   box-shadow: none;
+}
+.modal .modal-header{
+  padding-block: 10px;
+}
+.modal .modal-header .btn-close{
+  padding-block: 5px;
+  background-size: 30%;
+  box-shadow: none;
+}
+
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 0.85rem;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
 }
