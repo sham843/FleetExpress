@@ -1,1 +1,141 @@
-<p>notifications works!</p>
+<p class="fw-bold small mb-2">notifications </p>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="bg-main-gradient py-2 px-3 rounded mb-3">
+            <ul class="nav nav-pills mb-0" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pills-payment-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-stoppage" type="button" role="tab" aria-controls="pills-payment"
+                        aria-selected="true">
+                        Total Notification
+                        <span>100</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="card border-0 rounded">
+            <div class="card-body">
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <mat-form-field appearance="fill" class="w-100">
+                                <mat-label>Select Vehicle</mat-label>
+                                <mat-select>
+                                    <mat-option value="one">
+                                        <mat-checkbox class="p-2">All</mat-checkbox>
+                                    </mat-option>
+                                    <mat-option value="two">
+                                        <mat-checkbox class="p-2">MH12FT8523</mat-checkbox>
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-3">
+                            <mat-form-field class="example-full-width" appearance="fill">
+                                <mat-label>Choose a date</mat-label>
+                                <input matInput [matDatepicker]="picker">
+                                <mat-hint>MM/DD/YYYY</mat-hint>
+                                <mat-datepicker-toggle matSuffix [for]="picker">
+                                    <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm text-end">
+                            <div>
+                                <button class="btn btn-outline-secondary " [matMenuTriggerFor]="menu">
+                                    <i class="fa-solid fa-filter"></i>
+                                </button>
+                                <span class="ms-2">Filter</span>
+                            </div>
+
+                            <mat-menu #menu="matMenu" class="w-100 h-100">
+                                <mat-card class="m-2">
+                                    <mat-card-title class="">
+                                        Alert Type
+                                    </mat-card-title>
+                                    <mat-card-content>
+                                        <ul>
+                                            <li>
+                                                <span>Ignition On</span>
+                                                <mat-checkbox class="p-2"></mat-checkbox>
+                                            </li>
+                                        </ul>
+                                    </mat-card-content>
+                                    <mat-card-footer>
+                                        <div class="row justify-content-between">
+                                            <div class="col-sm-6">
+                                                <button mat-stroked-button class="">Cancel</button>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <button mat-raised-button class="btn-main">Apply</button>
+                                            </div>
+                                        </div>
+                                    </mat-card-footer>
+                                </mat-card>
+                            </mat-menu>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-0 rounded mt-3">
+            <div class="card-body">
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="row align-items-center justify-content-between py-2">
+                        <div class="col-sm-6">
+                             <p class="mb-0 text-danger">Ignition off : MH12 AB 1234</p>
+                             <small>314 M From Harunja Post Office, Harjuna, Yavatmal, Maharashtra, 445002, India.</small>
+                        </div>
+                        <div class="col-sm-6 text-end">
+                            <p class="mb-3"></p>
+                            <small class="mb-0">Last Updated : 22 Jul 22, 10:10 AM</small>
+                        </div>
+                    </div>
+
+                    <mat-divider></mat-divider>
+
+                    <div class="row align-items-center justify-content-between py-2">
+                        <div class="col-sm-6">
+                             <p class="mb-0 text-danger">Ignition off : MH12 AB 1234</p>
+                             <small>314 M From Harunja Post Office, Harjuna, Yavatmal, Maharashtra, 445002, India.</small>
+                        </div>
+                        <div class="col-sm-6 text-end">
+                            <p class="mb-3"></p>
+                            <small class="mb-0">Last Updated : 22 Jul 22, 10:10 AM</small>
+                        </div>
+                    </div>
+
+                    <mat-divider></mat-divider>
+
+                    <div class="row align-items-center justify-content-between py-2">
+                        <div class="col-sm-6">
+                             <p class="mb-0 text-danger">Ignition off : MH12 AB 1234</p>
+                             <small>314 M From Harunja Post Office, Harjuna, Yavatmal, Maharashtra, 445002, India.</small>
+                        </div>
+                        <div class="col-sm-6 text-end">
+                            <p class="mb-3"></p>
+                            <small class="mb-0">Last Updated : 22 Jul 22, 10:10 AM</small>
+                        </div>
+                    </div>
+
+                    <mat-divider></mat-divider>
+
+                    <div class="row align-items-center justify-content-between py-2">
+                        <div class="col-sm-6">
+                             <p class="mb-0 text-danger">Ignition off : MH12 AB 1234</p>
+                             <small>314 M From Harunja Post Office, Harjuna, Yavatmal, Maharashtra, 445002, India.</small>
+                        </div>
+                        <div class="col-sm-6 text-end">
+                            <p class="mb-3"></p>
+                            <small class="mb-0">Last Updated : 22 Jul 22, 10:10 AM</small>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
