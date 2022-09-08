@@ -1,0 +1,22 @@
+.table-padding-0 td{
+    padding-block: 0;
+}
+.vehicle-image{
+    width: 258px;
+    height: 258px;
+    object-fit: cover;
+    object-position:middle;
+}
+.vehicle-buttons{
+    position: absolute;
+    top:-8px;
+    right: -10px;
+}
+.vehicle-buttons .btn{
+    border-radius: 50%;
+    height: 38px;
+    width: 38px;
+    line-height: 19px;
+    margin-bottom: 5px;
+    font-size: 0.85rem;
+}
