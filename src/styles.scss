@@ -2,7 +2,7 @@
 @import '../node_modules/@angular/material/prebuilt-themes/indigo-pink.css';
 
 html, body { height: 100%; }
-body { margin: 0; font-family: 'Poppins', "Helvetica Neue", sans-serif;background-color: #F2F6FF; }
+body { margin: 0; font-family: 'Poppins', "Helvetica Neue", sans-serif;background-color: #E4ECF2; }
 .page-wrapper.toggled .sidebar {
     left: -300px;
   }
@@ -220,6 +220,14 @@ mat-form-field{
   font-weight: 600;
   border-bottom: none;
 }
+.form-card .card-header .btn-add{
+  font-size: 0.85rem;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  background-color: var(--main-color);
+  color: #fff;
+}
 .form-card .form-control{
   font-size: 0.85rem;
   box-shadow: none;
@@ -245,4 +253,16 @@ mat-form-field{
   left: 0;
   top: 0;
   opacity: 0;
+}
+.card-fullheight{
+  height: 72vh;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-fullheight img{
+  width: 80px;
+}
+.card-fullheight .btn{
+  font-size: 0.85rem;
 }
