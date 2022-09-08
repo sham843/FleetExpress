@@ -4,175 +4,319 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="bg-main-gradient py-2 px-3 rounded mb-3">
-            <ul class="nav nav-pills mb-0" id="pills-tab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="pills-stoppage-tab" data-bs-toggle="pill"
-                        data-bs-target="#pills-stoppage" type="button" role="tab" aria-controls="pills-stoppage"
-                        aria-selected="true">
-                        Users
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-distance-tab" data-bs-toggle="pill"
-                        data-bs-target="#pills-distance" type="button" role="tab" aria-controls="pills-distance"
-                        aria-selected="false">
-                        Role
-                    </button>
-                </li>
-            </ul>
-        </div>
-        <div class="card border-0 rounded">
-            <div class="card-body">
-                <div class="tab-content" id="pills-tabContent">
-
-
-                    <div class="tab-pane fade show active" id="pills-stoppage" role="tabpanel"
-                        aria-labelledby="pills-stoppage-tab" tabindex="0">
-                        <div class="text-center">
-                            <div>
-                                 <img src="../../../assets/images/No Users Created.svg">
-                            </div>
-                            <p>No Users Created</p>
-                            <button class="btn btn-main" mat-raised-button data-bs-toggle="modal"
-                                data-bs-target="#Modal_Toggle">
-                                New User
+            <div class="row align-items-center">
+                <div class="col-sm-4 border-end">
+                    <ul class="nav nav-pills mb-0" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="pills-user-tab" data-bs-toggle="pill"
+                                data-bs-target="#pills-user" type="button" role="tab" aria-controls="pills-user"
+                                aria-selected="true">
+                                Users
                             </button>
-                        </div>
-                        <div class="modal fade modal-lg" id="Modal_Toggle" aria-hidden="true"
-                            aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalToggleLabel">Create User</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close">
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row justify-content-between">
-                                            <div class="col-sm-6">
-                                                <div>Full Name</div>
-                                                <mat-form-field appearance="fill" class="w-100">
-                                                    <mat-label>Enter Full Name</mat-label>
-                                                    <input matInput placeholder="Enter Full Name">
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div>Mobile Number</div>
-                                                <mat-form-field appearance="fill" class="w-100">
-                                                    <mat-label>Enter Mobile Number</mat-label>
-                                                    <input matInput placeholder="EnterMobile Number">
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-                                        <div class="row justify-content-between">
-                                            <div class="col-sm-6">
-                                                <div class="d-flex align-items-center justify-content-between gap-2">
-                                                    <div>
-                                                        <label>Assign Vehicle</label>
-                                                        <mat-form-field appearance="fill" class="w-100">
-                                                            <mat-label>Select Vehicle</mat-label>
-                                                            <mat-select>
-                                                                <mat-option value="one">First option</mat-option>
-                                                                <mat-option value="two">Second option</mat-option>
-                                                            </mat-select>
-                                                        </mat-form-field>
-                                                    </div>
-                                                    <div>
-                                                        <button mat-stroked-button color="primary" role="button">
-                                                            <span>2</span>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="d-flex align-items-center justify-content-between gap-2">
-                                                    <div>
-                                                        <label>Assign Role</label>
-                                                        <mat-form-field appearance="fill" class="w-100">
-                                                            <mat-label>Select Vehicle</mat-label>
-                                                            <mat-select>
-                                                                <mat-option value="one">First option</mat-option>
-                                                                <mat-option value="two">Second option</mat-option>
-                                                            </mat-select>
-                                                        </mat-form-field>
-                                                    </div>
-                                                    <div>
-                                                        <button mat-stroked-button color="primary">
-                                                            Update Role
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="ms-auto m-3">
-                                        <button mat-stroked-button color="primary" data-bs-toggle="modal">
-                                            Clear
-                                        </button>
-                                        <button mat-raised-button color="primary" data-bs-toggle="modal" class="btn-main ms-2">
-                                            Submit
-                                        </button>
-                                    </div>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-role-tab" data-bs-toggle="pill" data-bs-target="#pills-role"
+                                type="button" role="tab" aria-controls="pills-role" aria-selected="false">
+                                Role
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-4">
+                    <div class="d-flex small">
+                        <div class="me-2">Total User/Role :</div>
+                        <h5 class="fw-bold mb-0">12</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-user" role="tabpanel" aria-labelledby="pills-user-tab"
+                tabindex="0">
+                <div class="card card-body plain-card p-0">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card card-body plain-card card-fullheight">
+                                <div class="text-center justify-content-center">
+                                    <img src="../../../assets/images/No-Users-Created.svg" alt="">
+                                    <p class="my-3">No Users Created</p>
+                                    <button class="btn btn-main" data-bs-toggle="modal" data-bs-target="#AddUserModal">
+                                        New User
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="tab-pane fade" id="pills-distance" role="tabpanel" aria-labelledby="pills-distance-tab"
-                        tabindex="0">
-                        <div class="text-center">
-                            <div>
-                                <img src="../../../assets/images/No Users Role Created.svg">
-                           </div>
-                            <p>No Users Role Created</p>
-                            <button class="btn btn-main" mat-raised-button data-bs-toggle="modal"
-                                data-bs-target="#Modal_Toggle-A">
-                                New Role
-                            </button>
-                        </div>
-                        <div class="modal fade modal-lg" id="Modal_Toggle-A" aria-hidden="true"
-                            aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalToggleLabel">Create User Role</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close">
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row justify-content-between">
-                                            <div class="col-sm-6">
-                                                <div>Enter Role Name</div>
-                                                <mat-form-field appearance="fill" class="w-100">
-                                                    <mat-label>Enter Role Name</mat-label>
-                                                    <input matInput placeholder="Enter Role Name">
-                                                </mat-form-field>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card form-card">
+                            <div class="card-header">
+                                <div class="row justify-content-between">
+                                    <div class="col-sm-4">
+                                        <div class="row align-items-center">
+                                            <div class="col-sm-auto">
+                                                User List
                                             </div>
-                                            <div class="col-sm-6">
-                                                <label>Assign Responsibilities</label>
-                                                <mat-form-field appearance="fill" class="w-100">
-                                                    <mat-label>Select </mat-label>
-                                                    <mat-select>
-                                                        <mat-option value="one">First option</mat-option>
-                                                        <mat-option value="two">Second option</mat-option>
-                                                    </mat-select>
-                                                </mat-form-field>
+                                            <div class="col-sm-8">
+                                                <div class="input-group">
+                                                    <div class="input-group-text"><i
+                                                            class="fa-solid fa-magnifying-glass"></i></div>
+                                                    <input type="text" class="form-control" placeholder="Driver Name">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="ms-auto m-3">
-                                        <button mat-stroked-button color="primary" data-bs-toggle="modal">
-                                            Clear
-                                        </button>
-                                        <button mat-raised-button color="primary" data-bs-toggle="modal" class="btn-main ms-2">
-                                            Submit
+                                    <div class="col-sm-4 text-end">
+                                        <button class="btn btn-add" data-bs-toggle="modal"
+                                            data-bs-target="#AddUserModal">
+                                            <i class="fa-solid fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
                             </div>
+                            <div class="card-body p-0">
+                                <table class="table dashboard-table">
+                                    <thead>
+                                        <tr>
+                                            <th>SR.NO</th>
+                                            <th>NAME</th>
+                                            <th>MOBILE NUMBER</th>
+                                            <th>ROLE</th>
+                                            <th>BLOCK/UNBLOCK</th>
+                                            <th>ACTION</th>
+                                            <th>
+                                                <mat-checkbox></mat-checkbox>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>
+                                                Nilesh Rajashi
+                                            </td>
+                                            <td>8669264767</td>
+                                            <td>Manager</td>
+                                            <td>
+                                                <mat-slide-toggle></mat-slide-toggle>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <button class="btn btn-light-main btn-icon me-2"
+                                                        data-bs-toggle="modal" data-bs-target="#AddUserModal">
+                                                        <i class="fa-regular fa-pen-to-square"></i>
+                                                    </button>
+                                                    <button class="btn bg-danger bg-opacity-10 text-danger">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <mat-checkbox></mat-checkbox>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="pills-role" role="tabpanel" aria-labelledby="pills-role-tab" tabindex="0">
+                <div class="card card-body plain-card">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card card-body plain-card card-fullheight">
+                                <div class="text-center justify-content-center">
+                                    <img src="../../../assets/images/No-Users-Role-Created.svg" alt="">
+                                    <p class="my-3">No Users Role Created</p>
+                                    <button class="btn btn-main" data-bs-toggle="modal" data-bs-target="#AddRoleModal">
+                                        New Role
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card form-card">
+                            <div class="card-header">
+                                <div class="row justify-content-between">
+                                    <div class="col-sm-4">
+                                        <div class="row align-items-center">
+                                            <div class="col-sm-auto">
+                                                Role List
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="input-group">
+                                                    <div class="input-group-text"><i
+                                                            class="fa-solid fa-magnifying-glass"></i></div>
+                                                    <input type="text" class="form-control" placeholder="Search">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 text-end">
+                                        <button class="btn btn-add" data-bs-toggle="modal"
+                                            data-bs-target="#AddRoleModal">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <table class="table dashboard-table">
+                                    <thead>
+                                        <tr>
+                                            <th>SR.NO</th>
+                                            <th>ROLE NAME</th>
+                                            <th>ASSIGN RESPONSIBILITIES</th>
+                                            <th>ACTION</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Manager</td>
+                                            <td>
+                                                Create Vehicle
+                                            </td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <button class="btn btn-light-main btn-icon me-2"
+                                                        data-bs-toggle="modal" data-bs-target="#AddRoleModal">
+                                                        <i class="fa-regular fa-pen-to-square"></i>
+                                                    </button>
+                                                    <button class="btn bg-danger bg-opacity-10 text-danger">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for new user -->
+<div class="modal fade modal-lg" id="AddUserModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light-gradient text-dark">
+                <p class="modal-title mb-0" id="exampleModalToggleLabel">Create User</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <mat-form-field appearance="standard" class="w-100">
+                            <mat-label>Full Name</mat-label>
+                            <input matInput placeholder="Enter Full Name">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-6">
+                        <mat-form-field appearance="standard" class="w-100">
+                            <mat-label>Mobile Number</mat-label>
+                            <input matInput placeholder="Enter Mobile Number">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <mat-form-field appearance="standard" class="w-100">
+                            <mat-label>Assign Vehicle</mat-label>
+                            <mat-select multiple>
+                                <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}
+                                </mat-option>
+                            </mat-select>
+                            <button mat-icon-button matSuffix mat-stroked-button>
+                                22
+                            </button>
+                        </mat-form-field>
+                        <div class="d-flex">
+                            <span class="vehicle-chips">
+                                MH12FT8523
+                                <button type="button" class="btn-close" aria-label="Close"></button>
+                            </span>
+                            <span class="vehicle-chips">
+                                MH12FT8523
+                                <button type="button" class="btn-close" aria-label="Close"></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <mat-form-field appearance="standard" class="w-10">
+                                <mat-label>Assign Role</mat-label>
+                                <mat-select>
+                                    <mat-option value="one">First option</mat-option>
+                                    <mat-option value="two">Second option</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <button class="btn btn-outline-primary btn-sm ms-2">
+                                Update Role
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="form-container w-100">
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-light-main" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-main">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal for new role -->
+<div class="modal fade" id="AddRoleModal" aria-hidden="true" aria-labelledby="AddRoleModalLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light-gradient text-dark">
+                <p class="modal-title mb-0" id="AddRoleModalLabel">Create User Role</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row justify-content-between">
+                    <div class="col-sm-12">
+                        <mat-form-field appearance="standard" class="w-100">
+                            <mat-label>Enter Role Name</mat-label>
+                            <input matInput placeholder="Enter Role Name">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-12">
+                        <mat-form-field appearance="standard" class="w-100">
+                            <mat-label>Toppings</mat-label>
+                            <mat-select multiple>
+                                <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="form-container w-100">
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-light-main" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-main">Submit</button>
                     </div>
                 </div>
             </div>
