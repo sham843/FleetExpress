@@ -20,7 +20,7 @@
                     <button type="button" class="btn btn-light text-success">
                         Running <span class="badge text-bg-success ms-3">14</span>
                     </button>
-                    <button type="button" class="btn btn-light text-warning mx-2">
+                    <button type="button" class="btn btn-light text-white mx-2">
                         Stopped <span class="badge text-bg-warning ms-3">24</span>
                     </button>
                     <button type="button" class="btn btn-light text-primary me-2">
@@ -146,6 +146,53 @@
                             </a>
                             <span class="text-danger veh-status">
                                 <i class="fa-solid fa-circle me-2"></i>Offline
+                            </span>
+                        </div>
+                        <div class="d-flex align-items-start">
+                            <img src="assets/images/Tracking/location-vehicle.svg" class="me-2 mt-1">
+                            <div class="vehicle-location">
+                                <p>Yavatmal District Maharashtra</p>
+                                <small>22 Jul 2022, 16:28</small>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start mb-2">
+                            <img src="assets/images/Tracking/info-vehicle.svg" class="me-2 mt-1">
+                            <div class="vehicle-running">
+                                35 kmph | Running since : 3 days : 5 hrs | 480 km today
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="vehicle-status">
+                                <div class="d-flex">
+                                    <span><img src="assets/images/Tracking/battery.svg" class="me-1"> 50%</span>
+                                    <span class="mx-3"><img src="assets/images/Tracking/network.svg" class="me-1">
+                                        100%</span>
+                                    <span><img src="assets/images/Tracking/ON-vehicle.svg" class="me-1"> ON</span>
+                                </div>
+                            </div>
+                            <div class="share-call">
+                                <a href="#" class="me-3" data-bs-toggle="modal"
+                                    data-bs-target="#ShareLocationModal"><img
+                                        src="assets/images/Tracking/share.svg"></a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#CallDriverModal"><img
+                                        src="assets/images/Tracking/call-vehicle.svg"></a>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="d-flex vehicle p-3" routerLink="#" routerLinkActive="active">
+                    <div class="flex-shrink-0">
+                        <div class="bg-warning bg-opacity-25 text-warning rounded-circle vehicle-icon">
+                            <i class="fa-solid fa-car"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-2">
+                        <div class="d-flex justify-content-between align-items-center my-2">
+                            <a routerLink="#" class="text-warning">
+                                <p class="vehicle-no">MH29T0444</p>
+                            </a>
+                            <span class="text-warning veh-status">
+                                <i class="fa-solid fa-circle me-2"></i>Stopped
                             </span>
                         </div>
                         <div class="d-flex align-items-start">

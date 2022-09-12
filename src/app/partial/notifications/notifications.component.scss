@@ -1,0 +1,56 @@
+#notification .list-group-item{
+    padding-inline: 0;
+}
+#notification .vehicle-no{
+    font-weight: 500;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+#notification .vehicle-location{
+    color: #171938;
+    font-size: 0.8rem;
+}
+#notification .last-update{
+    color: #979797;
+    font-size: 0.75rem;
+}
+.dropdown-menu{
+    padding: 0;
+    width:250px;
+    border: none;
+    box-shadow: 0px 3px 6px #00000029;
+}
+.dropdown-menu .drop-item{
+    padding:5px 10px;
+    font-size: 0.85rem;
+}
+.dropdown-menu .icon{
+    font-size: 0.7rem;
+}
+.dropdown-menu .green{
+    color: #2DBC53;
+}
+.dropdown-menu .red{
+    color: #EB4242;
+}
+.dropdown-menu .magenta{
+    color: #B85BEE;
+}
+.dropdown-menu .voilet{
+    color:#9A5BEE;
+}
+.dropdown-menu .yellow{
+    color:#FCE12D;
+}
+.dropdown-menu .orange{
+    color:#FC6B2D;
+}
+.dropdown-menu .olive{
+    color:#D3C041;
+}
+.dropdown-menu .light-orange{
+    color:#FF7E7E;
+}
+.dropdown-menu .gray{
+    color:#9E9E9E;
+}
