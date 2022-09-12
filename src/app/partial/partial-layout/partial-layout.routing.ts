@@ -11,4 +11,5 @@ export const PartialLayoutRoutes: Routes = [
   { path: 'user-management-system', loadChildren: () => import('../../partial/user-management-system/user-management-system.module').then(m => m.UserManagementSystemModule), data: { title: 'User Management System' } },
   { path: 'settings', loadChildren: () => import('../../partial/settings/settings.module').then(m => m.SettingsModule), data: { title: 'Settings' } },
   { path: 'notifications', loadChildren: () => import('../../partial/notifications/notifications.module').then(m => m.NotificationsModule), data: { title: 'Notifications' } },
+  { path: 'my-profile', loadChildren: () => import('../../partial/my-profile/my-profile.module').then(m => m.MyProfileModule), data: { title: 'My Profile' } },
 ];
