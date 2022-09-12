@@ -95,7 +95,7 @@
                                     </div>
                                     <div class="col-sm-6" >
                                         <label class="form-label">End Date</label>
-                                        <div class="d-block" [ngClass]="{ 'isdisabled':((f['timePeriod'].value !='4' && f['timePeriod'].value !='' ) && !f['fromDate'].value )}">
+                                        <div class="d-block" [ngClass]="{ 'isdisabled':(f['timePeriod'].value !='4' && f['timePeriod'].value !='')}">
                                             <!-- <mat-form-field appearance="fill" class="w-100">
                                                 <input matInput [matDatepicker]="dtpstoppageenddate" 
                                                     formControlName="toDate" [min]="f['fromDate'].value" [max]="maxTodayDate" required>
@@ -120,8 +120,8 @@
                                             <mat-form-field appearance="fill" class="w-100">
                                                 <mat-select formControlName="VehicleNumber" required>
                                                     <mat-option *ngFor="let vehicle of VehicleDtArr"
-                                                        [value]="vehicle.vehicleNo">
-                                                        {{vehicle.vehicleNo}}
+                                                        [value]="vehicle.vehicleRegistrationNo">
+                                                        {{vehicle.vehicleRegistrationNo}}
                                                     </mat-option>
                                                 </mat-select>
                                             </mat-form-field>

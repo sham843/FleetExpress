@@ -123,7 +123,7 @@ export class ReportsComponent implements OnInit {
   }
 
   getVehicleData() {
-    this.comman.setHttp('get', 'fleet-express/dashboard/get-vehicle-list?UserId=23895', true, false, false, 'vehicletrackingBaseUrlApi');
+    this.comman.setHttp('get', 'userdetail/get-vehicle-list?vehicleOwnerId=256', true, false, false, 'vehicletrackingBaseUrlApi');
     this.comman.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200") {
         this.VehicleDtArr = responseData.responseData;
@@ -187,7 +187,7 @@ export class ReportsComponent implements OnInit {
     const reportData = this.reportForm.value
     let str = "?";
     const isVenicleNumber = (this.selectedTablabel == 'Summary Report' || this.selectedTablabel == 'Trip Report') ? true : false
-    this.reportForm && reportData.fromDate && (str += "fromDate=" + moment(new Date(reportData.fromDate)).utc().startOf('day').toISOString())
+    this.reportForm && reportData.fromDate && (str += "fromDate=" + new Date(reportData.fromDate).toISOString())
     this.reportForm && reportData.toDate && (str += "&toDate=" + new Date(reportData.toDate).toISOString())
     this.reportForm && reportData.VehicleNumber && (str += (isVenicleNumber ? "&VehicleNumber=" : "&VehicleNo=") +
       'MH12AC1111'//  reportData.VehicleNumber
