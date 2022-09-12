@@ -10,6 +10,6 @@ baseUrl:string=''
     this.baseUrl='http://awsvehicletracking.mahamining.com/vehicle-tracking/'
    }
   getvehiclelist(){
-    return this.http.get(this.baseUrl+'dashboard/get-vehicles-list?UserId=35898')
+    return this.http.get(this.baseUrl+'dashboard/get-vehicles-list?UserId=23895')
   }
 }

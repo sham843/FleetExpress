@@ -9,10 +9,10 @@ export class CommanService {
   UserLoginDetails: any;
   userObj: any;
   tokanExpiredFlag: boolean = false;
-  accessToken:any="eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMzU4OTgiLCJleHAiOjE2NjI3MTYzMzUsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2OTAiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjU2NjkwIn0.5ijGmPqw8f0qs87PDJey2NrsHD0xRg-M4EIEPMC-MOk";
+  accessToken:any="eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMjM4OTUiLCJleHAiOjE2NjI5NzE0NTUsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2OTAiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjU2NjkwIn0.hrpRRAo0N7whm3bEXYygJkw3P5fEo1aNSXPdUwDTF_w";
   getBaseurl(url: string) {
     switch (url) {
-      case 'vehicletrackingBaseUrlApi': return 'http://awsvehicletracking.mahamining.com/vehicle-tracking/'; break   
+      case 'vehicletrackingBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/'; break   
        default: return '';break;
     }
   }
@@ -31,18 +31,18 @@ export class CommanService {
     private router:Router) { }
 
     getVehicleOwnerId() {
-      let vehOwnerId = 1725;
+      let vehOwnerId = 256;
       return vehOwnerId
     }
     tokenExpireRefreshString() {
-      let loginObj = "zixOn1CqUIzgw7/1AGPARlX4D6YnSTnltrn/SAOOeV4=";
+      let loginObj = "yBIGXBAiw/wBxXMqLGvIwAm4T81k+48wSI0Y+3bN2bg=";
       return loginObj;
     }
     tokenExpireDateTime() {
-      let loginObj = "2022-09-09T15:08:55.4693127+05:30";
+      let loginObj = "2022-09-12T14:00:55.3674331+05:30";
       return loginObj;
     }
-    // 2022-09-09T15:08:55.4693127+05:30  2022-09-10T07:48:55.3668776+05:30
+    
   getHttp(): any {
     let temp: any = undefined;
     !this.httpObj.options.body && (delete this.httpObj.options.body)
@@ -55,14 +55,14 @@ export class CommanService {
     let checkLOginData = sessionStorage.getItem('loggedInDetails');
     if (checkLOginData && this.tokanExpiredFlag == false && isHeader) {
       let tokenExp = JSON.parse(checkLOginData);
-      let expireAccessToken: any = (Math.round(new Date("2022-09-09T15:08:55.4693127+05:30").getTime() / 1000));
-      let tokenExpireDateTime: any = (Math.round(new Date("2022-09-10T07:48:55.3668776+05:30").getTime() / 1000));
+      let expireAccessToken: any = (Math.round(new Date("2022-09-12T14:00:55.3674331+05:30").getTime() / 1000));
+      let tokenExpireDateTime: any = (Math.round(new Date("2022-09-12T14:40:55.3673315+05:30").getTime() / 1000));
       let currentDateTime: any = (Math.round(new Date().getTime() / 1000));
       if (currentDateTime >= expireAccessToken) {
         if (currentDateTime <= tokenExpireDateTime) {
           // this.tokanExpiredFlag = true
           let obj = {
-            UserId: 35898,
+            UserId: 23895,
             RefreshToken: this.tokenExpireRefreshString()
           }
           // this.tokenExpiredAndRefresh(obj);
@@ -80,11 +80,12 @@ export class CommanService {
       }
     }
 
-/*     "responseData3": {
+/* 
+"responseData3": {
       "accessToken": "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMzU4OTgiLCJleHAiOjE2NjI1NDEzNTcsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2OTAiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjU2NjkwIn0.fYYxBql-zJYyqi-Q29Wc96S0gDrvT8q4IOIvJHPCI1A",
       "expireAccessToken": "2022-09-07T14:32:37.2544598+05:30",
       "refreshToken": {
-        "UserId": "35898",
+        "UserId": "23895",
         "tokenString": "gPbE4f1q7mPr3haepepf467XqGNdC1a226sBsPPk/c4=",
         "expireAt": "2022-09-08T07:12:37.2543302+05:30"
       }
@@ -99,7 +100,7 @@ export class CommanService {
     this.httpObj.url = this.getBaseurl(baseUrl) + url;
     if (isHeader) {
       let tempObj: any = {
-        "UserId": "35898",
+        "UserId": "23895",
         "Authorization": "Bearer " + this.accessToken // token set
       };
      

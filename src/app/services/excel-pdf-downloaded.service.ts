@@ -88,19 +88,25 @@ export class ExcelPdfDownloadedService {
     worksheet.getCell(keyCenterNo + '2').alignment = { horizontal: 'center' };
     worksheet.getCell(keyCenterNo + '2').font = { size: 15, bold: true };
 
-    if (formDataObj == "Speed Range Report") {
-      worksheet.mergeCells(keyCenterNo + '3:' + this.numToAlpha(header.length - 3) + '3');
-      worksheet.getCell(keyCenterNo + '3').value = "From" + this.datepipe.transform(formData.fromDate,'ddM/MM/yyyy hh:mm a')+" "+" To : "+this.datepipe.transform(formData.toDate, 'dd-MM-YYYY hh:mm a');
-      worksheet.getCell(keyCenterNo + '3').alignment = { horizontal: 'center' };
-      worksheet.getCell(keyCenterNo + '3').font = { size: 12 };
+    if (formDataObj == "Over Speed Report") {
+      worksheet.mergeCells(keyCenterNo + '4:' + this.numToAlpha(header.length - 3) + '4');
+      worksheet.getCell(keyCenterNo + '4').value = "From : " + this.datepipe.transform(formData.fromDate,'dd/MM/YYYY hh:mm a')+" "+" To : "+this.datepipe.transform(formData.toDate, 'dd/MM/YYYY hh:mm a');
+      worksheet.getCell(keyCenterNo + '4').alignment = { horizontal: 'center' };
+      worksheet.getCell(keyCenterNo + '4').font = { size: 12 };
+
+      worksheet.mergeCells(keyCenterNo + '5:' + this.numToAlpha(header.length - 3) + '5');
+      worksheet.getCell(keyCenterNo + '5').value = "Vehicle : "+formData.VehicleNumber+ " ("+formData.vehicleName+")" ;
+      worksheet.getCell(keyCenterNo + '5').alignment = { horizontal: 'center' };
+      worksheet.getCell(keyCenterNo + '5').font = { size: 12 };
+
+      worksheet.mergeCells(keyCenterNo + '6:' + this.numToAlpha(header.length - 3) + '6');
+      worksheet.getCell(keyCenterNo + '6').value = "Date : "+this.datepipe.transform(new Date,'dd/MM/YYYY') ;
+      worksheet.getCell(keyCenterNo + '6').alignment = { horizontal: 'center' };
+      worksheet.getCell(keyCenterNo + '6').font = { size: 12 };
     } else {
       worksheet.addRow([]);
     }
  
-
-    //Add Header Row
-
-    //Cell Style : Fill And Border
 
     const headerRow = worksheet.addRow(header);
 
