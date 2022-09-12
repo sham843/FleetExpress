@@ -11,10 +11,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userLogin();
+
   }
-  userLogin(){
-    let userData="authGaurd";
-    localStorage.setItem('loginData',userData)
-  }
+
 }

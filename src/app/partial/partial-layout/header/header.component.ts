@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { SidebarService } from '../sidebar/sidebar.service';
 
 @Component({
@@ -8,7 +9,7 @@ import { SidebarService } from '../sidebar/sidebar.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(public sidebarservice: SidebarService) { }
+  constructor(public sidebarservice: SidebarService,private router:Router) { }
   toggleSidebar() {
     this.sidebarservice.setSidebarState(!this.sidebarservice.getSidebarState());
   }
@@ -25,5 +26,8 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  logOut() {
+    sessionStorage.clear();
+    this.router.navigate(['../login']);
+  }
 }

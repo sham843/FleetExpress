@@ -5,7 +5,7 @@ import { PartialLayoutComponent } from './partial/partial-layout/partial-layout.
 import { LoginAuthGuard } from './auth/login-auth.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
     path: '',
     component: WebLayoutComponent,
