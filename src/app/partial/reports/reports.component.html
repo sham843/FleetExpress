@@ -72,13 +72,22 @@
                                     <div class="col-sm-6">
                                         <label class="form-label">Start Date</label>
                                         <div class="d-block"  [ngClass]="{ 'isdisabled':(f['timePeriod'].value !='4' && f['timePeriod'].value !='')  }">
-                                            <mat-form-field appearance="fill" class="w-100" >
+                                            <!-- <mat-form-field appearance="fill" class="w-100" >
                                                 <input matInput [matDatepicker]="dtpstoppagestartdate" [max]="currentDate"
                                                     formControlName="fromDate" [readonly]="f['timePeriod'].value !='4'" (dateChange)="settodate(f['fromDate'].value)" required>
                                                 <mat-datepicker-toggle matSuffix [for]="dtpstoppagestartdate">
                                                 </mat-datepicker-toggle>
                                                 <mat-datepicker #dtpstoppagestartdate></mat-datepicker>
+                                            </mat-form-field> -->
+
+                                            <mat-form-field appearance="fill" class="w-100">
+                                                <input matInput [ngxMatDatetimePicker]="picker" [max]="currentDate" (dateChange)="settodate(f['fromDate'].value)"
+                                                    [readonly]="f['timePeriod'].value !='4'" formControlName="fromDate">
+                                                <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+                                                <ngx-mat-datetime-picker #picker>
+                                                </ngx-mat-datetime-picker>
                                             </mat-form-field>
+                                            
                                             <mat-error *ngIf="f['timePeriod'].value.errors">
                                                 <span class="text-danger" *ngIf="f['timePeriod'].value.hasError('required')">This field is required</span>
                                             </mat-error>
