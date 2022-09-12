@@ -7,6 +7,7 @@
 .vehicle a{
     text-decoration: none;
     color: #000;
+    position: relative;
 }
 .vehicle.active,
 .vehicle:hover{
@@ -19,7 +20,8 @@
     border-left: solid 4px var(--main-color);
     position:absolute;
     left: 0;
-    height:7%;
+    height:25%;
+    top:36%;
     display:flex;
 }
 .vehicle .vehicle-icon{
