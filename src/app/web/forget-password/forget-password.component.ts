@@ -57,6 +57,17 @@ export class ForgetPasswordComponent implements OnInit {
     }
   }
   verifyOTP(){
+    this.verifyOTPSubmitte=true;
+    if(this.verifyOTPForm.invalid){
+        return;
+    }else{
+        alert('submitted');
+      this.beforeSendOPT=false;
+      this.afterSendOPT=false;
+      this.newPassword=true;
+    }
+  }
+  onSubmit(){
     this.Submitted=true;
     if(this.newPasForm.invalid){
         return;
