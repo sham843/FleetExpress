@@ -6,6 +6,7 @@ import { ReportsComponent } from './reports.component';
 import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.module';
 import { ReportsService } from './reports.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReportsRoutingModule,
     MaterialModule,
     FormsModule, 
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxMatDatetimePickerModule,
+    NgxMatNativeDateModule,
+    NgxMatTimepickerModule
   ],
   providers:[ReportsService]
 })
