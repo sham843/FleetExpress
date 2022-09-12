@@ -172,6 +172,17 @@ export class ReportsComponent implements OnInit {
     const maxTodayDate = moment(fromDate).add(7, 'days').calendar();
     this.maxTodayDate = moment(maxTodayDate).toISOString() < moment().toISOString() ? moment(maxTodayDate).toISOString() : moment().toISOString();
   }
+  checkValidDate() {
+    const reportData = this.reportForm.value;
+    if (reportData.fromDate && reportData.toDate) {
+      if (new Date(reportData.fromDate).toISOString() < new Date(reportData.toDate).toISOString()) {
+        this.reportForm.controls['toDate'].patchValue(new Date(reportData.toDate).toISOString())
+      } else {
+        this.reportForm.controls['toDate'].patchValue('')
+      }
+    }
+    // this.reportForm.controls['toDate'].patchValue((new Date(reportData.toDate).toISOString()< new Date(reportData.fromDate).toISOString())?moment(reportData.toDate).toString():'')
+  }
   getQueryString() {
     const reportData = this.reportForm.value
     let str = "?";
