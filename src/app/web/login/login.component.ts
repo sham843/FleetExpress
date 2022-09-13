@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { SharedService } from 'src/app/services/shared.service';
 import { ValidationService } from 'src/app/services/validation.service';
 
@@ -10,9 +10,9 @@ import { ValidationService } from 'src/app/services/validation.service';
 })
 export class LoginComponent implements OnInit {
   hide = true;
-  loginForm!:FormGroup | any;
+  loginForm!:UntypedFormGroup | any;
   isSubmitted:boolean=false;
-  constructor(private fb: FormBuilder,
+  constructor(private fb: UntypedFormBuilder,
     private sharedService:SharedService,
     public valService:ValidationService) { }
 

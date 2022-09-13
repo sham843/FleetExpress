@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ValidationService } from 'src/app/services/validation.service';
 
 @Component({
@@ -14,16 +14,16 @@ export class ForgetPasswordComponent implements OnInit {
   beforeSendOPT:boolean=true;
   afterSendOPT:boolean=false;
   newPassword:boolean=false;
-  sendOTPForm!: FormGroup;
-  verifyOTPForm!: FormGroup;
-  newPasForm!: FormGroup;
+  sendOTPForm!: UntypedFormGroup;
+  verifyOTPForm!: UntypedFormGroup;
+  newPasForm!: UntypedFormGroup;
   sendOTPSubmitte:boolean=false;
   verifyOTPSubmitte:boolean=false;
   Submitted:boolean=false;
   get sf() { return this.sendOTPForm.controls };
   get vf() { return this.verifyOTPForm.controls };
   get rf() { return this.newPasForm.controls };
-  constructor(private fb:FormBuilder,
+  constructor(private fb:UntypedFormBuilder,
     public vs:ValidationService) { }
 
   ngOnInit(): void {
