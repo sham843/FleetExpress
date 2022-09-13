@@ -9,7 +9,7 @@
                 <a class="btn btn-light bg-transparent me-1" (click)="toggleSidebar()">
                     <i class="fa-solid fa-bars"></i>
                 </a>
-                <a class="btn btn-light bg-transparent">
+                <a class="btn btn-light bg-transparent" routerLink="notifications">
                     <i class="fa-solid fa-bell"></i>
                 </a>
                 <a class="btn btn-light bg-transparent" (click)="toggleBackgroundImage()">
@@ -20,8 +20,8 @@
                       <img src="/assets/images/user.jpg" class="avatar">
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuButton1">
-                      <li><a class="dropdown-item" href="#">Profile</a></li>
-                      <li><a class="dropdown-item" href="#">Logout</a></li>
+                      <li><a class="dropdown-item" routerLink="my-profile">Profile</a></li>
+                      <li><a class="dropdown-item" routerLink="#">Logout</a></li>
                     </ul>
                   </div>
             </div>
