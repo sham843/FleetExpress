@@ -211,9 +211,18 @@ mat-form-field{
   font-size: 0.8rem;
   box-shadow: none;
 }
+.dashboard-table td .form-switch{
+  font-size: 1.1rem;
+}
 .dashboard-table td .vehicle-image{
   width: 40px;
   height: 40px;
+}
+.dashboard-table .srno{
+  width: 50px;
+}
+.form-card{
+  border: none;
 }
 .form-card .card-header{
   font-size: 0.85rem;
