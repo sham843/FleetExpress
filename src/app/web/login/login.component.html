@@ -9,8 +9,7 @@
                 <div class="form-container">
                     <form [formGroup]="loginForm">
                         <div class="mb-0">
-                            <!-- <label class="form-label">Username</label> -->
-                            <div class="d-block form-group">
+                            <div class="d-block">
                                 <mat-form-field appearance="outline" class="w-100">
                                     <mat-label>Username</mat-label>
                                     <input matInput placeholder="Username" formControlName="username" autocomplete="off"
@@ -20,7 +19,7 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div class="mb-0 form-group">
+                        <div class="mb-0">
                             <mat-form-field appearance="outline" class="w-100">
                                 <mat-label>Password</mat-label>
                                 <input matInput [type]="hide ? 'password' : 'text'" formControlName="password"
@@ -33,19 +32,20 @@
                                 <div *ngIf=" isSubmitted && f['password']?.errors.required" class="invalid-feedback">Enetr Username</div>
                             </mat-form-field>
                         </div>
-                        <div class="mb-0 form-group">
-                            <label class="form-label">Enter Captcha</label> 
+                        <div class="mb-0">
                             <div class="row gx-1 align-items-center">
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <div id="captcha">
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-1">
+                                    <button class="btn btn-light p-2 mb-3" type="button"
+                                        (click)="reCaptcha()"><i class="fa fa-sync"></i></button>
+                                </div>
+                                <div class="col-sm-7">
                                     <mat-form-field appearance="outline" class="w-100">
                                         <mat-label>Enter Captcha</mat-label>
-                                        <input matInput placeholder="Enter Captcha" formControlName="captcha" required>
-                                        <button class="btn btn-light sync rounded-0 btn-sm" type="button"
-                                        (click)="reCaptcha()"><i class="fa fa-sync"></i></button>
+                                        <input matInput placeholder="Enter Captcha" formControlName="captcha" required>                                        
                                     </mat-form-field>
                                 </div>
                             </div>
