@@ -76,15 +76,16 @@
                                     <li class="list-group-item">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <span class="noti-title">Over Speed</span>
+                                            <div class="d-flex w-75 justify-content-between align-items-center">
+                                                <mat-slider [tickInterval]="getSliderTickInterval()" [(ngModel)]="value" class="w-100"></mat-slider>
+                                                <span class="badge bg-extra-light text-dark p-2"><label>{{value}} kmph</label></span>
+                                            </div>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
                                                     id="flexSwitchCheckDefault">
                                             </div>
                                         </div>
-                                        <div class="d-flex w-100 justify-content-between align-items-center">
-                                            <mat-slider [tickInterval]="getSliderTickInterval()" [(ngModel)]="value" class="w-100"></mat-slider>
-                                            <span class="badge bg-extra-light text-dark p-2"><label>{{value}} kmph</label></span>
-                                        </div>
+                                        
                                     </li>
                                 </ul>
                             </div>
@@ -135,15 +136,16 @@
                                     <li class="list-group-item">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <span class="noti-title">Tilt</span>
+                                            <div class="d-flex w-75 justify-content-between align-items-center">
+                                                <mat-slider [tickInterval]="getSliderTickInterval()" [(ngModel)]="value" class="w-100"></mat-slider>
+                                                <span class="badge bg-extra-light text-dark p-2"><label>{{value}} degree</label></span>
+                                            </div>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
                                                     id="flexSwitchCheckDefault">
                                             </div>
                                         </div>
-                                        <div class="d-flex w-100 justify-content-between align-items-center">
-                                            <mat-slider [tickInterval]="getSliderTickInterval()" [(ngModel)]="value" class="w-100"></mat-slider>
-                                            <span class="badge bg-extra-light text-dark p-2"><label>{{value}} degree</label></span>
-                                        </div>
+                                        
                                     </li>
                                 </ul>
                             </div>
@@ -285,15 +287,16 @@
                                                                         <li class="list-group-item">
                                                                             <div class="d-flex justify-content-between align-items-center">
                                                                                 <span class="noti-title">Over Speed</span>
+                                                                                <div class="d-flex w-75 justify-content-between align-items-center">
+                                                                                    <mat-slider [tickInterval]="getSliderTickInterval()" [(ngModel)]="value" class="w-100"></mat-slider>
+                                                                                    <span class="badge bg-extra-light text-dark p-2"><label>{{value}} kmph</label></span>
+                                                                                </div>
                                                                                 <div class="form-check form-switch">
                                                                                     <input class="form-check-input" type="checkbox" role="switch"
                                                                                         id="flexSwitchCheckDefault">
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="d-flex w-100 justify-content-between align-items-center">
-                                                                                <mat-slider [tickInterval]="getSliderTickInterval()" [(ngModel)]="value" class="w-100"></mat-slider>
-                                                                                <span class="badge bg-extra-light text-dark p-2"><label>{{value}} kmph</label></span>
-                                                                            </div>
+                                                                            
                                                                         </li>
                                                                     </ul>
                                                                 </div>
@@ -344,15 +347,16 @@
                                                                         <li class="list-group-item">
                                                                             <div class="d-flex justify-content-between align-items-center">
                                                                                 <span class="noti-title">Tilt</span>
+                                                                                <div class="d-flex w-75 justify-content-between align-items-center">
+                                                                                    <mat-slider [tickInterval]="getSliderTickInterval()" [(ngModel)]="value" class="w-100"></mat-slider>
+                                                                                    <span class="badge bg-extra-light text-dark p-2"><label>{{value}} degree</label></span>
+                                                                                </div>
                                                                                 <div class="form-check form-switch">
                                                                                     <input class="form-check-input" type="checkbox" role="switch"
                                                                                         id="flexSwitchCheckDefault">
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="d-flex w-100 justify-content-between align-items-center">
-                                                                                <mat-slider [tickInterval]="getSliderTickInterval()" [(ngModel)]="value" class="w-100"></mat-slider>
-                                                                                <span class="badge bg-extra-light text-dark p-2"><label>{{value}} degree</label></span>
-                                                                            </div>
+                                                                            
                                                                         </li>
                                                                     </ul>
                                                                 </div>
