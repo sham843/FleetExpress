@@ -16,7 +16,7 @@
                                     <input matInput placeholder="Username" formControlName="username" autocomplete="off"
                                  required [ngClass]="{ 'is-invalid': isSubmitted && f['username'].errors}"
                                   (keypress)="this.valService.noSpaces($event)">
-                                 <div *ngIf=" isSubmitted && f['username']?.errors.required" class="invalid-feedback">Enetr Username</div>
+                                 <!-- <div *ngIf=" isSubmitted && f['username']?.errors.required" class="invalid-feedback">Enetr Username</div> -->
                                 </mat-form-field>
                             </div>
                         </div>
@@ -30,7 +30,7 @@
                                     [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                                     <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                                 </button>
-                                <div *ngIf=" isSubmitted && f['password']?.errors.required" class="invalid-feedback">Enetr Username</div>
+                                <!-- <div *ngIf=" isSubmitted && f['password']?.errors.required" class="invalid-feedback">Enetr Username</div> -->
                             </mat-form-field>
                         </div>
                         <div class="mb-0 form-group">

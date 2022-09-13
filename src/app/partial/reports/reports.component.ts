@@ -123,11 +123,10 @@ export class ReportsComponent implements OnInit {
   }
 
   getVehicleData() {
-    this.comman.setHttp('get', 'userdetail/get-vehicle-list?vehicleOwnerId=256', true, false, false, 'vehicletrackingBaseUrlApi');
+    this.comman.setHttp('get', 'vehicle/get-vehiclelists', true, false, false, 'vehicletrackingBaseUrlApi');
     this.comman.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200") {
-        this.VehicleDtArr = responseData.responseData;
-        console.log(this.VehicleDtArr)
+        this.VehicleDtArr = responseData.responseData.responseData1;
       }
       else if (responseData.statusCode === "409") {
 
@@ -184,7 +183,7 @@ export class ReportsComponent implements OnInit {
     // this.reportForm.controls['toDate'].patchValue((new Date(reportData.toDate).toISOString()< new Date(reportData.fromDate).toISOString())?moment(reportData.toDate).toString():'')
   }
   getQueryString() {
-    const reportData = this.reportForm.value
+   const reportData = this.reportForm.value
     let str = "?";
     const isVenicleNumber = (this.selectedTablabel == 'Summary Report' || this.selectedTablabel == 'Trip Report') ? true : false
     this.reportForm && reportData.fromDate && (str += "fromDate=" + new Date(reportData.fromDate).toISOString())
@@ -195,23 +194,25 @@ export class ReportsComponent implements OnInit {
     return str;
   }
   SearchReport() {
+    console.log(this.reportForm.value.fromDate);
+    console.log( this.getQueryString())
     if (this.reportForm.invalid) {
       return;
     } else {
       var url: any
       switch (this.selectedTablabel) {
-        case "Summary Report": url = 'tracking/get-summary-report'; break;
-        case "Trip Report": url = 'tracking/get-trip-report-web'; break;
-        case "Address Report": url = 'tracking/get-tracking-address-mob'; break;
+        case "Summary Report": url = 'reports/get-summary-report'; break;
+        case "Trip Report": url = 'reports/get-trip-report-web'; break;
+        case "Address Report": url = 'reports/get-tracking-address-mob'; break;
         case "Overspeed Report": url = 'reports/get-vehicle-details-for-overspeed'; break;
         case "Speed Range Report": url = 'reports/get-overspeed-report-speedrange'; break;
       }
      
-      this.comman.setHttp('get', url + this.getQueryString() + '&UserId=23895&VehicleOwnerId=256', true, false, false, 'vehicletrackingBaseUrlApi');
+      this.comman.setHttp('get', url + this.getQueryString() + '&UserId='+this.comman.getUserId()+'&VehicleOwnerId='+this.comman.getVehicleOwnerId(), true, false, false, 'vehicletrackingBaseUrlApi');
       this.comman.getHttp().subscribe((responseData: any) => {
         if (responseData.statusCode === "200" || responseData.length > 0) {
-          this.reportResponseData = responseData.responseData;
-          console.log(responseData)
+        /*   this.reportResponseData = responseData.responseData;*/
+          console.log(responseData) 
         }
         else if (responseData.statusCode === "409") {
 
@@ -252,6 +253,7 @@ export class ReportsComponent implements OnInit {
       this.reportForm.value['vehicleName']=vehicleName;
     });
     let data=this.reportForm.value;
-    this.excelService.exportAsExcelFile(data);
+    let pageName = this.selectedTablabel;
+    this.excelService.exportAsExcelFile(data,pageName);
   }
 }

@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 export class CommanService {
   UserLoginDetails: any;
   userObj: any;
+  userObjData: any;
   tokanExpiredFlag: boolean = false;
   accessToken:any="eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMjM4OTUiLCJleHAiOjE2NjI5OTA4NzcsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2OTAiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjU2NjkwIn0.GbRCKyVEPl4RohwsqBndwyfkin85vw3ffgXh4hiYP8g";
   getBaseurl(url: string) {
@@ -15,6 +16,12 @@ export class CommanService {
       case 'vehicletrackingBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/'; break 
       case 'loginBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/login/'; break   
       default: return '';break;
+  loginObj: any;
+  accessToken: any = "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMjM4OTUiLCJleHAiOjE2NjI5NzI4NzMsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2OTAiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjU2NjkwIn0.WZ5IQOYMfCB1IO7NNvlCJYMdptVZ30M2Q-se0ytBFbM";
+  getBaseurl(url: string) {
+    switch (url) {
+      case 'vehicletrackingBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/fleet-express/'; break
+      default: return ''; break;
     }
   }
   private httpObj: any = {
@@ -29,21 +36,36 @@ export class CommanService {
   }
 
   constructor(private http: HttpClient,
-    private router:Router) { }
+    private router: Router) {
+  }
 
-    getVehicleOwnerId() {
-      let vehOwnerId = 256;
-      return vehOwnerId
-    }
-    tokenExpireRefreshString() {
-      let loginObj = "yBIGXBAiw/wBxXMqLGvIwAm4T81k+48wSI0Y+3bN2bg=";
-      return loginObj;
-    }
-    tokenExpireDateTime() {
-      let loginObj = "2022-09-12T14:00:55.3674331+05:30";
-      return loginObj;
-    }
-    
+  getsessionStorageData() {
+    let loginObj: any = sessionStorage.getItem('loginDetails');
+    let sessionData = JSON.parse(loginObj).responseData[0];
+    return sessionData;
+  }
+  getUserId(){
+    let vehOwnerId = this.getsessionStorageData();
+    return vehOwnerId.id;
+  }
+  getVehicleOwnerId() {
+    let vehOwnerId = this.getsessionStorageData();
+    return vehOwnerId.vehicleOwnerId
+  }
+  tokenExpireRefreshString() {
+    let loginObj: any = sessionStorage.getItem('loginDetails');
+    let sessionData = JSON.parse(loginObj).responseData3;
+    return sessionData.refreshToken.tokenString;
+  }
+  tokenExpireDateTime() {
+    let loginObj: any = sessionStorage.getItem('loginDetails');
+    let sessionData = JSON.parse(loginObj).responseData3;
+    return sessionData.expireAccessToken;
+  }
+
+  /*   
+  */
+
   getHttp(): any {
     let temp: any = undefined;
     !this.httpObj.options.body && (delete this.httpObj.options.body)
@@ -53,58 +75,47 @@ export class CommanService {
   setHttp(type: string, url: string, isHeader: Boolean, obj: any, params: any, baseUrl: any) {
     // isHeader = false;
     // check user is login or not 
-    let checkLOginData = sessionStorage.getItem('loggedInDetails');
+    let checkLOginData: any = sessionStorage.getItem('loginDetails');
     if (checkLOginData && this.tokanExpiredFlag == false && isHeader) {
       let tokenExp = JSON.parse(checkLOginData);
-      let expireAccessToken: any = (Math.round(new Date("2022-09-12T14:00:55.3674331+05:30").getTime() / 1000));
-      let tokenExpireDateTime: any = (Math.round(new Date("2022-09-12T14:40:55.3673315+05:30").getTime() / 1000));
+      let expireAccessToken: any = (Math.round(new Date(tokenExp.responseData3.expireAccessToken).getTime() / 1000));
+      let tokenExpireDateTime: any = (Math.round(new Date(tokenExp.responseData3.refreshToken.expireAt).getTime() / 1000));
       let currentDateTime: any = (Math.round(new Date().getTime() / 1000));
       if (currentDateTime >= expireAccessToken) {
         if (currentDateTime <= tokenExpireDateTime) {
-          // this.tokanExpiredFlag = true
+          this.tokanExpiredFlag = true
           let obj = {
             UserId: 23895,
             RefreshToken: this.tokenExpireRefreshString()
           }
-          // this.tokenExpiredAndRefresh(obj);
+          this.tokenExpiredAndRefresh(obj);
         } else {
           // this.spinner.hide();
           sessionStorage.clear();
           this.router.navigate(['/login']);
           // this.toastrService.info('Your Session Has Expired. Please Re-Login Again.');
           return
-          //this.UserLoginDetails = JSON.parse(sessionStorage.loggedInDetails);
-          // this.tokanExpiredFlag = true
-        
+          this.UserLoginDetails = JSON.parse(sessionStorage['loginDetails']);
+          this.tokanExpiredFlag = true
+
         }
 
       }
     }
 
-/* 
-"responseData3": {
-      "accessToken": "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMzU4OTgiLCJleHAiOjE2NjI1NDEzNTcsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2OTAiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjU2NjkwIn0.fYYxBql-zJYyqi-Q29Wc96S0gDrvT8q4IOIvJHPCI1A",
-      "expireAccessToken": "2022-09-07T14:32:37.2544598+05:30",
-      "refreshToken": {
-        "UserId": "23895",
-        "tokenString": "gPbE4f1q7mPr3haepepf467XqGNdC1a226sBsPPk/c4=",
-        "expireAt": "2022-09-08T07:12:37.2543302+05:30"
-      }
-    }, */
-
-  try {
-      // this.userObj = JSON.parse(sessionStorage.loggedInDetails);
-      // this.UserLoginDetails = JSON.parse(sessionStorage.loggedInDetails);
+    try {
+      this.userObj = sessionStorage.getItem('loginDetails');
+      this.userObjData = JSON.parse(this.userObj);
     } catch (e) { }
     this.clearHttp();
     this.httpObj.type = type;
     this.httpObj.url = this.getBaseurl(baseUrl) + url;
     if (isHeader) {
       let tempObj: any = {
-        "UserId": "23895",
-        "Authorization": "Bearer " + this.accessToken // token set
+        // "UserId": "23895",
+        "Authorization": "Bearer " + this.userObjData.responseData3.accessToken // token set
       };
-     
+
       this.httpObj.options.headers = new HttpHeaders(tempObj);
     }
 
@@ -119,6 +130,28 @@ export class CommanService {
     }
     else {
       this.httpObj.options.params = false;
-    } 
+    }
   }
+
+  tokenExpiredAndRefresh(obj: any) {
+    let callRefreshTokenAPI =  this.http.post('https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/login/refresh-token', obj);
+     callRefreshTokenAPI.subscribe((res: any) => {
+       if (res.statusCode === "200") {
+         let loginObj: any = sessionStorage.getItem('loginDetails');
+         loginObj = JSON.parse(loginObj);
+         loginObj.responseData3 = res.responseData;
+         sessionStorage.setItem('loginDetails', JSON.stringify(loginObj));
+         this.tokanExpiredFlag = false;
+       }
+       else if (res.statusCode === "409") {
+        //  this.spinner.hide();
+       }
+       else {
+        //  this.spinner.hide();
+         sessionStorage.clear();
+         this.router.navigate(['/login']);
+        //  this.toastrService.info('Your Session Has Expired. Please Re-Login Again.')
+       }
+     })
+   }
 }

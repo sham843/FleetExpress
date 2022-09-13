@@ -35,8 +35,8 @@
                 <table class="table dashboard-table mb-0">
                     <thead>
                         <tr>
-                            <th>SR.NO.</th>
-                            <th></th>
+                            <th class="srno">SR.NO.</th>
+                            <th class="srno"></th>
                             <th>VEHICLE NO.</th>
                             <th>DRIVER NAME</th>
                             <th>MOBILE NO</th>
@@ -63,7 +63,9 @@
                                 </button>
                             </td>
                             <td>
-                                <mat-slide-toggle></mat-slide-toggle>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                                  </div>
                             </td>
                             <td>
                                 <button class="btn btn-light-main btn-icon" data-bs-toggle="modal"
@@ -89,7 +91,9 @@
                                 </button>
                             </td>
                             <td>
-                                <mat-slide-toggle></mat-slide-toggle>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                                  </div>
                             </td>
                             <td>
                                 <button class="btn btn-light-main btn-icon" data-bs-toggle="modal"
@@ -152,21 +156,18 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-sm-2">
                         <div class="position-relative">
                             <img src="assets/images/user.jpg" class="vehicle-image">
                             <div class="vehicle-buttons d-flex flex-column upload-btn-wrapper">
-                                <button class="btn bg-opacity-10 bg-primary text-primary">
-                                    <i class="fa-solid fa-upload"></i>
-                                </button>
-                                <button class="btn bg-opacity-10 bg-danger text-danger">
-                                    <i class="fa-solid fa-trash-can"></i>
+                                <button class="btn bg-light text-primary">
+                                    <i class="fa-solid fa-plus"></i>
                                 </button>
                                 <input type="file" name="myfile" />
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-9">
+                    <div class="col-sm-10">
                         <div class="row">
                             <div class="col-sm-4">
                                 <mat-form-field appearance="standard" class="w-100">

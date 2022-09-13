@@ -56,10 +56,25 @@ export class ExcelPdfDownloadedService {
     });
     doc.save("pdf");
   }
-  exportAsExcelFile(formData:any) {
-    let key = ["Sr No."," Date","Speed(Km/h)","Address"];
-    let headersArray = ['srNo', 'deviceDateTime', 'speed', 'address'];
-    let formDataObj="Over Speed Report";
+  exportAsExcelFile(formData:any,pageName:any) {
+    let key;
+    let headersArray
+   if(pageName=="Speed Range Report"){
+     key = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
+     headersArray = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
+   }else if(pageName=="Overspeed Report"){
+     key = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
+   headersArray = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
+   }else if(pageName=="Address Report"){
+    key = ["Sr No.", " Date", "Address"];
+   headersArray = ['srNo', 'deviceDateTime', 'speed', 'address'];
+   }else if(pageName=="Trip Report"){
+     key = ["Sr No.", " Distance", "Duration", "Start Date", "Start Address", "End Date", "End Address"];
+    headersArray = ['', 'travelledDistance', 'speed', 'startDateTime','startLatLong','endDateTime','endLatLong'];
+   }else{
+     key = ["SrNo.", " Driver Name", "tripDurationInMins", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
+   
+   }
     let keyCenterNo = ""
     if (key.length == 2) {
       keyCenterNo = "B"
@@ -80,15 +95,15 @@ export class ExcelPdfDownloadedService {
     workbook.lastModifiedBy = 'SnippetCoder';
     workbook.created = new Date();
     workbook.modified = new Date();
-    const worksheet = workbook.addWorksheet(formDataObj);
+    const worksheet = workbook.addWorksheet(pageName);
     // Adding Header Row
     worksheet.addRow([]);
     worksheet.mergeCells(keyCenterNo + '2:' + this.numToAlpha(header.length - 2) + '2');
-    worksheet.getCell(keyCenterNo + '2').value = formDataObj;
+    worksheet.getCell(keyCenterNo + '2').value = pageName;
     worksheet.getCell(keyCenterNo + '2').alignment = { horizontal: 'center' };
     worksheet.getCell(keyCenterNo + '2').font = { size: 15, bold: true };
 
-    if (formDataObj == "Over Speed Report") {
+    if (pageName) {
       worksheet.mergeCells(keyCenterNo + '4:' + this.numToAlpha(header.length - 3) + '4');
       worksheet.getCell(keyCenterNo + '4').value = "From : " + this.datepipe.transform(formData.fromDate,'dd/MM/YYYY hh:mm a')+" "+" To : "+this.datepipe.transform(formData.toDate, 'dd/MM/YYYY hh:mm a');
       worksheet.getCell(keyCenterNo + '4').alignment = { horizontal: 'center' };
@@ -133,7 +148,7 @@ export class ExcelPdfDownloadedService {
     });
     workbook.xlsx.writeBuffer().then((data: ArrayBuffer) => {
       const blob = new Blob([data], { type: EXCEL_TYPE });
-      FileSaver.saveAs(blob, formDataObj + EXCEL_EXTENSION);
+      FileSaver.saveAs(blob, pageName + EXCEL_EXTENSION);
     });
   }
 
