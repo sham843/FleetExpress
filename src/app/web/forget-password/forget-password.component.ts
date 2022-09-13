@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CommanService } from 'src/app/services/comman.service';
 import { ValidationService } from 'src/app/services/validation.service';
 
 @Component({
@@ -24,7 +25,8 @@ export class ForgetPasswordComponent implements OnInit {
   get vf() { return this.verifyOTPForm.controls };
   get rf() { return this.newPasForm.controls };
   constructor(private fb:FormBuilder,
-    public vs:ValidationService) { }
+    public vs:ValidationService,
+    private cm:CommanService) { }
 
   ngOnInit(): void {
     this.getformControlData();
@@ -50,21 +52,47 @@ export class ForgetPasswordComponent implements OnInit {
     if(this.sendOTPForm.invalid){
         return;
     }else{
-        alert('submitted');
-      this.beforeSendOPT=false;
-      this.afterSendOPT=true;
-      this.newPassword=false;
+      this.cm.setHttp('get', "otp-trans?MobileNo=" + this.sendOTPForm.value.mobileNo, false, false, false, 'loginBaseUrlApi');
+      this.cm.getHttp().subscribe({
+        next: (res: any) => {
+          if (res.statusCode === "200") {
+            console.log(res);
+            this.beforeSendOPT=false;
+            this.afterSendOPT=true;
+            this.newPassword=false;
+          } else {
+            // this.spinner.hide();
+            // this.cs.checkDataType(res.statusMessage) == false ? this.errorSerivce.handelError(res.statusCode) : this.commonService.snackBar(res.statusMessage, 1);
+          }
+        },
+        // error: ((error: any) => { this.errorSerivce.handelError(error.status) })
+      });
     }
   }
   verifyOTP(){
     this.verifyOTPSubmitte=true;
+    const verifyFormData=this.verifyOTPForm.value
     if(this.verifyOTPForm.invalid){
         return;
     }else{
-        alert('submitted');
-      this.beforeSendOPT=false;
-      this.afterSendOPT=false;
-      this.newPassword=true;
+      console.log(verifyFormData)
+      const otp=verifyFormData.otpA.concat(verifyFormData.otpB, verifyFormData.otpC, verifyFormData.otpD);
+      this.cm.setHttp('get', 'get-user-otp?MobileNo=' + this.sendOTPForm.value.mobileNo + '&OTP='+otp, false, false, false, 'loginBaseUrlApi');
+      this.cm.getHttp().subscribe({
+        next: (res: any) => {
+          if (res.statusCode === "200") {
+            console.log(res);
+            this.beforeSendOPT=false;
+            this.afterSendOPT=false;
+            this.newPassword=true;
+          } else {
+            // this.spinner.hide();
+            // this.cs.checkDataType(res.statusMessage) == false ? this.errorSerivce.handelError(res.statusCode) : this.commonService.snackBar(res.statusMessage, 1);
+          }
+        },
+        // error: ((error: any) => { this.errorSerivce.handelError(error.status) })
+      });
+     
     }
   }
   onSubmit(){
