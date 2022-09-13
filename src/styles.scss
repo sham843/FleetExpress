@@ -287,3 +287,6 @@ mat-form-field{
 .card-fullheight .btn{
   font-size: 0.85rem;
 }
+.mat-slider.mat-accent .mat-slider-track-fill, .mat-slider.mat-accent .mat-slider-thumb, .mat-slider.mat-accent .mat-slider-thumb-label{
+  background-color: var(--main-color) !important;
+}
