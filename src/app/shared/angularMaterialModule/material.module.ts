@@ -64,7 +64,9 @@ import {MatSliderModule} from '@angular/material/slider';
     MatSlideToggleModule,
     MatStepperModule,
     MatBottomSheetModule,
-    MatSliderModule
+    MatSliderModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   exports: [
     // Material
@@ -98,7 +100,9 @@ import {MatSliderModule} from '@angular/material/slider';
     MatSlideToggleModule,
     MatStepperModule,
     MatBottomSheetModule,
-    MatSliderModule
+    MatSliderModule,    
+    MatDatepickerModule,
+    MatNativeDateModule
   ]
 })
 export class MaterialModule { }

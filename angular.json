@@ -34,11 +34,13 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss",
               "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [ 
-              "node_modules/exceljs/dist/exceljs.min.js"
+              "node_modules/exceljs/dist/exceljs.min.js",
+              "node_modules/apexcharts/dist/apexcharts.min.js"
             ]
           },
           "configurations": {
@@ -105,6 +107,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -112,6 +115,5 @@
         }
       }
     }
-  },
-  "defaultProject": "FleetExpress"
+  }
 }

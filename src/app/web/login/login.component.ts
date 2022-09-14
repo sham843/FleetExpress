@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators,UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -14,7 +14,7 @@ import { ValidationService } from 'src/app/services/validation.service';
 })
 export class LoginComponent implements OnInit {
   hide = true;
-  loginForm!:FormGroup | any;
+  loginForm!:UntypedFormGroup | any;
   isSubmitted:boolean=false;
   loginData:any;
   constructor(private fb: FormBuilder,

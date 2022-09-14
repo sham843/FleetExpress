@@ -46,6 +46,9 @@ export class ReportsComponent implements OnInit {
      private datepipe: DatePipe,
      private toastrService:ToastrService) { }
 
+  // constructor(private fb: UntypedFormBuilder, private reportsService: ReportsService, private comman: CommanService,
+  //   private excelService: ExcelPdfDownloadedService, private datepipe: DatePipe) { }
+
   ngOnInit(): void {
     this.getStoppageData();
     this.selectedTab('stoppage');
