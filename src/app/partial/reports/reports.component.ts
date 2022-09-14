@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
+import { ToastrService } from 'ngx-toastr';
 import { CommanService } from 'src/app/services/comman.service';
 import { ExcelPdfDownloadedService } from 'src/app/services/excel-pdf-downloaded.service';
 import { ReportsService } from './reports.service';
@@ -38,8 +39,12 @@ export class ReportsComponent implements OnInit {
   tabArrayData: any[] = [];
   selectedIndex: any;
   get f() { return this.reportForm.controls };
-  constructor(private fb: FormBuilder, private reportsService: ReportsService, private comman: CommanService,
-    private excelService: ExcelPdfDownloadedService, private datepipe: DatePipe) { }
+  constructor(private fb: FormBuilder, 
+    private reportsService: ReportsService, 
+    private comman: CommanService,
+    private excelService: ExcelPdfDownloadedService,
+     private datepipe: DatePipe,
+     private toastrService:ToastrService) { }
 
   ngOnInit(): void {
     this.getStoppageData();
@@ -132,7 +137,7 @@ export class ReportsComponent implements OnInit {
 
       }
       else {
-        // this.toastrService.error(responseData.statusMessage);
+        this.toastrService.error(responseData.statusMessage);
       }
     })
   }
@@ -218,7 +223,7 @@ export class ReportsComponent implements OnInit {
 
         }
         else {
-          // this.toastrService.error(responseData.statusMessage);
+          this.toastrService.error(responseData.statusMessage);
         }
       })
     }

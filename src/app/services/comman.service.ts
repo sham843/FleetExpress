@@ -1,6 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +13,10 @@ export class CommanService {
   userObjData: any;
   tokanExpiredFlag: boolean = false;
   loginObj: any;
-  accessToken: any = "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMjM4OTUiLCJleHAiOjE2NjI5NzI4NzMsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2OTAiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjU2NjkwIn0.WZ5IQOYMfCB1IO7NNvlCJYMdptVZ30M2Q-se0ytBFbM";
   getBaseurl(url: string) {
     switch (url) {
-      case 'vehicletrackingBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/fleet-express/'; break
+      case 'vehicletrackingBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/'; break
+      case 'loginBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/login/'; break
       default: return ''; break;
     }
   }
@@ -30,7 +32,9 @@ export class CommanService {
   }
 
   constructor(private http: HttpClient,
-    private router: Router) {
+    private router: Router,
+    private spinner:NgxSpinnerService,
+    private toastrService:ToastrService) {
   }
 
   getsessionStorageData() {
@@ -79,19 +83,16 @@ export class CommanService {
         if (currentDateTime <= tokenExpireDateTime) {
           this.tokanExpiredFlag = true
           let obj = {
-            UserId: 23895,
+            UserId: this.getUserId(),
             RefreshToken: this.tokenExpireRefreshString()
           }
           this.tokenExpiredAndRefresh(obj);
         } else {
-          // this.spinner.hide();
+          this.spinner.hide();
           sessionStorage.clear();
           this.router.navigate(['/login']);
-          // this.toastrService.info('Your Session Has Expired. Please Re-Login Again.');
-          return
-          this.UserLoginDetails = JSON.parse(sessionStorage['loginDetails']);
-          this.tokanExpiredFlag = true
-
+          this.toastrService.info('Your Session Has Expired. Please Re-Login Again.');
+         return;
         }
 
       }
@@ -106,8 +107,8 @@ export class CommanService {
     this.httpObj.url = this.getBaseurl(baseUrl) + url;
     if (isHeader) {
       let tempObj: any = {
-        // "UserId": "23895",
-        "Authorization": "Bearer " + this.userObjData.responseData3.accessToken // token set
+        "UserId":this.getUserId(),
+        "Authorization": "Bearer " +this.userObjData.responseData3.accessToken // token set
       };
 
       this.httpObj.options.headers = new HttpHeaders(tempObj);
@@ -138,13 +139,13 @@ export class CommanService {
          this.tokanExpiredFlag = false;
        }
        else if (res.statusCode === "409") {
-        //  this.spinner.hide();
+         this.spinner.hide();
        }
        else {
-        //  this.spinner.hide();
+         this.spinner.hide();
          sessionStorage.clear();
          this.router.navigate(['/login']);
-        //  this.toastrService.info('Your Session Has Expired. Please Re-Login Again.')
+         this.toastrService.info('Your Session Has Expired. Please Re-Login Again.')
        }
      })
    }
