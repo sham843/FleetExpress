@@ -7,8 +7,11 @@
     <div class="col-sm-3">
         <div class="card mb-3 plain-card">
             <div class="card-header">Fleet Status</div>
-            <div class="card-body">
-                asdf
+            <div class="card-body" *ngIf="pieChartDisplay">
+                <apx-chart id="chartoptions" [series]="chartOptions1.series" [chart]="chartOptions1.chart" [labels]="chartOptions1.labels"
+                [title]="chartOptions1.title" [theme]="chartOptions1.theme" [fill]="chartOptions1.fill"
+                [yaxis]="chartOptions1.yaxis" [stroke]="chartOptions1.stroke" [legend]="chartOptions1.legend"
+                [plotOptions]="chartOptions1.plotOptions"></apx-chart>
             </div>
         </div>
         <div class="card plain-card mb-3">
@@ -40,7 +43,7 @@
                         <p>POl Alert</p>
                         <small>In/Out of prohibited Geo-fence</small>
                         <div class="alerts alert-violet">
-                            <h4>222</h4>
+                            <h4>{{this.pOIAlertData[0]?.poiVehicles||0}}</h4>
                             <small>Alerts</small>
                         </div>
                     </div>
@@ -67,12 +70,12 @@
                             <div class="col-6">
                                 <img src="assets/images/Dashboard/Reminder-Due.svg">
                                 <small>Due</small>
-                                <h3>32</h3>
+                                <h3>{{SIMRenewalReminderData[0]?.due||0}}</h3>
                             </div>
                             <div class="col-6">
                                 <img src="assets/images/Dashboard/Reminder-overdue.svg">
                                 <small>Overdue</small>
-                                <h3>32</h3>
+                                <h3>{{SIMRenewalReminderData[0]?.overDue||0}}</h3>
                             </div>
                         </div>
                     </div>
@@ -82,7 +85,8 @@
                 <div class="card mb-3 plain-card">
                     <div class="card-header">Average Speed</div>
                     <div class="card-body">
-                        asdf
+                        <apx-chart [series]="chartOptions2.series" [chart]="chartOptions2.chart" [plotOptions]="chartOptions2.plotOptions"
+                            [labels]="chartOptions2.labels" [fill]="chartOptions2.fill"></apx-chart>
                     </div>
                 </div>
             </div>
@@ -90,7 +94,13 @@
                 <div class="card mb-3 plain-card">
                     <div class="card-header">Fastest Vehicle</div>
                     <div class="card-body">
-                        asdf
+                        <apx-chart
+                        [series]="chartOptions3.series"
+                        [chart]="chartOptions3.chart"
+                        [plotOptions]="chartOptions3.plotOptions"
+                        [labels]="chartOptions3.labels"
+                        [fill]="chartOptions3.fill"
+                      ></apx-chart>
                     </div>
                 </div>
             </div>
@@ -99,8 +109,9 @@
     <div class="col-sm-3">
         <div class="card plain-card mb-3">
             <div class="card-header">Vehicles - Last Updated</div>
-            <div class="card-body">
-                asdf
+            <div class="card-body" *ngIf="barChartDisplay">
+                <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [dataLabels]="chartOptions.dataLabels"
+                [plotOptions]="chartOptions.plotOptions" [xaxis]="chartOptions.xaxis"></apx-chart>
             </div>
         </div>
         <div class="card plain-card">
