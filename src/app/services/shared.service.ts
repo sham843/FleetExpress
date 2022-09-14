@@ -24,10 +24,10 @@ export class SharedService {
     var canv = document.createElement("canvas");
     canv.id = "captcha1";
     canv.width = 120;
-    canv.height = 40;
+    canv.height = 50;
     var ctx:any = canv.getContext("2d");
-    ctx.font = "21px Arial";
-    ctx.fillText(captcha.join(""), 0, 30);
+    ctx.font = "23px Times New Roman";
+    ctx.fillText(captcha.join(""), 0, 32);
     this.codecareerPage = captcha.join("");
     let appendChild :any = document.getElementById("captcha");
     appendChild.appendChild(canv); 

@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule,  MAT_DATE_LOCALE } from '@angular/material/core';
 import { PartialLayoutComponent } from './partial/partial-layout/partial-layout.component';
@@ -19,6 +18,8 @@ import { AccessDenideComponent } from './error/access-denide/access-denide.compo
 import { PageNotFoundComponent } from './error/page-not-found/page-not-found.component';
 import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { ToastrModule } from 'ngx-toastr';
 // import { ToastrModule } from 'ngx-toastr';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -45,7 +46,14 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PerfectScrollbarModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxSpinnerModule,
+    ToastrModule.forRoot({
+      timeOut: 2000,
+      closeButton: true,
+      progressBar:true,
+      preventDuplicates: true,
+    }),
   ], 
   providers: [ {
     provide: PERFECT_SCROLLBAR_CONFIG,

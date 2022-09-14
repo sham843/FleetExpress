@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators,UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 import { CommanService } from 'src/app/services/comman.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ValidationService } from 'src/app/services/validation.service';
@@ -12,7 +14,7 @@ import { ValidationService } from 'src/app/services/validation.service';
 })
 export class LoginComponent implements OnInit {
   hide = true;
-  loginForm!:FormGroup | any;
+  loginForm!:UntypedFormGroup | any;
   isSubmitted:boolean=false;
   loginData:any;
   constructor(private fb: FormBuilder,
@@ -20,7 +22,9 @@ export class LoginComponent implements OnInit {
     public valService:ValidationService,
     private comman:CommanService,
     private router:Router,
-    private route:ActivatedRoute) { }
+    private route:ActivatedRoute,
+    private spinner:NgxSpinnerService,
+    private toastrService:ToastrService) { }
 
   ngOnInit(): void {
     this.defaultLoginForm();
@@ -43,12 +47,13 @@ export class LoginComponent implements OnInit {
       console.log("invalid")
       return;
     }
-    /* else if (this.loginForm.value.recaptchaReactive !=  this.sharedService.checkvalidateCaptcha()){
-      // this.toastrService.error("Invalid Captcha. Please try Again");
+   /*  else if (this.loginForm.value.recaptchaReactive !=  this.sharedService.checkvalidateCaptcha()){
+      alert("Invalid Captcha. Please try Again");
 
     } */
 
-    else {
+    // else {
+      // this.spinner.show();
       this.loginData = this.loginForm.value;
       this.comman.setHttp('get', 'login/login-web?'+'UserName=' + this.loginData.username.trim() + '&Password=' + this.loginData.password.trim(), false, false, false, 'vehicletrackingBaseUrlApi');
       this.comman.getHttp().subscribe((res: any) => {
@@ -56,15 +61,14 @@ export class LoginComponent implements OnInit {
           sessionStorage.setItem('loginDetails', JSON.stringify(res));
           // sessionStorage.setItem('loginDateTime', this.date)
           this.router.navigate(['../dashboard'], { relativeTo: this.route })
-          // this.toastrService.success(res.statusMessage)
-          // this.spinner.hide();
+          this.toastrService.success(res.statusMessage)
         }
         else {
-          // this.spinner.hide();
-          // this.toastrService.error(res.statusMessage)
+          this.spinner.hide();
+          this.toastrService.error(res.statusMessage)
         }
       })
-    }
+    // }
 }
 get f(){
   return this.loginForm.controls;

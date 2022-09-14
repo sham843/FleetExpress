@@ -1,0 +1,29 @@
+#profile-details{
+    margin-top: -70px;
+}
+#profile-details .profile-pic{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-top: -40px;
+    border:solid 7px #fff;
+}
+#profile-details .name,
+#profile-details .desi{
+    color: #fff;
+    margin-bottom:0;
+}
+#profile-details .desi{
+    font-size: 0.85rem;
+}
+#profile-details .text-label{
+    color: #757575;
+    margin-bottom:0;
+}
+#profile-details .text-data{
+    color: #000;
+    font-weight: 500;
+}
+#profile-details .text-data i{
+    font-size: 1rem;
+}
