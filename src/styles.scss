@@ -173,12 +173,9 @@ mat-form-field{
   transition:all 1s ease-in-out;
 }
 #captcha {
-  margin-left: -25px;
-  margin-top: 2px;
-  background-image: url(assets/captcha-bg.jpg);
-  padding-left: 3px;
-  /* width: 85%; */
-  height: 34px;
+  background-image: url('assets/images/captcha-bg.jpg');
+  height: 50px;
+  margin-bottom:18px;
 }
 .mat-menu-content,
 .mat-menu-content:not(:empty){
@@ -286,4 +283,7 @@ mat-form-field{
 }
 .card-fullheight .btn{
   font-size: 0.85rem;
+}
+.mat-slider.mat-accent .mat-slider-track-fill, .mat-slider.mat-accent .mat-slider-thumb, .mat-slider.mat-accent .mat-slider-thumb-label{
+  background-color: var(--main-color) !important;
 }

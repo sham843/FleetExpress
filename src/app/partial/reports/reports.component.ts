@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { CommanService } from 'src/app/services/comman.service';
 import { ExcelPdfDownloadedService } from 'src/app/services/excel-pdf-downloaded.service';
@@ -18,7 +18,7 @@ interface timePeriodArray {
   styleUrls: ['./reports.component.scss']
 })
 export class ReportsComponent implements OnInit {
-  reportForm!: FormGroup;
+  reportForm!: UntypedFormGroup;
   formData: any;
   maxEndDate: any = new Date();
   EndDateFilter: any;
@@ -38,7 +38,7 @@ export class ReportsComponent implements OnInit {
   tabArrayData: any[] = [];
   selectedIndex: any;
   get f() { return this.reportForm.controls };
-  constructor(private fb: FormBuilder, private reportsService: ReportsService, private comman: CommanService,
+  constructor(private fb: UntypedFormBuilder, private reportsService: ReportsService, private comman: CommanService,
     private excelService: ExcelPdfDownloadedService, private datepipe: DatePipe) { }
 
   ngOnInit(): void {
