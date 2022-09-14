@@ -20,7 +20,8 @@ import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrModule } from 'ngx-toastr';
-// import { ToastrModule } from 'ngx-toastr';
+import { AgmCoreModule } from '@agm/core';
+// import { ToastrModule } from 'ngx-toastr';npm i @agm/core
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -53,6 +54,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       closeButton: true,
       progressBar:true,
       preventDuplicates: true,
+    }),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyAkNBALkBX7trFQFCrcHO2I85Re2MmzTo8',
     }),
   ], 
   providers: [ {

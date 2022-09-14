@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { UserManagementSystemRoutingModule } from './user-management-system-routing.module';
 import { UserManagementSystemComponent } from './user-management-system.component';
 import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,10 @@ import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.mo
   imports: [
     CommonModule,
     UserManagementSystemRoutingModule,
-    MaterialModule
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule
+
   ]
 })
 export class UserManagementSystemModule { }
