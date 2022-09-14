@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit {
   SIMRenewalReminderData: any[] = [];
   barChartDisplay: boolean = false;
   pieChartDisplay: boolean = false;
-
+  maxSpeedObj:any;
   constructor(private cs: CommanService) {
     this.chartOptions = {
       series: [],
@@ -199,12 +199,16 @@ export class DashboardComponent implements OnInit {
 
   getvehicleAllData() {
     this.vehicleAllData = [];
-    this.cs.setHttp('get', 'dashboard/get-vehicle-current-location-list?VehicleNo=' + '&UserId=' + this.cs.getUserId() + '&GpsStatus=', true, false, false, 'vehicletrackingBaseUrlApi');
+    this.maxSpeedObj=[];
+    this.cs.setHttp('get', 'dashboard/get-vehicle-current-location-list?VehicleNo=' + '&UserId=' + this.cs.getUserId() + '&GpsStatus=Running', true, false, false, 'vehicletrackingBaseUrlApi');
     this.cs.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
         this.vehicleAllData = responseData.responseData
         this.vehicleAllData.sort((a, b) => { return b.speed - a.speed; });
         const items = this.vehicleAllData.slice(0, 10);
+        const maxSpeed=Math.max(...this.vehicleAllData.map(o => o.speed));
+        this.maxSpeedObj=this.vehicleAllData.find(x=>x.speed=maxSpeed)
+        console.log(this.maxSpeedObj);
         this.getBarChartData(items);
       }
       else if (responseData.statusCode === "409") {
