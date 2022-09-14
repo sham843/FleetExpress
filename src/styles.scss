@@ -32,8 +32,8 @@ body { margin: 0; font-family: 'Poppins', "Helvetica Neue", sans-serif;backgroun
     --main-color:rgb(60, 142, 249);
     --main-light-color:rgb(60, 142, 249, 0.2);
     --main-dark-color:rgb(1, 91, 208);
-    --main-gradient:linear-gradient(90deg, rgba(60,142,249,1) 0%, rgba(47,199,170,1) 100%);;
-    --main-light-gradient:linear-gradient(90deg, rgba(60,142,249,0.2) 0%, rgba(47,199,170,0.2) 100%);;
+    --main-gradient:linear-gradient(90deg, rgba(60,142,249,1) 0%, rgba(47,199,170,1) 100%);
+    --main-light-gradient:linear-gradient(90deg, rgba(60,142,249,0.2) 0%, rgba(47,199,170,0.2) 100%);
   }
   .light-mode{
     --bg-color:rgb(255,255,255);
@@ -125,6 +125,12 @@ body { margin: 0; font-family: 'Poppins', "Helvetica Neue", sans-serif;backgroun
   font-size: 0.85rem;
   font-weight: 500;
   margin-bottom: 5px;
+}
+.form-container .form-switch{
+  font-size: 0.85rem;
+}
+.form-container .form-switch .form-check-input{
+  font-size: 1.1rem;
 }
 .mat-option-text,
 .mat-select-value-text,
@@ -295,7 +301,6 @@ mat-form-field{
   border-radius: 0.375rem;
   border: 1px solid rgba(220,53,69,0.05);
   padding: 10px;
-  color: rgba(220,53,69,1);
 }
 .popover-body p{
   font-size: 0.75rem;
