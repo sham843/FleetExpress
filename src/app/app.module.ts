@@ -19,6 +19,7 @@ import { AccessDenideComponent } from './error/access-denide/access-denide.compo
 import { PageNotFoundComponent } from './error/page-not-found/page-not-found.component';
 import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // import { ToastrModule } from 'ngx-toastr';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -45,7 +46,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PerfectScrollbarModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ], 
   providers: [ {
     provide: PERFECT_SCROLLBAR_CONFIG,
