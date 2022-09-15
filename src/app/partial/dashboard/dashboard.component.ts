@@ -64,16 +64,17 @@ export class DashboardComponent implements OnInit {
         type: 'donut'
       },
       labels: ["Idle", "Stopped", "Running", "Offline"],
-      theme: {
-        monochrome: {
-          enabled: true,
-          color: '#323095',
-          shadeTo: 'light',
-          shadeIntensity: 0.65
-        }
-      },
+      // theme: {
+      //   monochrome: {
+      //     enabled: true,
+      //     color: '#323095',
+      //     shadeTo: 'light',
+      //     shadeIntensity: 0.65
+      //   }
+      // },
       fill: {
         type: "solid",
+        colors: ["#00E396", "#F9CE1D", "#D4526E", "#D7263D"]
       },
       legend: {
         show: true,

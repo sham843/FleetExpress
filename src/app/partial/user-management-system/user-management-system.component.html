@@ -10,16 +10,22 @@
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="pills-user-tab" data-bs-toggle="pill"
                                 data-bs-target="#pills-user" type="button" role="tab" aria-controls="pills-user"
-                                aria-selected="true">
+                                aria-selected="true" (click)="selectedTab('users')">
                                 Users
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="pills-role-tab" data-bs-toggle="pill" data-bs-target="#pills-role"
-                                type="button" role="tab" aria-controls="pills-role" aria-selected="false">
+                            <button class="nav-link" id="pills-user-tab" data-bs-toggle="pill" data-bs-target="#pills-user"
+                                type="button" role="tab" aria-controls="pills-user" aria-selected="false" (click)="selectedTab('role')">
                                 Role
                             </button>
                         </li>
+                        <!-- <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-role-tab" data-bs-toggle="pill" data-bs-target="#pills-role"
+                                type="button" role="tab" aria-controls="pills-role" aria-selected="false" (click)="selectedTab('role')">
+                                Role
+                            </button>
+                        </li> -->
                     </ul>
                 </div>
                 <div class="col-sm-4">
@@ -37,18 +43,25 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="card card-body plain-card card-fullheight">
-                                <div class="text-center justify-content-center">
+                                <div class="text-center justify-content-center" *ngIf="showTab=='users'">
                                     <img src="../../../assets/images/No-Users-Created.svg" alt="">
                                     <p class="my-3">No Users Created</p>
                                     <button class="btn btn-main" data-bs-toggle="modal" data-bs-target="#AddUserModal">
                                         New User
                                     </button>
                                 </div>
+                                <div class="text-center justify-content-center" *ngIf="showTab=='role'">
+                                    <img src="../../../assets/images/No-Users-Role-Created.svg" alt="">
+                                    <p class="my-3">No Users Role Created</p>
+                                    <button class="btn btn-main" data-bs-toggle="modal" data-bs-target="#AddRoleModal">
+                                        New Role
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" >
                     <div class="col-sm-12">
                         <div class="card form-card">
                             <div class="card-header">
@@ -56,41 +69,47 @@
                                     <div class="col-sm-4">
                                         <div class="row align-items-center">
                                             <div class="col-sm-auto">
-                                                User List
+                                                {{showTab=='users'?'User':'Role'}} List
                                             </div>
                                             <div class="col-sm-8">
                                                 <div class="input-group">
                                                     <div class="input-group-text"><i
                                                             class="fa-solid fa-magnifying-glass"></i></div>
-                                                    <input type="text" class="form-control" placeholder="Driver Name">
+                                                    <input type="text" class="form-control" placeholder="Search">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-4 text-end">
-                                        <button class="btn btn-add" data-bs-toggle="modal"
+                                        <button *ngIf="showTab=='users'" class="btn btn-add" data-bs-toggle="modal"
                                             data-bs-target="#AddUserModal">
                                             <i class="fa-solid fa-plus"></i>
                                         </button>
+                                        <button *ngIf="showTab=='role'" class="btn btn-add" data-bs-toggle="modal"
+                                            data-bs-target="#AddRoleModal">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                        
                                     </div>
                                 </div>
                             </div>
                             <div class="card-body p-0">
                                 <table class="table dashboard-table">
                                     <thead>
-                                        <tr>
-                                            <th class="srno">SR.NO</th>
+                                        <tr >
+                                            <th *ngFor="let element of tableLables" [ngClass]="{ 'srno': element.id==1 }">{{element.label}}</th>
+                                            <!-- <th class="srno">SR.NO</th>
                                             <th>NAME</th>
                                             <th>MOBILE NUMBER</th>
                                             <th>ROLE</th>
                                             <th>BLOCK/UNBLOCK</th>
-                                            <th>ACTION</th>
-                                            <th>
+                                            <th>ACTION</th> -->
+                                            <th *ngIf="showTab=='users'">
                                                 <mat-checkbox></mat-checkbox>
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody *ngIf="showTab=='users'">
                                         <tr>
                                             <td>1</td>
                                             <td>
@@ -112,8 +131,28 @@
                                                     </button>
                                                 </div>
                                             </td>
-                                            <td>
+                                            <td *ngIf="showTab=='users'">
                                                 <mat-checkbox></mat-checkbox>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="showTab=='role'">
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Manager</td>
+                                            <td>
+                                                Create Vehicle
+                                            </td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <button class="btn btn-light-main btn-icon me-2"
+                                                        data-bs-toggle="modal" data-bs-target="#AddRoleModal">
+                                                        <i class="fa-regular fa-pen-to-square"></i>
+                                                    </button>
+                                                    <button class="btn bg-danger bg-opacity-10 text-danger">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -164,17 +203,22 @@
                                             data-bs-target="#AddRoleModal">
                                             <i class="fa-solid fa-plus"></i>
                                         </button>
+                                        <button class="btn btn-add" data-bs-toggle="modal"
+                                        data-bs-target="#AddRoleModal">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-body p-0">
                                 <table class="table dashboard-table">
                                     <thead>
-                                        <tr>
-                                            <th class="srno">SR.NO</th>
+                                        <tr *ngFor="let element of tableLables">
+                                            <th>{{element.labels}}</th>
+                                            <!-- <th class="srno">SR.NO</th>
                                             <th>ROLE NAME</th>
                                             <th>ASSIGN RESPONSIBILITIES</th>
-                                            <th>ACTION</th>
+                                            <th>ACTION</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -211,6 +255,7 @@
 <div class="modal fade modal-lg" id="AddUserModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
     tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
+        <form [formGroup]="userForm" (ngSubmit)="submitUser()"></form>
         <div class="modal-content">
             <div class="modal-header bg-light-gradient text-dark">
                 <p class="modal-title mb-0" id="exampleModalToggleLabel">Create User</p>

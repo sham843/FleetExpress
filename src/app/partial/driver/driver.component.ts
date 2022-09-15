@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-driver',
@@ -6,10 +7,27 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./driver.component.scss']
 })
 export class DriverComponent implements OnInit {
-
-  constructor() { }
+  driverRegForm !: FormGroup;
+  get f() { return this.driverRegForm.controls };
+  constructor(private fb:FormBuilder) { }
 
   ngOnInit(): void {
+    this.getRegFormData();
   }
+  getRegFormData() {
+    this.driverRegForm = this.fb.group({
+      profileImage: [],
+      mobileNumber: [],
+      fName: [],
+      lName: [],
+      licenceNumber: [],
+      aadharNumber: [],
+      dopanNumberb: [],
+      presentAddress: [],
+      permanentAddress: []
+    })
+  }
+  SearchReport(){
 
+  }
 }

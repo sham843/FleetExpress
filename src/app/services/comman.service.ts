@@ -106,8 +106,8 @@ export class CommanService {
     this.httpObj.type = type;
     this.httpObj.url = this.getBaseurl(baseUrl) + url;
     if (isHeader) {
-      let tempObj: any = {
-        "UserId":this.getUserId(),
+      let tempObj: any = {  
+        "UserId":this.getUserId().toString(),
         "Authorization": "Bearer " +this.userObjData.responseData3.accessToken // token set
       };
 
