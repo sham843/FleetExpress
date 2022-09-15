@@ -193,16 +193,37 @@ mat-form-field{
     line-height: 36px !important;
     height: 36px !important;
 }
+.page-heading {
+  color:#2F2E5D;
+  font: normal normal normal 20px/30px;
+  margin-bottom:10px;
+}
+.display-bar{
+  background: var(--main-gradient);
+  height: 52.4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 0.375rem;
+  margin-bottom: 1rem;
+  color: #fff !important;
+  font-size: 1rem;
+  padding-inline: 1rem;
+}
 .dashboard-table{
   font-size: 0.85rem;
 }
 .dashboard-table th{
-  background-color:#eee;
+  background-color:#fff;
+  color: #ACACAC;
   font-weight: normal;
 }
 .dashboard-table th,
 .dashboard-table td{
   vertical-align: middle;
+}
+.dashboard-table td{
+  color: #6E6D80;
 }
 .dashboard-table td .btn-icon{
   font-size: 0.8rem;
@@ -225,13 +246,12 @@ mat-form-field{
 .dashboard-table .srno{
   width: 50px;
 }
-.form-card{
-  border: none;
-}
+
 .form-card .card-header{
   font-size: 0.85rem;
   font-weight: 600;
   border-bottom: none;
+  background-color:#F1F1F1;
 }
 .form-card .card-header .btn-add{
   font-size: 0.85rem;
