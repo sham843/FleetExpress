@@ -95,7 +95,7 @@ body { margin: 0; font-family: 'Poppins', "Helvetica Neue", sans-serif;backgroun
   color: #333;
 }
 .report-list .list-group-item{
-  padding:15px 10px 15px 0px;
+  padding:15px 10px 15px 25px;
   background-color:transparent;
 }
 .report-list .list-group-item.active{
@@ -103,15 +103,16 @@ body { margin: 0; font-family: 'Poppins', "Helvetica Neue", sans-serif;backgroun
   border-bottom: solid 1px rgba(0,0,0,0.125);
   border-top: none;
 }
-.report-list .list-group-item .report-name{
-  padding-left:15px;
+.report-list .list-group-item{
+  position: relative;
 }
-.report-list .list-group-item .report-name{
-  border-left: solid 3px transparent;
-}
-.report-list .list-group-item:hover .report-name,
-.report-list .list-group-item.active .report-name{
-  border-left: solid 3px var(--main-color);
+.report-list .list-group-item:hover:before,
+.report-list .list-group-item.active:before{
+  position: absolute;
+  content: '';
+  border-left: solid 4px var(--main-color);
+  left: -3px;
+  height: 45%;
 }
 .report-list .list-group-item:hover p,
 .report-list .list-group-item.active p{
