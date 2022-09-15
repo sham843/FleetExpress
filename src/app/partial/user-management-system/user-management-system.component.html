@@ -28,174 +28,178 @@
                 </div>
             </div>
         </div>
-        <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="pills-user" role="tabpanel" aria-labelledby="pills-user-tab"
-                tabindex="0">
-                <div class="card card-body plain-card p-0">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="card card-body plain-card card-fullheight">
-                                <div class="text-center justify-content-center">
-                                    <img src="../../../assets/images/No-Users-Created.svg" alt="">
-                                    <p class="my-3">No Users Created</p>
-                                    <button class="btn btn-main" data-bs-toggle="modal" data-bs-target="#AddUserModal">
-                                        New User
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="card form-card">
-                            <div class="card-header">
-                                <div class="row justify-content-between">
-                                    <div class="col-sm-4">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-auto">
-                                                User List
-                                            </div>
-                                            <div class="col-sm-8">
-                                                <div class="input-group">
-                                                    <div class="input-group-text"><i
-                                                            class="fa-solid fa-magnifying-glass"></i></div>
-                                                    <input type="text" class="form-control" placeholder="Driver Name">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4 text-end">
-                                        <button class="btn btn-add" data-bs-toggle="modal"
-                                            data-bs-target="#AddUserModal">
-                                            <i class="fa-solid fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body p-0">
-                                <table class="table dashboard-table">
-                                    <thead>
-                                        <tr>
-                                            <th class="srno">SR.NO</th>
-                                            <th>NAME</th>
-                                            <th>MOBILE NUMBER</th>
-                                            <th>ROLE</th>
-                                            <th>BLOCK/UNBLOCK</th>
-                                            <th>ACTION</th>
-                                            <th>
-                                                <mat-checkbox></mat-checkbox>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>
-                                                Nilesh Rajashi
-                                            </td>
-                                            <td>8669264767</td>
-                                            <td>Manager</td>
-                                            <td>
-                                                <mat-slide-toggle></mat-slide-toggle>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex">
-                                                    <button class="btn btn-light-main btn-icon me-2"
-                                                        data-bs-toggle="modal" data-bs-target="#AddUserModal">
-                                                        <i class="fa-regular fa-pen-to-square"></i>
-                                                    </button>
-                                                    <button class="btn bg-danger bg-opacity-10 text-danger">
-                                                        <i class="fa-solid fa-trash-can"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <mat-checkbox></mat-checkbox>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        
 
-            <div class="tab-pane fade" id="pills-role" role="tabpanel" aria-labelledby="pills-role-tab" tabindex="0">
-                <div class="card card-body plain-card">
+        <div class="card card-body border-0">
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-user" role="tabpanel" aria-labelledby="pills-user-tab"
+                    tabindex="0">
+                    <div class="card card-body plain-card">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card card-body plain-card card-fullheight">
+                                    <div class="text-center justify-content-center">
+                                        <img src="../../../assets/images/No-Users-Created.svg" alt="">
+                                        <p class="my-3">No Users Created</p>
+                                        <button class="btn btn-main" data-bs-toggle="modal" data-bs-target="#AddUserModal">
+                                            New User
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <div class="card card-body plain-card card-fullheight">
-                                <div class="text-center justify-content-center">
-                                    <img src="../../../assets/images/No-Users-Role-Created.svg" alt="">
-                                    <p class="my-3">No Users Role Created</p>
-                                    <button class="btn btn-main" data-bs-toggle="modal" data-bs-target="#AddRoleModal">
-                                        New Role
-                                    </button>
+                            <div class="card form-card">
+                                <div class="card-header">
+                                    <div class="row justify-content-between">
+                                        <div class="col-sm-4">
+                                            <div class="row align-items-center">
+                                                <div class="col-sm-auto">
+                                                    User List
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group">
+                                                        <div class="input-group-text"><i
+                                                                class="fa-solid fa-magnifying-glass"></i></div>
+                                                        <input type="text" class="form-control" placeholder="Driver Name">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-end">
+                                            <button class="btn btn-add" data-bs-toggle="modal"
+                                                data-bs-target="#AddUserModal">
+                                                <i class="fa-solid fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table dashboard-table">
+                                        <thead>
+                                            <tr>
+                                                <th class="srno">SR.NO</th>
+                                                <th>NAME</th>
+                                                <th>MOBILE NUMBER</th>
+                                                <th>ROLE</th>
+                                                <th>BLOCK/UNBLOCK</th>
+                                                <th>ACTION</th>
+                                                <th>
+                                                    <mat-checkbox></mat-checkbox>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>
+                                                    Nilesh Rajashi
+                                                </td>
+                                                <td>8669264767</td>
+                                                <td>Manager</td>
+                                                <td>
+                                                    <mat-slide-toggle></mat-slide-toggle>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                        <button class="btn btn-light-main btn-icon me-2"
+                                                            data-bs-toggle="modal" data-bs-target="#AddUserModal">
+                                                            <i class="fa-regular fa-pen-to-square"></i>
+                                                        </button>
+                                                        <button class="btn bg-danger bg-opacity-10 text-danger">
+                                                            <i class="fa-solid fa-trash-can"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <mat-checkbox></mat-checkbox>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="card form-card">
-                            <div class="card-header">
-                                <div class="row justify-content-between">
-                                    <div class="col-sm-4">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-auto">
-                                                Role List
-                                            </div>
-                                            <div class="col-sm-8">
-                                                <div class="input-group">
-                                                    <div class="input-group-text"><i
-                                                            class="fa-solid fa-magnifying-glass"></i></div>
-                                                    <input type="text" class="form-control" placeholder="Search">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4 text-end">
-                                        <button class="btn btn-add" data-bs-toggle="modal"
-                                            data-bs-target="#AddRoleModal">
-                                            <i class="fa-solid fa-plus"></i>
+    
+                <div class="tab-pane fade" id="pills-role" role="tabpanel" aria-labelledby="pills-role-tab" tabindex="0">
+                    <div class="card card-body plain-card">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card card-body plain-card card-fullheight">
+                                    <div class="text-center justify-content-center">
+                                        <img src="../../../assets/images/No-Users-Role-Created.svg" alt="">
+                                        <p class="my-3">No Users Role Created</p>
+                                        <button class="btn btn-main" data-bs-toggle="modal" data-bs-target="#AddRoleModal">
+                                            New Role
                                         </button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-body p-0">
-                                <table class="table dashboard-table">
-                                    <thead>
-                                        <tr>
-                                            <th class="srno">SR.NO</th>
-                                            <th>ROLE NAME</th>
-                                            <th>ASSIGN RESPONSIBILITIES</th>
-                                            <th>ACTION</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Manager</td>
-                                            <td>
-                                                Create Vehicle
-                                            </td>
-                                            <td>
-                                                <div class="d-flex">
-                                                    <button class="btn btn-light-main btn-icon me-2"
-                                                        data-bs-toggle="modal" data-bs-target="#AddRoleModal">
-                                                        <i class="fa-regular fa-pen-to-square"></i>
-                                                    </button>
-                                                    <button class="btn bg-danger bg-opacity-10 text-danger">
-                                                        <i class="fa-solid fa-trash-can"></i>
-                                                    </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card form-card">
+                                <div class="card-header">
+                                    <div class="row justify-content-between">
+                                        <div class="col-sm-4">
+                                            <div class="row align-items-center">
+                                                <div class="col-sm-auto">
+                                                    Role List
                                                 </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group">
+                                                        <div class="input-group-text"><i
+                                                                class="fa-solid fa-magnifying-glass"></i></div>
+                                                        <input type="text" class="form-control" placeholder="Search">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-end">
+                                            <button class="btn btn-add" data-bs-toggle="modal"
+                                                data-bs-target="#AddRoleModal">
+                                                <i class="fa-solid fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table dashboard-table">
+                                        <thead>
+                                            <tr>
+                                                <th class="srno">SR.NO</th>
+                                                <th>ROLE NAME</th>
+                                                <th>ASSIGN RESPONSIBILITIES</th>
+                                                <th>ACTION</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>Manager</td>
+                                                <td>
+                                                    Create Vehicle
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                        <button class="btn btn-light-main btn-icon me-2"
+                                                            data-bs-toggle="modal" data-bs-target="#AddRoleModal">
+                                                            <i class="fa-regular fa-pen-to-square"></i>
+                                                        </button>
+                                                        <button class="btn bg-danger bg-opacity-10 text-danger">
+                                                            <i class="fa-solid fa-trash-can"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
