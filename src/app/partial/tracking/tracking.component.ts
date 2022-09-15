@@ -11,6 +11,7 @@ interface Food {
   styleUrls: ['./tracking.component.scss']
 })
 export class TrackingComponent implements OnInit {
+  popContent:any = "Hello World";
   lat: number = 52.488328;
   lng: number = 8.717017;
   foods: Food[] = [
