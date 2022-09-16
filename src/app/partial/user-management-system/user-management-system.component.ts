@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, UntypedFormControl, Validators} from '@angular/forms';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { CommanService } from 'src/app/services/comman.service';
@@ -33,7 +34,8 @@ export class UserManagementSystemComponent implements OnInit {
     private toastrService:ToastrService,
     private fb:FormBuilder,
     public validationService:ValidationService,
-    private error:ErrorsService) { }
+    private error:ErrorsService,
+    private spinner:NgxSpinnerService) { }
 
   ngOnInit(): void {
     this.getRegFormData();
@@ -137,7 +139,7 @@ export class UserManagementSystemComponent implements OnInit {
     const userFormData=this.userForm.value;
       let vehiclearray=[];
       for(let i=0;i< userFormData.assignedVehicle.length ; i++){
-        vehiclearray.push(this.VehicleDtArr.filter(x=>x.vehicleRegistrationNo==userFormData?.assignedVehicle[i]));
+        vehiclearray.push(this.VehicleDtArr.find(x=>x.vehicleRegistrationNo==userFormData?.assignedVehicle[i]));
       }
     const obj = {
       "id": 0,
@@ -155,19 +157,26 @@ export class UserManagementSystemComponent implements OnInit {
       "vehicleOwnerId": 0,
       "vehicle": vehiclearray
     }
-    // this.common.setHttp('post', 'userdetail/save-update-user-for-tracking', true, JSON.stringify(obj), false, 'vehicletrackingBaseUrlApi');
-    // this.subscription = this.common.getHttp().subscribe({
-    //   next: (res: any) => {
-    //     if (res.statusCode === "200") {
-    //       this.roleDtArr = res.responseData;
-    //     } else {
-    //       if (res.statusCode != "404") {
-    //         this.error.handelError(res.statusCode)
-    //       }
-    //     }
-    //   },
-    //   error: ((error: any) => { this.error.handelError(error.statusCode) })
-    // });
+    console.log(obj)
+    this.spinner.show();
+    this.common.setHttp('post', 'userdetail/save-update-user-for-tracking', true, JSON.stringify(obj), false, 'vehicletrackingBaseUrlApi');
+    this.subscription = this.common.getHttp().subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        if (res.statusCode === "200") {
+          this.roleDtArr = res.responseData;
+        } else {
+          if (res.statusCode != "404") {
+            this.error.handelError(res.statusCode)
+          }
+        }
+      },
+      error: ((error: any) => { 
+        this.spinner.hide();
+        this.error.handelError(error.statusCode)
+       } )
+      
+    });
   }
 
   }
