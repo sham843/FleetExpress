@@ -1,9 +1,9 @@
-<p class="fw-bold small mb-2">Manage Vehicle</p>
+<p class="page-heading">Manage Vehicle</p>
 
 <div class="row">
     <div class="col-sm-12">
-        <div class="bg-main-gradient py-2 px-3 rounded mb-3">
-            <div class="d-flex small">
+        <div class="display-bar">
+            <div class="d-flex">
                 <div class="pe-3">Total Vehicles</div>
                 <div class="fw-bold">220</div>
             </div>
@@ -13,97 +13,99 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <div class="card form-card">
-            <div class="card-header">
-                <div class="row justify-content-between">
-                    <div class="col-sm-4">
-                        <div class="row align-items-center">
-                            <div class="col-sm-auto">
-                                Vehicle List
-                            </div>
-                            <div class="col-sm-8">
-                                <div class="input-group">
-                                    <div class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></div>
-                                    <input type="text" class="form-control" placeholder="Driver Name">
+        <div class="card card-body border-0">
+            <div class="card form-card">
+                <div class="card-header">
+                    <div class="row justify-content-between">
+                        <div class="col-sm-4">
+                            <div class="row align-items-center">
+                                <div class="col-sm-auto">
+                                    Vehicle List
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="input-group">
+                                        <div class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></div>
+                                        <input type="text" class="form-control" placeholder="Driver Name">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="card-body p-0">
-                <table class="table dashboard-table mb-0">
-                    <thead>
-                        <tr>
-                            <th class="srno">SR.NO.</th>
-                            <th class="srno"></th>
-                            <th>VEHICLE NO.</th>
-                            <th>DRIVER NAME</th>
-                            <th>MOBILE NO</th>
-                            <th>UPDATE DRIVER</th>
-                            <th>BLOCK/UNBLCOK</th>
-                            <th>ACTION</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td><img src="../../../assets/images/Idle-vehicle.svg" alt=""></td>
-                            <td>
-                                <span>MH12 AB 1234</span>
-                            </td>
-                            <td>
-                                <span>Tushar Jadhav</span>
-                            </td>
-                            <td>8669264767</td>
-                            <td>
-                                <button class="btn btn-outline-primary" data-bs-toggle="modal" id="openmodal"
-                                    data-bs-target="#AssignDriverModal">
-                                    Assign Driver
-                                </button>
-                            </td>
-                            <td>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                                  </div>
-                            </td>
-                            <td>
-                                <button class="btn btn-light-main btn-icon" data-bs-toggle="modal"
-                                    data-bs-target="#EditVehicleDetailsModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td><img src="../../../assets/images/Idle-vehicle.svg" alt=""></td>
-                            <td>
-                                <span>MH12 AB 1234</span>
-                            </td>
-                            <td>
-                                <span>Tushar Jadhav</span>
-                            </td>
-                            <td>8669264767</td>
-                            <td>
-                                <button class="btn btn-outline-warning" data-bs-toggle="modal" id="openmodal"
-                                    data-bs-target="#AssignDriverModal">
-                                    Unassign Driver
-                                </button>
-                            </td>
-                            <td>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                                  </div>
-                            </td>
-                            <td>
-                                <button class="btn btn-light-main btn-icon" data-bs-toggle="modal"
-                                    data-bs-target="#EditVehicleDetailsModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="card-body p-0">
+                    <table class="table dashboard-table mb-0">
+                        <thead>
+                            <tr>
+                                <th class="srno">SR.NO.</th>
+                                <th class="srno"></th>
+                                <th>VEHICLE NO.</th>
+                                <th>DRIVER NAME</th>
+                                <th>MOBILE NO</th>
+                                <th>UPDATE DRIVER</th>
+                                <th>BLOCK/UNBLCOK</th>
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><img src="../../../assets/images/Idle-vehicle.svg" alt=""></td>
+                                <td>
+                                    <span>MH12 AB 1234</span>
+                                </td>
+                                <td>
+                                    <span>Tushar Jadhav</span>
+                                </td>
+                                <td>8669264767</td>
+                                <td>
+                                    <button class="btn btn-outline-primary" data-bs-toggle="modal" id="openmodal"
+                                        data-bs-target="#AssignDriverModal">
+                                        Assign Driver
+                                    </button>
+                                </td>
+                                <td>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                                      </div>
+                                </td>
+                                <td>
+                                    <button class="btn btn-light-main btn-icon" data-bs-toggle="modal"
+                                        data-bs-target="#EditVehicleDetailsModal">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td><img src="../../../assets/images/Idle-vehicle.svg" alt=""></td>
+                                <td>
+                                    <span>MH12 AB 1234</span>
+                                </td>
+                                <td>
+                                    <span>Tushar Jadhav</span>
+                                </td>
+                                <td>8669264767</td>
+                                <td>
+                                    <button class="btn btn-outline-warning" data-bs-toggle="modal" id="openmodal"
+                                        data-bs-target="#AssignDriverModal">
+                                        Unassign Driver
+                                    </button>
+                                </td>
+                                <td>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                                      </div>
+                                </td>
+                                <td>
+                                    <button class="btn btn-light-main btn-icon" data-bs-toggle="modal"
+                                        data-bs-target="#EditVehicleDetailsModal">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

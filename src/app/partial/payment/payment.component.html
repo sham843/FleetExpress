@@ -1,8 +1,8 @@
-<p class="fw-bold small mb-2">Payment</p>
+<p class="page-heading">Payment</p>
 
 <div class="row">
     <div class="col-sm-12">
-        <div class="bg-main-gradient py-2 px-3 rounded mb-3">
+        <div class="display-bar">
             <ul class="nav nav-pills mb-0" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="pills-payment-tab" data-bs-toggle="pill"
@@ -17,59 +17,61 @@
             </ul>
         </div>
 
-        <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="pills-stoppage">
-                <div class="card form-card">
-                    <div class="card-header">
-                        <div class="row justify-content-between">
-                            <div class="col-sm-4">
-                                <div class="row align-items-center">
-                                    <div class="col-sm-auto">
-                                        Payment List
-                                    </div>
-                                    <div class="col-sm-8">
-                                        <div class="input-group">
-                                            <div class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></div>
-                                            <input type="text" class="form-control" placeholder="Search">
+        <div class="card card-body border-0">
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-stoppage">
+                    <div class="card form-card">
+                        <div class="card-header">
+                            <div class="row justify-content-between">
+                                <div class="col-sm-4">
+                                    <div class="row align-items-center">
+                                        <div class="col-sm-auto">
+                                            Payment List
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></div>
+                                                <input type="text" class="form-control" placeholder="Search">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-body p-0">
-                        <table class="table dashboard-table mb-0">
-                            <thead>
-                                <tr>
-                                    <th>SR.NO</th>
-                                    <th>VEHICLES.NO</th>
-                                    <th>NAME</th>
-                                    <th>MOBILE NUMBER</th>
-                                    <th>RATE</th>
-                                    <th>BASIC AMOUNT</th>
-                                    <th>GST(18%)</th>
-                                    <th>TRANSACTION COST (2.04%)</th>
-                                    <th>TOTAL AMOUNT</th>
-                                    <th>SELECT PAYMENT </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>mh 12 yt 1234</td>
-                                    <td>aABC</td>
-                                    <td>8669264767</td>
-                                    <td>3000/vehicle</td>
-                                    <td>3000</td>
-                                    <td>540</td>
-                                    <td>72.22</td>
-                                    <td>3,612.22</td>
-                                    <td>
-                                        <mat-checkbox class="example-margin"></mat-checkbox>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="card-body p-0">
+                            <table class="table dashboard-table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>SR.NO</th>
+                                        <th>VEHICLES.NO</th>
+                                        <th>NAME</th>
+                                        <th>MOBILE NUMBER</th>
+                                        <th>RATE</th>
+                                        <th>BASIC AMOUNT</th>
+                                        <th>GST(18%)</th>
+                                        <th>TRANSACTION COST (2.04%)</th>
+                                        <th>TOTAL AMOUNT</th>
+                                        <th>SELECT PAYMENT </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>mh 12 yt 1234</td>
+                                        <td>aABC</td>
+                                        <td>8669264767</td>
+                                        <td>3000/vehicle</td>
+                                        <td>3000</td>
+                                        <td>540</td>
+                                        <td>72.22</td>
+                                        <td>3,612.22</td>
+                                        <td>
+                                            <mat-checkbox class="example-margin"></mat-checkbox>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div class="form-container text-end m-3">
                         <button class="btn btn-main" data-bs-toggle="modal"
@@ -78,118 +80,118 @@
                         </button>
                     </div>
                 </div>
-            </div>
-            <div class="tab-pane fade active" id="pills-payment-history">
-                <div class="card border-0 form-card">
-                    <div class="card-header">
-                        <div class="row justify-content-between">
-                            <div class="col-sm-8">
-                                <div class="row align-items-center">
-                                    <div class="col-sm-auto">
-                                        Payment List
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <input type="date" class="form-control" placeholder="From Date">
-                                        <!-- <mat-form-field appearance="legacy" class="w-100">
-                                            <mat-label>From Date</mat-label>
-                                            <input matInput [matDatepicker]="fromdate">
-                                            <mat-datepicker-toggle matSuffix [for]="fromdate"></mat-datepicker-toggle>
-                                            <mat-datepicker #fromdate></mat-datepicker>
-                                        </mat-form-field> -->
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <input type="date" class="form-control" placeholder="To Date">
-                                        <!-- <mat-form-field appearance="legacy" class="w-100">
-                                            <mat-label>From Date</mat-label>
-                                            <input matInput [matDatepicker]="todate">
-                                            <mat-datepicker-toggle matSuffix [for]="todate"></mat-datepicker-toggle>
-                                            <mat-datepicker #todate></mat-datepicker>
-                                        </mat-form-field> -->
+                <div class="tab-pane fade active" id="pills-payment-history">
+                    <div class="card form-card">
+                        <div class="card-header">
+                            <div class="row justify-content-between">
+                                <div class="col-sm-8">
+                                    <div class="row align-items-center">
+                                        <div class="col-sm-auto">
+                                            Payment List
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="date" class="form-control" placeholder="From Date">
+                                            <!-- <mat-form-field appearance="standard" class="w-100">
+                                                <mat-label>From Date</mat-label>
+                                                <input matInput [matDatepicker]="fromdate">
+                                                <mat-datepicker-toggle matSuffix [for]="fromdate"></mat-datepicker-toggle>
+                                                <mat-datepicker #fromdate></mat-datepicker>
+                                            </mat-form-field> -->
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="date" class="form-control" placeholder="To Date">
+                                            <!-- <mat-form-field appearance="standard" class="w-100">
+                                                <mat-label>From Date</mat-label>
+                                                <input matInput [matDatepicker]="todate">
+                                                <mat-datepicker-toggle matSuffix [for]="todate"></mat-datepicker-toggle>
+                                                <mat-datepicker #todate></mat-datepicker>
+                                            </mat-form-field> -->
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-4 text-end">
-                                <button class="btn btn-outline-secondary btn-sm" [matMenuTriggerFor]="menu">
-                                    <i class="fa-solid fa-download"></i>
-                                </button>
-                                <mat-menu #menu="matMenu">
-                                    <button mat-menu-item>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>PDF</span>
-                                            <span class="text-danger"><i class="fa-solid fa-file-pdf"></i></span>
-                                        </div>
+                                <div class="col-sm-4 text-end">
+                                    <button class="btn btn-outline-secondary btn-sm" [matMenuTriggerFor]="menu">
+                                        <i class="fa-solid fa-download"></i>
                                     </button>
-                                    <button mat-menu-item>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>Excel</span>
-                                            <span class="text-success"><i class="fa-solid fa-file-excel"></i></span>
-                                        </div>
-                                    </button>
-                                </mat-menu>
+                                    <mat-menu #menu="matMenu">
+                                        <button mat-menu-item>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>PDF</span>
+                                                <span class="text-danger"><i class="fa-solid fa-file-pdf"></i></span>
+                                            </div>
+                                        </button>
+                                        <button mat-menu-item>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>Excel</span>
+                                                <span class="text-success"><i class="fa-solid fa-file-excel"></i></span>
+                                            </div>
+                                        </button>
+                                    </mat-menu>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-body p-0">
-                        <table class="table dashboard-table mb-0">
-                            <thead>
-                                <tr>
-                                    <th>SR.NO</th>
-                                    <th>TRANSACTION ID</th>
-                                    <th>NAME</th>
-                                    <th>NO OF VEHICLES</th>
-                                    <th>VEHICLE.NO</th>
-                                    <th>PAYMENT DATE</th>
-                                    <th>AMOUNT</th>
-                                    <th>STATUS</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>TXKFLRIGBNE1234566</td>
-                                    <td>Nilesh Rajashi</td>
-                                    <td>01</td>
-                                    <td>MH 12 YT 1234</td>
-                                    <td>31-8-2022</td>
-                                    <td>3,612.22</td>
-                                    <td>
-                                        <span class="text-success">Success</span>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>TXKFLRIGBNE1234566</td>
-                                    <td>Nilesh Rajashi</td>
-                                    <td>01</td>
-                                    <td>MH 12 YT 1234</td>
-                                    <td>31-8-2022</td>
-                                    <td>3,612.22</td>
-                                    <td>
-                                        <span class="text-danger">Failed</span>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>TXKFLRIGBNE1234566</td>
-                                    <td>Nilesh Rajashi</td>
-                                    <td>01</td>
-                                    <td>MH 12 YT 1234</td>
-                                    <td>31-8-2022</td>
-                                    <td>3,612.22</td>
-                                    <td>
-                                        <span class="text-warning">Pending</span>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-outline-warning btn-icon">
-                                            <i class="fa-solid fa-rotate"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="card-body p-0">
+                            <table class="table dashboard-table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>SR.NO</th>
+                                        <th>TRANSACTION ID</th>
+                                        <th>NAME</th>
+                                        <th>NO OF VEHICLES</th>
+                                        <th>VEHICLE.NO</th>
+                                        <th>PAYMENT DATE</th>
+                                        <th>AMOUNT</th>
+                                        <th>STATUS</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>TXKFLRIGBNE1234566</td>
+                                        <td>Nilesh Rajashi</td>
+                                        <td>01</td>
+                                        <td>MH 12 YT 1234</td>
+                                        <td>31-8-2022</td>
+                                        <td>3,612.22</td>
+                                        <td>
+                                            <span class="text-success">Success</span>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>TXKFLRIGBNE1234566</td>
+                                        <td>Nilesh Rajashi</td>
+                                        <td>01</td>
+                                        <td>MH 12 YT 1234</td>
+                                        <td>31-8-2022</td>
+                                        <td>3,612.22</td>
+                                        <td>
+                                            <span class="text-danger">Failed</span>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>TXKFLRIGBNE1234566</td>
+                                        <td>Nilesh Rajashi</td>
+                                        <td>01</td>
+                                        <td>MH 12 YT 1234</td>
+                                        <td>31-8-2022</td>
+                                        <td>3,612.22</td>
+                                        <td>
+                                            <span class="text-warning">Pending</span>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-outline-warning btn-icon">
+                                                <i class="fa-solid fa-rotate"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
