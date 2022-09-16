@@ -115,8 +115,8 @@
                                                 <td>{{element.name}}</td>
                                                 <td>{{element.mobileNo1}}</td>
                                                 <td>{{element.subUserTypeName}}</td>
-                                                <td>
-                                                    <mat-slide-toggle  [(ngModel)]="element.isBlock" (change)="checkBlock(element,element.isBlock)"></mat-slide-toggle>
+                                                <td>{{element.isblocked}}
+                                                    <mat-slide-toggle  [(ngModel)]="element.isblocked" (change)="checkBlock(element,element.isblocked)"></mat-slide-toggle>
                                                     <!-- <input type="checkbox" [value]="item.isBlock" [(ngModel)]="item.isBlock" (change)="checkBlock(item, $event.target)">
                                                     <span class="slider round"></span> -->
                                                 </td>

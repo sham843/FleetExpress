@@ -95,6 +95,9 @@ export class UserManagementSystemComponent implements OnInit {
     this.subscription = this.common.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
+          res.responseData.responseData1.map((x:any)=>{
+            x.isblocked=x.isblocked==1?true:false;
+          })
           this.userTableData = res.responseData.responseData1;
         } else {
           if (res.statusCode != "404") {
@@ -246,7 +249,7 @@ export class UserManagementSystemComponent implements OnInit {
       userId:rowData.id,
       Isblock:value
     }
-    this.common.setHttp('post', 'userdetail/Block-Unblock-User', true, obj, false, 'vehicletrackingBaseUrlApi');
+    this.common.setHttp('post', 'userdetail/Block-Unblock-User?userId='+rowData.id+'&Isblock='+value, true, false, false, 'vehicletrackingBaseUrlApi');
     this.subscription = this.common.getHttp().subscribe({
       next: (res: any) => {
         this.spinner.hide();
