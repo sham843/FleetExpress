@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {FormBuilder, FormGroup, UntypedFormControl, Validators} from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
@@ -28,6 +29,8 @@ export class UserManagementSystemComponent implements OnInit {
   roleTableData:any[]=[];
   selectAll: any;
   selectedTableData:any[]=[];
+  editFlag:boolean=false
+  editData: any;
   get user() { return this.userForm.controls };
   get role() { return this.roleForm.controls };
   constructor(private common:CommanService,
@@ -35,13 +38,14 @@ export class UserManagementSystemComponent implements OnInit {
     private fb:FormBuilder,
     public validationService:ValidationService,
     private error:ErrorsService,
-    private spinner:NgxSpinnerService) { }
+    private spinner:NgxSpinnerService,
+    private modalService:NgbModal) { }
 
   ngOnInit(): void {
     this.getRegFormData();
     this.userData=this.common.getUser();
     this.getVehicleData();
-    this.getRollData();
+    this.getRoleData();
     this.selectedTab('users');
     this.getUserTableData();
     this.getRoleTableData();
@@ -71,7 +75,7 @@ export class UserManagementSystemComponent implements OnInit {
       error: ((error: any) => { this.error.handelError(error.statusCode) })
     });
   }
-  getRollData() {
+  getRoleData() {
     this.common.setHttp('get', 'userdetail/getallSubusertype_usertype?UserTypeId=1'+'&Subusertypeid='+this.userData.subUserTypeId, true, false, false, 'vehicletrackingBaseUrlApi');
     this.subscription = this.common.getHttp().subscribe({
       next: (res: any) => {
@@ -130,6 +134,9 @@ export class UserManagementSystemComponent implements OnInit {
     selectedVehicleObj.splice(index, 1);
     this.userForm.controls['assignedVehicle'].setValue(selectedVehicleObj);
   }
+  open(modal:any) {
+    this.modalService.open(modal, { size: 'lg' });
+  }
   
   submitUser(){
     this.userformSubmitted=true;
@@ -142,37 +149,43 @@ export class UserManagementSystemComponent implements OnInit {
         vehiclearray.push(this.VehicleDtArr.find(x=>x.vehicleRegistrationNo==userFormData?.assignedVehicle[i]));
       }
     const obj = {
-      "id": 0,
+      "id": this.editFlag==false?0: this.editData.id ,
       "name": userFormData.fName,
       "userAddress": "",
       "districtId": 0,
       "talukaId": 0,
       "mobileNo1": userFormData.mobileNumber,
-      "userName": "",
-      "userType": userFormData.assignedRole,
+      "userName": userFormData.mobileNumber,
+      "user_Type": userFormData.assignedRole,
       "emailId": "",
       "acivationKey1": "",
       "createdBy": this.userData.id,
-      "flag": "string",
-      "vehicleOwnerId": 0,
+      "flag": this.editFlag==false?"I":'U',
+      "vehicleOwnerId": this.userData.vehicleOwnerId,
       "vehicle": vehiclearray
     }
     console.log(obj)
     this.spinner.show();
-    this.common.setHttp('post', 'userdetail/save-update-user-for-tracking', true, JSON.stringify(obj), false, 'vehicletrackingBaseUrlApi');
+    this.common.setHttp('post', 'userdetail/save-update-user-for-tracking', true, obj, false, 'vehicletrackingBaseUrlApi');
     this.subscription = this.common.getHttp().subscribe({
       next: (res: any) => {
         this.spinner.hide();
         if (res.statusCode === "200") {
           this.roleDtArr = res.responseData;
+          this.getUserTableData();
+          this.toastrService.success(res.statusMessage);
         } else {
           if (res.statusCode != "404") {
             this.error.handelError(res.statusCode)
           }
         }
+        this.modalClose();
+        this.editFlag=false;
       },
       error: ((error: any) => { 
         this.spinner.hide();
+        this.editFlag=false;
+        this.modalClose();
         this.error.handelError(error.statusCode)
        } )
       
@@ -207,4 +220,58 @@ export class UserManagementSystemComponent implements OnInit {
     //   this.noticeMemberLstModels.push(temp);
     // }
   }
-}
+
+  onEdit(editvalues:any,modal:any){
+    this.editFlag=true;
+    this.editData=editvalues;
+    this.getVehicleData();
+    this.getRoleData();
+    var vehicleNumber:any[]=[];
+    editvalues.vehicle.forEach((element:any) => {
+      vehicleNumber.push(element.vehicleNumber)
+    });
+    console.log(editvalues)
+    this.userForm.patchValue({
+      fName:editvalues.name,
+      mobileNumber:editvalues.mobileNo1,
+      assignedRole:parseInt(editvalues.userType) ,
+    })
+    this.userForm.controls['assignedVehicle'].setValue(vehicleNumber);
+    this.open(modal);
+  }
+  checkBlock(rowData:any,value:any){
+    if(confirm(value==true?"Do you want to User Block":"Do you want to User Unblock")){
+    this.spinner.show();
+    const obj={
+      userId:rowData.id,
+      Isblock:value
+    }
+    this.common.setHttp('post', 'userdetail/Block-Unblock-User', true, obj, false, 'vehicletrackingBaseUrlApi');
+    this.subscription = this.common.getHttp().subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        if (res.statusCode === "200") {
+          this.getUserTableData();
+          this.toastrService.success(res.statusMessage);
+        } else {
+          if (res.statusCode != "404") {
+            this.error.handelError(res.statusMessage)
+          }
+        }
+      },
+      error: ((error: any) => { 
+        this.spinner.hide();
+       } )
+      
+    });
+    
+    }
+  }
+
+  modalClose(){
+    this.userForm.reset();
+    this.roleForm.reset();
+    this.editFlag=false;
+    this.modalService.dismissAll();
+  }
+} 
