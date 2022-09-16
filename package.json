@@ -10,6 +10,7 @@
   },
   "private": true,
   "dependencies": {
+    "@agm/core": "^1.1.0",
     "@angular-material-components/datetime-picker": "^8.0.0",
     "@angular/animations": "^14.2.1",
     "@angular/cdk": "^14.2.1",
@@ -24,6 +25,7 @@
     "@angular/router": "^14.2.1",
     "@ng-bootstrap/ng-bootstrap": "^13.0.0",
     "@popperjs/core": "^2.10.2",
+    "@types/googlemaps": "^3.43.3",
     "apexcharts": "^3.35.5",
     "bootstrap": "^5.2.0",
     "exceljs": "^4.2.1",
