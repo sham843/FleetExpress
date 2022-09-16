@@ -113,6 +113,8 @@
             <div class="card-body" *ngIf="barChartDisplay">
                 <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [dataLabels]="chartOptions.dataLabels"
                 [plotOptions]="chartOptions.plotOptions" [xaxis]="chartOptions.xaxis"></apx-chart>
+            <div class="card-body">
+                <button mat-raised-button (click)="openDialog()">Pick one</button>
             </div>
         </div>
         <div class="card plain-card">

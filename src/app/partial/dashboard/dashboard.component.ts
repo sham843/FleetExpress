@@ -10,6 +10,8 @@ import {
 } from "ng-apexcharts";
 import { ToastrService } from 'ngx-toastr';
 import { CommanService } from 'src/app/services/comman.service';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { BlockUnblockComponent } from 'src/app/dialogs/block-unblock/block-unblock.component'
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -37,7 +39,8 @@ export class DashboardComponent implements OnInit {
   barChartDisplay: boolean = false;
   pieChartDisplay: boolean = false;
   maxSpeedObj:any;
-  constructor(private cs: CommanService) {
+  constructor(private cs: CommanService,
+    public dialog: MatDialog) {
     this.chartOptions = {
       series: [],
       chart: {
@@ -197,6 +200,15 @@ export class DashboardComponent implements OnInit {
     this.getOverSpeedData();
     this.getSIMRenewalReminderData();
   }
+  openDialog(): void {
+    const dialogRef = this.dialog.open(BlockUnblockComponent, {
+      width: '300px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
 
   getvehicleAllData() {
     this.vehicleAllData = [];
@@ -319,4 +331,12 @@ export class DashboardComponent implements OnInit {
     this.pieChartDisplay = true;
   }
 }
+export class DialogOverviewExampleDialog {
+  constructor(
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
+  ) {}
 
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
