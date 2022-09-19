@@ -192,6 +192,7 @@ export class UserManagementSystemComponent implements OnInit {
       next: (res: any) => {
         this.spinner.hide();
         if (res.statusCode === "200") {
+          
           this.roleDtArr = res.responseData;
           this.getUserTableData();
           this.toastrService.success(res.statusMessage);
