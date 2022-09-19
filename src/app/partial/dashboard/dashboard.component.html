@@ -101,6 +101,7 @@
                         [labels]="chartOptions3.labels"
                         [fill]="chartOptions3.fill"
                       ></apx-chart>
+                      <div>{{maxSpeedObj.vehicleNo}}</div>
                     </div>
                 </div>
             </div>
@@ -112,12 +113,15 @@
             <div class="card-body" *ngIf="barChartDisplay">
                 <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [dataLabels]="chartOptions.dataLabels"
                 [plotOptions]="chartOptions.plotOptions" [xaxis]="chartOptions.xaxis"></apx-chart>
-            </div>
+           
         </div>
         <div class="card plain-card">
             <div class="card-header">sadf</div>
             <div class="card-body">
                 asdf
+                <div class="card-body">
+                    <button mat-raised-button (click)="openDialog()">Pick one</button>
+                </div>
             </div>
         </div>
     </div>

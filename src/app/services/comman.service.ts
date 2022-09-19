@@ -13,6 +13,7 @@ export class CommanService {
   userObjData: any;
   tokanExpiredFlag: boolean = false;
   loginObj: any;
+  disableCloseFlag:boolean = true//modal disableCloseFlag
   getBaseurl(url: string) {
     switch (url) {
       case 'vehicletrackingBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/'; break
@@ -46,6 +47,10 @@ export class CommanService {
     let loginObj: any = sessionStorage.getItem('loginDetails');
     let sessionData = JSON.parse(loginObj).responseData[0];
     return sessionData;
+  }
+  getUser(){
+    let userData = this.getsessionStorageData();
+    return userData;
   }
   getUserId(){
     let vehOwnerId = this.getsessionStorageData();

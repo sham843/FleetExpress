@@ -1,8 +1,8 @@
-<p class="fw-bold small mb-2">Reports</p>
+<p class="page-heading">Reports</p>
 
 <div class="row">
     <div class="col-sm-12">
-        <div class="bg-main-gradient py-2 px-3 rounded mb-3">
+        <div class="display-bar">
             <ul class="nav nav-pills mb-0" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="pills-stoppage-tab" data-bs-toggle="pill"
@@ -80,7 +80,7 @@
                                                 <mat-datepicker #dtpstoppagestartdate></mat-datepicker>
                                             </mat-form-field> -->
 
-                                            <mat-form-field appearance="fill" class="w-100">
+                                            <mat-form-field appearance="standard" class="w-100">
                                                 <input matInput [ngxMatDatetimePicker]="picker" [max]="currentDate" (dateChange)="settodate(f['fromDate'].value);checkValidDate()"
                                                     [readonly]="f['timePeriod'].value !='4'" formControlName="fromDate">
                                                 <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
@@ -103,7 +103,7 @@
                                                 </mat-datepicker-toggle>
                                                 <mat-datepicker #dtpstoppageenddate></mat-datepicker>
                                             </mat-form-field> -->
-                                            <mat-form-field appearance="fill" class="w-100">
+                                            <mat-form-field appearance="standard" class="w-100">
                                                 <input matInput [ngxMatDatetimePicker]="picker1" [min]="f['fromDate'].value " [max]="maxTodayDate || currentDate"
                                                     [readonly]="f['timePeriod'].value !='4' " formControlName="toDate"  (dateChange)="checkValidDate()">
                                                 <mat-datepicker-toggle matSuffix [for]="$any(picker1)"></mat-datepicker-toggle>
@@ -117,7 +117,7 @@
                                     <div class="col-sm-6">
                                         <label class="form-label">Vehicle Number</label>
                                         <div class="d-block">
-                                            <mat-form-field appearance="fill" class="w-100">
+                                            <mat-form-field appearance="standard" class="w-100">
                                                 <mat-select formControlName="VehicleNumber" required>
                                                     <mat-option *ngFor="let vehicle of VehicleDtArr"
                                                         [value]="vehicle.vehicleNo">
@@ -130,7 +130,7 @@
                                     <div class="col-sm-6" *ngIf="showTimePeriod">
                                         <label class="form-label">Time Period</label>
                                         <div class="d-block">
-                                            <mat-form-field appearance="fill" class="w-100">
+                                            <mat-form-field appearance="standard" class="w-100">
                                                 <mat-select formControlName="timePeriod" (selectionChange)="selectTimePeriod(f['timePeriod'].value)" required>
                                                     <mat-option *ngFor="let item of timePeriodArray"
                                                         [value]="item.value" >

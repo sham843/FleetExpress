@@ -8,7 +8,8 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   declarations: [
-    DashboardComponent
+    DashboardComponent,
+
   ],
   imports: [
     CommonModule,

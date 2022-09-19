@@ -10,6 +10,8 @@ import {
 } from "ng-apexcharts";
 import { ToastrService } from 'ngx-toastr';
 import { CommanService } from 'src/app/services/comman.service';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { BlockUnblockComponent } from 'src/app/dialogs/block-unblock/block-unblock.component'
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -36,8 +38,9 @@ export class DashboardComponent implements OnInit {
   SIMRenewalReminderData: any[] = [];
   barChartDisplay: boolean = false;
   pieChartDisplay: boolean = false;
-
-  constructor(private cs: CommanService) {
+  maxSpeedObj:any;
+  constructor(private cs: CommanService,
+    public dialog: MatDialog) {
     this.chartOptions = {
       series: [],
       chart: {
@@ -64,16 +67,17 @@ export class DashboardComponent implements OnInit {
         type: 'donut'
       },
       labels: ["Idle", "Stopped", "Running", "Offline"],
-      theme: {
-        monochrome: {
-          enabled: true,
-          color: '#323095',
-          shadeTo: 'light',
-          shadeIntensity: 0.65
-        }
-      },
+      // theme: {
+      //   monochrome: {
+      //     enabled: true,
+      //     color: '#323095',
+      //     shadeTo: 'light',
+      //     shadeIntensity: 0.65
+      //   }
+      // },
       fill: {
         type: "solid",
+        colors: ["#00E396", "#F9CE1D", "#D4526E", "#D7263D"]
       },
       legend: {
         show: true,
@@ -196,15 +200,28 @@ export class DashboardComponent implements OnInit {
     this.getOverSpeedData();
     this.getSIMRenewalReminderData();
   }
+  openDialog(): void {
+    const dialogRef = this.dialog.open(BlockUnblockComponent, {
+      width: '300px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
 
   getvehicleAllData() {
     this.vehicleAllData = [];
-    this.cs.setHttp('get', 'dashboard/get-vehicle-current-location-list?VehicleNo=' + '&UserId=' + this.cs.getUserId() + '&GpsStatus=', true, false, false, 'vehicletrackingBaseUrlApi');
+    this.maxSpeedObj=[];
+    this.cs.setHttp('get', 'dashboard/get-vehicle-current-location-list?VehicleNo=' + '&UserId=' + this.cs.getUserId() + '&GpsStatus=Running', true, false, false, 'vehicletrackingBaseUrlApi');
     this.cs.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
         this.vehicleAllData = responseData.responseData
         this.vehicleAllData.sort((a, b) => { return b.speed - a.speed; });
         const items = this.vehicleAllData.slice(0, 10);
+        const maxSpeed=Math.max(...this.vehicleAllData.map(o => o.speed));
+        this.maxSpeedObj=this.vehicleAllData.find(x=>x.speed=maxSpeed)
+        console.log(this.maxSpeedObj);
         this.getBarChartData(items);
       }
       else if (responseData.statusCode === "409") {
@@ -314,4 +331,12 @@ export class DashboardComponent implements OnInit {
     this.pieChartDisplay = true;
   }
 }
+export class DialogOverviewExampleDialog {
+  constructor(
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
+  ) {}
 
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}

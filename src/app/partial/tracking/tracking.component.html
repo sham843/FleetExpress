@@ -1,8 +1,8 @@
-<p class="fw-bold small mb-2">Tracking</p>
+<p class="page-heading">Tracking</p>
 
 <div class="row">
     <div class="col-sm-12">
-        <div class="bg-main-gradient py-2 px-3 rounded mb-3">
+        <div class="display-bar">
             <div class="row align-items-center" id="filters">
                 <div class="col-sm-4 border-end">
                     <div class="input-group">
@@ -12,8 +12,8 @@
                 </div>
                 <div class="col-sm-2 border-end">
                     <div class="d-flex align-items-center justify-content-between">
-                        <p class="mb-0">Total Vehicles</p>
-                        <h5 class="mb-0">2200</h5>
+                        <div class="mb-0">Total Vehicles</div>
+                        <div>2200</div>
                     </div>
                 </div>
                 <div class="col-sm-6">
@@ -133,7 +133,15 @@
                         </div>
                     </div>
                 </a>
-                <a class="d-flex vehicle p-3 bg-opacity-10 bg-danger" routerLink="#" routerLinkActive="active">
+                <ng-template #popContent class="bg-danger">
+                    <p>GPS Wire Cut. Is the vehicle in maintenance?</p>
+                    <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                        data-bs-target="#RaiseTicketModal">No</button>
+                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#MaintenanceModal">Yes</button>
+                </ng-template>
+                <a class="d-flex vehicle p-3 bg-opacity-10 bg-danger" placement="top" routerLinkActive="active"
+                    [ngbPopover]="popContent">
                     <div class="flex-shrink-0">
                         <div class="bg-danger bg-opacity-25 text-danger rounded-circle vehicle-icon">
                             <i class="fa-solid fa-car"></i>
@@ -141,7 +149,7 @@
                     </div>
                     <div class="flex-grow-1 ms-2">
                         <div class="d-flex justify-content-between align-items-center my-2">
-                            <a routerLink="#" class="text-danger">
+                            <a class="text-danger">
                                 <p class="vehicle-no">MH29T0444</p>
                             </a>
                             <span class="text-danger veh-status">
@@ -318,9 +326,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="gmap_canvas"><iframe id="gmap_canvas"
+                <div class="gmap_canvas">
+                    <!-- <iframe id="gmap_canvas"
                         src="https://maps.google.com/maps?q=shaurya%20technosoft&t=&z=19&ie=UTF8&iwloc=&output=embed"
-                        frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                        frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe> -->
+                        <agm-map [latitude]="23.7541318" [zoom]="6" [longitude]="80.3681253"></agm-map>
                 </div>
             </div>
             <div class="offcanvas offcanvas-bottom position-absolute shadow-lg border-0" data-bs-scroll="true"
@@ -411,7 +421,8 @@
                                                 <button mat-menu-item>
                                                     <div class="d-flex justify-content-between align-items-center">
                                                         <span>Excel</span>
-                                                        <span class="text-success"><i class="fa-solid fa-file-excel"></i></span>
+                                                        <span class="text-success"><i
+                                                                class="fa-solid fa-file-excel"></i></span>
                                                     </div>
                                                 </button>
                                             </mat-menu>
@@ -837,7 +848,7 @@
 </div>
 
 
-<!-- Modal -->
+<!-- Modal for video -->
 <div class="modal fade" id="PlayRouteModal" tabindex="-1" aria-labelledby="PlayRouteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -847,6 +858,159 @@
             </div>
             <div class="modal-body p-2">
                 Video
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal to raise ticket -->
+<div class="modal fade" id="RaiseTicketModal" tabindex="-1" aria-labelledby="RaiseTicketModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light-gradient text-dark">
+                <p class="modal-title mb-0" id="RaiseTicketModalLabel">Raise Ticket for <span
+                        class="fw-bold text-main">MH29T0444</span></p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-container">
+                    <p class="mb-0">GPS Wire Cut <small class="text-muted">22 jul 2022 , 01:31</small></p>
+                    <small class="text-muted">The Technician will visit you as per the below details.</small>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <mat-form-field class="w-100" appearance="standard">
+                                <mat-label>Your Number</mat-label>
+                                <input matInput placeholder="Your Number">
+                                <span matPrefix class="me-2">+91 </span>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-6">
+                            <mat-form-field class="w-100" appearance="standard">
+                                <mat-label>Driver's Phone Number</mat-label>
+                                <input matInput placeholder="Driver's Phone Number">
+                                <span matPrefix class="me-2">+91 </span>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <mat-form-field appearance="standard" class="w-100">
+                                <mat-label>Vehicle's available State</mat-label>
+                                <mat-select>
+                                    <mat-option *ngFor="let food of foods" [value]="food.value">
+                                        {{food.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-6">
+                            <mat-form-field appearance="standard" class="w-100">
+                                <mat-label>Vehicle's available City</mat-label>
+                                <mat-select>
+                                    <mat-option *ngFor="let food of foods" [value]="food.value">
+                                        {{food.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <mat-form-field appearance="standard" class="w-100">
+                                <mat-label>Vehicle's available Date</mat-label>
+                                <input matInput [matDatepicker]="availabledate">
+                                <mat-datepicker-toggle matSuffix [for]="availabledate"></mat-datepicker-toggle>
+                                <mat-datepicker #availabledate></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-6">
+                            <mat-form-field appearance="standard" class="w-100">
+                                <mat-label>Vehicle’s available Time</mat-label>
+                                <input matInput [matDatepicker]="availabletime">
+                                <mat-datepicker-toggle matSuffix [for]="availabletime"></mat-datepicker-toggle>
+                                <mat-datepicker #availabletime></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="form-container w-100">
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-light-main" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-main">Raise Ticket</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for raise maintenance -->
+<div class="modal fade" id="MaintenanceModal" tabindex="-1" aria-labelledby="MaintenanceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light-gradient text-dark">
+                <p class="modal-title mb-0" id="MaintenanceModalLabel">Mark <span
+                        class="fw-bold text-main">MH29T0444</span> in 'Maintenance'</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-container">
+                    <div class="mb-3">
+                        <div class="form-label">Select Maintenance Type</div>
+                        <div class="d-flex align-items-center ps-3">
+                            <div class="form-check form-switch d-flex align-items-center me-4">
+                                <input class="form-check-input me-2" type="checkbox" role="switch"
+                                    id="flexSwitchCheckDefault1">
+                                <label class="form-check-label" for="flexSwitchCheckDefault1">Scheduled</label>
+                            </div>
+                            <div class="form-check form-switch d-flex align-items-center me-4">
+                                <input class="form-check-input me-2" type="checkbox" role="switch"
+                                    id="flexSwitchCheckDefault2">
+                                <label class="form-check-label" for="flexSwitchCheckDefault2">Repair</label>
+                            </div>
+                            <div class="form-check form-switch d-flex align-items-center">
+                                <input class="form-check-input me-2" type="checkbox" role="switch"
+                                    id="flexSwitchCheckDefault3">
+                                <label class="form-check-label" for="flexSwitchCheckDefault3">Accident</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-0">
+                        <div class="form-label">Since when the vehicle is in Maintenance?</div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <mat-form-field appearance="standard" class="w-100">
+                                    <mat-label>From Date and time</mat-label>
+                                    <input matInput [matDatepicker]="fromDate">
+                                    <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #fromDate></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-6">
+                                <mat-form-field appearance="standard" class="w-100">
+                                    <mat-label>To Date and time</mat-label>
+                                    <input matInput [matDatepicker]="toDate">
+                                    <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #toDate></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-form-field appearance="standard" class="w-100">
+                        <mat-label>Add Remarks</mat-label>
+                        <textarea matInput placeholder="Type here..."></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="form-container w-100">
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-light-main" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-main">Mark Vehicle In Maintenance</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

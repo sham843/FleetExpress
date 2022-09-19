@@ -11,7 +11,9 @@ interface Food {
   styleUrls: ['./tracking.component.scss']
 })
 export class TrackingComponent implements OnInit {
-
+  popContent:any = "Hello World";
+  lat: number = 52.488328;
+  lng: number = 8.717017;
   foods: Food[] = [
     {value: 'steak-0', viewValue: 'Steak'},
     {value: 'pizza-1', viewValue: 'Pizza'},
@@ -21,6 +23,9 @@ export class TrackingComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+  mapClicked(){
+    
   }
 
 }

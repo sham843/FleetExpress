@@ -5,7 +5,6 @@ import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { CommanService } from 'src/app/services/comman.service';
 import { ExcelPdfDownloadedService } from 'src/app/services/excel-pdf-downloaded.service';
-import { ReportsService } from './reports.service';
 
 interface timePeriodArray {
   value: string;
@@ -40,14 +39,10 @@ export class ReportsComponent implements OnInit {
   selectedIndex: any;
   get f() { return this.reportForm.controls };
   constructor(private fb: FormBuilder, 
-    private reportsService: ReportsService, 
     private comman: CommanService,
     private excelService: ExcelPdfDownloadedService,
      private datepipe: DatePipe,
      private toastrService:ToastrService) { }
-
-  // constructor(private fb: UntypedFormBuilder, private reportsService: ReportsService, private comman: CommanService,
-  //   private excelService: ExcelPdfDownloadedService, private datepipe: DatePipe) { }
 
   ngOnInit(): void {
     this.getStoppageData();
