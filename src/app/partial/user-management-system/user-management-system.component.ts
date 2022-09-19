@@ -227,7 +227,7 @@ export class UserManagementSystemComponent implements OnInit {
     }
     this.selectedTableData = [];
     this.selectedTableData = this.userTableData.filter((x: any) => x.checked == true);
-    this.userTableData.length == this.selectedTableData.length ? this.selectAll = true : this.selectAll = false;
+    this.selectAll =this.userTableData.length == this.selectedTableData.length ?  true : false;
    
   }
 
