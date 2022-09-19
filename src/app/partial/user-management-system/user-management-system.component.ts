@@ -37,7 +37,7 @@ export class UserManagementSystemComponent implements OnInit {
   itemsPerPage = 10;
   pageSize: any;
   pageNumber: number=1;
-  totaltableData: number=0;
+  totalUserTableData: number=0;
   
   get user() { return this.userForm.controls };
   get role() { return this.roleForm.controls };
@@ -114,7 +114,7 @@ export class UserManagementSystemComponent implements OnInit {
             x.isblocked=x.isblocked==1?true:false;
           })
           this.userTableData = res.responseData.responseData1;
-          this.totaltableData=res.responseData.responseData2;
+          this.totalUserTableData=res.responseData.responseData2.totalRecords;
         } else {
           if (res.statusCode != "404") {
             this.error.handelError(res.statusCode)
@@ -167,6 +167,9 @@ export class UserManagementSystemComponent implements OnInit {
       for(let i=0;i< userFormData.assignedVehicle.length ; i++){
         vehiclearray.push(this.VehicleDtArr.find(x=>x.vehicleRegistrationNo==userFormData?.assignedVehicle[i]));
       }
+      vehiclearray.map((x:any)=>{
+        x.isAssigned=1
+      })
     const obj = {
       "id": this.editFlag==false?0: this.editData.id ,
       "name": userFormData.fName,
@@ -183,7 +186,6 @@ export class UserManagementSystemComponent implements OnInit {
       "vehicleOwnerId": this.userData.vehicleOwnerId,
       "vehicle": vehiclearray
     }
-    console.log(obj)
     this.spinner.show();
     this.common.setHttp('post', 'userdetail/save-update-user-for-tracking', true, obj, false, 'vehicletrackingBaseUrlApi');
     this.subscription = this.common.getHttp().subscribe({
@@ -226,6 +228,7 @@ export class UserManagementSystemComponent implements OnInit {
     this.selectedTableData = [];
     this.selectedTableData = this.userTableData.filter((x: any) => x.checked == true);
     this.userTableData.length == this.selectedTableData.length ? this.selectAll = true : this.selectAll = false;
+   
   }
 
   onEdit(editvalues:any,modal:any){
@@ -237,7 +240,6 @@ export class UserManagementSystemComponent implements OnInit {
     editvalues.vehicle.forEach((element:any) => {
       vehicleNumber.push(element.vehicleNumber)
     });
-    console.log(editvalues)
     this.userForm.patchValue({
       fName:editvalues.name,
       mobileNumber:editvalues.mobileNo1,
@@ -277,17 +279,16 @@ export class UserManagementSystemComponent implements OnInit {
         this.spinner.hide();
         if (res.statusCode === "200") {
           this.getUserTableData();
-          this.toastrService.success(res.statusMessage);
+          this.toastrService.success(res.responseData);
         } else {
           if (res.statusCode != "404") {
-            this.error.handelError(res.statusMessage)
+            this.error.handelError(res.responseData)
           }
         }
       },
       error: ((error: any) => { 
         this.spinner.hide();
        } )
-      
     });
   }
 
@@ -296,5 +297,35 @@ export class UserManagementSystemComponent implements OnInit {
     this.roleForm.reset();
     this.editFlag=false;
     this.modalService.dismissAll();
+  }
+
+  DeleteUserData() {
+    this.spinner.show();
+    let objDeleteData:any[]=[];
+    for(let i=0; i < this.selectedTableData.length; i++){
+      const obj = {
+        id: this.selectedTableData[i].id,
+        isDeleted: 1
+      }
+      objDeleteData.push(obj)
+    }
+    this.common.setHttp('POST', 'userdetail/Delete-User', true, objDeleteData, false, 'vehicletrackingBaseUrlApi');
+    this.subscription = this.common.getHttp().subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        if (res.statusCode === "200") {
+          this.getUserTableData();
+          this.toastrService.success(res.statusMessage);
+        } else {
+          if (res.statusCode != "404") {
+            this.error.handelError(res.statusMessage)
+          }
+        }
+      },
+      error: ((error: any) => {
+        this.spinner.hide();
+      })
+
+    });
   }
 } 

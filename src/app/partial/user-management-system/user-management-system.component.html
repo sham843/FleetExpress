@@ -30,7 +30,7 @@
                 <div class="col-sm-4">
                     <div class="d-flex small">
                         <div class="me-2">Total {{showTab=='users'?'User':'Role' }}:</div>
-                        <div class="fw-bold">12</div>
+                        <div class="fw-bold">{{totalUserTableData}}</div>
                     </div>
                 </div>
             </div>
@@ -83,7 +83,7 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-4 text-end">
-                                            <button *ngIf="selectedTableData.length" class="btn btn-add">
+                                            <button *ngIf="selectedTableData.length" class="btn btn-add" (click)="DeleteUserData()">
                                                 <i class="fa-solid fa-trash-can"></i>
                                             </button>
                                             <button *ngIf="showTab=='users'" class="btn btn-add" (click)="open(AddUserModal)">
@@ -111,7 +111,7 @@
                                         </thead>
                                         <tbody *ngIf="showTab=='users'">
                                             <tr *ngFor="let element of userTableData; let i=index">
-                                                <td>{{i+1}}</td>
+                                                <td>{{ this.itemsPerPage * (currentPage - 1) + (i+1) }}</td>
                                                 <td>{{element.name}}</td>
                                                 <td>{{element.mobileNo1}}</td>
                                                 <td>{{element.subUserTypeName}}</td>
@@ -157,10 +157,11 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <div *ngIf="showTab=='role'?userTableData.length:roleTableData.length" class="mt-2">
-                                        <!-- <ngb-pagination class="float-right" [collectionSize]="totaltableData" #numPages
+                                    <div *ngIf="showTab=='role'?userTableData.length:roleTableData.length" class="d-flex justify-content-end">
+                                        <ngb-pagination [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true" [collectionSize]="totalUserTableData" #numPages
                                             [pageSize]="itemsPerPage" [(page)]="currentPage" (pageChange)="onPageChange(currentPage)">
-                                        </ngb-pagination> -->
+                                        </ngb-pagination>
+                                        
                                     </div>
                                 </div>
                             </div>
