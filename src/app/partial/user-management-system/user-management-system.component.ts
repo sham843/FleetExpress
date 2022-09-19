@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {FormBuilder, FormGroup, UntypedFormControl, Validators} from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
+import { BlockUnblockComponent } from 'src/app/dialogs/block-unblock/block-unblock.component';
 import { CommanService } from 'src/app/services/comman.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { ValidationService } from 'src/app/services/validation.service';
@@ -31,6 +33,12 @@ export class UserManagementSystemComponent implements OnInit {
   selectedTableData:any[]=[];
   editFlag:boolean=false
   editData: any;
+  currentPage = 1;
+  itemsPerPage = 10;
+  pageSize: any;
+  pageNumber: number=1;
+  totaltableData: number=0;
+  
   get user() { return this.userForm.controls };
   get role() { return this.roleForm.controls };
   constructor(private common:CommanService,
@@ -39,7 +47,8 @@ export class UserManagementSystemComponent implements OnInit {
     public validationService:ValidationService,
     private error:ErrorsService,
     private spinner:NgxSpinnerService,
-    private modalService:NgbModal) { }
+    private modalService:NgbModal,
+    private dialog:MatDialog) { }
 
   ngOnInit(): void {
     this.getRegFormData();
@@ -61,6 +70,12 @@ export class UserManagementSystemComponent implements OnInit {
       roleName: [],
       topping: [],
     })
+  }
+  public onPageChange(pageNum: number): void {
+    this.pageNumber=pageNum;
+    this.pageSize = this.itemsPerPage * (pageNum - 1);
+    this.getUserTableData();
+    this.getRoleTableData();
   }
   getVehicleData() {
     this.common.setHttp('get', 'userdetail/get-vehicle-list?vehicleOwnerId='+this.common.getVehicleOwnerId(), true, false, false, 'vehicletrackingBaseUrlApi');
@@ -91,7 +106,7 @@ export class UserManagementSystemComponent implements OnInit {
     });
   }
   getUserTableData(){
-    this.common.setHttp('get', 'userdetail/get-user-list?vehicleOwnerId='+this.userData.vehicleOwnerId+'&Subusertypeid=&SearchText=&District=0&TalukaId=0&NoPage=1&RowsPerPage=10', true, false, false, 'vehicletrackingBaseUrlApi');
+    this.common.setHttp('get', 'userdetail/get-user-list?vehicleOwnerId='+this.userData.vehicleOwnerId+'&Subusertypeid=&SearchText=&District=0&TalukaId=0&NoPage='+this.pageNumber+'&RowsPerPage=10', true, false, false, 'vehicletrackingBaseUrlApi');
     this.subscription = this.common.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
@@ -99,6 +114,7 @@ export class UserManagementSystemComponent implements OnInit {
             x.isblocked=x.isblocked==1?true:false;
           })
           this.userTableData = res.responseData.responseData1;
+          this.totaltableData=res.responseData.responseData2;
         } else {
           if (res.statusCode != "404") {
             this.error.handelError(res.statusCode)
@@ -197,7 +213,6 @@ export class UserManagementSystemComponent implements OnInit {
 
   }
   selectUsers(event: any, id: any){
-    // debugger
     for(var i = 0 ; i < this.userTableData.length; i++){
       if(id != 0) {
         this.selectAll = false;
@@ -208,20 +223,9 @@ export class UserManagementSystemComponent implements OnInit {
         this.userTableData[i].checked = event.checked;
       }
     }
-
     this.selectedTableData = [];
     this.selectedTableData = this.userTableData.filter((x: any) => x.checked == true);
     this.userTableData.length == this.selectedTableData.length ? this.selectAll = true : this.selectAll = false;
-    //this.noticeMemberLstModels = [];
-    // for(var i = 0 ; i < nwArr.length; i++){
-    //   var temp = {
-    //     ...this.gs.createdByProps(),
-    //     "userId": nwArr[i].id,
-    //     "committeeId": nwArr[i].committeeId,
-    //     "attendance": ""
-    //   }
-    //   this.noticeMemberLstModels.push(temp);
-    // }
   }
 
   onEdit(editvalues:any,modal:any){
@@ -242,14 +246,32 @@ export class UserManagementSystemComponent implements OnInit {
     this.userForm.controls['assignedVehicle'].setValue(vehicleNumber);
     this.open(modal);
   }
-  checkBlock(rowData:any,value:any){
-    if(confirm(value==true?"Do you want to User Block":"Do you want to User Unblock")){
+
+  userBlockUnBlockModal(element: any, event: any) {
+    let Title: string, dialogText: string;
+    event == true ? Title = 'User Block' : Title = 'User Unblock';
+    event == true ? dialogText = 'Do you want to User Block ?' : dialogText = 'Do you want to User Unblock ?';
+    const dialogRef = this.dialog.open(BlockUnblockComponent, {
+      width: '340px',
+      data: { p1: dialogText, p2: '', cardTitle: Title, successBtnText: 'Yes', dialogIcon: 'done_outline', cancelBtnText: 'No' },
+      disableClose: this.common.disableCloseFlag,
+    });
+    dialogRef.afterClosed().subscribe((res: any) => {     
+        res == 'Yes' ?   this.checkBlock(element, event): element.isBlock = !event;   
+    });
+  }
+
+  checkBlock(rowData:any,value:any){ 
     this.spinner.show();
     const obj={
       userId:rowData.id,
-      Isblock:value
+      id: 0,
+      blockedDate: new Date().toISOString(),
+      blockBy: this.userData.id,
+      isBlock: value==false?0:1,
+      remark: ""
     }
-    this.common.setHttp('post', 'userdetail/Block-Unblock-User?userId='+rowData.id+'&Isblock='+value, true, false, false, 'vehicletrackingBaseUrlApi');
+    this.common.setHttp('post', 'userdetail/Block-Unblock-User_1?', true, obj, false, 'vehicletrackingBaseUrlApi');
     this.subscription = this.common.getHttp().subscribe({
       next: (res: any) => {
         this.spinner.hide();
@@ -267,8 +289,6 @@ export class UserManagementSystemComponent implements OnInit {
        } )
       
     });
-    
-    }
   }
 
   modalClose(){
