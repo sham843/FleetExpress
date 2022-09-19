@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
   onLoginSubmit() {
     this.isSubmitted = true;
     if (this.loginForm.invalid) {
-      console.log("invalid")
+      this.toastrService.error("Invalid Login")
       return;
     }
    /*  else if (this.loginForm.value.recaptchaReactive !=  this.sharedService.checkvalidateCaptcha()){
@@ -53,13 +53,13 @@ export class LoginComponent implements OnInit {
     } */
 
     // else {
-      // this.spinner.show();
+      this.spinner.show();
       this.loginData = this.loginForm.value;
       this.comman.setHttp('get', 'login/login-web?'+'UserName=' + this.loginData.username.trim() + '&Password=' + this.loginData.password.trim(), false, false, false, 'vehicletrackingBaseUrlApi');
       this.comman.getHttp().subscribe((res: any) => {
         if (res.statusCode === "200") {
+          this.spinner.hide();
           sessionStorage.setItem('loginDetails', JSON.stringify(res));
-          // sessionStorage.setItem('loginDateTime', this.date)
           this.router.navigate(['../dashboard'], { relativeTo: this.route })
           this.toastrService.success(res.statusMessage)
         }

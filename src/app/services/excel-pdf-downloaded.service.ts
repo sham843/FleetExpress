@@ -17,7 +17,7 @@ export class ExcelPdfDownloadedService {
   downLoadPdf(data: any, pageName: any, responseData: any) {
     let conMulArray: any;
     conMulArray = data.map((o: any) => Object.keys(o).map(k => o[k]));
-    console.log(data)
+
     let doc: any = new jsPDF();
     let header;
     let key;

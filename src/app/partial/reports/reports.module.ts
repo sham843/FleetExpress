@@ -20,7 +20,7 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
     ReactiveFormsModule,
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
-    NgxMatTimepickerModule
+    NgxMatTimepickerModule,
   ],
   providers:[ReportsService]
 })

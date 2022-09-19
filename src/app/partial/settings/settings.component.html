@@ -156,32 +156,43 @@
                     <div class="tab-pane fade" id="pills-change-password" role="tabpanel"
                         aria-labelledby="pills-change-password-tab" tabindex="0">
                         <div class="row justify-content-between">
-                            <div class="col-sm-4 form-container">
-                                <mat-form-field appearance="standard" class="w-100">
-                                    <mat-label>Current password</mat-label>
-                                    <input matInput [type]="hide ? 'password' : 'text'">
-                                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                                      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                                    </button>
-                                  </mat-form-field>
-                                  <mat-form-field appearance="standard" class="w-100">
-                                    <mat-label>New password</mat-label>
-                                    <input matInput [type]="hide ? 'password' : 'text'">
-                                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                                      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                                    </button>
-                                  </mat-form-field>
-                                  <mat-form-field appearance="standard" class="w-100">
-                                    <mat-label>Retype password</mat-label>
-                                    <input matInput [type]="hide ? 'password' : 'text'">
-                                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                                      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                                    </button>
-                                  </mat-form-field>
-                                <div class="text-end">
-                                    <button class="btn btn-main">Submit</button>
+                            <form [formGroup]="changePassForm">
+                                <div class="col-sm-4 form-container">
+                                    <mat-form-field appearance="standard" class="w-100 form-group">
+                                        <mat-label>Current password</mat-label>
+                                        <input matInput [type]="hide ? 'password' : 'text'" class="form-control"  autocomplete="nope"
+                                        formControlName="currentPwd" [ngClass]="{ 'is-invalid': submitted && fpass['currentPwd'].errors }">
+                                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                        </button>
+                                        <mat-error *ngIf="submitted && fpass['currentPwd'].errors" class="invalid-feedback">Current Password is required</mat-error>
+                                      </mat-form-field>
+                                     
+                                      <mat-form-field appearance="standard" class="w-100 form-group">
+                                        <mat-label>New password</mat-label>
+                                        <input matInput [type]="hide ? 'password' : 'text'" class="form-control"
+                                        formControlName="newPwd"  [ngClass]="{ 'is-invalid': submitted && fpass['newPwd'].errors }">
+                                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                        </button>
+                                        <mat-error *ngIf="submitted && fpass['newPwd'].errors" class="invalid-feedback"> New Password is required</mat-error>
+                                        <mat-error *ngIf="submitted && fpass['newPwd'].errors?.['patten']" class="invalid-feedback"> New Password is invalid format</mat-error>
+                                      </mat-form-field>
+
+                                      <mat-form-field appearance="standard" class="w-100 form-group">
+                                        <mat-label>Retype password</mat-label>
+                                        <input matInput [type]="hide ? 'password' : 'text'" class="form-control"
+                                        formControlName="reTypePwd" [ngClass]="{ 'is-invalid': submitted && fpass['reTypePwd'].errors }">
+                                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                        </button>
+                                        <mat-error *ngIf="submitted && fpass['reTypePwd'].errors" class="invalid-feedback">ReType Password is required</mat-error>
+                                      </mat-form-field>
+                                    <div class="text-end">
+                                        <button class="btn btn-main" (click)="onChangePwd()">Submit</button>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
 

@@ -17,6 +17,10 @@ export class CommanService {
     switch (url) {
       case 'vehicletrackingBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/'; break
       case 'loginBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/login/'; break
+      case 'vehicleBaseUrlApi':return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/vehicle/';break
+      case 'driverBaseUrlApi':return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/driver/';break
+      case 'userDetailsBaseUrlApi' :return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/userdetail/';break
+      case 'uploadDocumentBaseUrlApi':return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/upload/';break
       default: return ''; break;
     }
   }
@@ -36,7 +40,8 @@ export class CommanService {
     private spinner:NgxSpinnerService,
     private toastrService:ToastrService) {
   }
-
+  ngOnInit(): void {
+  }
   getsessionStorageData() {
     let loginObj: any = sessionStorage.getItem('loginDetails');
     let sessionData = JSON.parse(loginObj).responseData[0];
@@ -60,10 +65,6 @@ export class CommanService {
     let sessionData = JSON.parse(loginObj).responseData3;
     return sessionData.expireAccessToken;
   }
-
-  /*   
-  */
-
   getHttp(): any {
     let temp: any = undefined;
     !this.httpObj.options.body && (delete this.httpObj.options.body)
@@ -107,7 +108,7 @@ export class CommanService {
     this.httpObj.url = this.getBaseurl(baseUrl) + url;
     if (isHeader) {
       let tempObj: any = {
-        "UserId":this.getUserId(),
+        "UserId":this.getUserId().toString(),
         "Authorization": "Bearer " +this.userObjData.responseData3.accessToken // token set
       };
 

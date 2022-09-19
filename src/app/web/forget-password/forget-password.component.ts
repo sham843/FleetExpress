@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-// import { FormBuilder, FormGroup, Validators, UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
 import { CommanService } from 'src/app/services/comman.service';
 import { ValidationService } from 'src/app/services/validation.service';
 
@@ -20,15 +19,16 @@ export class ForgetPasswordComponent implements OnInit {
   verifyOTPForm!: FormGroup;
   changePassword!: FormGroup;
   generateOTPContain: boolean = true;
-  OTPContainer: boolean = false;
+  OTPContainer: boolean =false;
   passContainer: boolean = false;
   mobileNoSubmitted: boolean = false;
   passwordChenged: boolean = false;
   otpLoginUserId: any;
-  mobileNum:any;
+  mobileNum: any;
   intervalId = 0;
   timer = '';
-  seconds = 10;
+  timerFlag:boolean=true;
+  seconds:any;
   get sf() { return this.sendOTPForm.controls };
   get vf() { return this.verifyOTPForm.controls };
   get rf() { return this.changePassword.controls };
@@ -36,11 +36,12 @@ export class ForgetPasswordComponent implements OnInit {
     public vs: ValidationService,
     private comman: CommanService,
     private router: Router,
-    private spinner:NgxSpinnerService,
-    private toastrService:ToastrService) { }
+    private spinner: NgxSpinnerService,
+    private toastrService: ToastrService) { }
 
   ngOnInit(): void {
     this.getformControlData();
+    this.countDown();
   }
   getformControlData() {
     this.sendOTPForm = this.fb.group({
@@ -59,47 +60,52 @@ export class ForgetPasswordComponent implements OnInit {
       confirmPassword: ['', Validators.required]
     })
   }
-  clearTimer() { 
-    clearInterval(this.intervalId);
-    this.sendOTP();
-   }
-  ngOnDestroy() { this.clearTimer(); }
-  start() { this.countDown(); }
-  stop()  { this.clearTimer();}
 
-   countDown() {
+  ngOnDestroy() { this.clearTimer(); }
+
+  stop() { this.clearTimer(); }
+
+  sendOTP() {
+    this.countDown();
+    this.mobileNoSubmitted = true;
+    let mobileNom=this.sendOTPForm.value.mobileNo || this.mobileNum;
+    /* if (this.sendOTPForm.invalid) {
+      this.spinner.hide();
+      return;
+    } 
+    else { */
+    this.spinner.show();
+    this.comman.setHttp('get', 'get-user-otp?MobileNo=' + mobileNom, false, false, false, 'loginBaseUrlApi');
+    this.comman.getHttp().subscribe((res: any) => {
+      if (res.statusCode == "200") {
+        this.mobileNum = res.responseData[0].mobileNo;
+        this.spinner.hide();
+        this.toastrService.success(res.statusMessage);
+        this.generateOTPContain = false;
+        this.OTPContainer = true;
+        this.sendOTPForm.reset();
+      }
+    })
+    // }
+  }
+  countDown() {
     this.clearTimer();
+    this.seconds=60;
     this.intervalId = window.setInterval(() => {
       this.seconds -= 1;
       if (this.seconds === 0) {
       } else {
-        if (this.seconds < 0) { this.seconds = 10; } // reset
-        this.timer = `Reset otp in ${this.seconds}`;
+        if (this.seconds < 0) {
+        } else if(this.seconds==1){
+          this.timerFlag=false;
+          clearInterval(this.intervalId);
+        }
+        this.timer = `in ${this.seconds}`;
       }
     }, 1000);
   }
-  sendOTP() {
-    this.mobileNum=this.sendOTPForm.value.mobileNo;
-    this.mobileNoSubmitted = true;
-    if (this.sendOTPForm.invalid) {
-      this.spinner.hide();
-      return;
-    }
-    else {
-      // this.sendOTPForm.value.mobileNo
-      this.spinner.show();
-      this.comman.setHttp('get', 'get-user-otp?MobileNo=' + this.mobileNum, false, false, false, 'loginBaseUrlApi');
-      this.comman.getHttp().subscribe((res: any) => {
-        if (res.statusCode == "200") {
-          this.spinner.hide();
-          this.toastrService.success(res.statusMessage);
-          this.generateOTPContain = false;
-          this.OTPContainer = true;
-          this.start();
-          this.sendOTPForm.reset();
-        }
-      })
-    }
+  clearTimer() {
+    clearInterval(this.intervalId);
   }
   verifyOTP() {
     if (this.verifyOTPForm.invalid) {
@@ -115,10 +121,8 @@ export class ForgetPasswordComponent implements OnInit {
           this.spinner.hide();
           this.toastrService.success(res.statusMessage);
           this.otpLoginUserId = res.responseData[0].id
-          console.log(this.otpLoginUserId);
           this.OTPContainer = false;
           this.passContainer = true;
-          this.verifyOTPForm.reset();
 
         }
       })
@@ -140,9 +144,7 @@ export class ForgetPasswordComponent implements OnInit {
             this.toastrService.success(res.statusMessage);
             this.changePassword.reset();
             this.router.navigate(['/login']);
-            this.toastrService.success(res.status)
             this.spinner.hide();
-            // this.clearForm();
           }
           else {
             this.spinner.hide();

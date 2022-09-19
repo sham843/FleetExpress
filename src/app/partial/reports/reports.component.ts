@@ -52,9 +52,8 @@ export class ReportsComponent implements OnInit {
   ngOnInit(): void {
     this.getStoppageData();
     this.selectedTab('stoppage');
-    // this.setIndex(0,'Stopage Report');
-    // this.getVehicleList();
     this.getVehicleData();
+    // this.setIndex(0,'Stopage Report');
   }
   getStoppageData() {
     this.reportForm = this.fb.group({
@@ -202,8 +201,6 @@ export class ReportsComponent implements OnInit {
     return str;
   }
   SearchReport() {
-    console.log(this.reportForm.value.fromDate);
-    console.log( this.getQueryString())
     if (this.reportForm.invalid) {
       return;
     } else {
@@ -220,7 +217,6 @@ export class ReportsComponent implements OnInit {
       this.comman.getHttp().subscribe((responseData: any) => {
         if (responseData.statusCode === "200" || responseData.length > 0) {
         /*   this.reportResponseData = responseData.responseData;*/
-          console.log(responseData) 
         }
         else if (responseData.statusCode === "409") {
 

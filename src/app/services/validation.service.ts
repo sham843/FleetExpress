@@ -106,4 +106,13 @@ noSpacesAtStart(event: any) {
   const maskSeperator = new RegExp('^(?![\s-])[\w\s-]*$', 'm');
   return !maskSeperator.test(event.key);
 }
+passwordValid(controls:any) {
+  const regExp = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d.*)(?=.*\W.*)[a-zA-Z0-9\S]{6,}$/);
+  if (regExp.test(controls.value)) {
+    return null;
+  } else {
+    return { passwordValid: true }
+  }
+}
+
 }
