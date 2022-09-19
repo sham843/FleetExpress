@@ -84,6 +84,7 @@ export class DriverComponent implements OnInit {
     })
   }
   registerDriverSave() {
+    console.log(this.datepipe.transform(this.driverRegForm.value.dOB,'yyyy/MM/dd'));
     let param = {
       "id": this.editId ? this.editId:0,
       "firstName": this.driverRegForm.value.firstName,
@@ -92,7 +93,7 @@ export class DriverComponent implements OnInit {
       "mobileNo": this.driverRegForm.value.mobileNo,
       "presentAddress": this.driverRegForm.value.presentAdr,
       "permanentAddress": this.driverRegForm.value.permanentAdr,
-      "dob": this.datepipe.transform(this.driverRegForm.value.dOB, 'YYYY/MM/dd'),
+      "dob": this.datepipe.transform(this.driverRegForm.value.dOB,'yyyy/MM/dd'),
       "licenceNumber": this.driverRegForm.value.licenceNo,
       "panNumber": this.driverRegForm.value.panNo,
       "aadharNumber": this.driverRegForm.value.aadharNo,
