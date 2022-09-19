@@ -21,15 +21,18 @@
                             <div class="col-sm-auto">
                                 Vehicle List
                             </div>
-                           <form [formGroup]="serchVehicle">
-                            <div class="col-sm-8 form-group">
-                                <div class="input-group">
-                                    <div class="input-group-text"><i class="fa-solid fa-magnifying-glass" (click)="getVehicleData()"></i></div>
-                                    <input type="text" class="form-control" placeholder="Vehicle Number" formControlName="searchVhl">
-                                    <div class="input-group-text"><i class="fa-solid fa-xmark" (click)="clearSearchData()"></i></div>
+                            <form [formGroup]="serchVehicle">
+                                <div class="col-sm-8 form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-text"><i class="fa-solid fa-magnifying-glass"
+                                                (click)="getVehicleData()"></i></div>
+                                        <input type="text" class="form-control" placeholder="Vehicle Number"
+                                            formControlName="searchVhl">
+                                        <div class="input-group-text"><i class="fa-solid fa-xmark"
+                                                (click)="clearSearchData()"></i></div>
+                                    </div>
                                 </div>
-                            </div>
-                           </form>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -61,11 +64,12 @@
                             </td>
                             <td>{{vehicle.mobileNo ||'-'}}</td>
                             <td>
-                                <button class="btn btn-outline-primary" data-bs-toggle="modal" id="openmodal"
-                                    data-bs-target="#AssignDriverModal" (click)="assignDriver(vehicle)"
-                                    [ngClass]="{'text-primary' :vehicle.driverName.length >0,
-                                        'text-warning':vehicle.driverName.length ==0}">
-                                    Assign Driver
+                                <button class="btn btn-outline-primary" data-bs-toggle="modal" id="openmodal" 
+                                [attr.data-target]="vehicle.driverName.length == 0 ?'#AssignDriverModal' :''" 
+                                     (click)="assignDriver(vehicle)" [ngClass]="{'text-primary':vehicle.driverName.length ==0,
+                                    'btn-outline-warning':vehicle.driverName.length != 0,
+                                        'text-warning':vehicle.driverName.length != 0}">
+                                    {{vehicle.driverName.length > 0 ?'unassign Vehicle':'Assign Vehicle'}}
                                 </button>
                             </td>
                             <td>
@@ -93,7 +97,7 @@
                 </div>
                 <pagination-controls *ngIf="vehicleData?.length != 0" previousLabel="" nextLabel=""
                     (pageChange)="onPagintion($event)" class="text-end m-2">
-                </pagination-controls>   
+                </pagination-controls>
             </div>
         </div>
     </div>
@@ -127,8 +131,8 @@
                 <div class="modal-footer">
                     <div class="form-container w-100">
                         <div class="d-flex justify-content-between">
-                            <button class="btn btn-light-main" data-bs-dismiss="modal">Cancel</button>
-                            <button class="btn btn-main" (click)="assignDriverToVehicle()">Assign</button>
+                            <button class="btn btn-light-main" #closeModel data-bs-dismiss="modal">Cancel</button>
+                            <button class="btn btn-main" (click)="assignDriverToVehicle('false')">Assign</button>
                         </div>
                     </div>
                 </div>
@@ -156,8 +160,8 @@
                                     <button class="btn bg-light text-primary" (click)="uploadprofile.click()">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
-                                    <input type="file" name="myfile" class="form-control" formControlName="profile" #uploadprofile
-                                    (change)="profilePhotoUpd($event)"/>
+                                    <input type="file" name="myfile" class="form-control" formControlName="profile"
+                                        #uploadprofile (change)="profilePhotoUpd($event)" />
                                 </div>
                             </div>
                         </div>
@@ -172,7 +176,8 @@
                                 <div class="col-sm-4 form-group">
                                     <mat-form-field appearance="standard" class="w-100">
                                         <mat-label>Date Added</mat-label>
-                                        <input matInput [matDatepicker]="picker" class="form-control" formControlName="date">
+                                        <input matInput [matDatepicker]="picker" class="form-control"
+                                            formControlName="date">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
                                     </mat-form-field>
@@ -216,28 +221,33 @@
                                             <tr>
                                                 <td>Insurance Expiry Date</td>
                                                 <td>
-                                                   <div class="form-group">
-                                                    <mat-form-field appearance="standard" class="w-100">
-                                                        <!-- <mat-label>Document Number</mat-label> -->
-                                                        <input matInput class="form-control" formControlName="insuranceExDate" placeholder="Document Number">
-                                                    </mat-form-field>
-                                                   </div>
-                                                </td>
-                                                <td>
-                                                    <img src= {{insuranceUpload}} class="vehicle-image">
-                                                </td>
-                                                <td>
-                                                    <div class="upload-btn-wrapper form-group">
-                                                        <button type="submit" class="btn btn-light-main btn-icon" [disabled]="insurance">
-                                                            <i class="fa-solid fa-upload"></i>
-                                                        </button>
-                                                        <input type="file" #uploadDoc name="myfile" class="form-control" formControlName="insuranceDoc"
-                                                        (change)="imageUpload($event,'insurance')"/>
+                                                    <div class="form-group">
+                                                        <mat-form-field appearance="standard" class="w-100">
+                                                            <!-- <mat-label>Document Number</mat-label> -->
+                                                            <input matInput class="form-control"
+                                                                formControlName="insuranceExDate"
+                                                                placeholder="Document Number">
+                                                        </mat-form-field>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <button type="button" class="btn bg-danger bg-opacity-10 text-danger" (click)="uploadDoc.click()"
-                                                    [disabled]="insuranceUpload == 'assets/images/Driver-profile.svg'">
+                                                    <img src={{insuranceUpload}} class="vehicle-image">
+                                                </td>
+                                                <td>
+                                                    <div class="upload-btn-wrapper form-group">
+                                                        <button type="submit" class="btn btn-light-main btn-icon"
+                                                            [disabled]="insurance">
+                                                            <i class="fa-solid fa-upload"></i>
+                                                        </button>
+                                                        <input type="file" #uploadDoc name="myfile" class="form-control"
+                                                            formControlName="insuranceDoc"
+                                                            (change)="imageUpload($event,'insurance')" />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button type="button"
+                                                        class="btn bg-danger bg-opacity-10 text-danger"
+                                                        (click)="clearDocument('uploadDoc')" [disabled]="deleteUplDoc">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
                                                 </td>
@@ -245,28 +255,34 @@
                                             <tr>
                                                 <td>Registration Certificate</td>
                                                 <td>
-                                                <div class="form-group">
-                                                    <mat-form-field appearance="standard" class="w-100">
-                                                        <!-- <mat-label>Document Number</mat-label> -->
-                                                        <input matInput class="form-control" formControlName="registerNo" placeholder="Document Number">
-                                                    </mat-form-field>
-                                                </div>
+                                                    <div class="form-group">
+                                                        <mat-form-field appearance="standard" class="w-100">
+                                                            <!-- <mat-label>Document Number</mat-label> -->
+                                                            <input matInput class="form-control"
+                                                                formControlName="registerNo"
+                                                                placeholder="Document Number">
+                                                        </mat-form-field>
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <img src="{{insuranceUpload}}" class="vehicle-image">
                                                 </td>
                                                 <td>
                                                     <div class="upload-btn-wrapper form-group">
-                                                        <button type="submit" class="btn btn-light-main btn-icon" [disabled]="register">
+                                                        <button type="submit" class="btn btn-light-main btn-icon"
+                                                            [disabled]="register">
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
-                                                        <input type="file" #uploadDoc1 name="myfile" class="form-control" formControlName="registerDoc" 
-                                                        (change)="imageUpload($event,'register')"/>
+                                                        <input type="file" #uploadDoc1 name="myfile"
+                                                            class="form-control" formControlName="registerDoc"
+                                                            (change)="imageUpload($event,'register')" />
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <button type="submit" class="btn bg-danger bg-opacity-10 text-danger" (click)="uploadDoc1.click()"
-                                                    [disabled]="insuranceUpload == 'assets/images/Driver-profile.svg'">
+                                                    <button type="button"
+                                                        class="btn bg-danger bg-opacity-10 text-danger"
+                                                        (click)="clearDocument('uploadDoc1')"
+                                                        [disabled]="deleteUplDoc1">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
                                                 </td>
@@ -274,28 +290,34 @@
                                             <tr>
                                                 <td>Pollution Expiry Date</td>
                                                 <td>
-                                                   <div class="form-group">
-                                                    <mat-form-field appearance="standard" class="w-100">
-                                                        <!-- <mat-label>Document Number</mat-label> -->
-                                                        <input matInput class="form-control" formControlName="pollutionExDate" placeholder="Document Number">
-                                                    </mat-form-field>
-                                                   </div>   
+                                                    <div class="form-group">
+                                                        <mat-form-field appearance="standard" class="w-100">
+                                                            <!-- <mat-label>Document Number</mat-label> -->
+                                                            <input matInput class="form-control"
+                                                                formControlName="pollutionExDate"
+                                                                placeholder="Document Number">
+                                                        </mat-form-field>
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <img src="{{insuranceUpload}}" class="vehicle-image">
                                                 </td>
                                                 <td>
                                                     <div class="upload-btn-wrapper form-group">
-                                                        <button type="submit" class="btn btn-light-main btn-icon" [disabled]="pollution">
+                                                        <button type="submit" class="btn btn-light-main btn-icon"
+                                                            [disabled]="pollution">
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
-                                                        <input type="file" #uploadDoc2 name="myfile" class="form-control" formControlName="pollutionDoc"
-                                                        (change)="imageUpload($event,'pollution')"/>
+                                                        <input type="file" #uploadDoc2 name="myfile"
+                                                            class="form-control" formControlName="pollutionDoc"
+                                                            (change)="imageUpload($event,'pollution')" />
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <button type="submit" class="btn bg-danger bg-opacity-10 text-danger"
-                                                    (click)="uploadDoc2.click()"[disabled]="insuranceUpload == 'assets/images/Driver-profile.svg'">
+                                                    <button type="submit"
+                                                        class="btn bg-danger bg-opacity-10 text-danger"
+                                                        (click)="clearDocument('uploadDoc2')"
+                                                        [disabled]="deleteUplDoc2">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
                                                 </td>
@@ -303,28 +325,34 @@
                                             <tr>
                                                 <td>Fitness Expiry</td>
                                                 <td>
-                                                   <div class="form-group">
-                                                    <mat-form-field appearance="standard" class="w-100">
-                                                        <!-- <mat-label>Document Number</mat-label> -->
-                                                        <input matInput class="form-control" formControlName="fitnessExDate" placeholder="Document Number">
-                                                    </mat-form-field>
-                                                   </div>
+                                                    <div class="form-group">
+                                                        <mat-form-field appearance="standard" class="w-100">
+                                                            <!-- <mat-label>Document Number</mat-label> -->
+                                                            <input matInput class="form-control"
+                                                                formControlName="fitnessExDate"
+                                                                placeholder="Document Number">
+                                                        </mat-form-field>
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <img src="{{insuranceUpload}}" class="vehicle-image">
                                                 </td>
-                                                <td>                         
+                                                <td>
                                                     <div class="upload-btn-wrapper form-group">
-                                                        <button type="submit" class="btn btn-light-main btn-icon" [disabled]="fitness">
+                                                        <button type="submit" class="btn btn-light-main btn-icon"
+                                                            [disabled]="fitness">
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
-                                                        <input type="file" #uploadDoc3 name="myfile" class="form-control" formControlName="fitnessDoc"
-                                                        (change)="imageUpload($event,'fitness')"/>
+                                                        <input type="file" #uploadDoc3 name="myfile"
+                                                            class="form-control" formControlName="fitnessDoc"
+                                                            (change)="imageUpload($event,'fitness')" />
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <button type="submit" class="btn bg-danger bg-opacity-10 text-danger"
-                                                     (click)="uploadDoc3.click()" [disabled]="insuranceUpload == 'assets/images/Driver-profile.svg'">
+                                                    <button type="submit"
+                                                        class="btn bg-danger bg-opacity-10 text-danger"
+                                                        (click)="clearDocument('uploadDoc3')"
+                                                        [disabled]="deleteUplDoc3">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
                                                 </td>
@@ -332,28 +360,34 @@
                                             <tr>
                                                 <td>National Permit</td>
                                                 <td>
-                                                   <div class="form-group">
-                                                    <mat-form-field appearance="standard" class="w-100">
-                                                        <!-- <mat-label>Document Number</mat-label>  -->
-                                                        <input matInput class="form-control" formControlName="permitNo" placeholder="Document Number">
-                                                    </mat-form-field>
-                                                   </div>
+                                                    <div class="form-group">
+                                                        <mat-form-field appearance="standard" class="w-100">
+                                                            <!-- <mat-label>Document Number</mat-label>  -->
+                                                            <input matInput class="form-control"
+                                                                formControlName="permitNo"
+                                                                placeholder="Document Number">
+                                                        </mat-form-field>
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <img src="{{insuranceUpload}}" class="vehicle-image">
                                                 </td>
                                                 <td>
                                                     <div class="upload-btn-wrapper">
-                                                        <button type="submit" class="btn btn-light-main btn-icon" [disabled]="national">
+                                                        <button type="submit" class="btn btn-light-main btn-icon"
+                                                            [disabled]="national">
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
-                                                        <input type="file" #uploadDoc4 name="myfile" class="form-control" formControlName="permitDoc"
-                                                        (change)="imageUpload($event,'national')"/>
+                                                        <input type="file" #uploadDoc4 name="myfile"
+                                                            class="form-control" formControlName="permitDoc"
+                                                            (change)="imageUpload($event,'national')" />
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <button type="submit" class="btn bg-danger bg-opacity-10 text-danger"
-                                                    (click)="uploadDoc4.click()" [disabled]="insuranceUpload == 'assets/images/Driver-profile.svg'">
+                                                    <button type="submit"
+                                                        class="btn bg-danger bg-opacity-10 text-danger"
+                                                        (click)="clearDocument('uploadDoc4')"
+                                                        [disabled]="deleteUplDoc4">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
                                                 </td>

@@ -1,5 +1,4 @@
 <p class="page-heading">Driver</p>
-
 <div class="row">
     <div class="col-sm-12">
         <div class="display-bar">
@@ -31,15 +30,21 @@
                     <div class="row justify-content-between">
                         <div class="col-sm-4">
                             <div class="row align-items-center">
-                                <div class="col-sm-auto">
-                                    Driver Name
-                                </div>
-                                <div class="col-sm-8">
-                                    <div class="input-group">
-                                        <div class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></div>
-                                        <input type="text" class="form-control" placeholder="Driver Name">
+                                <form [formGroup]="searchDriverForm">
+                                    <div class="col-sm-auto">
+                                        Driver Name
                                     </div>
-                                </div>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <div class="input-group-text"><i class="fa-solid fa-magnifying-glass"
+                                                    (click)="getDriverDetails()"></i></div>
+                                            <input type="text" class="form-control" placeholder="Driver Name"
+                                                formControlName="driverName">
+                                                <div class="input-group-text"><i class="fa-solid fa-xmark"
+                                                    (click)="clearSearchData()"></i></div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                         <div class="col-sm-4 text-end">
@@ -62,26 +67,25 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
+                            <tr *ngFor="let driver of driverDetails">
+                                <td>{{driver.driverId}}</td>
                                 <td>
                                     <img src="../../../assets/images/Driver-profile.svg" alt="" class="vehicle-image">
                                 </td>
-                                <td>
-    
-                                    Nilesh Rajashi
+                                <td>{{driver.name}}
                                 </td>
-                                <td>8669264767</td>
+                                <td>{{driver.mobileNo}}</td>
                                 <td>
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" role="switch"
-                                            id="flexSwitchCheckDefault">
+                                            id="flexSwitchCheckDefault" (change)="blobkUnblockDriver($event,driver)"
+                                            [checked]="driver.isBlockFlag">
                                     </div>
                                 </td>
                                 <td>
                                     <div class="d-flex">
                                         <button class="btn btn-light-main btn-icon me-2" data-bs-toggle="modal"
-                                            data-bs-target="#AddDriverModal">
+                                            data-bs-target="#AddDriverModal" (click)="editDriverData(driver)">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                         </button>
                                         <button class="btn bg-danger bg-opacity-10 text-danger">
@@ -108,156 +112,200 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-sm-2">
-                        <div class="position-relative">
-                            <img src="assets/images/Driver-profile.svg" class="vehicle-image">
-                            <div class="vehicle-buttons d-flex flex-column upload-btn-wrapper">
-                                <button class="btn bg-light text-primary">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-                                <input type="file" name="myfile" />
+                    <form [formGroup]="driverRegForm">
+                        <div class="col-sm-2">
+                            <div class="position-relative form-group">
+                                <img src="assets/images/Driver-profile.svg" class="vehicle-image">
+                                <div class="vehicle-buttons d-flex flex-column upload-btn-wrapper">
+                                    <button class="btn bg-light text-primary">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <input type="file" name="myfile" class="form-control"
+                                        formControlName="driverPfofile" />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-sm-10">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <mat-form-field class="w-100" appearance="standard">
-                                    <mat-label>Mobile Number</mat-label>
-                                    <input matInput placeholder="Mobile Number" value="">
-                                </mat-form-field>
-                            </div>
-                            <div class="col-sm-6">
-                                <mat-form-field class="w-100" appearance="standard">
-                                    <mat-label>First Name</mat-label>
-                                    <input matInput placeholder="First Name" value="">
-                                </mat-form-field>
-                            </div>
-                            <div class="col-sm-6">
-                                <mat-form-field class="w-100" appearance="standard">
-                                    <mat-label>Last Name</mat-label>
-                                    <input matInput placeholder="Last Name" value="">
-                                </mat-form-field>
-                            </div>
-                            <div class="col-sm-6">
-                                <mat-form-field class="w-100" appearance="standard">
-                                    <mat-label>Date of Birth</mat-label>
-                                    <input matInput [matDatepicker]="picker">
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                                </mat-form-field>
-                            </div>
-                            <div class="col-sm-12">
-                                <table class="table dashboard-table mb-0 table-padding-0">
-                                    <thead>
-                                        <tr>
-                                            <th>Document Name</th>
-                                            <th>Document Number</th>
-                                            <th>Document</th>
-                                            <th>Upload</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Licence Number</td>
-                                            <td>
-                                                <mat-form-field appearance="standard" class="w-100">
-                                                    <mat-label>Document Number</mat-label>
-                                                    <input matInput>
-                                                </mat-form-field>
-                                            </td>
-                                            <td>
-                                                <img src="assets/images/Driver-profile.svg" class="vehicle-image">
-                                            </td>
-                                            <td>
-                                                <div class="upload-btn-wrapper">
-                                                    <button type="submit" class="btn btn-light-main btn-icon">
-                                                        <i class="fa-solid fa-upload"></i>
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <mat-form-field class="w-100" appearance="standard">
+                                        <mat-label>Mobile Number</mat-label>
+                                        <input matInput placeholder="Mobile Number" value="" class="form-control"
+                                            formControlName="mobileNo" (keypress)="this.vs.onlyDigits($event)"
+                                            (keyup)="this.vs.noSpaces($event)" maxlength="10">
+                                        <mat-error *ngIf="isSubmitted && f['mobileNo'].errors">
+                                            <span class="text-danger" *ngIf="f['mobileNo'].hasError('pattern')">Enter
+                                                valid mobile Number</span>
+                                            <span class="text-danger" *ngIf="f['mobileNo'].hasError('maxlength')">Enter
+                                                10 digit mobile Number</span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <mat-form-field class="w-100" appearance="standard">
+                                        <mat-label>First Name</mat-label>
+                                        <input matInput placeholder="First Name" value="" class="form-control"
+                                            formControlName="firstName" (keypress)="this.vs.onlyAlphabets($event)"
+                                            (keyup)="this.vs.noSpaces($event)">
+                                        <mat-error *ngIf="isSubmitted && f['firstName'].errors">first Name is required
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <mat-form-field class="w-100" appearance="standard">
+                                        <mat-label>Last Name</mat-label>
+                                        <input matInput placeholder="Last Name" value="" class="form-control"
+                                            formControlName="lastName" (keypress)="this.vs.onlyAlphabets($event)"
+                                            (keyup)="this.vs.noSpaces($event)">
+                                        <mat-error *ngIf="isSubmitted && f['lastName'].errors">Last Name is required
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <mat-form-field class="w-100" appearance="standard">
+                                        <mat-label>Date of Birth</mat-label>
+                                        <input matInput [matDatepicker]="picker" class="form-control"
+                                            formControlName="dOB">
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                        <mat-error *ngIf="isSubmitted && f['lastName'].errors">Date of birth is required
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-12">
+                                    <table class="table dashboard-table mb-0 table-padding-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Document Name</th>
+                                                <th>Document Number</th>
+                                                <th>Document</th>
+                                                <th>Upload</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Licence Number</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <mat-form-field appearance="standard" class="w-100">
+                                                            <input matInput class="form-control"
+                                                                formControlName="licenceNo"
+                                                                placeholder="Licence Number">
+                                                        </mat-form-field>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <img src="assets/images/Driver-profile.svg" class="vehicle-image">
+                                                </td>
+                                                <td>
+                                                    <div class="upload-btn-wrapper form-group">
+                                                        <button type="submit" class="btn btn-light-main btn-icon">
+                                                            <i class="fa-solid fa-upload"></i>
+                                                        </button>
+                                                        <input type="file" name="myfile" class="form-control"
+                                                            formControlName="licenceDoc" />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button type="submit"
+                                                        class="btn bg-danger bg-opacity-10 text-danger">
+                                                        <i class="fa-solid fa-trash-can"></i>
                                                     </button>
-                                                    <input type="file" name="myfile" />
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <button type="submit" class="btn bg-danger bg-opacity-10 text-danger">
-                                                    <i class="fa-solid fa-trash-can"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Aadhaar Number</td>
-                                            <td>
-                                                <mat-form-field appearance="standard" class="w-100">
-                                                    <mat-label>Document Number</mat-label>
-                                                    <input matInput>
-                                                </mat-form-field>
-                                            </td>
-                                            <td>
-                                                <img src="assets/images/Driver-profile.svg" class="vehicle-image">
-                                            </td>
-                                            <td>
-                                                <div class="upload-btn-wrapper">
-                                                    <button type="submit" class="btn btn-light-main btn-icon">
-                                                        <i class="fa-solid fa-upload"></i>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Aadhaar Number</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <mat-form-field appearance="standard" class="w-100">
+                                                            <input matInput class="form-control"
+                                                                formControlName="aadharNo" placeholder="Aadhaar Number">
+                                                        </mat-form-field>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <img src="assets/images/Driver-profile.svg" class="vehicle-image">
+                                                </td>
+                                                <td>
+                                                    <div class="upload-btn-wrapper form-group">
+                                                        <button type="submit" class="btn btn-light-main btn-icon">
+                                                            <i class="fa-solid fa-upload"></i>
+                                                        </button>
+                                                        <input type="file" name="myfile" class="form-control"
+                                                            formControlName="aadharDoc" />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button type="submit"
+                                                        class="btn bg-danger bg-opacity-10 text-danger">
+                                                        <i class="fa-solid fa-trash-can"></i>
                                                     </button>
-                                                    <input type="file" name="myfile" />
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <button type="submit" class="btn bg-danger bg-opacity-10 text-danger">
-                                                    <i class="fa-solid fa-trash-can"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>PAN Number</td>
-                                            <td>
-                                                <mat-form-field appearance="standard" class="w-100">
-                                                    <mat-label>Document Number</mat-label>
-                                                    <input matInput>
-                                                </mat-form-field>
-                                            </td>
-                                            <td>
-                                                <img src="assets/images/Driver-profile.svg" class="vehicle-image">
-                                            </td>
-                                            <td>
-                                                <div class="upload-btn-wrapper">
-                                                    <button type="submit" class="btn btn-light-main btn-icon">
-                                                        <i class="fa-solid fa-upload"></i>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                            <tr>
+                                                <td>PAN Number</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <mat-form-field appearance="standard" class="w-100">
+                                                            <input matInput class="form-control" formControlName="panNo"
+                                                                placeholder="PAN Number">
+                                                        </mat-form-field>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <img src="assets/images/Driver-profile.svg" class="vehicle-image">
+                                                </td>
+                                                <td>
+                                                    <div class="upload-btn-wrapper form-group">
+                                                        <button type="submit" class="btn btn-light-main btn-icon">
+                                                            <i class="fa-solid fa-upload"></i>
+                                                        </button>
+                                                        <input type="file" name="myfile" class="form-control"
+                                                            formControlName="panDoc" />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button type="submit"
+                                                        class="btn bg-danger bg-opacity-10 text-danger">
+                                                        <i class="fa-solid fa-trash-can"></i>
                                                     </button>
-                                                    <input type="file" name="myfile" />
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <button type="submit" class="btn bg-danger bg-opacity-10 text-danger">
-                                                    <i class="fa-solid fa-trash-can"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-sm-6">
-                                <mat-form-field appearance="standard" class="w-100">
-                                    <mat-label>Present Address</mat-label>
-                                    <textarea matInput></textarea>
-                                </mat-form-field>
-                            </div>
-                            <div class="col-sm-6">
-                                <mat-form-field appearance="standard" class="w-100">
-                                    <mat-label>Permanent Address</mat-label>
-                                    <textarea matInput></textarea>
-                                </mat-form-field>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <mat-form-field appearance="standard" class="w-100">
+                                        <mat-label>Present Address</mat-label>
+                                        <textarea matInput class="form-control" formControlName="presentAdr"></textarea>
+                                        <mat-error *ngIf="isSubmitted && f['presentAdr'].errors">Present Address is
+                                            required</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <mat-form-field appearance="standard" class="w-100">
+                                        <mat-label>Permanent Address</mat-label>
+                                        <textarea matInput class="form-control"
+                                            formControlName="permanentAdr"></textarea>
+                                        <mat-error *ngIf="isSubmitted && f['permanentAdr'].errors">Permanent Address is
+                                            required</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <ng-container class="form-group">
+                                    <input matInput class="form-control d-none" formControlName="flag">
+                                </ng-container>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
             <div class="modal-footer border-0">
                 <div class="form-container w-100">
                     <div class="d-flex justify-content-between">
                         <button class="btn btn-light-main" data-bs-dismiss="modal">Cancel</button>
-                        <button class="btn btn-main">Save</button>
+                        <button class="btn btn-main" (click)="registerDriverSave()">Save</button>
                     </div>
                 </div>
             </div>

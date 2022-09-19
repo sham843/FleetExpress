@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CommanService } from 'src/app/services/comman.service';
@@ -38,9 +38,23 @@ export class ManageVehicleComponent implements OnInit {
   profilePhotoImg:any
   driverName:string |any;
   vhlId:number |any;
+  assignUnassignVhl:boolean=false;
+  deleteUplDoc:boolean=true;
+  deleteUplDoc1:boolean=true;
+  deleteUplDoc2:boolean=true;
+  deleteUplDoc3:boolean=true;
+  deleteUplDoc4:boolean=true;
+  AssignDriverModal1:any;
+  a:any;
   profilePhoto: any = "assets/images/Driver-profile.svg";
   insuranceUpload: any = "assets/images/Driver-profile.svg";
   date: any = new Date();
+  @ViewChild('closeModel') closeModel:any;
+  @ViewChild('uploadDoc') uploadDoc:any;
+  @ViewChild('uploadDoc1') uploadDoc1:any;
+  @ViewChild('uploadDoc2') uploadDoc2:any;
+  @ViewChild('uploadDoc3') uploadDoc3:any;
+  @ViewChild('uploadDoc4') uploadDoc4:any;
   constructor(private comman: CommanService,
     private tostrservice: ToastrService,
     private fb: FormBuilder,
@@ -118,6 +132,7 @@ export class ManageVehicleComponent implements OnInit {
     })
   }
   assignDriver(vhlData: any) {
+    console.log(vhlData)
     this.assignVehicle = vhlData;
     this.asgnVehicle = vhlData.vehicleNo
     this.comman.setHttp('get', 'get-driver?searchText='+'&pageno=1', true, false, false, 'driverBaseUrlApi');
@@ -128,11 +143,17 @@ export class ManageVehicleComponent implements OnInit {
         this.tostrservice.success(response.statusMessage);
       }
     })
+    if(vhlData.driverName){
+      this.assignDriverToVehicle('true');
+      this.AssignDriverModal1="#AssignDriverModal";
+     }
   }
-  assignDriverToVehicle() {
+  assignDriverToVehicle(flag:any) {
+
     let param = {
       "id": 0,
-      "driverId": this.assignDriverForm.value.driverName,
+      // flag=='true'? 0 :this.assignDriverForm.value.driverName
+      "driverId":this.assignDriverForm.value.driverName,
       "vehicleId": this.assignVehicle.vehicleId,
       "assignedby": this.comman.getUserId(),
       "assignedDate": this.date.toISOString(),
@@ -144,6 +165,7 @@ export class ManageVehicleComponent implements OnInit {
     this.comman.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.tostrservice.success(response.statusMessage);
+        this.closeModel.nativeElement.click();
       }
     })
   }
@@ -151,7 +173,6 @@ export class ManageVehicleComponent implements OnInit {
     this.comman.setHttp('get', 'get-vehicles?vehicleId=' + vhl.vehicleId, true, false, false, 'userDetailsBaseUrlApi');
     this.comman.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
-        console.log(response.responseData)
         this.editVehicle = response.responseData[0];
         this.tostrservice.success(response.statusMessage);
         this.patchEditVhlData(this.editVehicle, vhl)
@@ -197,22 +218,50 @@ export class ManageVehicleComponent implements OnInit {
         if(flag=='insurance'){
           this.insuranceImg=ele.responseData;
           this.insurance=true;
+          this.deleteUplDoc=false;
         }else if(flag=='register'){
           this.registerImg=ele.responseData;
           this.register=true;
+          this.deleteUplDoc1=false;
         }else if(flag=='pollution'){
           this.pollutionImg=ele.responseData;
           this.pollution=true;
+          this.deleteUplDoc2=false;
         }else if(flag=='fitness'){
           this.fitnessImg=ele.responseData;
           this.fitness=true;
+          this.deleteUplDoc3=false;
         }else{
           this.nationalImg=ele.responseData;
           this.national=true;
+          this.deleteUplDoc4=false;
         }
       }
     }) 
   } 
+  clearDocument(flag:any){
+    if(flag=='uploadDoc'){
+      this.uploadDoc.nativeElement.value = null;
+      this.deleteUplDoc=true;
+      this.insurance=false;
+    }else if(flag=='uploadDoc1'){
+      this.uploadDoc1.nativeElement.value = null;
+      this.deleteUplDoc1=true;
+      this.register=false;
+    }else if(flag=='uploadDoc2'){
+      this.uploadDoc2.nativeElement.value = null;
+      this.deleteUplDoc2=true;
+      this.pollution=false;
+    }else if(flag=='uploadDoc3'){
+      this.uploadDoc3.nativeElement.value = null;
+      this.deleteUplDoc3=true;
+      this.fitness=false;
+    }else{
+      this.uploadDoc4.nativeElement.value = null;
+    this.deleteUplDoc4=true;
+    this.national=false;
+    }
+  }
   saveVehicleDetails() {
     let vhlaData=(this.editVehicleForm.value.vhlNumber).split('');
     let param = {
