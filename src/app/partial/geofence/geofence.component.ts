@@ -9,6 +9,8 @@ import { ErrorsService } from 'src/app/services/errors.service';
 import { ValidationService } from 'src/app/services/validation.service';
 import { Subscription } from 'rxjs';
 import { MapsAPILoader } from '@agm/core';
+declare var google: any;
+
 @Component({
   selector: 'app-geofence',
   templateUrl: './geofence.component.html',

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { GeofenceRoutingModule } from './geofence-routing.module';
 import { GeofenceComponent } from './geofence.component';
 import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.module';
+import { AgmCoreModule } from '@agm/core';
 
 
 @NgModule({
@@ -13,7 +14,12 @@ import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.mo
   imports: [
     CommonModule,
     GeofenceRoutingModule,
-    MaterialModule
+    MaterialModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyAkNBALkBX7trFQFCrcHO2I85Re2MmzTo8',
+      language: 'en',
+      libraries: ['places', 'geometry'],
+    }),
   ]
 })
 export class GeofenceModule { }
