@@ -53,7 +53,7 @@ export class GeofenceComponent implements OnInit {
     })
   }
   getVehicleData() {
-    this.common.setHttp('get', 'Geofencne/get-POI-vehicle-Details?UserId='+this.common.getUserId(), true, false, false, 'vehicletrackingBaseUrlApi');
+    this.common.setHttp('get', 'userdetail/get-vehicle-list?vehicleOwnerId='+this.common.getVehicleOwnerId(), true, false, false, 'vehicletrackingBaseUrlApi');
     this.subscription = this.common.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {

@@ -10,7 +10,7 @@
   },
   "private": true,
   "dependencies": {
-    "@agm/core": "^1.0.0",
+    "@agm/core": "^1.1.0",
     "@angular-material-components/datetime-picker": "^8.0.0",
     "@angular/animations": "^14.2.1",
     "@angular/cdk": "^14.2.1",
