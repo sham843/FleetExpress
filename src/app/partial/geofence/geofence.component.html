@@ -12,7 +12,7 @@
 </div>
 
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-12" *ngIf="GeofenceListTableData.length==0">
         <div class="card card-body plain-card card-fullheight">
             <div class="text-center justify-content-center">
                 <img src="../../../assets/images/Geofence.svg" alt="">
@@ -23,7 +23,7 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-12">
+    <div class="col-sm-12" *ngIf="GeofenceListTableData.length !=0">
         <div class="card card-body border-0">
             <div class="card form-card">
                 <div class="card-header">
@@ -136,7 +136,7 @@
                     <div class="col-sm-7">
                         <mat-form-field class="w-100" appearance="standard">
                             <mat-label>Search Area</mat-label>
-                            <input matInput placeholder="Search" value="">
+                            <input matInput placeholder="Search" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
                             <mat-icon matSuffix>search</mat-icon>
                         </mat-form-field>
                     </div>

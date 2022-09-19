@@ -132,7 +132,6 @@ export class ManageVehicleComponent implements OnInit {
     })
   }
   assignDriver(vhlData: any) {
-    console.log(vhlData)
     this.assignVehicle = vhlData;
     this.asgnVehicle = vhlData.vehicleNo
     this.comman.setHttp('get', 'get-driver?searchText='+'&pageno=1', true, false, false, 'driverBaseUrlApi');
@@ -149,7 +148,7 @@ export class ManageVehicleComponent implements OnInit {
      }
   }
   assignDriverToVehicle(flag:any) {
-
+console.log(this.assignVehicle)
     let param = {
       "id": 0,
       // flag=='true'? 0 :this.assignDriverForm.value.driverName
