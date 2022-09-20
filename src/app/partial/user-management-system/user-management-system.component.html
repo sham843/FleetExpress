@@ -75,9 +75,9 @@
                                                 </div>
                                                 <div class="col-sm-8">
                                                     <div class="input-group">
-                                                        <div class="input-group-text"><i
-                                                                class="fa-solid fa-magnifying-glass"></i></div>
-                                                        <input type="text" class="form-control" placeholder="Search">
+                                                        <input type="text" class="form-control" placeholder="Search" [formControl]="searchContent">
+                                                        <div class="input-group-text" *ngIf="!searchContent.value"><i class="fa-solid fa-magnifying-glass"></i></div>
+                                                        <div class="input-group-text" *ngIf="searchContent.value"><i class="fa fa-times" (click)="searchContent.reset()"></i></div>
                                                     </div>
                                                 </div>
                                             </div>

@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {FormBuilder, FormGroup, UntypedFormControl, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, UntypedFormControl, Validators} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { BlockUnblockComponent } from 'src/app/dialogs/block-unblock/block-unblock.component';
 import { CommanService } from 'src/app/services/comman.service';
 import { ErrorsService } from 'src/app/services/errors.service';
@@ -38,7 +38,7 @@ export class UserManagementSystemComponent implements OnInit {
   pageSize: any;
   pageNumber: number=1;
   totalUserTableData: number=0;
-  
+  searchContent = new FormControl()
   get user() { return this.userForm.controls };
   get role() { return this.roleForm.controls };
   constructor(private common:CommanService,
@@ -59,6 +59,11 @@ export class UserManagementSystemComponent implements OnInit {
     this.getUserTableData();
     this.getRoleTableData();
   }
+  ngAfterViewInit(){
+    this.searchContent.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe((x:any)=>{
+     this.getUserTableData();
+    });
+ }
   getRegFormData() {
     this.userForm = this.fb.group({
       fName: ['', Validators.required],
@@ -106,7 +111,7 @@ export class UserManagementSystemComponent implements OnInit {
     });
   }
   getUserTableData(){
-    this.common.setHttp('get', 'userdetail/get-user-list?vehicleOwnerId='+this.userData.vehicleOwnerId+'&Subusertypeid=&SearchText=&District=0&TalukaId=0&NoPage='+this.pageNumber+'&RowsPerPage=10', true, false, false, 'vehicletrackingBaseUrlApi');
+    this.common.setHttp('get', 'userdetail/get-user-list?vehicleOwnerId='+this.userData.vehicleOwnerId+'&Subusertypeid=&SearchText='+this.searchContent.value+'&District=0&TalukaId=0&NoPage='+ (!this.searchContent.value?this.pageNumber:0)+'&RowsPerPage='+(!this.searchContent.value?10:0), true, false, false, 'vehicletrackingBaseUrlApi');
     this.subscription = this.common.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
@@ -328,5 +333,8 @@ export class UserManagementSystemComponent implements OnInit {
       })
 
     });
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 } 
