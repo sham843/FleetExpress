@@ -5,7 +5,7 @@ import { DriverRoutingModule } from './driver-routing.module';
 import { DriverComponent } from './driver.component';
 import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { NgxPaginationModule } from 'ngx-pagination';
 @NgModule({
   declarations: [
     DriverComponent
@@ -15,7 +15,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     DriverRoutingModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxPaginationModule
   ]
 })
 export class DriverModule { }
