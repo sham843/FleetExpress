@@ -114,5 +114,4 @@ passwordValid(controls:any) {
     return { passwordValid: true }
   }
 }
-
 }

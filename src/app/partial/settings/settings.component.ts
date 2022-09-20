@@ -12,6 +12,8 @@ import { CommanService } from 'src/app/services/comman.service';
 export class SettingsComponent implements OnInit {
   changePassForm!:FormGroup;
   hide = true;
+  hide1=true;
+  hide2=true;
   submitted=false;
   value = 0;
   showTicks = false;

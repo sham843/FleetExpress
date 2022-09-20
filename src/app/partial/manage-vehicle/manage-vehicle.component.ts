@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { CommanService } from 'src/app/services/comman.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -25,11 +26,8 @@ export class ManageVehicleComponent implements OnInit {
   assignVehicle: any;
   asgnVehicle: any;
   editVehicle: any;
-  insurance:boolean=false;
-  register:boolean=false;
-  pollution:boolean=false;
-  fitness:boolean=false;
-  national:boolean=false;
+  searchHideShow:boolean=true;
+  clearHideShow:boolean=false;
   insuranceImg:any;
   registerImg:any;
   pollutionImg:any;
@@ -39,13 +37,6 @@ export class ManageVehicleComponent implements OnInit {
   driverName:string |any;
   vhlId:number |any;
   assignUnassignVhl:boolean=false;
-  deleteUplDoc:boolean=true;
-  deleteUplDoc1:boolean=true;
-  deleteUplDoc2:boolean=true;
-  deleteUplDoc3:boolean=true;
-  deleteUplDoc4:boolean=true;
-  AssignDriverModal1:any;
-  a:any;
   profilePhoto: any = "assets/images/Driver-profile.svg";
   insuranceUpload: any = "assets/images/Driver-profile.svg";
   date: any = new Date();
@@ -59,7 +50,8 @@ export class ManageVehicleComponent implements OnInit {
     private tostrservice: ToastrService,
     private fb: FormBuilder,
     private datepipe: DatePipe,
-    private sharedService: SharedService) { }
+    private sharedService: SharedService,
+    private spinner:NgxSpinnerService) { }
 
   ngOnInit(): void {
     this.getformControls();
@@ -93,11 +85,13 @@ export class ManageVehicleComponent implements OnInit {
       permitDoc: [''],
     }) 
   }
-  getVehicleData() {
+  getVehicleData(flag?:any) {
+    this.spinner.show();
     let searchText = this.serchVehicle.value.searchVhl || '';
     this.comman.setHttp('get', 'get-vehiclelists?searchtext=' + searchText + '&nopage=' + this.paginationNo, true, false, false, 'vehicleBaseUrlApi');
     this.comman.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
+        this.spinner.hide();
         this.vehicleData = response.responseData.responseData1;
         this.vehicleData.forEach((ele: any) => {
           ele['isBlockFlag'] = false;
@@ -105,9 +99,12 @@ export class ManageVehicleComponent implements OnInit {
             ele.isBlockFlag = true;
           }
         });
+          if (flag == 'search') {
+            this.searchHideShow = false;
+            this.clearHideShow = true;
+          }
         this.totalItem = response.responseData.responseData2.totalRecords;
         this.tostrservice.success(response.statusMessage);
-        // this.getDriverName();
       }
     })
   }
@@ -123,9 +120,11 @@ export class ManageVehicleComponent implements OnInit {
       "isBlock": isBlock,
       "remark": ""
     }
+    this.spinner.show();
     this.comman.setHttp('put', 'BlockUnblockVehicle', true, param, false, 'vehicleBaseUrlApi');
     this.comman.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
+        this.spinner.hide();
         this.tostrservice.success(response.statusMessage);
         this.getVehicleData();
       }
@@ -134,24 +133,19 @@ export class ManageVehicleComponent implements OnInit {
   assignDriver(vhlData: any) {
     this.assignVehicle = vhlData;
     this.asgnVehicle = vhlData.vehicleNo
+    this.spinner.show();
     this.comman.setHttp('get', 'get-driver?searchText='+'&pageno=1', true, false, false, 'driverBaseUrlApi');
     this.comman.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
-        console.log(response)
+        this.spinner.hide();
         this.driverData = response.responseData.responseData1;
         this.tostrservice.success(response.statusMessage);
       }
     })
-    if(vhlData.driverName){
-      this.assignDriverToVehicle('true');
-      this.AssignDriverModal1="#AssignDriverModal";
-     }
   }
   assignDriverToVehicle(flag:any) {
-console.log(this.assignVehicle)
     let param = {
       "id": 0,
-      // flag=='true'? 0 :this.assignDriverForm.value.driverName
       "driverId":this.assignDriverForm.value.driverName,
       "vehicleId": this.assignVehicle.vehicleId,
       "assignedby": this.comman.getUserId(),
@@ -160,18 +154,22 @@ console.log(this.assignVehicle)
       "vehicleNumber": this.assignVehicle.vehicleNo,
       "userId": this.comman.getUserId()
     }
+    this.spinner.show();
     this.comman.setHttp('put', 'assign-driver-to-vehicle', true, param, false, 'vehicleBaseUrlApi');
     this.comman.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
+        this.spinner.hide();
         this.tostrservice.success(response.statusMessage);
         this.closeModel.nativeElement.click();
       }
     })
   }
   editVehicleDetail(vhl: any) {
+    this.spinner.show();
     this.comman.setHttp('get', 'get-vehicles?vehicleId=' + vhl.vehicleId, true, false, false, 'userDetailsBaseUrlApi');
     this.comman.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
+        this.spinner.hide();
         this.editVehicle = response.responseData[0];
         this.tostrservice.success(response.statusMessage);
         this.patchEditVhlData(this.editVehicle, vhl)
@@ -179,6 +177,7 @@ console.log(this.assignVehicle)
     })
   }
   patchEditVhlData(data: any, vehicleName: any) {
+    console.log(data)
     this.vhlId=data.vehicleId;
     this.driverName=vehicleName.driverName;
     this.editVehicleForm.patchValue({
@@ -202,64 +201,32 @@ console.log(this.assignVehicle)
     })
   }
   profilePhotoUpd(event: any) {
+    this.spinner.show();
     let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'vehicleProfile', "png,jpg,jpeg");
     documentUrl.subscribe({
       next: (ele: any) => {
+        this.spinner.hide();
         this.profilePhotoImg = ele.responseData;
         this.profilePhoto=this.profilePhotoImg;
       }
     })
   }
   imageUpload(event: any,flag:any) {
+    this.spinner.show();
     let documentUrl: any = this.sharedService.uploadDocuments(event, "pdf");
     documentUrl.subscribe({
       next: (ele: any) => {
-        if(flag=='insurance'){
-          this.insuranceImg=ele.responseData;
-          this.insurance=true;
-          this.deleteUplDoc=false;
-        }else if(flag=='register'){
-          this.registerImg=ele.responseData;
-          this.register=true;
-          this.deleteUplDoc1=false;
-        }else if(flag=='pollution'){
-          this.pollutionImg=ele.responseData;
-          this.pollution=true;
-          this.deleteUplDoc2=false;
-        }else if(flag=='fitness'){
-          this.fitnessImg=ele.responseData;
-          this.fitness=true;
-          this.deleteUplDoc3=false;
-        }else{
-          this.nationalImg=ele.responseData;
-          this.national=true;
-          this.deleteUplDoc4=false;
-        }
+        this.spinner.hide();
+        flag=='insurance'?this.insuranceImg=ele.responseData:flag=='register'?this.registerImg=ele.responseData:flag=='pollution'?this.pollutionImg=ele.responseData:flag=='fitness'?this.fitnessImg=ele.responseData:this.nationalImg=ele.responseData;
       }
     }) 
   } 
   clearDocument(flag:any){
-    if(flag=='uploadDoc'){
-      this.uploadDoc.nativeElement.value = null;
-      this.deleteUplDoc=true;
-      this.insurance=false;
-    }else if(flag=='uploadDoc1'){
-      this.uploadDoc1.nativeElement.value = null;
-      this.deleteUplDoc1=true;
-      this.register=false;
-    }else if(flag=='uploadDoc2'){
-      this.uploadDoc2.nativeElement.value = null;
-      this.deleteUplDoc2=true;
-      this.pollution=false;
-    }else if(flag=='uploadDoc3'){
-      this.uploadDoc3.nativeElement.value = null;
-      this.deleteUplDoc3=true;
-      this.fitness=false;
-    }else{
-      this.uploadDoc4.nativeElement.value = null;
-    this.deleteUplDoc4=true;
-    this.national=false;
-    }
+    flag=='uploadDoc'?(this.uploadDoc.nativeElement.value = null,this.editVehicleForm.controls['insuranceDoc'].setValue('')):
+    flag=='uploadDoc1'?(this.uploadDoc1.nativeElement.value = null,this.editVehicleForm.controls['registerDoc'].setValue('')):
+    flag=='uploadDoc2'?(this.uploadDoc2.nativeElement.value = null,this.editVehicleForm.controls['pollutionDoc'].setValue('')):
+    flag=='uploadDoc3'?(this.uploadDoc3.nativeElement.value = null,this.editVehicleForm.controls['fitnessDoc'].setValue('')):
+    (this.uploadDoc4.nativeElement.value = null,this.editVehicleForm.controls['permitDoc'].setValue(''));
   }
   saveVehicleDetails() {
     let vhlaData=(this.editVehicleForm.value.vhlNumber).split('');
@@ -319,9 +286,11 @@ console.log(this.assignVehicle)
       return;
     }
     else {
+      this.spinner.show();
       this.comman.setHttp('post', 'save-update-vehicle-details', true,param, false, 'vehicleBaseUrlApi');
       this.comman.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
+          this.spinner.hide();
           this.tostrservice.success(response.statusMessage);
         }
       })
@@ -333,6 +302,8 @@ console.log(this.assignVehicle)
   }
   clearSearchData() {
     this.serchVehicle.reset();
+    this.searchHideShow = true;
+    this.clearHideShow = false;
     this.getVehicleData();
   }
 }

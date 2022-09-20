@@ -1683,3 +1683,6 @@ body.swal2-no-backdrop .swal2-shown.swal2-bottom-end,body.swal2-no-backdrop .swa
   color: #f44336;
   font-size: 0.7rem;
 }
+.form-control.is-invalid, .was-validated .form-control:invalid{
+  background-image: unset;
+}
