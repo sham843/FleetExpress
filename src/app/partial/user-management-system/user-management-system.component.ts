@@ -171,9 +171,11 @@ export class UserManagementSystemComponent implements OnInit {
       let vehiclearray=[];
       for(let i=0;i< userFormData.assignedVehicle.length ; i++){
         vehiclearray.push(this.VehicleDtArr.find(x=>x.vehicleRegistrationNo==userFormData?.assignedVehicle[i]));
+        console.log(vehiclearray);
       }
       vehiclearray.map((x:any)=>{
         x.isAssigned=1
+        x.userId=this.editFlag==false?0:this.editData.id;
       })
     const obj = {
       "id": this.editFlag==false?0: this.editData.id ,

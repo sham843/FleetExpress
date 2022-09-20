@@ -86,7 +86,6 @@ export class GeofenceComponent implements OnInit {
       });
     });
   }
-
   findAddressByCoordinates() {
     this.geocoder.geocode(
       { location: { lat: this.latitude, lng: this.longitude, } },

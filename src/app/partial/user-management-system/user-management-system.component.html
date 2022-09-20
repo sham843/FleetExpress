@@ -215,8 +215,9 @@
                                 <mat-label>Assign Vehicle</mat-label>
                                 <mat-select multiple formControlName="assignedVehicle">
                                     <mat-option *ngFor="let vehicles of VehicleDtArr"
-                                        [value]="vehicles.vehicleRegistrationNo">{{vehicles.vehicleRegistrationNo}}
+                                        [value]="vehicles.vehicleRegistrationNo" [disabled]="((vehicles.userId != editData?.id  && editFlag==true) || editFlag==false) && vehicles.userId != 0  ">{{vehicles.vehicleRegistrationNo}}
                                     </mat-option>
+                                    <!-- [disabled]="(vehicles.userId != editData?.id && vehicles.userId != 0  && editFlag==true) || (editFlag==false && vehicles.userId != 0) " -->
                                 </mat-select>
                                 <button mat-icon-button matSuffix mat-stroked-button>
                                     {{user['assignedVehicle'].value? user['assignedVehicle'].value.length: 0}}
