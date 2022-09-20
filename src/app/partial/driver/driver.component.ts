@@ -15,7 +15,7 @@ export class DriverComponent implements OnInit {
   searchDriverForm!: FormGroup;
   isSubmitted: boolean = true;
   driverDetails: any;
-  editId: any;
+  editId: any=0;
   date: any = new Date();
   constructor(private fb: FormBuilder,
     public vs: ValidationService,
@@ -83,10 +83,24 @@ export class DriverComponent implements OnInit {
       }
     })
   }
+  editDriverData(driverData: any) {
+    this.editId = driverData.driverId
+    this.driverRegForm.patchValue({
+      firstName: driverData.name.split(' ').shift(),
+      lastName: driverData.name.split(' ').pop(),
+      dOB: driverData.dob,
+      mobileNo: driverData.mobileNo,
+      presentAdr: driverData.presentAddress,
+      permanentAdr: driverData.permanentAddress,
+      licenceNo: driverData.licenceNumber,
+      panNo: driverData.panNumber,
+      aadharNo: driverData.aadharNumber,
+      flag: "u"
+    })
+  }
   registerDriverSave() {
-    console.log(this.datepipe.transform(this.driverRegForm.value.dOB,'yyyy/MM/dd'));
     let param = {
-      "id": this.editId ? this.editId:0,
+      "id":this.editId,
       "firstName": this.driverRegForm.value.firstName,
       "middleName": "",
       "lastName": this.driverRegForm.value.lastName,
@@ -105,6 +119,7 @@ export class DriverComponent implements OnInit {
       "isDeleted": true,
       "name": ""
     }
+
     /* if (this.driverRegForm.invalid) {
       this.tostrService.error("Invalid Form");
       return;
@@ -116,21 +131,6 @@ export class DriverComponent implements OnInit {
       }
     })
     // }
-  }
-  editDriverData(driverData: any) {
-    this.editId = driverData.driverId
-    this.driverRegForm.patchValue({
-      firstName: driverData.name.split(' ').shift(),
-      lastName: driverData.name.split(' ').pop(),
-      dOB: driverData.dob,
-      mobileNo: driverData.mobileNo,
-      presentAdr: driverData.presentAddress,
-      permanentAdr: driverData.permanentAddress,
-      licenceNo: driverData.licenceNumber,
-      panNo: driverData.panNumber,
-      aadharNo: driverData.aadharNumber,
-      flag: "u"
-    })
   }
   get f() { return this.driverRegForm.controls };
 }
