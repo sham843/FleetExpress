@@ -4,7 +4,7 @@
         <div class="display-bar">
             <div class="d-flex align-items-center">
                 <div class="me-3">Total Vehicles</div>
-                <div class="fw-bold">220</div>
+                <div class="fw-bold">{{totalVhl}}</div>
             </div>
         </div>
     </div>
@@ -68,7 +68,7 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let driver of driverDetails | paginate: {itemsPerPage: pageSize, 
-                                currentPage: paginationNo, totalItems:totalItem};let i=index">
+                                currentPage: paginationNo, totalItems:totalItem};let i=index" [ngClass]="{'highLightRow':highLightRow==driver.driverId}">
                                 <td>{{((paginationNo + 1) * 10 + i + 1)-20}}</td>
                                 <td>
                                     <img src="../../../assets/images/Driver-profile.svg" alt="" class="vehicle-image">
@@ -120,20 +120,20 @@
         <div class="modal-content">
             <div class="modal-header bg-light-gradient text-dark">
                 <p class="modal-title mb-0" id="AddDriverModalLabel">Driver Registration</p>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModels()"></button>
             </div>
             <div class="modal-body">
                 <div class="row">
                  
                         <div class="col-sm-2">
                             <div class="position-relative form-group">
-                                <img src="{{profilePhoto}}" class="vehicle-image">
+                                <img src="{{profilePhotoupd}}" class="vehicle-image">
                                 <div class="vehicle-buttons d-flex flex-column upload-btn-wrapper">
                                     <button class="btn bg-light text-primary" (click)="profileUpload.click()">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
                                     <input type="file" #profileUpload name="myfile" class="form-control"
-                                        formControlName="driverPfofile" (change)="profileUploads($event)"/>
+                                        formControlName="profilePhoto" (change)="profileUploads($event)"/>
                                 </div>
                             </div>
                         </div>
@@ -173,10 +173,10 @@
                                 <div class="col-sm-6 form-group">
                                     <mat-form-field class="w-100" appearance="standard">
                                         <input matInput [matDatepicker]="picker" class="form-control"
-                                            formControlName="dOB" placeholder="Date of Birth">
+                                            formControlName="dob" placeholder="Date of Birth">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
-                                        <mat-error *ngIf="isSubmitted && f['lastName'].errors">Date of birth is required
+                                        <mat-error *ngIf="isSubmitted && f['dob'].errors">Date of birth is required
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
@@ -192,16 +192,16 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
+                                            <tr>     
                                                 <td>Licence Number</td>
                                                 <td>
                                                     <div class="form-group">
                                                         <mat-form-field appearance="standard" class="w-100">
-                                                            <input matInput class="form-control" formControlName="licenceNo" [ngClass]="{'is-invalid': isSubmitted && f['licenceNo'].errors}"
+                                                            <input matInput class="form-control" formControlName="licenceNumber" [ngClass]="{'is-invalid': isSubmitted && f['licenceNumber'].errors}"
                                                              placeholder="Licence Number" maxlength="15" minlength="15">
                                                              <mat-error>
-                                                                <span class="text-danger" *ngIf="f['aadharNo'].hasError('pattern')">Enter valid licence number</span>
-                                                                <span class="text-danger" *ngIf="f['aadharNo'].hasError('minlength')">Enter valid licence number</span>
+                                                                <span class="text-danger" *ngIf="f['licenceNumber'].hasError('pattern')">Enter valid licence number</span>
+                                                                <span class="text-danger" *ngIf="f['licenceNumber'].hasError('minlength')">Enter valid licence number</span>
                                                              </mat-error>
                                                         </mat-form-field>
                                                     </div>
@@ -230,10 +230,10 @@
                                                 <td>
                                                     <div class="form-group">
                                                         <mat-form-field appearance="standard" class="w-100">
-                                                            <input matInput class="form-control" [ngClass]="{'is-invalid': isSubmitted && f['aadharNo'].errors}" 
-                                                                formControlName="aadharNo" placeholder="Aadhaar Number"  maxlength="12" minlength="12">
+                                                            <input matInput class="form-control" [ngClass]="{'is-invalid': isSubmitted && f['aadharNumber'].errors}" 
+                                                                formControlName="aadharNumber" placeholder="Aadhaar Number"  maxlength="12" minlength="12">
                                                                 <mat-error>
-                                                                    <span class="text-danger" *ngIf="f['aadharNo'].hasError('minlength')">Enter 12 digit Aadhar card number</span>
+                                                                    <span class="text-danger" *ngIf="f['aadharNumber'].hasError('minlength')">Enter 12 digit Aadhar card number</span>
                                                                 </mat-error>
                                                         </mat-form-field>
                                                     </div>
@@ -243,31 +243,31 @@
                                                 </td>
                                                 <td>
                                                     <div class="upload-btn-wrapper form-group">
-                                                        <button type="submit" class="btn btn-light-main btn-icon" [disabled]="this.driverRegForm.value.aadharDoc?.length > 0">
+                                                        <button type="submit" class="btn btn-light-main btn-icon" [disabled]="this.driverRegForm.value.aadharCardDoc?.length > 0">
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
                                                         <input type="file" name="myfile" #aadharUpload class="form-control" (keyup)="this.vs.noSpaces($event)" (keypress)="this.vs.onlyDigits($event)"
-                                                         formControlName="aadharDoc" (change)="imageUpload($event,'aadhar')"/>
+                                                         formControlName="aadharCardDoc" (change)="imageUpload($event,'aadhar')"/>
                                                         
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <button type="submit"
-                                                        class="btn bg-danger bg-opacity-10 text-danger" [disabled]="!this.driverRegForm.value.aadharDoc?.length" (click)="clearDoc('aadhar')">
+                                                        class="btn bg-danger bg-opacity-10 text-danger" [disabled]="!this.driverRegForm.value.aadharCardDoc?.length" (click)="clearDoc('aadhar')">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
                                                 </td>
                                             </tr>
                                             <tr>
-                                            <tr>
+                                            <tr>   
                                                 <td>PAN Number</td>
                                                 <td>
                                                     <div class="form-group">
                                                         <mat-form-field appearance="standard" class="w-100">
-                                                            <input matInput class="form-control" formControlName="panNo"  matTooltip="AAAAA1234A"
-                                                                placeholder="PAN Number" maxlength="10" (keyup)="this.vs.noSpaces($event)" [ngClass]="{'is-invalid': isSubmitted && f['panNo'].errors}">
+                                                            <input matInput class="form-control" formControlName="panNumber"  matTooltip="AAAAA1234A"
+                                                                placeholder="PAN Number" maxlength="10" (keyup)="this.vs.noSpaces($event)" [ngClass]="{'is-invalid': isSubmitted && f['panNumber'].errors}">
                                                                 <mat-error>
-                                                                    <span class="text-danger" *ngIf="f['panNo'].hasError('pattern')">Enter valid pan card number</span>
+                                                                    <span class="text-danger" *ngIf="f['panNumber'].hasError('pattern')">Enter valid pan card number</span>
                                                                     <!-- <span class="text-danger" *ngIf="f['panNo'].hasError('maxlength')">Enter valid pan card number</span> -->
                                                                 </mat-error>
                                                         </mat-form-field>
@@ -278,16 +278,16 @@
                                                 </td>
                                                 <td>
                                                     <div class="upload-btn-wrapper form-group">
-                                                        <button type="submit" class="btn btn-light-main btn-icon" [disabled]="this.driverRegForm.value.panDoc?.length >0">
+                                                        <button type="submit" class="btn btn-light-main btn-icon" [disabled]="this.driverRegForm.value.panCardDoc?.length >0">
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
                                                         <input type="file" name="myfile" #panUpload class="form-control"
-                                                            formControlName="panDoc" (change)="imageUpload($event,'pan')"/>
+                                                            formControlName="panCardDoc" (change)="imageUpload($event,'pan')"/>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <button type="submit"
-                                                        class="btn bg-danger bg-opacity-10 text-danger" [disabled]="!this.driverRegForm.value.panDoc?.length" (click)="clearDoc('pan')">
+                                                        class="btn bg-danger bg-opacity-10 text-danger" [disabled]="!this.driverRegForm.value.panCardDoc?.length" (click)="clearDoc('pan')">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
                                                 </td>
@@ -297,23 +297,23 @@
                                 </div>
                                 <div class="col-sm-6 form-group">
                                     <mat-form-field appearance="standard" class="w-100">
-                                        <textarea matInput class="form-control" formControlName="presentAdr" placeholder="Present Address"></textarea>
-                                        <mat-error *ngIf="isSubmitted && f['presentAdr'].errors">Present Address is
+                                        <textarea matInput class="form-control" formControlName="presentAddress" placeholder="Present Address"></textarea>
+                                        <mat-error *ngIf="isSubmitted && f['presentAddress'].errors">Present Address is
                                             required</mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-sm-6 form-group">
                                     <mat-form-field appearance="standard" class="w-100">
                                         <textarea matInput class="form-control"
-                                            formControlName="permanentAdr"  placeholder="Permanent Address"></textarea>
-                                        <mat-error *ngIf="isSubmitted && f['permanentAdr'].errors">Permanent Address is
+                                            formControlName="permanentAddress"  placeholder="Permanent Address"></textarea>
+                                        <mat-error *ngIf="isSubmitted && f['permanentAddress'].errors">Permanent Address is
                                             required</mat-error>
                                     </mat-form-field>
                                 </div>
                                 <ng-container class="form-group">
                                     <input matInput class="form-control d-none" formControlName="flag">
                                 </ng-container>
-                            </div>
+                            </div>  
                         </div>
                    
                 </div>
@@ -321,7 +321,7 @@
             <div class="modal-footer border-0">
                 <div class="form-container w-100">
                     <div class="d-flex justify-content-between">
-                        <button class="btn btn-light-main" #closeModel data-bs-dismiss="modal">Cancel</button>
+                        <button class="btn btn-light-main" #closeModel data-bs-dismiss="modal" (click)="closeModels()">Cancel</button>
                         <button class="btn btn-main" (click)="registerDriverSave()">Save</button>
                     </div>
                 </div>

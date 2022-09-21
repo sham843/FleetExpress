@@ -104,6 +104,7 @@ export class ManageVehicleComponent implements OnInit {
             this.clearHideShow = true;
           }
         this.totalItem = response.responseData.responseData2.totalRecords;
+        this.sharedService.sendTotalVhl(this.totalItem);
         this.tostrservice.success(response.statusMessage);
       }
     })

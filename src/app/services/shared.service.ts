@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgxSpinner, Spinner } from 'ngx-spinner/lib/ngx-spinner.enum';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { CommanService } from './comman.service';
 
 @Injectable({
@@ -13,6 +13,16 @@ export class SharedService {
   constructor(private comman: CommanService,
     private spinner: NgxSpinnerService,
     private tostrservice: ToastrService) { }
+
+  private totalVhl = new BehaviorSubject('');
+  getTotalVhl = this.totalVhl.asObservable()
+
+  sendTotalVhl(vehicle: string) {
+    this.totalVhl.next(vehicle);
+  }
+  getTotalVehicle() {
+    return this.getTotalVhl;
+  }
   createCaptchaCarrerPage() {
     //clear the contents of captcha div first
     let id: any = document.getElementById('captcha');
@@ -45,7 +55,7 @@ export class SharedService {
   }
   uploadDocuments(event?: any, allowedDocTypes?: any) {
     return new Observable(obj => {
-      let selResult = event != '' && event != undefined ? event.target.value.split('.') :'';
+      let selResult = event != '' && event != undefined ? event.target.value.split('.') : '';
       const docExt = selResult.pop();
       let file = '';
       let fileName = '';

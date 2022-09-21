@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { CommanService } from 'src/app/services/comman.service';
@@ -24,44 +24,49 @@ export class DriverComponent implements OnInit {
   panDoc: any;
   aadharDoc: any;
   totalItem: any;
+  totalVhl: any;
   paginationNo: number = 1;
   pageSize: number = 10;
+  highLightRow:any;
   date: any = new Date();
-  profilePhoto: any = 'assets/images/Driver-profile.svg';
+  profilePhotoupd: any = 'assets/images/Driver-profile.svg';
   @ViewChild('closeModel') closeModel: any;
   @ViewChild('panUpload') panUpload: any;
   @ViewChild('aadharUpload') aadharUpload: any;
   @ViewChild('licenceUpload') licenceUpload: any;
+  @ViewChild('formGroupDirective') private formGroupDirective: FormGroupDirective|any;
   constructor(private fb: FormBuilder,
     public vs: ValidationService,
     private tostrService: ToastrService,
     private comman: CommanService,
     private datepipe: DatePipe,
     private sharedService: SharedService,
-    private spinner:NgxSpinnerService) { }
+    private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
     this.getRegFormData();
     this.getDriverDetails();
+    this.sharedService.getTotalVehicle().subscribe((res: any) => {
+      this.totalVhl = res;
+    })
   }
   getRegFormData() {
     this.driverRegForm = this.fb.group({
-      driverPfofile: [''],
+      profilePhoto: [''],
       mobileNo: ['', Validators.compose([Validators.required, Validators.pattern('^[6-9][0-9]{9}$'), Validators.maxLength(10)])],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      dOB: ['', Validators.required],
-      licenceNo: ['',Validators.compose([Validators.required,Validators.pattern('^[A-Z]{2}[0-9]{13}$'),Validators.maxLength(15),Validators.minLength(15)])],
+      dob: ['', Validators.required],
+      licenceNumber: ['', Validators.compose([Validators.required, Validators.pattern('^[A-Z]{2}[0-9]{13}$'), Validators.maxLength(15), Validators.minLength(15)])],
       licenceDoc: [''],
-      aadharNo: ['',Validators.compose([Validators.required,Validators.maxLength(12),Validators.minLength(12)])],
-      aadharDoc: [''],
-      panNo: ['',Validators.compose([Validators.required,Validators.pattern('[A-Z]{3}[ABCFGHLJPTF]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}'),Validators.maxLength(10)])],
-      panDoc: [''],
-      presentAdr: ['', Validators.required],
-      permanentAdr: ['', Validators.required],
+      aadharNumber: ['', Validators.compose([Validators.required, Validators.maxLength(12), Validators.minLength(12)])],
+      aadharCardDoc: [''],
+      panNumber: ['', Validators.compose([Validators.required, Validators.pattern('[A-Z]{3}[ABCFGHLJPTF]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}'), Validators.maxLength(10)])],
+      panCardDoc: [''],
+      presentAddress: ['', Validators.required],
+      permanentAddress: ['', Validators.required],
       flag: ['i']
     })
-
     this.searchDriverForm = this.fb.group({
       driverName: ['']
     })
@@ -117,7 +122,7 @@ export class DriverComponent implements OnInit {
     documentUrl.subscribe({
       next: (ele: any) => {
         this.spinner.hide();
-        this.profilePhoto = ele.responseData;
+        this.profilePhotoupd = ele.responseData;
       }
     })
   }
@@ -133,35 +138,43 @@ export class DriverComponent implements OnInit {
     })
   }
   clearDoc(flag: any) {
-    flag == 'pan'?(this.panUpload.nativeElement.value = null,this.driverRegForm.controls['panDoc'].setValue('')):
-    flag == 'aadhar'?(this.aadharUpload.nativeElement.value = null,this.driverRegForm.controls['aadharDoc'].setValue('')):
-    (this.licenceUpload.nativeElement.value = null,this.driverRegForm.controls['licenceDoc'].setValue(''));
+    flag == 'pan' ? (this.panUpload.nativeElement.value = null, this.driverRegForm.controls['panDoc'].setValue('')) :
+      flag == 'aadhar' ? (this.aadharUpload.nativeElement.value = null, this.driverRegForm.controls['aadharDoc'].setValue('')) :
+        (this.licenceUpload.nativeElement.value = null, this.driverRegForm.controls['licenceDoc'].setValue(''));
   }
   editDriverData(driverData: any) {
+    this.highLightRow=driverData.driverId;
     this.editId = driverData?.driverId
+    this.profilePhotoupd = driverData?.profilePhoto;
+    this.licenceDoc = driverData?.licenceDoc;
+    this.panDoc = driverData?.panCardDoc;
+    this.aadharDoc = driverData?.aadharCardDoc;
+
     this.driverRegForm.patchValue({
       firstName: driverData?.name.split(' ').shift(),
       lastName: driverData?.name.split(' ').pop(),
-      dOB:new Date(driverData.dob),
+      dob: new Date(driverData.dob),
       mobileNo: driverData?.mobileNo,
-      presentAdr: driverData?.presentAddress,
-      permanentAdr: driverData?.permanentAddress,
-      licenceNo: driverData?.licenceNumber,
-      panNo: driverData?.panNumber,
-      aadharNo: driverData?.aadharNumber,
+      presentAddress: driverData?.presentAddress,
+      permanentAddress: driverData?.permanentAddress,
+      licenceNumber: driverData?.licenceNumber,
+      panNumber: driverData?.panNumber,
+      aadharNumber: driverData?.aadharNumber,
       flag: "u",
       licenceDoc: driverData?.licenceDoc,
-      aadharDoc: driverData?.aadharCardDoc,
-      panDoc: driverData?.panCardDoc,
-      driverPfofile: driverData?.profilePhoto
+      aadharCardDoc: driverData?.aadharCardDoc,
+      panCardDoc: driverData?.panCardDoc
     })
-    this.profilePhoto = driverData.profilePhoto;
+   
+  }
+  closeModels(){
+this.highLightRow='';
   }
   removeDriverData(data: any) {
     let param = [
       {
         "driverId": data.driverId,
-        "isDeleted":1
+        "isDeleted": 1
       }
     ]
     this.spinner.show();
@@ -175,40 +188,32 @@ export class DriverComponent implements OnInit {
     })
   }
   registerDriverSave() {
-    let param = {
-      "id": this.editId,
-      "firstName": this.driverRegForm.value.firstName,
-      "middleName": "",
-      "lastName": this.driverRegForm.value.lastName,
-      "mobileNo": this.driverRegForm.value.mobileNo,
-      "presentAddress": this.driverRegForm.value.presentAdr,
-      "permanentAddress": this.driverRegForm.value.permanentAdr,
-      "dob": this.datepipe.transform(this.driverRegForm.value.dOB, 'yyyy/MM/dd'),
-      "licenceNumber": this.driverRegForm.value.licenceNo,
-      "panNumber": this.driverRegForm.value.panNo,
-      "aadharNumber": this.driverRegForm.value.aadharNo,
-      "flag": this.driverRegForm.value.flag,
-      "createdBy": this.comman.getUserId(),
-      "createdDate": this.date.toISOString(),
-      "modifiedBy": 0,
-      "modifiedDate": this.date.toISOString(),
-      // "isDeleted": true,
-      "name": "",
-      "panCardDoc": this.panDoc || '',
-      "aadharCardDoc": this.aadharDoc || '',
-      "licenceDoc": this.licenceDoc || '',
-      "profilePhoto": this.profilePhoto != 'assets/images/Driver-profile.svg' ? this.profilePhoto : ''
-    }
-    this.closeModel.nativeElement.click();
+    this.highLightRow='';
+    let formData = this.driverRegForm.value;
+    formData.id = this.editId;
+    formData.middleName = '';
+    formData.dob = this.datepipe.transform(formData.dob, 'yyyy/MM/dd')
+    formData.createdBy = this.comman.getUserId();
+    formData.createdDate = this.date.toISOString();
+    formData.modifiedBy = 0,
+      formData.modifiedDate = this.date.toISOString(),
+      formData.name = "",
+      formData.panCardDoc = this.panDoc;
+    formData.aadharCardDoc = this.aadharDoc || '',
+      formData.licenceDoc = this.licenceDoc || '',
+      formData.profilePhoto = this.profilePhotoupd != 'assets/images/Driver-profile.svg' ? this.profilePhotoupd : '';
     /* if (this.driverRegForm.invalid) {
       this.tostrService.error("Invalid Form");
       return;
     } else { */
     this.spinner.show();
-    this.comman.setHttp('post', 'save-update-deriver-details', true, param, false, 'driverBaseUrlApi');
+    this.comman.setHttp('post', 'save-update-deriver-details', true, formData, false, 'driverBaseUrlApi');
     this.comman.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
+        this.formGroupDirective.resetForm()
+        this.closeModel.nativeElement.click();
+        this.highLightRow='';
         this.tostrService.success(response.statusMessage);
       }
     })
