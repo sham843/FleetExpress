@@ -15,7 +15,6 @@ import { ValidationService } from 'src/app/services/validation.service';
 export class LoginComponent implements OnInit {
   hide = true;
   loginForm!:UntypedFormGroup | any;
-  isSubmitted:boolean=false;
   loginData:any;
   constructor(private fb: FormBuilder,
     private sharedService:SharedService,
@@ -33,7 +32,7 @@ export class LoginComponent implements OnInit {
   defaultLoginForm() {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
-      password: ['', [Validators.compose([Validators.required])]],
+      password: ['', [Validators.compose([Validators.required,Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$'),Validators.minLength(8),Validators.maxLength(20)])]],
       captcha: ['', Validators.required]
     })
   }
@@ -42,7 +41,6 @@ export class LoginComponent implements OnInit {
     this.sharedService.createCaptchaCarrerPage();
   }
   onLoginSubmit() {
-    this.isSubmitted = true;
     if (this.loginForm.invalid) {
       this.toastrService.error("Invalid Login")
       return;

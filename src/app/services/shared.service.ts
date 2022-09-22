@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgxSpinner, Spinner } from 'ngx-spinner/lib/ngx-spinner.enum';
@@ -9,20 +10,30 @@ import { CommanService } from './comman.service';
   providedIn: 'root'
 })
 export class SharedService {
+  vhlData: any;
   codecareerPage: any;
   constructor(private comman: CommanService,
     private spinner: NgxSpinnerService,
-    private tostrservice: ToastrService) { }
-
-  private totalVhl = new BehaviorSubject('');
-  getTotalVhl = this.totalVhl.asObservable()
-
-  sendTotalVhl(vehicle: string) {
-    this.totalVhl.next(vehicle);
+    private tostrservice: ToastrService,
+    private http: HttpClient) {
   }
-  getTotalVehicle() {
-    return this.getTotalVhl;
+  ngOnInit() {
+    console.log(this.vehicleCount())
   }
+
+  vehicleCount(): any {
+    return new Observable(obj => {
+      this.comman.setHttp('get', 'get-vehiclelists', true, false, false, 'vehicleBaseUrlApi');
+      this.comman.getHttp().subscribe({
+        next: (res: any) => {
+          if (res.statusCode === "200") {
+            obj.next(res);
+          }
+        }
+      })
+    })
+  }
+
   createCaptchaCarrerPage() {
     //clear the contents of captcha div first
     let id: any = document.getElementById('captcha');

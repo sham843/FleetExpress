@@ -10,7 +10,7 @@
   },
   "private": true,
   "dependencies": {
-    "@agm/core": "^1.1.0",
+    "@agm/core": "^1.0.0",
     "@angular-material-components/datetime-picker": "^8.0.0",
     "@angular/animations": "^14.2.1",
     "@angular/cdk": "^14.2.1",
@@ -36,7 +36,7 @@
     "ng-apexcharts": "^1.7.1",
     "ngx-pagination": "^6.0.2",
     "ngx-perfect-scrollbar": "^10.1.1",
-    "ngx-spinner": "^14.0.0",
+    "ngx-spinner": "^12.0.0",
     "ngx-toastr": "^15.0.0",
     "rxjs": "~7.4.0",
     "shebang-command": "^2.0.0",

@@ -13,8 +13,8 @@
                                 <mat-form-field appearance="outline" class="w-100">
                                     <mat-label>Username</mat-label>
                                     <input matInput placeholder="Username" formControlName="username" autocomplete="off"
-                                 required [ngClass]="{ 'is-invalid': isSubmitted && f['username'].errors}"
-                                  (keypress)="this.valService.noSpaces($event)">
+                                 required [ngClass]="{ 'is-invalid':f['username'].errors}"
+                                  (keypress)="this.valService.noSpaces($event);this.valService.alphaNumeric($event)">
                                  <!-- <div *ngIf=" isSubmitted && f['username']?.errors.required" class="invalid-feedback">Enetr Username</div> -->
                                 </mat-form-field>
                             </div>
@@ -23,13 +23,12 @@
                             <mat-form-field appearance="outline" class="w-100">
                                 <mat-label>Password</mat-label>
                                 <input matInput [type]="hide ? 'password' : 'text'" formControlName="password"
-                                autocomplete="off" required [ngClass]="{ 'is-invalid': isSubmitted && f['password'].errors}"
-                                 (keypress)="this.valService.noSpaces($event)">
+                                autocomplete="off" required 
+                                 (keypress)="this.valService.noSpaces($event)" minlength="8" maxlength="20">
                                 <button mat-icon-button matSuffix (click)="hide = !hide"
                                     [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                                     <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                                 </button>
-                                <!-- <div *ngIf=" isSubmitted && f['password']?.errors.required" class="invalid-feedback">Enetr Username</div> -->
                             </mat-form-field>
                         </div>
                         <div class="mb-0">

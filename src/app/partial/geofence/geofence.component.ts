@@ -1,5 +1,5 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-import {FormBuilder, FormGroup, UntypedFormControl, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -9,6 +9,7 @@ import { ErrorsService } from 'src/app/services/errors.service';
 import { ValidationService } from 'src/app/services/validation.service';
 import { Subscription } from 'rxjs';
 import { MapsAPILoader } from '@agm/core';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 declare var google: any;
 
 @Component({
@@ -18,82 +19,121 @@ declare var google: any;
 })
 export class GeofenceComponent implements OnInit {
   toppings = new UntypedFormControl('');
-  GeofenceListTableData:any[]=[]
-  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
-  userData:any;
-  geoAddForm!:FormGroup;
-  subscription !:Subscription;
-  VehicleDtArr:any[]=[];
-  latitude: any;
-  longitude: any;
-  zoom: any;
+  GeofenceListTableData = new Array();
+  userData: any;
+  autoComplete!: MatAutocompleteTrigger;
+  geoAddForm!: FormGroup;
+  CreateGeoForm!: FormGroup;
+  subscription !: Subscription;
+  VehicleDtArr: any[] = [];
   address: any;
-  geocoder: any;
-  @ViewChild('search')
-  public searchElementRef !: ElementRef;
-  constructor(private common:CommanService,
-    private toastrService:ToastrService,
-    private fb:FormBuilder,
-    public validationService:ValidationService,
-    private error:ErrorsService,
-    private spinner:NgxSpinnerService,
-    private modalService:NgbModal,
-    private dialog:MatDialog,
+  geoCoder: any;
+  maplocationFlag: any;
+  markerHide: boolean = true;
+  lat: any = '';
+  lng: any = '';
+  zoom: number = 12;
+  @ViewChild('search') searchElementRef!: ElementRef;
+  constructor(private common: CommanService,
+    private toastrService: ToastrService,
+    private fb: FormBuilder,
+    public validationService: ValidationService,
+    private error: ErrorsService,
+    private spinner: NgxSpinnerService,
+    private modalService: NgbModal,
+    private dialog: MatDialog,
     private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone) { }
 
   ngOnInit(): void {
-    this.getGeoFormData();
-    this.userData=this.common.getUser();
+    this.CreateGeofence();
     this.getVehicleData();
-    this.searchAddressToPincode();
+    this.mapsAPILoader.load().then(() => {
+      this.geoCoder = new google.maps.Geocoder;
+      this.getAddress(this.lat, this.lng);
+    });
+    this.searchAutoComplete();
   }
-  getGeoFormData() {
+  //  ------------------------------------------form Controls---------------------------------------------------------------
+  CreateGeofence() {
+    this.CreateGeoForm = this.fb.group({
+      vhlNumbers: [''],
+      loaction: ['']
+    })
     this.geoAddForm = this.fb.group({
       roleName: [],
       topping: [],
     })
   }
+
+  //  ---------------------------------------------Get Vehicle List------------------------------------------------------------
   getVehicleData() {
-    this.common.setHttp('get', 'userdetail/get-vehicle-list?vehicleOwnerId='+this.common.getVehicleOwnerId(), true, false, false, 'vehicletrackingBaseUrlApi');
+    this.common.setHttp('get', 'userdetail/get-vehicle-list?vehicleOwnerId=' + this.common.getVehicleOwnerId(), true, false, false, 'vehicletrackingBaseUrlApi');
     this.subscription = this.common.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
           this.VehicleDtArr = res.responseData;
         } else {
-          if (res.statusCode != "404") {}
+          if (res.statusCode != "404") { }
         }
       },
       error: ((error: any) => { this.error.handelError(error.statusCode) })
     });
   }
-  searchAddressToPincode() {
+  // --------------------------------------------Checkbox Multiselect-------------------------------------------------------
+  unCheckCheckbox(vehicle: any) {
+    let index = this.CreateGeoForm.value.vhlNumbers.indexOf(vehicle);
+    this.CreateGeoForm.value.vhlNumbers.splice(index, 1);
+    this.CreateGeoForm.controls['vhlNumbers'].setValue(this.CreateGeoForm.value.vhlNumbers);
+  }
+  // -------------------------------------Search Area and map------------------------------------------------------------------
+  searchAutoComplete() {
     this.mapsAPILoader.load().then(() => {
-      this.geocoder = new google.maps.Geocoder();
-      let autocomplete = new google.maps.places.Autocomplete(
-        this.searchElementRef.nativeElement
-      );
-      autocomplete.addListener('place_changed', () => {
+      this.geoCoder = new google.maps.Geocoder;
+
+      let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef?.nativeElement);
+      autocomplete.addListener("place_changed", () => {
         this.ngZone.run(() => {
-          let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+          this.maplocationFlag = true;
+          let place: any = google.maps.places.PlaceResult = autocomplete.getPlace();
           if (place.geometry === undefined || place.geometry === null) {
             return;
           }
-          this.latitude = place.geometry.location.lat();
-          this.longitude = place.geometry.location.lng();
-          this.findAddressByCoordinates();
+
+          this.lat = place.geometry.location.lat();
+          this.lng = place.geometry.location.lng();
+          this.getAddress(this.lat, this.lng)
         });
       });
     });
   }
-  findAddressByCoordinates() {
-    this.geocoder.geocode(
-      { location: { lat: this.latitude, lng: this.longitude, } },
-      (results: any) => {
-        results[0].address_components.forEach((element: any) => {
-        });
-      });
-      console.log(this.searchElementRef.nativeElement?.value);
+  getAddress(lat: any, long: any) {
+    // this.spinner.show();
+    this.geoCoder.geocode({ 'location': { lat: Number(lat), lng: Number(long) } }, (results: any, status: any) => {
+      if (status === 'OK') {
+        if (results[0]) {
+          // this.spinner.hide();
+          this.address = results[0].formatted_address;
+          this.CreateGeoForm.controls['loaction']?.setValue(this.address)
+        } else {
+          // this.spinner.hide();
+        }
+      }
+      this.spinner.hide();
+    });
   }
-  
+  mapClicked(data: any) {
+    this.lat = '';
+    this.lng = '';
+    this.markerHide = true;
+    this.lat = data?.coords.lat;
+    this.lng = data?.coords.lng;
+    this.getAddress(this.lat, this.lng)
+  }
+  clearlatlong(event: any) {
+
+  }
+  get f() {
+    return this.CreateGeoForm.controls;
+  }
 }

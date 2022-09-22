@@ -5,6 +5,7 @@ import { GeofenceRoutingModule } from './geofence-routing.module';
 import { GeofenceComponent } from './geofence.component';
 import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.module';
 import { AgmCoreModule } from '@agm/core';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -15,10 +16,12 @@ import { AgmCoreModule } from '@agm/core';
     CommonModule,
     GeofenceRoutingModule,
     MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAkNBALkBX7trFQFCrcHO2I85Re2MmzTo8',
       language: 'en',
-      libraries: ['places', 'geometry'],
+      libraries: ['places', 'drawing', 'geometry'],
     }),
   ]
 })

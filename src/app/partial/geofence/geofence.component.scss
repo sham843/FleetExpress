@@ -26,3 +26,17 @@
     height: 300px;
     width: 100%;
 }
+.modal-body{
+    width: 900px;
+}
+.agm-map-container-inner .sebm-google-map-container-inner{
+    z-index: 1000 !important;
+}
+#map {
+    cursor: pointer;
+    height: 300px;
+    width: 100%;
+}
+agm-map {
+    height: 300px;
+  }
