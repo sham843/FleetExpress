@@ -90,7 +90,9 @@ export class UserManagementSystemComponent implements OnInit {
         if (res.statusCode === "200") {
           this.VehicleDtArr = res.responseData;
         } else {
-          if (res.statusCode != "404") {}
+          if (res.statusCode != "404") {
+            this.error.handelError(res.statusCode)
+          }
         }
       },
       error: ((error: any) => { this.error.handelError(error.status) })
@@ -116,11 +118,11 @@ export class UserManagementSystemComponent implements OnInit {
     this.subscription = this.common.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
-          res.responseData.responseData1.map((x:any)=>{
-            x.isblocked=x.isblocked==1?true:false;
+          res.responseData.responseData1.map((x: any) => {
+            x.isblocked = x.isblocked == 1 ? true : false;
           })
           this.userTableData = res.responseData.responseData1;
-          this.totalUserTableData=res.responseData.responseData2.totalRecords;
+          this.totalUserTableData = res.responseData.responseData2.totalRecords;
         } else {
           if (res.statusCode != "404") {
             this.error.handelError(res.statusCode)
@@ -233,17 +235,21 @@ export class UserManagementSystemComponent implements OnInit {
       next: (res: any) => {
         this.spinner.hide();
         if (res.statusCode === "200") {
-          
-          this.roleDtArr = res.responseData;
-          this.getUserTableData();
-          this.toastrService.success(res.responseData1[0].msg);
+          if (res.responseData.responseData1[0].isSuccess) {
+            this.roleDtArr = res.responseData;
+            this.getUserTableData();
+            this.toastrService.success(res.responseData.responseData1[0].msg);
+          } else {
+            this.toastrService.error(res.responseData.responseData1[0].msg)
+          }
+
         } else {
           if (res.statusCode != "404") {
             this.error.handelError(res.statusCode)
           }
         }
         this.modalClose();
-        this.editFlag=false;
+        this.editFlag = false;
       },
       error: ((error: any) => { 
         this.spinner.hide();
