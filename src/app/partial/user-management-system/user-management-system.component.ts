@@ -24,7 +24,7 @@ export class UserManagementSystemComponent implements OnInit {
   userForm!:FormGroup;
   roleForm!:FormGroup;
   subscription!: Subscription;
-  userData:any;
+  userData:any[]=[];
   roleDtArr:any[]=[];
   userformSubmitted:boolean=false;
   userTableData:any[]=[];
@@ -39,6 +39,7 @@ export class UserManagementSystemComponent implements OnInit {
   pageNumber: number=1;
   totalUserTableData: number=0;
   searchContent = new FormControl()
+  filterData:any
   get user() { return this.userForm.controls };
   get role() { return this.roleForm.controls };
   constructor(private common:CommanService,
@@ -52,7 +53,7 @@ export class UserManagementSystemComponent implements OnInit {
 
   ngOnInit(): void {
     this.getRegFormData();
-    this.userData=this.common.getUser();
+    this.userData.push(this.common.getUser());
     this.getVehicleData();
     this.getRoleData();
     this.selectedTab('users');
@@ -89,14 +90,16 @@ export class UserManagementSystemComponent implements OnInit {
         if (res.statusCode === "200") {
           this.VehicleDtArr = res.responseData;
         } else {
-          if (res.statusCode != "404") {}
+          if (res.statusCode != "404") {
+            this.error.handelError(res.statusCode)
+          }
         }
       },
-      error: ((error: any) => { this.error.handelError(error.statusCode) })
+      error: ((error: any) => { this.error.handelError(error.status) })
     });
   }
   getRoleData() {
-    this.common.setHttp('get', 'userdetail/getallSubusertype_usertype?UserTypeId=1'+'&Subusertypeid='+this.userData.subUserTypeId, true, false, false, 'vehicletrackingBaseUrlApi');
+    this.common.setHttp('get', 'userdetail/getallSubusertype_usertype?UserTypeId=1'+'&Subusertypeid='+this.userData[0]?.subUserTypeId, true, false, false, 'vehicletrackingBaseUrlApi');
     this.subscription = this.common.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
@@ -107,26 +110,26 @@ export class UserManagementSystemComponent implements OnInit {
           }
         }
       },
-      error: ((error: any) => { this.error.handelError(error.statusCode) })
+      error: ((error: any) => { this.error.handelError(error.status) })
     });
   }
   getUserTableData(){
-    this.common.setHttp('get', 'userdetail/get-user-list?vehicleOwnerId='+this.userData.vehicleOwnerId+'&Subusertypeid=&SearchText='+this.searchContent.value+'&District=0&TalukaId=0&NoPage='+ (!this.searchContent.value?this.pageNumber:0)+'&RowsPerPage='+(!this.searchContent.value?10:0), true, false, false, 'vehicletrackingBaseUrlApi');
+    this.common.setHttp('get', 'userdetail/get-user-list?vehicleOwnerId='+this.userData[0]?.vehicleOwnerId+'&Subusertypeid=&SearchText='+this.searchContent.value+'&District=0&TalukaId=0&NoPage='+ (!this.searchContent.value?this.pageNumber:0)+'&RowsPerPage='+(!this.searchContent.value?10:0), true, false, false, 'vehicletrackingBaseUrlApi');
     this.subscription = this.common.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
-          res.responseData.responseData1.map((x:any)=>{
-            x.isblocked=x.isblocked==1?true:false;
+          res.responseData.responseData1.map((x: any) => {
+            x.isblocked = x.isblocked == 1 ? true : false;
           })
           this.userTableData = res.responseData.responseData1;
-          this.totalUserTableData=res.responseData.responseData2.totalRecords;
+          this.totalUserTableData = res.responseData.responseData2.totalRecords;
         } else {
           if (res.statusCode != "404") {
             this.error.handelError(res.statusCode)
           }
         }
       },
-      error: ((error: any) => { this.error.handelError(error.statusCode) })
+      error: ((error: any) => { this.error.handelError(error.status) })
     });
   }
   getRoleTableData(){
@@ -141,7 +144,7 @@ export class UserManagementSystemComponent implements OnInit {
           }
         }
       },
-      error: ((error: any) => { this.error.handelError(error.statusCode) })
+      error: ((error: any) => { this.error.handelError(error.status) })
     });
   }
   selectedTab(tab:any){
@@ -168,15 +171,48 @@ export class UserManagementSystemComponent implements OnInit {
       return;
     }else{
     const userFormData=this.userForm.value;
-      let vehiclearray=[];
+      let vehiclearray:any=[];
       for(let i=0;i< userFormData.assignedVehicle.length ; i++){
         vehiclearray.push(this.VehicleDtArr.find(x=>x.vehicleRegistrationNo==userFormData?.assignedVehicle[i]));
-        console.log(vehiclearray);
       }
-      vehiclearray.map((x:any)=>{
-        x.isAssigned=1
-        x.userId=this.editFlag==false?0:this.editData.id;
-      })
+      if (this.editFlag) {
+        const data = this.editData.vehicle;
+        const filtervehicles = this.editData.vehicle.filter((x:any) => {
+          return vehiclearray.some((f:any) => {
+            return f.vehicleRegistrationNo == x.vehicleNumber ;
+          });
+        });
+        this.filterData=[];
+        this.filterData = filtervehicles;
+        this.filterData.map((x: any) => {
+          const index = this.editData.vehicle.findIndex((xx: any) => xx.vehicleNumber == x.vehicleNumber);
+          this.editData.vehicle.splice(index, 1);
+        })
+        vehiclearray.map((x:any)=>{
+          x.isAssigned = 1,
+          x.userId=this.editFlag==false?0:this.editData.id;
+        })
+        let vehicleunassignedData:any=[];
+        this.editData.vehicle.map((x:any)=>{
+          const vehicleunassigned = {
+            id:x.vehicleId,
+            isAssigned:0,
+            userId:this.editData.id,
+            vehicleRegistrationNo:x.vehicleNumber
+
+          }
+          vehicleunassignedData.push(vehicleunassigned)
+        })
+        vehiclearray=vehiclearray.concat(vehicleunassignedData);
+
+      }
+      if(!this.editFlag){
+        vehiclearray.map((x:any)=>{
+          x.isAssigned = 1
+          x.userId=this.editFlag==false?0:this.editData.id;
+        })
+      }
+      
     const obj = {
       "id": this.editFlag==false?0: this.editData.id ,
       "name": userFormData.fName,
@@ -188,9 +224,9 @@ export class UserManagementSystemComponent implements OnInit {
       "user_Type": userFormData.assignedRole,
       "emailId": "",
       "acivationKey1": "",
-      "createdBy": this.userData.id,
+      "createdBy": this.userData[0]?.id,
       "flag": this.editFlag==false?"I":'U',
-      "vehicleOwnerId": this.userData.vehicleOwnerId,
+      "vehicleOwnerId": this.userData[0]?.vehicleOwnerId,
       "vehicle": vehiclearray
     }
     this.spinner.show();
@@ -199,23 +235,27 @@ export class UserManagementSystemComponent implements OnInit {
       next: (res: any) => {
         this.spinner.hide();
         if (res.statusCode === "200") {
-          
-          this.roleDtArr = res.responseData;
-          this.getUserTableData();
-          this.toastrService.success(res.statusMessage);
+          if (res.responseData.responseData1[0].isSuccess) {
+            this.roleDtArr = res.responseData;
+            this.getUserTableData();
+            this.toastrService.success(res.responseData.responseData1[0].msg);
+          } else {
+            this.toastrService.error(res.responseData.responseData1[0].msg)
+          }
+
         } else {
           if (res.statusCode != "404") {
             this.error.handelError(res.statusCode)
           }
         }
         this.modalClose();
-        this.editFlag=false;
+        this.editFlag = false;
       },
       error: ((error: any) => { 
         this.spinner.hide();
         this.editFlag=false;
         this.modalClose();
-        this.error.handelError(error.statusCode)
+        this.error.handelError(error.status)
        } )
       
     });
@@ -277,7 +317,7 @@ export class UserManagementSystemComponent implements OnInit {
       userId:rowData.id,
       id: 0,
       blockedDate: new Date().toISOString(),
-      blockBy: this.userData.id,
+      blockBy: this.userData[0].id,
       isBlock: value==false?0:1,
       remark: ""
     }
@@ -296,6 +336,7 @@ export class UserManagementSystemComponent implements OnInit {
       },
       error: ((error: any) => { 
         this.spinner.hide();
+        error: ((error: any) => { this.error.handelError(error.status) })
        } )
     });
   }
@@ -332,6 +373,7 @@ export class UserManagementSystemComponent implements OnInit {
       },
       error: ((error: any) => {
         this.spinner.hide();
+        error: ((error: any) => { this.error.handelError(error.status) })
       })
 
     });
