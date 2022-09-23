@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { CommanService } from 'src/app/services/comman.service';
+import { ErrorsService } from 'src/app/services/errors.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ValidationService } from 'src/app/services/validation.service';
 
@@ -23,7 +24,8 @@ export class LoginComponent implements OnInit {
     private router:Router,
     private route:ActivatedRoute,
     private spinner:NgxSpinnerService,
-    private toastrService:ToastrService) { }
+    private toastrService:ToastrService,
+    private error:ErrorsService) { }
 
   ngOnInit(): void {
     this.defaultLoginForm();
@@ -31,7 +33,7 @@ export class LoginComponent implements OnInit {
   }
   defaultLoginForm() {
     this.loginForm = this.fb.group({
-      username: ['', Validators.required,Validators.maxLength(20)],
+      username: ['', [Validators.required,Validators.maxLength(20)]],
       password: ['', [Validators.compose([Validators.required,Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$'),Validators.minLength(8),Validators.maxLength(20)])]],
       captcha: ['', Validators.required]
     })
@@ -61,10 +63,13 @@ export class LoginComponent implements OnInit {
         }
         else {
           this.spinner.hide();
-          this.toastrService.error(res.statusMessage)
+            this.error.handelError(res.statusCode);
+       
         }
-      })
-    }
+      },(error: any) => {
+        this.error.handelError(error.status);
+    })
+  }
 }
 get f(){
   return this.loginForm.controls;

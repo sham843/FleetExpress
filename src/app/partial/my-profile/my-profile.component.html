@@ -13,14 +13,15 @@
                         <img src="assets/images/Driver-profile.svg" class="profile-pic">
                     </div>
                     <div class="col-sm-8">
-                        <h5 class="name">Manish Chavhan</h5>
+                        <h5 class="name">{{userDetails.name}}</h5>
                         <small class="desi">Transporter</small>
                         <div class="d-flex justify-content-between mt-4">
                             <p class="mb-0">
                                 <img src="../../../assets/images/location-vehicle.svg" class="me-2">
                                 Mangdewadi, Katraj, Satara Road, Pune 411043, Maharashtra
                             </p>
-                            <button type="button" class="btn btn-outline-primary btn-sm">Edit</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                id="openmodal" data-bs-target="#profileEditModal">Edit</button>
                         </div>
                         <p class="text-main fw-bold mb-1">Basic Details</p>
                         <div class="card mb-3">
@@ -28,7 +29,7 @@
                                 <div class="row">
                                     <div class="col-sm-4">
                                         <small class="text-label">Contact</small>
-                                        <p class="mb-0 text-data">+918000000022</p>
+                                        <p class="mb-0 text-data">+91{{userDetails.mobileNo1}}</p>
                                     </div>
                                     <div class="col-sm-4">
                                         <small class="text-label">Email</small>
@@ -77,5 +78,91 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<div class="modal fade" id="profileEditModal" tabindex="-1" aria-labelledby="profileEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <form [formGroup]="myProfileForm" (ngSubmit)="profileSave()">
+            <div class="modal-content">
+                <div class="modal-header bg-light-gradient text-dark">
+                    <p class="modal-title mb-0" id="profileEditModalLabel">Profile</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-sm-2">
+                            <div class="position-relative form-group">
+                                <div class="position-relative form-group">
+                                    <img src="assets/images/Driver-profile.svg" class="vehicle-image">
+                                    <div class="vehicle-buttons d-flex flex-column upload-btn-wrapper">
+                                        <button class="btn bg-light text-primary">
+                                            <!-- (click)="profileUpload.click() (change)="profileUploads($event)"-->
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                        <input type="file" #profileUpload name="myfile" class="form-control"
+                                            formControlName="profilePhoto" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <mat-form-field class="w-100" appearance="standard">
+                                        <mat-label>Name</mat-label>
+                                        <input matInput placeholder="Enter Name" class="form-control"
+                                            (keyup)="this.vs.noSpaces($event)" formControlName="name">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <mat-form-field class="w-100" appearance="standard">
+                                        <mat-label>Designation</mat-label>
+                                        <input matInput placeholder="Enter Designation" class="form-control"
+                                            (keyup)="this.vs.noSpaces($event)" formControlName="designation">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <mat-form-field class="w-100" appearance="standard">
+                                        <mat-label>Address</mat-label>
+                                        <input matInput placeholder="Enter Address" class="form-control"
+                                            (keyup)="this.vs.noSpaces($event)" formControlName="address">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <mat-form-field class="w-100" appearance="standard">
+                                        <mat-label>Contact</mat-label>
+                                        <input matInput placeholder="Enter Contact" class="form-control"
+                                            (keyup)="this.vs.noSpaces($event)" formControlName="contact">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <mat-form-field appearance="standard" class="w-100">
+                                        <mat-label>Email</mat-label>
+                                        <input matInput placeholder="Enter Email" class="form-control"
+                                            (keyup)="this.vs.noSpaces($event)" formControlName="email">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <mat-form-field appearance="standard" class="w-100">
+                                        <mat-label>Website</mat-label>
+                                        <input matInput placeholder="Enter Website" class="form-control"
+                                            (keyup)="this.vs.noSpaces($event)" formControlName="website">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <div class="form-container w-100">
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-light-main" #closeModel data-bs-dismiss="modal">Cancel</button>
+                            <button class="btn btn-main">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
