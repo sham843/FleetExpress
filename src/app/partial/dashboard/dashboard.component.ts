@@ -39,6 +39,15 @@ export class DashboardComponent implements OnInit {
   barChartDisplay: boolean = false;
   pieChartDisplay: boolean = false;
   maxSpeedObj:any;
+  avarageSpeedObj:any;
+  fastestVehicleObj:any;
+  gaugeType: any = "arch";
+  gaugeValue = 28.3;
+  gaugeLabel = "Speed";
+  gaugeAppendText = "mph";
+  gaugeThick = 15;
+  guageCap:any ='round';
+  vehiclesMoving:any
   constructor(private cs: CommanService,
     public dialog: MatDialog) {
     this.chartOptions = {
@@ -99,98 +108,98 @@ export class DashboardComponent implements OnInit {
         }
       }
     };
-    this.chartOptions2 = {
-      series: [76],
-      chart: {
-        type: "radialBar",
-        offsetY: -20
-      },
-      plotOptions: {
-        radialBar: {
-          startAngle: -130,
-          endAngle: 130,
-          track: {
-            background: "#e7e7e7",
-            strokeWidth: "97%",
-            margin: 5, // margin is in pixels
-            dropShadow: {
-              enabled: true,
-              top: 2,
-              left: 0,
-              opacity: 0.31,
-              blur: 2
-            }
-          },
-          dataLabels: {
-            name: {
-              show: false
-            },
-            value: {
-              offsetY: -2,
-              fontSize: "22px"
-            }
-          }
-        }
-      },
-      fill: {
-        type: "gradient",
-        gradient: {
-          shade: "light",
-          shadeIntensity: 0.4,
-          inverseColors: false,
-          opacityFrom: 1,
-          opacityTo: 1,
-          stops: [0, 50, 53, 91]
-        }
-      },
-      labels: ["Average Results"]
-    };
-    this.chartOptions3 = {
-      series: [76],
-      chart: {
-        type: "radialBar",
-        offsetY: -20
-      },
-      plotOptions: {
-        radialBar: {
-          startAngle: -130,
-          endAngle: 130,
-          track: {
-            background: "#e7e7e7",
-            strokeWidth: "97%",
-            margin: 5, // margin is in pixels
-            dropShadow: {
-              enabled: true,
-              top: 2,
-              left: 0,
-              opacity: 0.31,
-              blur: 2
-            }
-          },
-          dataLabels: {
-            name: {
-              show: false
-            },
-            value: {
-              offsetY: -2,
-              fontSize: "22px"
-            }
-          }
-        }
-      },
-      fill: {
-        type: "gradient",
-        gradient: {
-          shade: "light",
-          shadeIntensity: 0.4,
-          inverseColors: false,
-          opacityFrom: 1,
-          opacityTo: 1,
-          stops: [0, 50, 53, 91]
-        }
-      },
-      labels: ["Average Results"]
-    };
+    // this.chartOptions2 = {
+    //   series: [76],
+    //   chart: {
+    //     type: "radialBar",
+    //     offsetY: -20
+    //   },
+    //   plotOptions: {
+    //     radialBar: {
+    //       startAngle: -130,
+    //       endAngle: 130,
+    //       track: {
+    //         background: "#e7e7e7",
+    //         strokeWidth: "97%",
+    //         margin: 5, // margin is in pixels
+    //         dropShadow: {
+    //           enabled: true,
+    //           top: 2,
+    //           left: 0,
+    //           opacity: 0.31,
+    //           blur: 2
+    //         }
+    //       },
+    //       dataLabels: {
+    //         name: {
+    //           show: false
+    //         },
+    //         value: {
+    //           offsetY: -2,
+    //           fontSize: "22px"
+    //         }
+    //       }
+    //     }
+    //   },
+    //   fill: {
+    //     type: "gradient",
+    //     gradient: {
+    //       shade: "light",
+    //       shadeIntensity: 0.4,
+    //       inverseColors: false,
+    //       opacityFrom: 1,
+    //       opacityTo: 1,
+    //       stops: [0, 50, 53, 91]
+    //     }
+    //   },
+    //   labels: ["Average Results"]
+    // };
+    // this.chartOptions3 = {
+    //   series: [76],
+    //   chart: {
+    //     type: "radialBar",
+    //     offsetY: -20
+    //   },
+    //   plotOptions: {
+    //     radialBar: {
+    //       startAngle: -130,
+    //       endAngle: 130,
+    //       track: {
+    //         background: "#e7e7e7",
+    //         strokeWidth: "97%",
+    //         margin: 5, // margin is in pixels
+    //         dropShadow: {
+    //           enabled: true,
+    //           top: 2,
+    //           left: 0,
+    //           opacity: 0.31,
+    //           blur: 2
+    //         }
+    //       },
+    //       dataLabels: {
+    //         name: {
+    //           show: false
+    //         },
+    //         value: {
+    //           offsetY: -2,
+    //           fontSize: "22px"
+    //         }
+    //       }
+    //     }
+    //   },
+    //   fill: {
+    //     type: "gradient",
+    //     gradient: {
+    //       shade: "light",
+    //       shadeIntensity: 0.4,
+    //       inverseColors: false,
+    //       opacityFrom: 1,
+    //       opacityTo: 1,
+    //       stops: [0, 50, 53, 91]
+    //     }
+    //   },
+    //   labels: ["Average Results"]
+    // };
   }
 
   ngOnInit(): void {
@@ -213,16 +222,47 @@ export class DashboardComponent implements OnInit {
   getvehicleAllData() {
     this.vehicleAllData = [];
     this.maxSpeedObj=[];
-    this.cs.setHttp('get', 'dashboard/get-vehicle-current-location-list?VehicleNo=' + '&UserId=' + this.cs.getUserId() + '&GpsStatus=Running', true, false, false, 'vehicletrackingBaseUrlApi');
+    this.cs.setHttp('get', 'dashboard/get-vehicle-current-location-list?VehicleNo=' + '&UserId=' + this.cs.getUserId() + '&GpsStatus=', true, false, false, 'vehicletrackingBaseUrlApi');
     this.cs.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
-        this.vehicleAllData = responseData.responseData
+        this.vehicleAllData = responseData.responseData;
+        this.vehicleAllData.map((x:any)=>{
+          x.deviceDatetime=new Date(x.deviceDatetime);
+        })
         this.vehicleAllData.sort((a, b) => { return b.speed - a.speed; });
         const items = this.vehicleAllData.slice(0, 10);
         const maxSpeed=Math.max(...this.vehicleAllData.map(o => o.speed));
-        this.maxSpeedObj=this.vehicleAllData.find(x=>x.speed=maxSpeed)
+        this.maxSpeedObj=this.vehicleAllData.find(x=>x.speed=maxSpeed);
+
         console.log(this.maxSpeedObj);
-        this.getBarChartData(items);
+        this.fastestVehicleObj={
+          'gaugeType': "arch",
+          'gaugeValue' :maxSpeed,
+          'gaugeLabel' : "Speed",
+          'gaugeAppendText' : "mph",
+          'gaugeThick' : 15,
+          'guageCap':  'round'
+        }
+        let vehicleSpeed:any[]=[];
+        this.vehiclesMoving=[];
+       this.vehiclesMoving= this.vehicleAllData.filter((x:any)=> x.speed)
+        this.vehiclesMoving.map((x:any)=>{
+          vehicleSpeed.push(x.speed)
+        })
+        const sum = vehicleSpeed.reduce((a, b) => a + b, 0);
+        const avg = (sum / vehicleSpeed.length) || 0;
+        console.log(avg)
+        this.avarageSpeedObj={
+          'gaugeType': "arch",
+          'gaugeValue' :avg,
+          'gaugeLabel' : "Speed",
+          'gaugeAppendText' : "mph",
+          'gaugeThick' : 15,
+          'guageCap':  'round'
+        }
+        this.getBarChartData(this.vehiclesMoving);
+
+        
       }
       else if (responseData.statusCode === "409") {
         // this.ts.error('Data not found');
