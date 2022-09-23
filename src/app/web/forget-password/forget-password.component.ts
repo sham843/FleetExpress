@@ -25,10 +25,12 @@ export class ForgetPasswordComponent implements OnInit {
   passwordChenged: boolean = false;
   otpLoginUserId!: number;
   mobileNum: any;
+  checkOtp:any;
   intervalId = 0;
   timer = '';
   timerFlag: boolean = true;
   seconds: any;
+
   constructor(private fb: FormBuilder,
     public vs: ValidationService,
     private comman: CommanService,
@@ -53,7 +55,7 @@ export class ForgetPasswordComponent implements OnInit {
     })
     this.changePassword = this.fb.group({
       password: ['',[Validators.compose([Validators.required,Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$'),Validators.minLength(8),Validators.maxLength(20)])]],
-      confirmPassword: ['', Validators.required]
+      confirmPassword: ['',[Validators.compose([Validators.required,Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$'),Validators.minLength(8),Validators.maxLength(20)])]]
     })
   }
 
@@ -62,31 +64,32 @@ export class ForgetPasswordComponent implements OnInit {
   // -------------------------------------------OTP-----------------------------------------------------------
   sendOTP() {
     this.countDown();
-    this.mobileNoSubmitted = true;
     let mobileNom = this.sendOTPForm.value.mobileNo || this.mobileNum;
-    /* if (this.sendOTPForm.invalid) {
+    if (this.sendOTPForm.invalid) {
       this.spinner.hide();
-      return;
     } 
-    else { */
+   else {
     this.spinner.show();
     this.comman.setHttp('get', 'get-user-otp?MobileNo=' + mobileNom, false, false, false, 'loginBaseUrlApi');
     this.comman.getHttp().subscribe((res: any) => {
       if (res.statusCode == "200") {
+        this.checkOtp=res.responseData[0].otp;
         this.mobileNum = res.responseData[0].mobileNo;
         this.spinner.hide();
         this.toastrService.success(res.statusMessage);
         this.generateOTPContain = false;
         this.OTPContainer = true;
+        this.verifyOTPForm.reset();
         this.sendOTPForm.reset();
       }
     })
-    // }
+    }
   }
   // -----------------------------------------Timer------------------------------------------------------------------------
   countDown() {
     this.clearTimer();
-    this.seconds = 60;
+    this.seconds = 15;
+    this.timerFlag = true;
     this.intervalId = window.setInterval(() => {
       this.seconds -= 1;
       if (this.seconds === 0) {
@@ -96,23 +99,26 @@ export class ForgetPasswordComponent implements OnInit {
           this.timerFlag = false;
           clearInterval(this.intervalId);
         }
-        this.timer = `in ${this.seconds}`;
+        this.timer = this.seconds;
       }
     }, 1000);
   }
-
   clearTimer() {
     clearInterval(this.intervalId);
   }
 // -----------------------------------------------------verify OTp------------------------------------------------------------
   verifyOTP() {
+    let otp = this.verifyOTPForm.value.otpA + this.verifyOTPForm.value.otpB + this.verifyOTPForm.value.otpC + this.verifyOTPForm.value.otpD + this.verifyOTPForm.value.otpE;
     if (this.verifyOTPForm.invalid) {
-      this.spinner.hide();
+      return;
+    }
+    else if(this.checkOtp!=otp){
+      this.toastrService.error("Invalid OTP")
       return;
     }
     else {
       this.spinner.show();
-      let otp = this.verifyOTPForm.value.otpA + this.verifyOTPForm.value.otpB + this.verifyOTPForm.value.otpC + this.verifyOTPForm.value.otpD + this.verifyOTPForm.value.otpE;
+      // let otp = this.verifyOTPForm.value.otpA + this.verifyOTPForm.value.otpB + this.verifyOTPForm.value.otpC + this.verifyOTPForm.value.otpD + this.verifyOTPForm.value.otpE;
       this.comman.setHttp('get', 'login-by-otp?MobileNo=' + this.mobileNum + '&OTP=' + otp, false, false, false, 'loginBaseUrlApi');
       this.comman.getHttp().subscribe((res: any) => {
         if (res.statusCode == "200") {
@@ -154,7 +160,6 @@ export class ForgetPasswordComponent implements OnInit {
       }
       else {
         this.spinner.hide();
-        alert("error");
         this.toastrService.error("New password and Confirm password should not be same")
       }
     }
