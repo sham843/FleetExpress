@@ -209,15 +209,15 @@ export class DashboardComponent implements OnInit {
     this.getOverSpeedData();
     this.getSIMRenewalReminderData();
   }
-  openDialog(): void {
-    const dialogRef = this.dialog.open(BlockUnblockComponent, {
-      width: '300px'
-    });
+  // openDialog(): void {
+  //   const dialogRef = this.dialog.open(BlockUnblockComponent, {
+  //     width: '300px'
+  //   });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log('The dialog was closed');
+  //   });
+  // }
 
   getvehicleAllData() {
     this.vehicleAllData = [];
