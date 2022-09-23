@@ -28,128 +28,131 @@
                 <div class="tab-content" id="pills-tabContent">
                     <div class="tab-pane fade show active" id="pills-notifications" role="tabpanel"
                         aria-labelledby="pills-notifications-tab" tabindex="0">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span class="noti-title">Boxopen-Off</span>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="flexSwitchCheckDefault">
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span class="noti-title">Geofence-In</span>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="flexSwitchCheckDefault">
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span class="noti-title">Ignition-Off</span>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="flexSwitchCheckDefault">
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span class="noti-title">Power-Cut</span>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="flexSwitchCheckDefault">
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span class="noti-title">Low-battery-removed</span>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="flexSwitchCheckDefault">
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span class="noti-title">Disconnect-Battery</span>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="flexSwitchCheckDefault">
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span class="noti-title">Over Speed</span>
-                                            <div class="d-flex w-75 justify-content-between align-items-center">
-                                                <mat-slider [tickInterval]="getSliderTickInterval()" [(ngModel)]="value" class="w-100"></mat-slider>
-                                                <span class="badge bg-extra-light text-dark p-2"><label>{{value}} kmph</label></span>
-                                            </div>
+                        <form [formGroup]="notificationForm">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center" *ngIf="!notificatinsData[0].isVisibleToOfficer">
+                                            <span class="noti-title">Boxopen-Off</span>
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch"
-                                                    id="flexSwitchCheckDefault">
+                                                <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="notificatinsData[0].isVisibleToOfficer" formControlName="BoxopenOff"
+                                                (change)="switchNotification(notificatinsData[0],'BoxopenOff')" id="BoxopenOff">
                                             </div>
-                                        </div>
-                                        
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-sm-6">
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span class="noti-title">Boxopen-On</span>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="flexSwitchCheckDefault">
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span class="noti-title">Geofence-Out</span>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="flexSwitchCheckDefault">
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span class="noti-title">Ignition-On</span>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="flexSwitchCheckDefault">
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span class="noti-title">Power-Connected</span>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="flexSwitchCheckDefault">
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span class="noti-title">Connect-back-to-main-Battery</span>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="flexSwitchCheckDefault">
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span class="noti-title">Low-battery</span>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="flexSwitchCheckDefault">
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span class="noti-title">Tilt</span>
-                                            <div class="d-flex w-75 justify-content-between align-items-center">
-                                                <mat-slider [tickInterval]="getSliderTickInterval()" [(ngModel)]="value" class="w-100"></mat-slider>
-                                                <span class="badge bg-extra-light text-dark p-2"><label>{{value}} degree</label></span>
-                                            </div>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center"  *ngIf="!notificatinsData[5].isVisibleToOfficer">
+                                            <span class="noti-title">Geofence-In</span>
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch"
-                                                    id="flexSwitchCheckDefault">
+                                                <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="notificatinsData[5].isVisibleToOfficer" formControlName="GeofenceIn"
+                                                (change)="switchNotification(notificatinsData[5],'GeofenceIn')"  id="GeofenceIn">
                                             </div>
-                                        </div>
-                                        
-                                    </li>
-                                </ul>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center"  *ngIf="!notificatinsData[8].isVisibleToOfficer">
+                                            <span class="noti-title">Ignition-Off</span>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="notificatinsData[8].isVisibleToOfficer" formControlName="IgnitionOff"
+                                                (change)="switchNotification(notificatinsData[8],'IgnitionOff')"  id="IgnitionOff">
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center"  *ngIf="!notificatinsData[11].isVisibleToOfficer">
+                                            <span class="noti-title">Power-Cut</span>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="notificatinsData[11].isVisibleToOfficer" formControlName="PowerCut"
+                                                (change)="switchNotification(notificatinsData[11],'PowerCut')"  id="PowerCut">
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center" >
+                                            <span class="noti-title">Low-battery-removed</span>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" formControlName="Lowbatteryremoved"
+                                                    id="Lowbatteryremoved">
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span class="noti-title">Disconnect-Battery</span>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" formControlName="DisconnectBattery"
+                                                    id="DisconnectBattery">
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="noti-title">Over Speed</span>
+                                                <div class="d-flex w-75 justify-content-between align-items-center">
+                                                    <mat-slider [tickInterval]="getSliderTickInterval()" class="w-100"  [(ngModel)]="notificatinsData[9].isVisibleToOfficer" formControlName="OverSpeed"></mat-slider>
+                                                    <span class="badge bg-extra-light text-dark p-2"><label>{{value}} kmph</label></span>
+                                                </div>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="notificatinsData[9].isVisibleToOfficer" formControlName="OverSpeed"
+                                                    (change)="switchNotification(notificatinsData[9],'OverSpeed')" id="OverSpeed">
+                                                </div>
+                                            </div>
+                                            
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-sm-6">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center"  *ngIf="!notificatinsData[1].isVisibleToOfficer">
+                                            <span class="noti-title">Boxopen-On</span>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="notificatinsData[1].isVisibleToOfficer" formControlName="BoxopenOn"
+                                                    id="BoxopenOn" (change)="switchNotification(notificatinsData[9],'BoxopenOn')">
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center"  *ngIf="!notificatinsData[6].isVisibleToOfficer">
+                                            <span class="noti-title">Geofence-Out</span>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="notificatinsData[6].isVisibleToOfficer" formControlName="GeofenceOut"
+                                                    id="GeofenceOut" (change)="switchNotification(notificatinsData[9],'GeofenceOut')">
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center"  *ngIf="!notificatinsData[9].isVisibleToOfficer">
+                                            <span class="noti-title">Ignition-On</span>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="notificatinsData[9].isVisibleToOfficer" formControlName="IgnitionOn"
+                                                    id="IgnitionOn" (change)="switchNotification(notificatinsData[9],'IgnitionOn')">
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center"  *ngIf="!notificatinsData[11].isVisibleToOfficer">
+                                            <span class="noti-title">Power-Connected</span>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="notificatinsData[11].isVisibleToOfficer" formControlName="PowerConnected"
+                                                    id="PowerConnected" (change)="switchNotification(notificatinsData[9],'PowerConnected')">
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center" >
+                                            <span class="noti-title">Connect-back-to-main-Battery</span>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" formControlName="ConnectbacktomainBattery"
+                                                    id="ConnectbacktomainBattery" (change)="switchNotification(notificatinsData[9],'ConnectbacktomainBattery')">
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span class="noti-title">Low-battery</span>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" formControlName="Lowbattery"
+                                                    id="Lowbattery" (change)="switchNotification(notificatinsData[9],'Lowbattery')">
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="noti-title">Tilt</span>
+                                                <div class="d-flex w-75 justify-content-between align-items-center">
+                                                    <mat-slider [tickInterval]="getSliderTickInterval()" class="w-100"  ></mat-slider>
+                                                    <span class="badge bg-extra-light text-dark p-2"><label>{{value}} degree</label></span>
+                                                </div>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch"  formControlName="Tilt"
+                                                        id="Tilt" (change)="switchNotification(notificatinsData[9],'Tilt')">
+                                                </div>
+                                            </div>
+                                            
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
+                        </form>
+                        
                     </div>
 
 
@@ -232,15 +235,13 @@
                                                     <th class="srno"></th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody *ngFor="let element of vehicleNotificatinsData; let i=index">
                                                 <tr data-bs-toggle="collapse" data-bs-target="#collapseOne"
                                                     aria-expanded="true" aria-controls="collapseOne" class="row-select collapsed">
-                                                    <td>1</td>
+                                                    <td>{{ this.itemsPerPage * (currentPage - 1) + (i+1) }}</td>
                                                     <td><img src="../../../assets/images/Driver-profile.svg" class="vehicle-image"></td>
-                                                    <td>
-                                                        MH12 AB 1230
-                                                    </td>
-                                                    <td>Tuck</td>
+                                                    <td>{{element.vehicleNo}} </td>
+                                                    <td>{{element.vehTypeName}}</td>
                                                     <td>
                                                         <div class="icon">
                                                             <i class="fa-solid fa-chevron-down"></i>
@@ -248,7 +249,7 @@
                                                     </td>
                                                 </tr>
 
-                                                <tr>
+                                                <tr >
                                                     <td colspan="5" class="bg-light">
                                                         <div id="collapseOne" class="accordion-collapse collapse "
                                                             aria-labelledby="headingOne" data-bs-parent="#accordion">
