@@ -84,24 +84,32 @@
             <div class="col-sm-6">
                 <div class="card mb-3 plain-card">
                     <div class="card-header">Average Speed</div>
-                    <div class="card-body">
-                        <apx-chart [series]="chartOptions2.series" [chart]="chartOptions2.chart" [plotOptions]="chartOptions2.plotOptions"
-                            [labels]="chartOptions2.labels" [fill]="chartOptions2.fill"></apx-chart>
+                    <div class="card-body" *ngIf="fastestVehicleObj">
+                        <!-- <apx-chart [series]="chartOptions2.series" [chart]="chartOptions2.chart" [plotOptions]="chartOptions2.plotOptions"
+                            [labels]="chartOptions2.labels" [fill]="chartOptions2.fill"></apx-chart> -->
+                            <ngx-gauge [type]="fastestVehicleObj?.gaugeType" [value]="fastestVehicleObj?.gaugeValue" [label]="fastestVehicleObj?.gaugeLabel" [append]="fastestVehicleObj?.gaugeAppendText" 
+                            [thick]="fastestVehicleObj?.gaugeThick" [cap]="fastestVehicleObj?.guageCap" >
+                            </ngx-gauge>
+                            <div>{{'Vehicles Moving : '+vehiclesMoving.length}}</div>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="card mb-3 plain-card">
                     <div class="card-header">Fastest Vehicle</div>
-                    <div class="card-body">
-                        <apx-chart
+                    <div class="card-body" *ngIf="avarageSpeedObj">
+                        <!-- <apx-chart
                         [series]="chartOptions3.series"
                         [chart]="chartOptions3.chart"
                         [plotOptions]="chartOptions3.plotOptions"
                         [labels]="chartOptions3.labels"
                         [fill]="chartOptions3.fill"
-                      ></apx-chart>
-                      <div>{{maxSpeedObj.vehicleNo}}</div>
+                      ></apx-chart> -->
+                      <ngx-gauge [type]="avarageSpeedObj?.gaugeType" [value]="avarageSpeedObj?.gaugeValue" [label]="avarageSpeedObj?.gaugeLabel" [append]="avarageSpeedObj?.gaugeAppendText" 
+                            [thick]="avarageSpeedObj?.gaugeThick" [cap]="avarageSpeedObj?.guageCap" >
+                            </ngx-gauge>
+                      <div>{{'Vehicle No. : '+ maxSpeedObj?.vehicleNo}}</div>
+                      <div>{{'At : '+ maxSpeedObj?.deviceDatetime  | date: 'dd-MM-yyyy hh:mm:ss a'}}</div>
                     </div>
                 </div>
             </div>
@@ -119,9 +127,9 @@
             <div class="card-header">sadf</div>
             <div class="card-body">
                 asdf
-                <div class="card-body">
+                <!-- <div class="card-body">
                     <button mat-raised-button (click)="openDialog()">Pick one</button>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

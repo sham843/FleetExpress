@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
-
+import { NgxGaugeModule } from 'ngx-gauge';
 
 @NgModule({
   declarations: [
@@ -14,7 +14,8 @@ import { NgApexchartsModule } from 'ng-apexcharts';
   imports: [
     CommonModule,
     DashboardRoutingModule,
-    NgApexchartsModule
+    NgApexchartsModule,
+    NgxGaugeModule
   ]
 })
 export class DashboardModule { }
