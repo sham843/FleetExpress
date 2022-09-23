@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
   }
   defaultLoginForm() {
     this.loginForm = this.fb.group({
-      username: ['', Validators.required],
+      username: ['', Validators.required,Validators.maxLength(20)],
       password: ['', [Validators.compose([Validators.required,Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$'),Validators.minLength(8),Validators.maxLength(20)])]],
       captcha: ['', Validators.required]
     })
@@ -42,15 +42,13 @@ export class LoginComponent implements OnInit {
   }
   onLoginSubmit() {
     if (this.loginForm.invalid) {
-      this.toastrService.error("Invalid Login")
       return;
     }
-   /*  else if (this.loginForm.value.recaptchaReactive !=  this.sharedService.checkvalidateCaptcha()){
-      alert("Invalid Captcha. Please try Again");
+   else if (this.loginForm.value.captcha !=  this.sharedService.checkvalidateCaptcha()){
+    this.toastrService.error("Invalid Captcha");
+    }
 
-    } */
-
-    // else {
+    else {
       this.spinner.show();
       this.loginData = this.loginForm.value;
       this.comman.setHttp('get', 'login/login-web?'+'UserName=' + this.loginData.username.trim() + '&Password=' + this.loginData.password.trim(), false, false, false, 'vehicletrackingBaseUrlApi');
@@ -66,7 +64,7 @@ export class LoginComponent implements OnInit {
           this.toastrService.error(res.statusMessage)
         }
       })
-    // }
+    }
 }
 get f(){
   return this.loginForm.controls;
