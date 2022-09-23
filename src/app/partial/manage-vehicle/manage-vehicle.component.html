@@ -5,7 +5,7 @@
         <div class="display-bar">
             <div class="d-flex">
                 <div class="pe-3">Total Vehicles</div>
-                <div class="fw-bold">{{totalItem}}</div>
+                <div class="fw-bold">{{totalVehicle}}</div>
             </div>
         </div>
     </div>
@@ -25,7 +25,7 @@
                                 <div class="col-sm-8 form-group">
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="Vehicle Number"
-                                            formControlName="searchVhl">
+                                            formControlName="searchVhl" (keypress)="this.vs.alphaNumeric($event)">
                                         <div *ngIf="searchHideShow && this.serchVehicle.value.searchVhl"
                                             class="input-group-text"><i class="fa-solid fa-magnifying-glass"
                                                 (click)="getVehicleData('search')"></i></div>
@@ -54,7 +54,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let vehicle of vehicleData | paginate: {itemsPerPage: pageSize, 
-                            currentPage: paginationNo, totalItems:totalItem}; let i = index">
+                            currentPage: paginationNo, totalItems:totalItem}; let i = index" [ngClass]="{'highLightRow':highLightRow==vehicle.vehicleId}">
                             <td>{{vehicle.srNo}}</td>
                             <td><img src="../../../assets/images/Idle-vehicle.svg" alt=""></td>
                             <td>
@@ -65,13 +65,10 @@
                             </td>
                             <td>{{vehicle.mobileNo ||'-'}}</td>
                             <td>
-                                <button class="btn btn-outline-primary" data-bs-toggle="modal" id="openmodal"
-                                    [attr.data-target]="vehicle.driverName.length == 0 ?'#AssignDriverModal' :''"
-                                    (click)="assignDriver(vehicle)" [ngClass]="{'text-primary':vehicle.driverName.length ==0,
-                                    'btn-outline-warning':vehicle.driverName.length != 0,
-                                        'text-warning':vehicle.driverName.length != 0}">
-                                    {{vehicle.driverName.length > 0 ?'unassign driver':'Assign driver'}}
-                                </button>
+                                <button class="btn btn-outline-primary text-primary" *ngIf="!vehicle.driverName?.length"  data-bs-toggle="modal" id="openmodal"
+                                data-bs-target="#AssignDriverModal" (click)="getAssignDriver(vehicle)">Assign driver</button>
+                                    <button class="btn btn-outline-warning text-warning" *ngIf="vehicle.driverName?.length"
+                                    (click)="assignDriverToVehicle(vehicle)"> unassign driver </button>
                             </td>
                             <td>
                                 <div class="form-check form-switch">
@@ -113,7 +110,7 @@
                 <p class="modal-title mb-0" id="AssignDriverModalLabel">
                     Assign Driver
                 </p>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closemodel()"></button>
             </div>
             <form [formGroup]="assignDriverForm">
                 <div class="modal-body">
@@ -132,8 +129,8 @@
                 <div class="modal-footer">
                     <div class="form-container w-100">
                         <div class="d-flex justify-content-between">
-                            <button class="btn btn-light-main" #closeModel data-bs-dismiss="modal">Cancel</button>
-                            <button class="btn btn-main" (click)="assignDriverToVehicle('false')">Assign</button>
+                            <button class="btn btn-light-main" #closeModel data-bs-dismiss="modal" (click)="closeModels()">Cancel</button>
+                            <button class="btn btn-main" (click)="assignDriverToVehicle()">Assign</button>
                         </div>
                     </div>
                 </div>
@@ -149,7 +146,7 @@
         <div class="modal-content">
             <div class="modal-header bg-light-gradient text-dark">
                 <p class="modal-title mb-0" id="EditVehicleDetailsModalLabel">Edit Vehicle Details</p>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closemodel()"></button>
             </div>
             <form [formGroup]="editVehicleForm">
                 <div class="modal-body">
@@ -399,7 +396,7 @@
                 <div class="modal-footer">
                     <div class="form-container w-100">
                         <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-light-main" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-light-main" data-bs-dismiss="modal" (click)="closemodel()">Cancel</button>
                             <button type="submit" class="btn btn-main" (click)="saveVehicleDetails()">Save</button>
                         </div>
                     </div>

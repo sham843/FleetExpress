@@ -19,19 +19,16 @@ export class ForgetPasswordComponent implements OnInit {
   verifyOTPForm!: FormGroup;
   changePassword!: FormGroup;
   generateOTPContain: boolean = true;
-  OTPContainer: boolean =false;
+  OTPContainer: boolean = false;
   passContainer: boolean = false;
   mobileNoSubmitted: boolean = false;
   passwordChenged: boolean = false;
-  otpLoginUserId: any;
+  otpLoginUserId!: number;
   mobileNum: any;
   intervalId = 0;
   timer = '';
-  timerFlag:boolean=true;
-  seconds:any;
-  get sf() { return this.sendOTPForm.controls };
-  get vf() { return this.verifyOTPForm.controls };
-  get rf() { return this.changePassword.controls };
+  timerFlag: boolean = true;
+  seconds: any;
   constructor(private fb: FormBuilder,
     public vs: ValidationService,
     private comman: CommanService,
@@ -47,7 +44,6 @@ export class ForgetPasswordComponent implements OnInit {
     this.sendOTPForm = this.fb.group({
       mobileNo: ['', [Validators.required, Validators.pattern('^[6-9][0-9]{9}$')]],
     })
-
     this.verifyOTPForm = this.fb.group({
       otpA: ['', Validators.required],
       otpB: ['', Validators.required],
@@ -56,19 +52,18 @@ export class ForgetPasswordComponent implements OnInit {
       otpE: ['', Validators.required],
     })
     this.changePassword = this.fb.group({
-      password: ['', Validators.required],
+      password: ['',[Validators.compose([Validators.required,Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$'),Validators.minLength(8),Validators.maxLength(20)])]],
       confirmPassword: ['', Validators.required]
     })
   }
 
   ngOnDestroy() { this.clearTimer(); }
-
   stop() { this.clearTimer(); }
-
+  // -------------------------------------------OTP-----------------------------------------------------------
   sendOTP() {
     this.countDown();
     this.mobileNoSubmitted = true;
-    let mobileNom=this.sendOTPForm.value.mobileNo || this.mobileNum;
+    let mobileNom = this.sendOTPForm.value.mobileNo || this.mobileNum;
     /* if (this.sendOTPForm.invalid) {
       this.spinner.hide();
       return;
@@ -88,25 +83,28 @@ export class ForgetPasswordComponent implements OnInit {
     })
     // }
   }
+  // -----------------------------------------Timer------------------------------------------------------------------------
   countDown() {
     this.clearTimer();
-    this.seconds=60;
+    this.seconds = 60;
     this.intervalId = window.setInterval(() => {
       this.seconds -= 1;
       if (this.seconds === 0) {
       } else {
         if (this.seconds < 0) {
-        } else if(this.seconds==1){
-          this.timerFlag=false;
+        } else if (this.seconds == 1) {
+          this.timerFlag = false;
           clearInterval(this.intervalId);
         }
         this.timer = `in ${this.seconds}`;
       }
     }, 1000);
   }
+
   clearTimer() {
     clearInterval(this.intervalId);
   }
+// -----------------------------------------------------verify OTp------------------------------------------------------------
   verifyOTP() {
     if (this.verifyOTPForm.invalid) {
       this.spinner.hide();
@@ -128,6 +126,7 @@ export class ForgetPasswordComponent implements OnInit {
       })
     }
   }
+  // ---------------------------------------------------------------------submit---------------------------------------
   onSubmit() {
     this.passwordChenged = true;
     if (this.changePassword.invalid) {
@@ -152,7 +151,6 @@ export class ForgetPasswordComponent implements OnInit {
           }
         })
         this.spinner.hide();
-
       }
       else {
         this.spinner.hide();
@@ -160,6 +158,8 @@ export class ForgetPasswordComponent implements OnInit {
         this.toastrService.error("New password and Confirm password should not be same")
       }
     }
-
   }
+  get sendOtp() { return this.sendOTPForm.controls };
+  get verifyOtp() { return this.verifyOTPForm.controls };
+  get passChange() { return this.changePassword.controls };
 }

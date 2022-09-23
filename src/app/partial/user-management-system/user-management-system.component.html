@@ -158,7 +158,8 @@
                                         </tbody>
                                     </table>
                                     <div *ngIf="showTab=='role'?userTableData.length:roleTableData.length" class="d-flex justify-content-end">
-                                        <ngb-pagination [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true" [collectionSize]="totalUserTableData" #numPages
+                                        <ngb-pagination [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true" 
+                                        [collectionSize]="totalUserTableData" #numPages
                                             [pageSize]="itemsPerPage" [(page)]="currentPage" (pageChange)="onPageChange(currentPage)">
                                         </ngb-pagination>
                                         

@@ -4,7 +4,7 @@
         <div class="display-bar">
             <div class="d-flex align-items-center">
                 <div class="me-3">Total Vehicles</div>
-                <div class="fw-bold">{{totalVhl}}</div>
+                <div class="fw-bold">{{totalVehicle}}</div>
             </div>
         </div>
     </div>
@@ -37,7 +37,7 @@
                                     <div class="col-sm-8">
                                         <div class="input-group">
                                             <input type="text" class="form-control" placeholder="Driver Name"
-                                                formControlName="driverName">
+                                                formControlName="driverName" (keypress)="this.vs.alphabetsWithSpaces($event)">
                                                 <div class="input-group-text" *ngIf="searchHideShow && this.searchDriverForm.value.driverName"><i class="fa-solid fa-magnifying-glass"
                                                     (click)="getDriverDetails('search')"></i></div>
                                                 <div class="input-group-text" *ngIf="clearHideShow"><i class="fa-solid fa-xmark"
@@ -144,7 +144,7 @@
                                         <input matInput placeholder="Mobile Number" value="" class="form-control"
                                             formControlName="mobileNo" (keypress)="this.vs.onlyDigits($event)"
                                             (keyup)="this.vs.noSpaces($event)" maxlength="10">
-                                        <mat-error *ngIf="isSubmitted && f['mobileNo'].errors">
+                                        <mat-error *ngIf="f['mobileNo'].errors">
                                             <span class="text-danger" *ngIf="f['mobileNo'].hasError('pattern')">Enter
                                                 valid mobile Number</span>
                                             <span class="text-danger" *ngIf="f['mobileNo'].hasError('maxlength')">Enter
@@ -157,7 +157,7 @@
                                         <input matInput placeholder="First Name" value="" class="form-control"
                                             formControlName="firstName" (keypress)="this.vs.onlyAlphabets($event)"
                                             (keyup)="this.vs.noSpaces($event)">
-                                        <mat-error *ngIf="isSubmitted && f['firstName'].errors">first Name is required
+                                        <mat-error *ngIf="f['firstName'].errors">first Name is required
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
@@ -166,7 +166,7 @@
                                         <input matInput placeholder="Last Name" value="" class="form-control"
                                             formControlName="lastName" (keypress)="this.vs.onlyAlphabets($event)"
                                             (keyup)="this.vs.noSpaces($event)">
-                                        <mat-error *ngIf="isSubmitted && f['lastName'].errors">Last Name is required
+                                        <mat-error *ngIf="f['lastName'].errors">Last Name is required
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
@@ -176,7 +176,7 @@
                                             formControlName="dob" placeholder="Date of Birth">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
-                                        <mat-error *ngIf="isSubmitted && f['dob'].errors">Date of birth is required
+                                        <mat-error *ngIf="f['dob'].errors">Date of birth is required
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
@@ -197,7 +197,7 @@
                                                 <td>
                                                     <div class="form-group">
                                                         <mat-form-field appearance="standard" class="w-100">
-                                                            <input matInput class="form-control" formControlName="licenceNumber" [ngClass]="{'is-invalid': isSubmitted && f['licenceNumber'].errors}"
+                                                            <input matInput class="form-control" formControlName="licenceNumber" [ngClass]="{'is-invalid':f['licenceNumber'].errors}"
                                                              placeholder="Licence Number" maxlength="15" minlength="15">
                                                              <mat-error>
                                                                 <span class="text-danger" *ngIf="f['licenceNumber'].hasError('pattern')">Enter valid licence number</span>
@@ -230,7 +230,7 @@
                                                 <td>
                                                     <div class="form-group">
                                                         <mat-form-field appearance="standard" class="w-100">
-                                                            <input matInput class="form-control" [ngClass]="{'is-invalid': isSubmitted && f['aadharNumber'].errors}" 
+                                                            <input matInput class="form-control" [ngClass]="{'is-invalid':f['aadharNumber'].errors}" 
                                                                 formControlName="aadharNumber" placeholder="Aadhaar Number"  maxlength="12" minlength="12">
                                                                 <mat-error>
                                                                     <span class="text-danger" *ngIf="f['aadharNumber'].hasError('minlength')">Enter 12 digit Aadhar card number</span>
@@ -265,7 +265,7 @@
                                                     <div class="form-group">
                                                         <mat-form-field appearance="standard" class="w-100">
                                                             <input matInput class="form-control" formControlName="panNumber"  matTooltip="AAAAA1234A"
-                                                                placeholder="PAN Number" maxlength="10" (keyup)="this.vs.noSpaces($event)" [ngClass]="{'is-invalid': isSubmitted && f['panNumber'].errors}">
+                                                                placeholder="PAN Number" maxlength="10" (keyup)="this.vs.noSpaces($event)" [ngClass]="{'is-invalid':f['panNumber'].errors}">
                                                                 <mat-error>
                                                                     <span class="text-danger" *ngIf="f['panNumber'].hasError('pattern')">Enter valid pan card number</span>
                                                                     <!-- <span class="text-danger" *ngIf="f['panNo'].hasError('maxlength')">Enter valid pan card number</span> -->
@@ -298,7 +298,7 @@
                                 <div class="col-sm-6 form-group">
                                     <mat-form-field appearance="standard" class="w-100">
                                         <textarea matInput class="form-control" formControlName="presentAddress" placeholder="Present Address"></textarea>
-                                        <mat-error *ngIf="isSubmitted && f['presentAddress'].errors">Present Address is
+                                        <mat-error *ngIf="f['presentAddress'].errors">Present Address is
                                             required</mat-error>
                                     </mat-form-field>
                                 </div>
@@ -306,7 +306,7 @@
                                     <mat-form-field appearance="standard" class="w-100">
                                         <textarea matInput class="form-control"
                                             formControlName="permanentAddress"  placeholder="Permanent Address"></textarea>
-                                        <mat-error *ngIf="isSubmitted && f['permanentAddress'].errors">Permanent Address is
+                                        <mat-error *ngIf="f['permanentAddress'].errors">Permanent Address is
                                             required</mat-error>
                                     </mat-form-field>
                                 </div>

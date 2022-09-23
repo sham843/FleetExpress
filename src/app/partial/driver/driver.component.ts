@@ -15,26 +15,25 @@ import { ValidationService } from 'src/app/services/validation.service';
 export class DriverComponent implements OnInit {
   driverRegForm !: FormGroup;
   searchDriverForm!: FormGroup;
-  isSubmitted: boolean = true;
   driverDetails: any;
-  editId: any = 0;
+  editId: number = 0;
   searchHideShow: boolean = true;
   clearHideShow: boolean = false;
   licenceDoc: any;
   panDoc: any;
   aadharDoc: any;
   totalItem: any;
-  totalVhl: any;
+  totalVehicle:any;
   paginationNo: number = 1;
   pageSize: number = 10;
-  highLightRow:any;
+  highLightRow!: string;
   date: any = new Date();
   profilePhotoupd: any = 'assets/images/Driver-profile.svg';
   @ViewChild('closeModel') closeModel: any;
   @ViewChild('panUpload') panUpload: any;
   @ViewChild('aadharUpload') aadharUpload: any;
   @ViewChild('licenceUpload') licenceUpload: any;
-  @ViewChild('formGroupDirective') private formGroupDirective: FormGroupDirective|any;
+  @ViewChild('formGroupDirective') private formGroupDirective: FormGroupDirective | any;
   constructor(private fb: FormBuilder,
     public vs: ValidationService,
     private tostrService: ToastrService,
@@ -46,10 +45,13 @@ export class DriverComponent implements OnInit {
   ngOnInit(): void {
     this.getRegFormData();
     this.getDriverDetails();
-    this.sharedService.getTotalVehicle().subscribe((res: any) => {
-      this.totalVhl = res;
+    this.sharedService.vehicleCount().subscribe({
+      next: (ele: any) => {
+       this.totalVehicle=ele.responseData.responseData2.totalRecords;
+      }
     })
   }
+  //--------------------------------------------------------form Controls----------------------------------------------------
   getRegFormData() {
     this.driverRegForm = this.fb.group({
       profilePhoto: [''],
@@ -71,6 +73,7 @@ export class DriverComponent implements OnInit {
       driverName: ['']
     })
   }
+  // -----------------------------------------------Driver Details----------------------------------------------------------
   getDriverDetails(flag?: any) {
     this.spinner.show();
     this.comman.setHttp('get', 'get-driver?searchText=' + this.searchDriverForm.value.driverName + '&pageno=' + this.paginationNo + '&rowperPage=' + this.pageSize, true, false, false, 'driverBaseUrlApi');
@@ -99,6 +102,7 @@ export class DriverComponent implements OnInit {
     this.searchHideShow = true;
     this.clearHideShow = false;
   }
+  // -----------------------------------------Block/Unblock Driver--------------------------------------------------------------
   blobkUnblockDriver(event: any, drData: any) {
     let param = {
       "id": 0,
@@ -116,6 +120,7 @@ export class DriverComponent implements OnInit {
       }
     })
   }
+  // ----------------------------------------------------Upload Document and profile photo-------------------------------------
   profileUploads(event: any) {
     this.spinner.show();
     let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'driverProfile', "png,jpg,jpeg");
@@ -142,8 +147,9 @@ export class DriverComponent implements OnInit {
       flag == 'aadhar' ? (this.aadharUpload.nativeElement.value = null, this.driverRegForm.controls['aadharDoc'].setValue('')) :
         (this.licenceUpload.nativeElement.value = null, this.driverRegForm.controls['licenceDoc'].setValue(''));
   }
+  // -------------------------------------------------------Update Driver Details------------------------------------------------------------
   editDriverData(driverData: any) {
-    this.highLightRow=driverData.driverId;
+    this.highLightRow = driverData.driverId;
     this.editId = driverData?.driverId
     this.profilePhotoupd = driverData?.profilePhoto;
     this.licenceDoc = driverData?.licenceDoc;
@@ -165,11 +171,12 @@ export class DriverComponent implements OnInit {
       aadharCardDoc: driverData?.aadharCardDoc,
       panCardDoc: driverData?.panCardDoc
     })
-   
+
   }
-  closeModels(){
-this.highLightRow='';
+  closeModels() {
+    this.highLightRow = '';
   }
+  // ----------------------------------------------Delete Record----------------------------------------------------------------
   removeDriverData(data: any) {
     let param = [
       {
@@ -187,8 +194,9 @@ this.highLightRow='';
       }
     })
   }
+  // --------------------------------------------Save--------------------------------------------------------------------------
   registerDriverSave() {
-    this.highLightRow='';
+    this.highLightRow = '';
     let formData = this.driverRegForm.value;
     formData.id = this.editId;
     formData.middleName = '';
@@ -213,7 +221,7 @@ this.highLightRow='';
         this.spinner.hide();
         this.formGroupDirective.resetForm()
         this.closeModel.nativeElement.click();
-        this.highLightRow='';
+        this.highLightRow = '';
         this.tostrService.success(response.statusMessage);
       }
     })

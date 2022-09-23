@@ -1686,3 +1686,9 @@ body.swal2-no-backdrop .swal2-shown.swal2-bottom-end,body.swal2-no-backdrop .swa
 .form-control.is-invalid, .was-validated .form-control:invalid{
   background-image: unset;
 }
+.highLightRow{
+  background-color:#FFF2FD;
+}
+.pac-container{
+  z-index: 9999 !important;
+}

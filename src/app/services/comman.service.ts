@@ -8,20 +8,21 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root'
 })
 export class CommanService {
+  vhlCount: any;
   UserLoginDetails: any;
   userObj: any;
   userObjData: any;
   tokanExpiredFlag: boolean = false;
   loginObj: any;
-  disableCloseFlag:boolean = true//modal disableCloseFlag
+  disableCloseFlag: boolean = true//modal disableCloseFlag
   getBaseurl(url: string) {
     switch (url) {
       case 'vehicletrackingBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/'; break
       case 'loginBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/login/'; break
-      case 'vehicleBaseUrlApi':return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/vehicle/';break
-      case 'driverBaseUrlApi':return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/driver/';break
-      case 'userDetailsBaseUrlApi' :return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/userdetail/';break
-      case 'uploadDocumentBaseUrlApi':return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/upload/';break
+      case 'vehicleBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/vehicle/'; break
+      case 'driverBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/driver/'; break
+      case 'userDetailsBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/userdetail/'; break
+      case 'uploadDocumentBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/upload/'; break
       default: return ''; break;
     }
   }
@@ -38,8 +39,8 @@ export class CommanService {
 
   constructor(private http: HttpClient,
     private router: Router,
-    private spinner:NgxSpinnerService,
-    private toastrService:ToastrService) {
+    private spinner: NgxSpinnerService,
+    private toastrService: ToastrService) {
   }
   ngOnInit(): void {
   }
@@ -48,11 +49,11 @@ export class CommanService {
     let sessionData = JSON.parse(loginObj).responseData[0];
     return sessionData;
   }
-  getUser(){
+  getUser() {
     let userData = this.getsessionStorageData();
     return userData;
   }
-  getUserId(){
+  getUserId() {
     let vehOwnerId = this.getsessionStorageData();
     return vehOwnerId.id;
   }
@@ -98,12 +99,11 @@ export class CommanService {
           sessionStorage.clear();
           this.router.navigate(['/login']);
           this.toastrService.info('Your Session Has Expired. Please Re-Login Again.');
-         return;
+          return;
         }
 
       }
     }
-
     try {
       this.userObj = sessionStorage.getItem('loginDetails');
       this.userObjData = JSON.parse(this.userObj);
@@ -113,8 +113,8 @@ export class CommanService {
     this.httpObj.url = this.getBaseurl(baseUrl) + url;
     if (isHeader) {
       let tempObj: any = {
-        "UserId":this.getUserId().toString(),
-        "Authorization": "Bearer " +this.userObjData.responseData3.accessToken // token set
+        "UserId": this.getUserId().toString(),
+        "Authorization": "Bearer " + this.userObjData.responseData3.accessToken // token set
       };
 
       this.httpObj.options.headers = new HttpHeaders(tempObj);
@@ -133,26 +133,25 @@ export class CommanService {
       this.httpObj.options.params = false;
     }
   }
-
   tokenExpiredAndRefresh(obj: any) {
-    let callRefreshTokenAPI =  this.http.post('https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/login/refresh-token', obj);
-     callRefreshTokenAPI.subscribe((res: any) => {
-       if (res.statusCode === "200") {
-         let loginObj: any = sessionStorage.getItem('loginDetails');
-         loginObj = JSON.parse(loginObj);
-         loginObj.responseData3 = res.responseData;
-         sessionStorage.setItem('loginDetails', JSON.stringify(loginObj));
-         this.tokanExpiredFlag = false;
-       }
-       else if (res.statusCode === "409") {
-         this.spinner.hide();
-       }
-       else {
-         this.spinner.hide();
-         sessionStorage.clear();
-         this.router.navigate(['/login']);
-         this.toastrService.info('Your Session Has Expired. Please Re-Login Again.')
-       }
-     })
-   }
+    let callRefreshTokenAPI = this.http.post('https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/login/refresh-token', obj);
+    callRefreshTokenAPI.subscribe((res: any) => {
+      if (res.statusCode === "200") {
+        let loginObj: any = sessionStorage.getItem('loginDetails');
+        loginObj = JSON.parse(loginObj);
+        loginObj.responseData3 = res.responseData;
+        sessionStorage.setItem('loginDetails', JSON.stringify(loginObj));
+        this.tokanExpiredFlag = false;
+      }
+      else if (res.statusCode === "409") {
+        this.spinner.hide();
+      }
+      else {
+        this.spinner.hide();
+        sessionStorage.clear();
+        this.router.navigate(['/login']);
+        this.toastrService.info('Your Session Has Expired. Please Re-Login Again.')
+      }
+    })
+  }
 }

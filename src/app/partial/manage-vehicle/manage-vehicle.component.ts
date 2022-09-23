@@ -1,26 +1,24 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { CommanService } from 'src/app/services/comman.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { ValidationService } from 'src/app/services/validation.service';
 
 @Component({
   selector: 'app-manage-vehicle',
   templateUrl: './manage-vehicle.component.html',
   styleUrls: ['./manage-vehicle.component.scss']
 })
-
-
-
 export class ManageVehicleComponent implements OnInit {
   serchVehicle!: FormGroup;
   assignDriverForm!: FormGroup;
   editVehicleForm!: FormGroup;
   vehicleData: any;
   driverData: any;
-  totalItem: any;
+  totalItem!: number;
   paginationNo: number = 1;
   pageSize: number = 10;
   assignVehicle: any;
@@ -36,9 +34,12 @@ export class ManageVehicleComponent implements OnInit {
   profilePhotoImg:any
   driverName:string |any;
   vhlId:number |any;
+  highLightRow!:string;
   assignUnassignVhl:boolean=false;
   profilePhoto: any = "assets/images/Driver-profile.svg";
   insuranceUpload: any = "assets/images/Driver-profile.svg";
+  countVehicle:any;
+  totalVehicle:any;
   date: any = new Date();
   @ViewChild('closeModel') closeModel:any;
   @ViewChild('uploadDoc') uploadDoc:any;
@@ -50,12 +51,19 @@ export class ManageVehicleComponent implements OnInit {
     private tostrservice: ToastrService,
     private fb: FormBuilder,
     private datepipe: DatePipe,
-    private sharedService: SharedService,
-    private spinner:NgxSpinnerService) { }
+    public sharedService: SharedService,
+    private spinner:NgxSpinnerService,
+    public vs:ValidationService) {
+     }
 
   ngOnInit(): void {
     this.getformControls();
     this.getVehicleData();
+   this.sharedService.vehicleCount().subscribe({
+    next: (ele: any) => {
+     this.totalVehicle=ele.responseData.responseData2.totalRecords;
+    }
+  })
   }
 
   getformControls() {
@@ -63,10 +71,10 @@ export class ManageVehicleComponent implements OnInit {
       searchVhl: ['']
     })
     this.assignDriverForm = this.fb.group({
-      driverName: ['']
+      driverName: ['',Validators.required]
     })
     this.editVehicleForm = this.fb.group({
-      vhlNumber: [''],
+      vhlNumber: ['',Validators.required],
       profile: [''],
       date: [''],
       plateNo: [''],
@@ -85,6 +93,7 @@ export class ManageVehicleComponent implements OnInit {
       permitDoc: [''],
     }) 
   }
+  // --------------------------------------------Vehicle data------------------------------------------------------------
   getVehicleData(flag?:any) {
     this.spinner.show();
     let searchText = this.serchVehicle.value.searchVhl || '';
@@ -94,26 +103,18 @@ export class ManageVehicleComponent implements OnInit {
         this.spinner.hide();
         this.vehicleData = response.responseData.responseData1;
         this.vehicleData.forEach((ele: any) => {
-          ele['isBlockFlag'] = false;
-          if (ele.isBlock == 1) {
-            ele.isBlockFlag = true;
-          }
+          ele.isBlock == 1?ele['isBlockFlag']= true:ele['isBlockFlag'] = false;
         });
-          if (flag == 'search') {
-            this.searchHideShow = false;
-            this.clearHideShow = true;
-          }
+        flag == 'search'?( this.searchHideShow = false, this.clearHideShow = true):'';
         this.totalItem = response.responseData.responseData2.totalRecords;
-        this.sharedService.sendTotalVhl(this.totalItem);
         this.tostrservice.success(response.statusMessage);
       }
     })
   }
+  // --------------------------------------------------------Block/Unblock Vehicle-------------------------------------------
   blockUnblockVhl(vhlData: any, event: any) {
-    let isBlock = 0;
-    if (event.target.checked == true) {
-      isBlock = 1;
-    }
+    let isBlock:any;
+    event.target.checked == true? isBlock = 1:isBlock = 0;
     let param = {
       "vehicleId": vhlData.vehicleId,
       "blockedDate": this.date.toISOString(),
@@ -131,7 +132,8 @@ export class ManageVehicleComponent implements OnInit {
       }
     })
   }
-  assignDriver(vhlData: any) {
+  // --------------------------------------Assign Driver------------------------------------------------------------------
+  getAssignDriver(vhlData: any) {
     this.assignVehicle = vhlData;
     this.asgnVehicle = vhlData.vehicleNo
     this.spinner.show();
@@ -144,15 +146,15 @@ export class ManageVehicleComponent implements OnInit {
       }
     })
   }
-  assignDriverToVehicle(flag:any) {
+  assignDriverToVehicle(vehicleData?:any) {
     let param = {
       "id": 0,
-      "driverId":this.assignDriverForm.value.driverName,
-      "vehicleId": this.assignVehicle.vehicleId,
+      "driverId":this.assignDriverForm.value.driverName?this.assignDriverForm.value.driverName:vehicleData.driverId,
+      "vehicleId": this.assignVehicle?.vehicleId?this.assignVehicle?.vehicleId:0,
       "assignedby": this.comman.getUserId(),
       "assignedDate": this.date.toISOString(),
       "isDeleted": 0,
-      "vehicleNumber": this.assignVehicle.vehicleNo,
+      "vehicleNumber": this.assignVehicle?.vehicleNo?this.assignVehicle?.vehicleNo:vehicleData.vehicleNo,
       "userId": this.comman.getUserId()
     }
     this.spinner.show();
@@ -160,11 +162,17 @@ export class ManageVehicleComponent implements OnInit {
     this.comman.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
+        this.getVehicleData();
         this.tostrservice.success(response.statusMessage);
+        this.assignDriverForm.controls['driverName'].setValue('');
         this.closeModel.nativeElement.click();
       }
     })
   }
+  closeModels(){
+    this.assignDriverForm.controls['driverName'].setValue('');
+  }
+  // -----------------------------------Update-----------------------------------------------------------------
   editVehicleDetail(vhl: any) {
     this.spinner.show();
     this.comman.setHttp('get', 'get-vehicles?vehicleId=' + vhl.vehicleId, true, false, false, 'userDetailsBaseUrlApi');
@@ -178,7 +186,7 @@ export class ManageVehicleComponent implements OnInit {
     })
   }
   patchEditVhlData(data: any, vehicleName: any) {
-    console.log(data)
+    this.highLightRow=data.vehicleId;
     this.vhlId=data.vehicleId;
     this.driverName=vehicleName.driverName;
     this.editVehicleForm.patchValue({
@@ -198,9 +206,9 @@ export class ManageVehicleComponent implements OnInit {
       fitnessExDate: this.datepipe.transform(data?.fitnessExpiryDate, 'dd-MM-yyyy'),
       fitnessDoc: data?.fitnessDoc,
       permitNo: data?.nationalPermit,
-      // permitDoc: data?.nationalPermitDoc,
     })
-  }
+  } 
+  // ---------------------------------------------------------------------Upload Photo And Document---------------------------
   profilePhotoUpd(event: any) {
     this.spinner.show();
     let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'vehicleProfile', "png,jpg,jpeg");
@@ -229,7 +237,9 @@ export class ManageVehicleComponent implements OnInit {
     flag=='uploadDoc3'?(this.uploadDoc3.nativeElement.value = null,this.editVehicleForm.controls['fitnessDoc'].setValue('')):
     (this.uploadDoc4.nativeElement.value = null,this.editVehicleForm.controls['permitDoc'].setValue(''));
   }
+  // --------------------------------------------save--------------------------------------------------------------
   saveVehicleDetails() {
+    this.highLightRow='';
     let vhlaData=(this.editVehicleForm.value.vhlNumber).split('');
     let param = {
   "oldVehNo1": "",
@@ -296,6 +306,9 @@ export class ManageVehicleComponent implements OnInit {
         }
       })
     }
+  }
+  closemodel(){
+    this.highLightRow='';
   }
   onPagintion(pageNo: any) {
     this.paginationNo = pageNo;
