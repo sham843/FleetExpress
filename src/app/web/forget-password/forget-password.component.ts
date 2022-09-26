@@ -82,7 +82,12 @@ export class ForgetPasswordComponent implements OnInit {
         this.verifyOTPForm.reset();
         this.sendOTPForm.reset();
       }
+      else{
+        this.spinner.hide();
+        this.toastrService.error('Mobile Number Not Register');
+      }
     })
+
     }
   }
   // -----------------------------------------Timer------------------------------------------------------------------------
