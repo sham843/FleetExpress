@@ -73,12 +73,13 @@ export class GeofenceComponent implements OnInit {
       next: (res: any) => {
         if (res.statusCode === "200") {
           this.VehicleDtArr = res.responseData;
-        } else {
-          if (res.statusCode != "404") { }
+        }else{
+          this.error.handelError(res.statusCode);
         }
-      },
-      error: ((error: any) => { this.error.handelError(error.statusCode) })
-    });
+      }},
+      (error: any) => {
+          this.error.handelError(error.status);
+      });
   }
   // --------------------------------------------Checkbox Multiselect-------------------------------------------------------
   unCheckCheckbox(vehicle: any) {

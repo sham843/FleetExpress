@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { CommanService } from 'src/app/services/comman.service';
+import { ErrorsService } from 'src/app/services/errors.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ValidationService } from 'src/app/services/validation.service';
 
@@ -40,7 +41,8 @@ export class DriverComponent implements OnInit {
     private comman: CommanService,
     private datepipe: DatePipe,
     private sharedService: SharedService,
-    private spinner: NgxSpinnerService) { }
+    private spinner: NgxSpinnerService,
+    private error:ErrorsService) { }
 
   ngOnInit(): void {
     this.getRegFormData();
@@ -94,6 +96,12 @@ export class DriverComponent implements OnInit {
           this.clearHideShow = true;
         }
       }
+      else{
+        this.error.handelError(response.statusCode);
+      }
+    },
+    (error: any) => {
+        this.error.handelError(error.status);
     })
   }
   clearSearchData() {
@@ -118,6 +126,12 @@ export class DriverComponent implements OnInit {
         this.spinner.hide();
         this.tostrService.success(response.responseData);
       }
+      else{
+        this.error.handelError(response.statusCode);
+      }
+    },
+    (error: any) => {
+        this.error.handelError(error.status);
     })
   }
   // ----------------------------------------------------Upload Document and profile photo-------------------------------------
@@ -127,8 +141,16 @@ export class DriverComponent implements OnInit {
     documentUrl.subscribe({
       next: (ele: any) => {
         this.spinner.hide();
+       if(ele.statusCode=="200"){
         this.profilePhotoupd = ele.responseData;
+       }
+       else{
+        this.error.handelError(ele.statusCode);
+       }
       }
+    },
+    (error: any) => {
+        this.error.handelError(error.status);
     })
   }
   imageUpload(event: any, flag: any) {
@@ -192,6 +214,12 @@ export class DriverComponent implements OnInit {
         this.tostrService.success(response.responseData);
         this.getDriverDetails();
       }
+      else{
+        this.error.handelError(response.statusCode);
+      }
+    },
+    (error: any) => {
+        this.error.handelError(error.status);
     })
   }
   // --------------------------------------------Save--------------------------------------------------------------------------
@@ -224,6 +252,12 @@ export class DriverComponent implements OnInit {
         this.highLightRow = '';
         this.tostrService.success(response.statusMessage);
       }
+      else{
+        this.error.handelError(response.statusCode);
+      }
+    },
+    (error: any) => {
+        this.error.handelError(error.status);
     })
     // }
   }

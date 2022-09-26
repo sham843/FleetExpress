@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CommanService } from 'src/app/services/comman.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { BlockUnblockComponent } from 'src/app/dialogs/block-unblock/block-unblock.component'
+import { ErrorsService } from 'src/app/services/errors.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -49,7 +50,8 @@ export class DashboardComponent implements OnInit {
   guageCap:any ='round';
   vehiclesMoving:any
   constructor(private cs: CommanService,
-    public dialog: MatDialog) {
+    public dialog: MatDialog,
+    private error:ErrorsService) {
     this.chartOptions = {
       series: [],
       chart: {
@@ -264,13 +266,17 @@ export class DashboardComponent implements OnInit {
 
         
       }
-      else if (responseData.statusCode === "409") {
-        // this.ts.error('Data not found');
+      else if (responseData.statusCode === "404") {
+        this.error.handelError(responseData.statusCode);
       }
       else {
-        // this.ts.error(responseData.statusMessage);
+        (error: any) => {
+          this.error.handelError(error.status);
       }
-    })
+      }
+    },(error: any) => {
+      this.error.handelError(error.status);
+  })
   }
   getvehicleStatusData() {
     this.vehicleAllData = [];
@@ -281,10 +287,12 @@ export class DashboardComponent implements OnInit {
         this.getpieChartData(this.vehicleStatusData);
       }
       else if (responseData.statusCode === "409") {
-        // this.ts.error('Data not found');
+        this.error.handelError(responseData.statusCode);
       }
       else {
-        // this.ts.error(responseData.statusMessage);
+        (error: any) => {
+          this.error.handelError(error.status);
+      }
       }
     })
   }
@@ -296,10 +304,12 @@ export class DashboardComponent implements OnInit {
         this.pOIAlertData = responseData.responseData;
       }
       else if (responseData.statusCode === "409") {
-        // this.ts.error('Data not found');
+        this.error.handelError(responseData.statusCode);
       }
       else {
-        // this.ts.error(responseData.statusMessage);
+        (error: any) => {
+          this.error.handelError(error.status);
+      }
       }
     })
   }
@@ -313,10 +323,12 @@ export class DashboardComponent implements OnInit {
         this.overSpeedData = responseData.responseData;
       }
       else if (responseData.statusCode === "409") {
-        // this.ts.error('Data not found');
+        this.error.handelError(responseData.statusCode);
       }
       else {
-        // this.ts.error(responseData.statusMessage);
+        (error: any) => {
+          this.error.handelError(error.status);
+      }
       }
     })
   }
@@ -330,10 +342,12 @@ export class DashboardComponent implements OnInit {
         this.SIMRenewalReminderData = responseData.responseData;
       }
       else if (responseData.statusCode === "409") {
-        // this.ts.error('Data not found');
+        this.error.handelError(responseData.statusCode);
       }
       else {
-        // this.ts.error(responseData.statusMessage);
+        (error: any) => {
+          this.error.handelError(error.status);
+      }
       }
     })
   }
@@ -373,8 +387,8 @@ export class DashboardComponent implements OnInit {
 }
 export class DialogOverviewExampleDialog {
   constructor(
-    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-  ) {}
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>
+ ) {}
 
   onNoClick(): void {
     this.dialogRef.close();

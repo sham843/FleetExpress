@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { CommanService } from 'src/app/services/comman.service';
+import { ErrorsService } from 'src/app/services/errors.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ValidationService } from 'src/app/services/validation.service';
 
@@ -53,7 +54,8 @@ export class ManageVehicleComponent implements OnInit {
     private datepipe: DatePipe,
     public sharedService: SharedService,
     private spinner:NgxSpinnerService,
-    public vs:ValidationService) {
+    public vs:ValidationService,
+    private error:ErrorsService) {
      }
 
   ngOnInit(): void {
@@ -109,7 +111,13 @@ export class ManageVehicleComponent implements OnInit {
         this.totalItem = response.responseData.responseData2.totalRecords;
         this.tostrservice.success(response.statusMessage);
       }
-    })
+      else{
+       this.error.handelError(response.statusCode);
+      }
+    },
+  (error: any) => {
+      this.error.handelError(error.status);
+  })
   }
   // --------------------------------------------------------Block/Unblock Vehicle-------------------------------------------
   blockUnblockVhl(vhlData: any, event: any) {
