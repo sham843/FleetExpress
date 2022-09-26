@@ -21,7 +21,7 @@
                                 Mangdewadi, Katraj, Satara Road, Pune 411043, Maharashtra
                             </p>
                             <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
-                                id="openmodal" data-bs-target="#profileEditModal">Edit</button>
+                                id="openmodal" data-bs-target="#profileEditModal" (click)="editProfile(userDetails)">Edit</button>
                         </div>
                         <p class="text-main fw-bold mb-1">Basic Details</p>
                         <div class="card mb-3">
@@ -72,7 +72,7 @@
                         </div>
                     </div>
                     <div class="col-sm-2 text-end">
-                        <h5 class="name">204</h5>
+                        <h5 class="name">{{totalVehicle}}</h5>
                         <small class="desi">Total Vehicles</small>
                     </div>
                 </div>
@@ -81,8 +81,8 @@
     </div>
 </div>
 <div class="modal fade" id="profileEditModal" tabindex="-1" aria-labelledby="profileEditModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
-        <form [formGroup]="myProfileForm" (ngSubmit)="profileSave()">
+    <form [formGroup]="myProfileForm" (ngSubmit)="profileSave()">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-light-gradient text-dark">
                     <p class="modal-title mb-0" id="profileEditModalLabel">Profile</p>
@@ -90,7 +90,6 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-
                         <div class="col-sm-2">
                             <div class="position-relative form-group">
                                 <div class="position-relative form-group">
@@ -109,45 +108,49 @@
                         <div class="col-sm-10">
                             <div class="row">
                                 <div class="col-sm-6 form-group">
-                                    <mat-form-field class="w-100" appearance="standard">
+                                    <mat-form-field class="w-100" appearance="fill">
                                         <mat-label>Name</mat-label>
-                                        <input matInput placeholder="Enter Name" class="form-control"
-                                            (keyup)="this.vs.noSpaces($event)" formControlName="name">
+                                        <input matInput placeholder="Enter Name" (keyup)="this.vs.noSpaces($event)"
+                                            formControlName="name">
                                     </mat-form-field>
                                 </div>
                                 <div class="col-sm-6 form-group">
-                                    <mat-form-field class="w-100" appearance="standard">
+                                    <mat-form-field class="w-100" appearance="fill">
                                         <mat-label>Designation</mat-label>
-                                        <input matInput placeholder="Enter Designation" class="form-control"
+                                        <input matInput placeholder="Enter Designation"
                                             (keyup)="this.vs.noSpaces($event)" formControlName="designation">
                                     </mat-form-field>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-sm-6 form-group">
-                                    <mat-form-field class="w-100" appearance="standard">
+                                    <mat-form-field class="w-100" appearance="fill">
                                         <mat-label>Address</mat-label>
-                                        <input matInput placeholder="Enter Address" class="form-control"
-                                            (keyup)="this.vs.noSpaces($event)" formControlName="address">
+                                        <input matInput placeholder="Enter Address" (keyup)="this.vs.noSpaces($event)"
+                                            formControlName="address">
                                     </mat-form-field>
                                 </div>
                                 <div class="col-sm-6 form-group">
-                                    <mat-form-field class="w-100" appearance="standard">
+                                    <mat-form-field class="w-100" appearance="fill">
                                         <mat-label>Contact</mat-label>
-                                        <input matInput placeholder="Enter Contact" class="form-control"
-                                            (keyup)="this.vs.noSpaces($event)" formControlName="contact">
+                                        <input matInput placeholder="Enter Contact" (keyup)="this.vs.noSpaces($event)"
+                                            formControlName="mobileNo1">
                                     </mat-form-field>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-sm-6 form-group">
-                                    <mat-form-field appearance="standard" class="w-100">
+                                    <mat-form-field appearance="fill" class="w-100">
                                         <mat-label>Email</mat-label>
-                                        <input matInput placeholder="Enter Email" class="form-control"
-                                            (keyup)="this.vs.noSpaces($event)" formControlName="email">
+                                        <input matInput placeholder="Enter Email" (keyup)="this.vs.noSpaces($event)"
+                                            formControlName="email">
                                     </mat-form-field>
                                 </div>
                                 <div class="col-sm-6 form-group">
-                                    <mat-form-field appearance="standard" class="w-100">
+                                    <mat-form-field appearance="fill" class="w-100">
                                         <mat-label>Website</mat-label>
-                                        <input matInput placeholder="Enter Website" class="form-control"
-                                            (keyup)="this.vs.noSpaces($event)" formControlName="website">
+                                        <input matInput placeholder="Enter Website" (keyup)="this.vs.noSpaces($event)"
+                                            formControlName="website">
                                     </mat-form-field>
                                 </div>
                             </div>
@@ -163,6 +166,6 @@
                     </div>
                 </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>

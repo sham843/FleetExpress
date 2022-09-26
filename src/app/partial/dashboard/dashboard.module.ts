@@ -15,7 +15,7 @@ import { NgxGaugeModule } from 'ngx-gauge';
     CommonModule,
     DashboardRoutingModule,
     NgApexchartsModule,
-    NgxGaugeModule
+  NgxGaugeModule
   ]
 })
 export class DashboardModule { }

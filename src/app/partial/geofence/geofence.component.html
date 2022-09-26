@@ -112,14 +112,6 @@
                             <mat-form-field appearance="legacy" class="w-100">
                                 <mat-label>Select Vehicle</mat-label>
                                 <mat-select multiple formControlName="vhlNumbers">
-                                    <mat-select-trigger>
-                                        {{toppings.value?.[0] || ''}}
-                                        <span *ngIf="(toppings.value?.length || 0) > 1">
-                                            (+{{(toppings.value?.length || 0) - 1}} {{toppings.value?.length === 2 ?
-                                            'other'
-                                            : 'others'}})
-                                        </span>
-                                    </mat-select-trigger>
                                     <mat-option *ngFor="let vhlNumber of VehicleDtArr"
                                         [value]="vhlNumber.vehicleRegistrationNo">{{vhlNumber.vehicleRegistrationNo}}
                                     </mat-option>
@@ -149,8 +141,16 @@
                         <div class="col-sm-12">
                             <div id="map" class="mapouter gmap_canvas">
                                 <agm-map [latitude]="lat" [longitude]="lng" [zoomControl]="true" [scrollwheel]="true"
-                                (mapClick)="mapClicked($event)">
-                                    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                                (mapClick)="mapClicked($event)" [zoom]="zoom">
+                                <agm-circle [latitude]="lat" [longitude]="lng" [radius]="circleradius" [strokeWeight]="2" [strokeColor]="'#ff0000'"
+                                [fillColor]="'red'">
+                                    <!-- <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker> -->
+                                    </agm-circle>
+                                    <agm-polyline *ngFor="let point of locationDTArray;let i = index;"  [strokeColor]="point.Scolor">
+                                        <agm-polyline-point [latitude]="point.latitude" [longitude]="point.longitude">
+                                        </agm-polyline-point>
+                                      
+                                    </agm-polyline>
                                   </agm-map>
                             </div>
                         </div>

@@ -13,6 +13,7 @@ import { CommanService } from 'src/app/services/comman.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { BlockUnblockComponent } from 'src/app/dialogs/block-unblock/block-unblock.component'
 import { ErrorsService } from 'src/app/services/errors.service';
+import { Router } from '@angular/router';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -51,7 +52,8 @@ export class DashboardComponent implements OnInit {
   vehiclesMoving:any
   constructor(private cs: CommanService,
     public dialog: MatDialog,
-    private error:ErrorsService) {
+    private error:ErrorsService,
+    private router:Router) {
     this.chartOptions = {
       series: [],
       chart: {
@@ -217,7 +219,6 @@ export class DashboardComponent implements OnInit {
   //   });
 
   //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log('The dialog was closed');
   //   });
   // }
 
@@ -235,8 +236,6 @@ export class DashboardComponent implements OnInit {
         const items = this.vehicleAllData.slice(0, 10);
         const maxSpeed=Math.max(...this.vehicleAllData.map(o => o.speed));
         this.maxSpeedObj=this.vehicleAllData.find(x=>x.speed=maxSpeed);
-
-        console.log(this.maxSpeedObj);
         this.fastestVehicleObj={
           'gaugeType': "arch",
           'gaugeValue' :maxSpeed,
@@ -253,7 +252,6 @@ export class DashboardComponent implements OnInit {
         })
         const sum = vehicleSpeed.reduce((a, b) => a + b, 0);
         const avg = (sum / vehicleSpeed.length) || 0;
-        console.log(avg)
         this.avarageSpeedObj={
           'gaugeType': "arch",
           'gaugeValue' :avg,

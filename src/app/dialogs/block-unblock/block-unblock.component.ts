@@ -16,7 +16,6 @@ export class BlockUnblockComponent implements OnInit {
 
   ngOnInit(): void {
     this.dialogData = this.data;
-    console.log(this.dialogData)
   }
   onNoClick(flag: any): void {
     this.dialogRef.close(flag);

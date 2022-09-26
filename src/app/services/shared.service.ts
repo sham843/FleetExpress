@@ -18,7 +18,6 @@ export class SharedService {
     private http: HttpClient) {
   }
   ngOnInit() {
-    console.log(this.vehicleCount())
   }
 
   vehicleCount(): any {

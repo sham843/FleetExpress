@@ -83,7 +83,6 @@ public onPageChange(pageNum: number): void {
 }
 onChangePwd(){
   this.submitted=true;
-  console.log(this.changePassForm.value);
   if(this.changePassForm.invalid){
     this.tostrService.error("Please enter valid value")
     return;
@@ -116,7 +115,6 @@ getNotificatinsData() {
     next: (res: any) => {
       if (res.statusCode === "200") {
         this.notificatinsData = res.responseData;
-        console.log(this.notificatinsData)
       } else {
         if (res.statusCode != "404") {
           this.error.handelError(res.statusCode)
@@ -132,7 +130,6 @@ getVehicleNotificatinsData() {
     next: (res: any) => {
       if (res.statusCode === "200") {
         this.vehicleNotificatinsData = res.responseData.responseData1 ;
-        console.log(this.vehicleNotificatinsData);
       } else {
         if (res.statusCode != "404") {
           this.error.handelError(res.statusCode)
@@ -143,7 +140,6 @@ getVehicleNotificatinsData() {
   });
 }
 // userBlockUnBlockModal(element: any) {
-//   console.log(element)
 //   let Title: string, dialogText: string;
 //   element.isVisibleToOfficer == true ? Title = 'User Block' : Title = 'User Unblock';
 //   element.isVisibleToOfficer == true ? dialogText = 'Do you want to User Block ?' : dialogText = 'Do you want to User Unblock ?';
