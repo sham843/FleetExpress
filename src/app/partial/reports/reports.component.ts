@@ -1,8 +1,11 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { auto } from '@popperjs/core';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
+import { ReportTableComponent } from 'src/app/dialogs/report-table/report-table.component';
 import { CommanService } from 'src/app/services/comman.service';
 import { ExcelPdfDownloadedService } from 'src/app/services/excel-pdf-downloaded.service';
 
@@ -42,7 +45,8 @@ export class ReportsComponent implements OnInit {
     private comman: CommanService,
     private excelService: ExcelPdfDownloadedService,
      private datepipe: DatePipe,
-     private toastrService:ToastrService) { }
+     private toastrService:ToastrService,
+     private dialog:MatDialog) { }
 
   ngOnInit(): void {
     this.getStoppageData();
@@ -211,7 +215,7 @@ export class ReportsComponent implements OnInit {
       this.comman.setHttp('get', url + this.getQueryString() + '&UserId='+this.comman.getUserId()+'&VehicleOwnerId='+this.comman.getVehicleOwnerId(), true, false, false, 'vehicletrackingBaseUrlApi');
       this.comman.getHttp().subscribe((responseData: any) => {
         if (responseData.statusCode === "200" || responseData.length > 0) {
-        /*   this.reportResponseData = responseData.responseData;*/
+          this.reportResponseData = responseData.responseData;
         }
         else if (responseData.statusCode === "409") {
 
@@ -254,5 +258,22 @@ export class ReportsComponent implements OnInit {
     let data=this.reportForm.value;
     let pageName = this.selectedTablabel;
     this.excelService.exportAsExcelFile(data,pageName);
+  }
+
+
+
+  showTableData() {
+    let Title: string, dialogText: string;
+    // event == true ? Title = 'User Block' : Title = 'User Unblock';
+    // event == true ? dialogText = 'Do you want to User Block ?' : dialogText = 'Do you want to User Unblock ?';
+    const dialogRef = this.dialog.open(ReportTableComponent, {
+      width: '1000px' ,
+      height:auto,
+      data: { p1: this.reportResponseData, p2: '',  successBtnText: 'Yes', dialogIcon: 'done_outline', cancelBtnText: 'No' },
+      disableClose: this.comman.disableCloseFlag,
+    });
+    dialogRef.afterClosed().subscribe((res: any) => {     
+        // res == 'Yes' ?   this.checkBlock(element, event): element.isBlock = !event;   
+    });
   }
 }

@@ -1,0 +1,62 @@
+<table mat-table [dataSource]="tableData" class="mat-elevation-z8" >
+    <ng-container>
+        <ng-container matColumnDef="Sr No.">
+            <th mat-header-cell *matHeaderCellDef> Sr No. </th>
+              <td mat-cell *matCellDef="let element"> {{element.runningTime}} </td>
+            </ng-container>
+          
+            <!-- Name Column -->
+            <ng-container matColumnDef="Driver Name">
+              <th mat-header-cell *matHeaderCellDef> Driver Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.runningTime}} </td>
+            </ng-container>
+          
+            <!-- Weight Column -->
+            <ng-container matColumnDef="Mob. No.">
+              <th mat-header-cell *matHeaderCellDef> Mob. No. </th>
+              <td mat-cell *matCellDef="let element"> {{element.runningTime}} </td>
+            </ng-container>
+          
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="Veh. Type">
+              <th mat-header-cell *matHeaderCellDef> Veh. Type </th>
+              <td mat-cell *matCellDef="let element"> {{element.runningTime}} </td>
+            </ng-container>
+        
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="Running Time">
+                <th mat-header-cell *matHeaderCellDef> Running Time </th>
+                <td mat-cell *matCellDef="let element"> {{element.runningTime}} </td>
+              </ng-container>
+        
+                <!-- Symbol Column -->
+            <ng-container matColumnDef="Stoppage Time">
+                <th mat-header-cell *matHeaderCellDef> Stoppage Time </th>
+                <td mat-cell *matCellDef="let element"> {{element.stoppageTime}} </td>
+              </ng-container>
+        
+                <!-- Symbol Column -->
+            <ng-container matColumnDef="Idle Time">
+                <th mat-header-cell *matHeaderCellDef> Idle Time </th>
+                <td mat-cell *matCellDef="let element"> {{element.idleTime}} </td>
+              </ng-container>
+        
+                <!-- Symbol Column -->
+            <ng-container matColumnDef="Max Speed">
+                <th mat-header-cell *matHeaderCellDef> Max Speed </th>
+                <td mat-cell *matCellDef="let element"> {{element.maxSpeed}} </td>
+              </ng-container>
+        
+                <!-- Symbol Column -->
+            <ng-container matColumnDef="Travelled Distance">
+                <th mat-header-cell *matHeaderCellDef> Travelled Distance</th>
+                <td mat-cell *matCellDef="let element"> {{element.travelledDistance }} </td>
+              </ng-container>
+    </ng-container>
+    
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  
+  
