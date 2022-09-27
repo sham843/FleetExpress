@@ -8,11 +8,19 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { BlockUnblockComponent } from 'src/app/dialogs/block-unblock/block-unblock.component';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss']
+  styleUrls: ['./settings.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class SettingsComponent implements OnInit {
   changePassForm!:FormGroup;
@@ -32,7 +40,9 @@ export class SettingsComponent implements OnInit {
   itemsPerPage = 10;
   pageSize: any;
   pageNumber: number=1;
-  searchContent = new FormControl()
+  searchContent = new FormControl();
+  columnsToDisplay:any=['SR.NO','VEHICLE NO','VEHICLE TYPE'];
+  expandedElement: any;
   getSliderTickInterval(): number | 'auto' {
     if (this.showTicks) {
       return this.autoTicks ? 'auto' : this.tickInterval;
@@ -151,20 +161,6 @@ getVehicleNotificatinsData() {
     error: ((error: any) => { this.error.handelError(error.status) })
   });
 }
-// userBlockUnBlockModal(element: any) {
-//   let Title: string, dialogText: string;
-//   element.isVisibleToOfficer == true ? Title = 'User Block' : Title = 'User Unblock';
-//   element.isVisibleToOfficer == true ? dialogText = 'Do you want to User Block ?' : dialogText = 'Do you want to User Unblock ?';
-//   const dialogRef = this.dialog.open(BlockUnblockComponent, {
-//     width: '340px',
-//     // data: { p1: dialogText, p2: '', cardTitle: Title, successBtnText: 'Yes', dialogIcon: 'done_outline', cancelBtnText: 'No' },
-//     disableClose: this.comman.disableCloseFlag,
-//   });
-//   dialogRef.afterClosed().subscribe((res: any) => {     
-//       res == 'Yes' ?   this.checkBlock(element): element.isVisibleToOfficer = !element.isVisibleToOfficer;   
-//   });
-// }
-
 switchNotification(rowData:any, lable:any){ 
   this.spinner.show();
   this.comman.setHttp('PUT', 'notification/set-Visibity-Notification?alertype='+rowData.alertType+'&Isnotification='+rowData.isVisibleToOfficer, true, false, false, 'vehicletrackingBaseUrlApi');
