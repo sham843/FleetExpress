@@ -163,35 +163,39 @@
                                 <div class="col-sm-4 form-container">
                                     <mat-form-field appearance="standard" class="w-100 form-group">
                                         <mat-label>Current password</mat-label>
-                                        <input matInput [type]="hide ? 'password' : 'text'" class="form-control"  autocomplete="nope"
-                                        formControlName="currentPwd" [ngClass]="{ 'is-invalid': submitted && fpass['currentPwd'].errors }">
+                                        <input matInput [type]="hide ? 'password' : 'text'"  autocomplete="nope"
+                                        formControlName="currentPwd" [ngClass]="{ 'is-invalid':fpass['currentPwd'].errors }">
                                         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                                           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                                         </button>
-                                        <mat-error *ngIf="submitted && fpass['currentPwd'].errors" class="text-danger">Current Password is required</mat-error>
+                                        <mat-error>
+                                            <span *ngIf="fpass['currentPwd'].errors?.['required']" class="text-danger">Current Password is required</span>
+                                            <span *ngIf="fpass['currentPwd'].errors?.['pattern']" class="text-danger">Current Password is invalid format</span></mat-error>
                                       </mat-form-field>
                                      
                                       <mat-form-field appearance="standard" class="w-100 form-group">
                                         <mat-label>New password</mat-label>
-                                        <input matInput [type]="hide1 ? 'password' : 'text'" class="form-control"
+                                        <input matInput [type]="hide1 ? 'password' : 'text'"
                                         formControlName="newPwd"  [ngClass]="{ 'is-invalid':fpass['newPwd'].errors }">
                                         <button mat-icon-button matSuffix (click)="hide1 = !hide1" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                                           <mat-icon>{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
                                         </button>
                                         <mat-error>
+                                            <span *ngIf="fpass['newPwd'].errors?.['required']" class="text-danger">New Password is required</span>
                                             <span *ngIf="fpass['newPwd'].errors?.['pattern']" class="text-danger">New Password is invalid format</span></mat-error>
                                       </mat-form-field>
 
                                       <mat-form-field appearance="standard" class="w-100 form-group">
                                         <mat-label>Retype password</mat-label>
-                                        <input matInput [type]="hide2 ? 'password' : 'text'" class="form-control"
+                                        <input matInput [type]="hide2 ? 'password' : 'text'"
                                         formControlName="reTypePwd" [ngClass]="{'is-invalid':fpass['reTypePwd'].errors}">
                                         <button mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                                           <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
                                         </button>
                                         <mat-error>
-                                         <span *ngIf="fpass['reTypePwd'].errors" class="text-danger"></span>
-                                         ReType Password is required</mat-error>
+                                         <span *ngIf="fpass['reTypePwd'].errors?.['required']" class="text-danger">ReType Password is required</span>
+                                         <span *ngIf="fpass['reTypePwd'].errors?.['pattern']" class="text-danger">New Password is invalid format</span>
+                                         </mat-error>
                                       </mat-form-field>
                                     <div class="text-end">
                                         <button class="btn btn-main" (click)="onChangePwd()">Submit</button>
@@ -216,10 +220,8 @@
                                                     </div>
                                                     <div class="col-sm-8">
                                                         <div class="input-group">
-                                                            <!-- <div class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></div> -->
-                                                            <!-- <input type="text" class="form-control" placeholder="Search"> -->
-                                                            <!-- <div class="input-group"> -->
-                                                                <input type="text" class="form-control" placeholder="Search" [formControl]="searchContent">
+                                                          
+                                                                <input type="text" placeholder="Search" [formControl]="searchContent">
                                                                 <div class="input-group-text" *ngIf="!searchContent.value"><i class="fa-solid fa-magnifying-glass"></i></div>
                                                                 <div class="input-group-text" *ngIf="searchContent.value"><i class="fa fa-times" (click)="searchContent.reset()"></i></div>
                                                             <!-- </div> -->
