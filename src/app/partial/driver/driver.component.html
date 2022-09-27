@@ -3,22 +3,23 @@
     <div class="col-sm-12">
         <div class="display-bar">
             <div class="d-flex align-items-center">
-                <div class="me-3">Total Vehicles</div>
-                <div class="fw-bold">{{totalVehicle}}</div>
+                <div class="me-3">Total Driver</div>
+                <div class="fw-bold">{{totalItem}}</div>
             </div>
         </div>
     </div>
 </div>
-
 <div class="row">
-    <div class="col-sm-12">
-        <div class="card card-body plain-card card-fullheight">
-            <div class="text-center justify-content-center">
-                <img src="../../../assets/images/No-Driver-Registration.svg" alt="">
-                <p class="my-3">No Driver Registration</p>
-                <button class="btn btn-main" data-bs-toggle="modal" data-bs-target="#AddDriverModal">
-                    Add Driver
-                </button>
+    <div *ngIf="!driverDetails">
+        <div class="col-sm-12">
+            <div class="card card-body plain-card card-fullheight">
+                <div class="text-center justify-content-center">
+                    <img src="../../../assets/images/No-Driver-Registration.svg" alt="">
+                    <p class="my-3">No Driver Registration</p>
+                    <button type="button" class="btn btn-main" data-bs-toggle="modal" data-bs-target="#AddDriverModal">
+                        Add Driver
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -49,7 +50,7 @@
                             </div>
                         </div>
                         <div class="col-sm-4 text-end">
-                            <button class="btn btn-add" data-bs-toggle="modal" data-bs-target="#AddDriverModal">
+                            <button type="button" class="btn btn-add" data-bs-toggle="modal" data-bs-target="#AddDriverModal">
                                 <i class="fa-solid fa-plus"></i>
                             </button>
                         </div>
@@ -86,11 +87,11 @@
                                 </td>
                                 <td>
                                     <div class="d-flex">
-                                        <button class="btn btn-light-main btn-icon me-2" data-bs-toggle="modal"
+                                        <button type="button" class="btn btn-light-main btn-icon me-2" data-bs-toggle="modal"
                                             data-bs-target="#AddDriverModal" (click)="editDriverData(driver)">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                         </button>
-                                        <button class="btn bg-danger bg-opacity-10 text-danger" (click)="removeDriverData(driver)">
+                                        <button type="button" class="btn bg-danger bg-opacity-10 text-danger" (click)="removeDriverData(driver)">
                                             <i class="fa-solid fa-trash-can"></i>
                                         </button>
                                     </div>
@@ -117,7 +118,7 @@
 <!-- Modal -->
 <div class="modal fade" id="AddDriverModal" tabindex="-1" aria-labelledby="AddDriverModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
-        <form [formGroup]="driverRegForm">
+        <form [formGroup]="driverRegForm"> 
         <div class="modal-content">
             <div class="modal-header bg-light-gradient text-dark">
                 <p class="modal-title mb-0" id="AddDriverModalLabel">Driver Registration</p>
@@ -130,10 +131,10 @@
                             <div class="position-relative form-group">
                                 <img src="{{profilePhotoupd}}" class="vehicle-image">
                                 <div class="vehicle-buttons d-flex flex-column upload-btn-wrapper">
-                                    <button class="btn bg-light text-primary" (click)="profileUpload.click()">
+                                    <button type="button" class="btn bg-light text-primary" (click)="profileUpload.click()">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
-                                    <input type="file" #profileUpload name="myfile" class="form-control"
+                                    <input type="file" #profileUpload name="myfile" class="form-control" accept=".jpg,.jpeg,.png"
                                         formControlName="profilePhoto" (change)="profileUploads($event)" matTooltip="Upload only png,jpg,jpeg file"/>
                                 </div>
                             </div>
@@ -158,7 +159,9 @@
                                         <input matInput placeholder="First Name" value="" class="form-control"
                                             formControlName="firstName" (keypress)="this.vs.onlyAlphabets($event)"
                                             (keyup)="this.vs.noSpaces($event)" maxlength="15">
-                                        <mat-error *ngIf="f['firstName'].errors">first Name is required
+                                        <mat-error *ngIf="f['firstName'].errors">
+                                            <span class="text-danger" *ngIf="f['firstName'].hasError('required')">
+                                                first Name is required</span>
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
@@ -167,7 +170,9 @@
                                         <input matInput placeholder="Last Name" value="" class="form-control"
                                             formControlName="lastName" (keypress)="this.vs.onlyAlphabets($event)"
                                             (keyup)="this.vs.noSpaces($event)" maxlength="15">
-                                        <mat-error *ngIf="f['lastName'].errors">Last Name is required
+                                        <mat-error *ngIf="f['lastName'].errors">
+                                            <span class="text-danger" *ngIf="f['lastName'].hasError('required')">
+                                                Last Name is required</span>
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
@@ -177,7 +182,9 @@
                                             formControlName="dob" placeholder="Date of Birth">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
-                                        <mat-error *ngIf="f['dob'].errors">Date of birth is required
+                                        <mat-error *ngIf="f['dob'].errors">
+                                            <span class="text-danger" *ngIf="f['dob'].hasError('required')">
+                                                Date of birth is required</span>
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
@@ -217,7 +224,7 @@
                                                         </button>
                                                         <input type="file" #licenceUpload name="myfile" class="form-control"
                                                             formControlName="licenceDoc" (change)="imageUpload($event,'licence')"
-                                                             required matTooltip="Upload only PDF file"/>
+                                                             required matTooltip="Upload only PDF file" accept=".pdf"/>
                                                         </div>
                                                 </td>
                                                 <td>
@@ -249,7 +256,7 @@
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
                                                         <input type="file" name="myfile" #aadharUpload class="form-control" (keyup)="this.vs.noSpaces($event)" (keypress)="this.vs.onlyDigits($event)"
-                                                         formControlName="aadharCardDoc" (change)="imageUpload($event,'aadhar')" required matTooltip="Upload only PDF file"/>
+                                                         formControlName="aadharCardDoc" (change)="imageUpload($event,'aadhar')" required matTooltip="Upload only PDF file" accept=".pdf"/>
                                                         
                                                     </div>
                                                 </td>
@@ -285,7 +292,7 @@
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
                                                         <input type="file" name="myfile" #panUpload class="form-control"
-                                                            formControlName="panCardDoc" (change)="imageUpload($event,'pan')" required matTooltip="Upload only PDF file"/>
+                                                            formControlName="panCardDoc" (change)="imageUpload($event,'pan')" required matTooltip="Upload only PDF file" accept=".pdf"/>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -301,16 +308,18 @@
                                 <div class="col-sm-6 form-group">
                                     <mat-form-field appearance="standard" class="w-100">
                                         <textarea matInput class="form-control" formControlName="presentAddress" placeholder="Present Address" maxlength="150"></textarea>
-                                        <mat-error *ngIf="f['presentAddress'].errors">Present Address is
-                                            required</mat-error>
+                                        <mat-error *ngIf="f['presentAddress'].errors">
+                                            <span class="text-danger" *ngIf="f['presentAddress'].hasError('required')">Present Address is
+                                                required</span></mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-sm-6 form-group">
                                     <mat-form-field appearance="standard" class="w-100">
                                         <textarea matInput class="form-control"
                                             formControlName="permanentAddress"  placeholder="Permanent Address" maxlength="150"></textarea>
-                                        <mat-error *ngIf="f['permanentAddress'].errors">Permanent Address is
-                                            required</mat-error>
+                                        <mat-error *ngIf="f['permanentAddress'].errors">
+                                            <span class="text-danger" *ngIf="f['permanentAddress'].hasError('required')">Permanent Address is
+                                                required</span></mat-error>
                                     </mat-form-field>
                                 </div>
                                 <ng-container class="form-group">
@@ -324,8 +333,8 @@
             <div class="modal-footer border-0">
                 <div class="form-container w-100">
                     <div class="d-flex justify-content-between">
-                        <button class="btn btn-light-main" #closeModel data-bs-dismiss="modal" (click)="closeModels()">Cancel</button>
-                        <button type="submit" class="btn btn-main" (click)="registerDriverSave()">Save</button>
+                        <button type="button" class="btn btn-light-main" #closeModel data-bs-dismiss="modal" (click)="closeModels()">Cancel</button>
+                        <button type="submit" class="btn btn-main" (click)="registerDriverSave()">{{buttonFlag?'Save':'Update'}}</button>
                     </div>
                 </div>
             </div>

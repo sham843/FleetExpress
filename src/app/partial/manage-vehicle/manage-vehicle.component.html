@@ -164,7 +164,7 @@
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
                                     <input type="file" name="myfile" class="form-control" formControlName="profile"
-                                        #uploadprofile (change)="profilePhotoUpd($event)" />
+                                        #uploadprofile (change)="profilePhotoUpd($event)" accept=".png,.jpg,.jpeg"/>
                                 </div>
                             </div>
                         </div>
@@ -276,7 +276,7 @@
                                                         </button>
                                                         <input type="file" #uploadDoc name="myfile" class="form-control"
                                                             formControlName="insuranceDoc"
-                                                            (change)="imageUpload($event,'insurance')" />
+                                                            (change)="imageUpload($event,'insurance')" accept=".pdf"/>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -310,7 +310,7 @@
                                                         </button>
                                                         <input type="file" #uploadDoc1 name="myfile"
                                                             class="form-control" formControlName="registerDoc"
-                                                            (change)="imageUpload($event,'register')" />
+                                                            (change)="imageUpload($event,'register')" accept=".pdf"/>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -349,7 +349,7 @@
                                                         </button>
                                                         <input type="file" #uploadDoc2 name="myfile"
                                                             class="form-control" formControlName="pollutionDoc"
-                                                            (change)="imageUpload($event,'pollution')" />
+                                                            (change)="imageUpload($event,'pollution')" accept=".pdf"/>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -383,7 +383,7 @@
                                                         </button>
                                                         <input type="file" #uploadDoc3 name="myfile"
                                                             class="form-control" formControlName="fitnessDoc"
-                                                            (change)="imageUpload($event,'fitness')" />
+                                                            (change)="imageUpload($event,'fitness')"accept=".pdf" />
                                                     </div>
                                                 </td>
                                                 <td>
@@ -422,7 +422,7 @@
                                                         </button>
                                                         <input type="file" #uploadDoc4 name="myfile"
                                                             class="form-control" formControlName="permitDoc"
-                                                            (change)="imageUpload($event,'national')" />
+                                                            (change)="imageUpload($event,'national')" accept=".pdf"/>
                                                     </div>
                                                 </td>
                                                 <td>

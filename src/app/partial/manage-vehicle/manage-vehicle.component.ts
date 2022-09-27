@@ -112,12 +112,14 @@ export class ManageVehicleComponent implements OnInit {
         // this.tostrservice.success(response.statusMessage);
       }
       else{
+        this.spinner.hide();
        this.error.handelError(response.statusCode);
       }
     },
   (error: any) => {
       this.error.handelError(error.status);
   })
+  this.spinner.hide();
   }
   // --------------------------------------------------------Block/Unblock Vehicle-------------------------------------------
   blockUnblockVhl(vhlData: any, event: any) {
@@ -138,7 +140,14 @@ export class ManageVehicleComponent implements OnInit {
         this.tostrservice.success(response.statusMessage);
         this.getVehicleData();
       }
-    })
+      else{
+        this.spinner.hide();
+        this.error.handelError(response.statusCode);
+      }
+    },
+    (error: any) => {
+      this.error.handelError(error.status);
+  })
   }
   // --------------------------------------Assign Driver------------------------------------------------------------------
   getAssignDriver(vhlData: any) {
@@ -151,8 +160,14 @@ export class ManageVehicleComponent implements OnInit {
         this.spinner.hide();
         this.driverData = response.responseData.responseData1;
         this.tostrservice.success(response.statusMessage);
+      }else{
+        this.spinner.hide();
+        this.error.handelError(response.statusCode);
       }
-    })
+    },
+    (error: any) => {
+      this.error.handelError(error.status);
+  })
   }
   assignDriverToVehicle(vehicleData?:any) {
     let param = {
@@ -174,8 +189,14 @@ export class ManageVehicleComponent implements OnInit {
         this.tostrservice.success(response.statusMessage);
         this.assignDriverForm.controls['driverName'].setValue('');
         this.closeModel.nativeElement.click();
+      }else{
+        this.spinner.hide();
+        this.error.handelError(response.statusCode);
       }
-    })
+    },
+    (error: any) => {
+      this.error.handelError(error.status);
+  })
   }
   closeModels(){
     this.assignDriverForm.controls['driverName'].setValue('');
@@ -190,8 +211,14 @@ export class ManageVehicleComponent implements OnInit {
         this.editVehicle = response.responseData[0];
         this.tostrservice.success(response.statusMessage);
         this.patchEditVhlData(this.editVehicle, vhl)
+      }else{
+        this.spinner.hide();
+        this.error.handelError(response.statusCode);
       }
-    })
+    },
+    (error: any) => {
+      this.error.handelError(error.status);
+  })
   }
   patchEditVhlData(data: any, vehicleName: any) {
     this.highLightRow=data.vehicleId;
@@ -222,20 +249,32 @@ export class ManageVehicleComponent implements OnInit {
     let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'vehicleProfile', "png,jpg,jpeg");
     documentUrl.subscribe({
       next: (ele: any) => {
+       if(ele.statusCode=="200"){
         this.spinner.hide();
         this.profilePhotoImg = ele.responseData;
         this.profilePhoto=this.profilePhotoImg;
+       }
+       else{
+        this.spinner.hide();
+        this.error.handelError(ele.statusCode);
       }
-    })
-  }
+    }})
+}
+  
   imageUpload(event: any,flag:any) {
     this.spinner.show();
     let documentUrl: any = this.sharedService.uploadDocuments(event, "pdf");
     documentUrl.subscribe({
       next: (ele: any) => {
+       if(ele.statusCode=="200"){
         this.spinner.hide();
         flag=='insurance'?this.insuranceImg=ele.responseData:flag=='register'?this.registerImg=ele.responseData:flag=='pollution'?this.pollutionImg=ele.responseData:flag=='fitness'?this.fitnessImg=ele.responseData:this.nationalImg=ele.responseData;
+       this.tostrservice.success(ele.statusMessage);
       }
+      else{
+        this.spinner.hide();
+        this.tostrservice.success(ele.statusMessage);
+      }}
     }) 
   } 
   clearDocument(flag:any){
@@ -301,8 +340,11 @@ export class ManageVehicleComponent implements OnInit {
   "profilePhoto":this.profilePhotoImg
     }
     if (this.editVehicleForm.invalid) {
-      this.tostrservice.error("Please enter valid data")
-      return;
+      !this.editVehicleForm.value.insuranceDoc?this.tostrservice.error("Please Upload insurance document"):'';
+      !this.editVehicleForm.value.registerDoc?this.tostrservice.error("Please Upload Register document"):'';
+      !this.editVehicleForm.value.pollutionDoc?this.tostrservice.error("Please Upload Pollution document"):'';
+      !this.editVehicleForm.value.fitnessDoc?this.tostrservice.error("Please Upload Fitness document"):'';
+      !this.editVehicleForm.value.permitDoc?this.tostrservice.error("Please Upload permit document"):'';
     }
     else {
       this.spinner.show();
@@ -312,7 +354,13 @@ export class ManageVehicleComponent implements OnInit {
           this.spinner.hide();
           this.tostrservice.success(response.statusMessage);
         }
-      })
+        else{
+          this.spinner.hide();
+          this.tostrservice.success(response.statusMessage);
+        }
+      },(error: any) => {
+        this.error.handelError(error.status);
+    })
     }
   }
   closemodel(){
