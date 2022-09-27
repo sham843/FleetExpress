@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { CommanService } from 'src/app/services/comman.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { BlockUnblockComponent } from 'src/app/dialogs/block-unblock/block-unblock.component';
 
@@ -32,6 +32,7 @@ export class SettingsComponent implements OnInit {
   itemsPerPage = 10;
   pageSize: any;
   pageNumber: number=1;
+  searchContent = new FormControl()
   getSliderTickInterval(): number | 'auto' {
     if (this.showTicks) {
       return this.autoTicks ? 'auto' : this.tickInterval;
@@ -53,6 +54,12 @@ export class SettingsComponent implements OnInit {
     this.getNotificatinsData();
     this.getVehicleNotificatinsData();
   }
+  
+  ngAfterViewInit(){
+    this.searchContent.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe((x:any)=>{
+     this.getVehicleNotificatinsData();
+    });
+ }
 getChangePwd(){
   this.changePassForm=this.fb.group({
     currentPwd:['',Validators.required],
@@ -125,14 +132,19 @@ getNotificatinsData() {
   });
 }
 getVehicleNotificatinsData() {
-  this.comman.setHttp('get', 'notification/get-Alert-linking?NoPage=1&RowsPerPage=10', true, false, false, 'vehicletrackingBaseUrlApi');
+  this.vehicleNotificatinsData=[]
+  this.comman.setHttp('get', 'notification/get-Alert-linking?NoPage='+(this.searchContent.value?0:1)+'&RowsPerPage=10&SearchText='+this.searchContent.value, true, false, false, 'vehicletrackingBaseUrlApi');
   this.subscription = this.comman.getHttp().subscribe({
     next: (res: any) => {
       if (res.statusCode === "200") {
         this.vehicleNotificatinsData = res.responseData.responseData1 ;
       } else {
         if (res.statusCode != "404") {
+          this.vehicleNotificatinsData=[];
           this.error.handelError(res.statusCode)
+        }else  if (res.statusCode == "404"){
+            this.vehicleNotificatinsData=[];
+            this.error.handelError(res.statusCode)
         }
       }
     },
