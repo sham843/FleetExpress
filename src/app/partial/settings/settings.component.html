@@ -242,7 +242,7 @@
                                             </thead>
                                             <tbody *ngFor="let element of vehicleNotificatinsData; let i=index">
                                                 <tr data-bs-toggle="collapse" [attr.data-bs-target]="'#collapseOne'+i"
-                                                    aria-expanded="true" aria-controls="collapseOne" class="row-select collapsed">
+                                                    aria-expanded="true" [attr.aria-controls]="'#collapseOne'+i" class="row-select collapsed">
                                                     <td>{{ this.itemsPerPage * (currentPage - 1) + (i+1) }}</td>
                                                     <td><img src="../../../assets/images/Driver-profile.svg" class="vehicle-image"></td>
                                                     <td>{{element.vehicleNo}} </td>
@@ -257,7 +257,7 @@
                                                 <tr>
                                                     <td colspan="5" class="bg-light" >
                                                         <div id="{{'collapseOne'+i}}" class="accordion-collapse collapse "
-                                                            aria-labelledby="headingOne" data-bs-parent="#accordion">
+                                                            [attr.aria-labelledby]="('headingOne'+i)" data-bs-parent="#accordion">
                                                             <div class="row">
                                                                 <div class="col-sm-6">
                                                                     <ul class="list-group list-group-flush">
@@ -382,9 +382,13 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                </tr>
+                                                </tr> 
+                                                
+                                            
+                                            
                                             </tbody>
                                         </table>
+                                        
                                     </div>
                                 </div>
                             </div>
