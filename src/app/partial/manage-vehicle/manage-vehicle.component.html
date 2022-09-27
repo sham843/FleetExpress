@@ -29,8 +29,8 @@
                                         <div *ngIf="searchHideShow && this.serchVehicle.value.searchVhl"
                                             class="input-group-text"><i class="fa-solid fa-magnifying-glass"
                                                 (click)="getVehicleData('search')"></i></div>
-                                        <div *ngIf="clearHideShow" class="input-group-text"><i
-                                                class="fa-solid fa-xmark" (click)="clearSearchData()"></i></div>
+                                        <div *ngIf="clearHideShow" class="input-group-text"><i class="fa-solid fa-xmark"
+                                                (click)="clearSearchData()"></i></div>
                                     </div>
                                 </div>
                             </form>
@@ -54,7 +54,8 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let vehicle of vehicleData | paginate: {itemsPerPage: pageSize, 
-                            currentPage: paginationNo, totalItems:totalItem}; let i = index" [ngClass]="{'highLightRow':highLightRow==vehicle.vehicleId}">
+                            currentPage: paginationNo, totalItems:totalItem}; let i = index"
+                            [ngClass]="{'highLightRow':highLightRow==vehicle.vehicleId}">
                             <td>{{vehicle.srNo}}</td>
                             <td><img src="../../../assets/images/Idle-vehicle.svg" alt=""></td>
                             <td>
@@ -65,9 +66,10 @@
                             </td>
                             <td>{{vehicle.mobileNo ||'-'}}</td>
                             <td>
-                                <button class="btn btn-outline-primary text-primary" *ngIf="!vehicle.driverName?.length"  data-bs-toggle="modal" id="openmodal"
-                                data-bs-target="#AssignDriverModal" (click)="getAssignDriver(vehicle)">Assign driver</button>
-                                    <button class="btn btn-outline-warning text-warning" *ngIf="vehicle.driverName?.length"
+                                <button class="btn btn-outline-primary text-primary" *ngIf="!vehicle.driverName?.length"
+                                    data-bs-toggle="modal" id="openmodal" data-bs-target="#AssignDriverModal"
+                                    (click)="getAssignDriver(vehicle)">Assign driver</button>
+                                <button class="btn btn-outline-warning text-warning" *ngIf="vehicle.driverName?.length"
                                     (click)="assignDriverToVehicle(vehicle)"> Unassign driver </button>
                             </td>
                             <td>
@@ -110,7 +112,8 @@
                 <p class="modal-title mb-0" id="AssignDriverModalLabel">
                     Assign Driver
                 </p>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closemodel()"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="closemodel()"></button>
             </div>
             <form [formGroup]="assignDriverForm">
                 <div class="modal-body">
@@ -129,7 +132,8 @@
                 <div class="modal-footer">
                     <div class="form-container w-100">
                         <div class="d-flex justify-content-between">
-                            <button class="btn btn-light-main" #closeModel data-bs-dismiss="modal" (click)="closeModels()">Cancel</button>
+                            <button class="btn btn-light-main" #closeModel data-bs-dismiss="modal"
+                                (click)="closeModels()">Cancel</button>
                             <button class="btn btn-main" (click)="assignDriverToVehicle()">Assign</button>
                         </div>
                     </div>
@@ -146,7 +150,8 @@
         <div class="modal-content">
             <div class="modal-header bg-light-gradient text-dark">
                 <p class="modal-title mb-0" id="EditVehicleDetailsModalLabel">Edit Vehicle Details</p>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closemodel()"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="closemodel()"></button>
             </div>
             <form [formGroup]="editVehicleForm">
                 <div class="modal-body">
@@ -168,40 +173,68 @@
                                 <div class="col-sm-4 form-group">
                                     <mat-form-field appearance="standard" class="w-100">
                                         <mat-label>Vehicle No</mat-label>
-                                        <input matInput class="form-control" formControlName="vhlNumber">
+                                        <input matInput class="form-control" formControlName="vhlNumber" required
+                                            [ngClass]="{'is-invalid':f['vhlNumber'].errors}"
+                                            (keypress)="this.vs.alphaNumeric($event)" maxlength="15">
+                                        <mat-error class="text-danger">
+                                            <span *ngIf="f['vhlNumber'].errors">Vehicle Number required</span>
+                                        </mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-sm-4 form-group">
                                     <mat-form-field appearance="standard" class="w-100">
                                         <mat-label>Date Added</mat-label>
                                         <input matInput [matDatepicker]="picker" class="form-control"
-                                            formControlName="date">
+                                            formControlName="date" required [ngClass]="{'is-invalid':f['date'].errors}">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
+                                        <mat-error class="text-danger">
+                                            <span *ngIf="f['date'].errors">Date required</span>
+                                        </mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-sm-4 form-group">
                                     <mat-form-field appearance="standard" class="w-100">
                                         <mat-label>Plate No</mat-label>
-                                        <input matInput class="form-control" formControlName="plateNo">
+                                        <input matInput class="form-control" formControlName="plateNo" required
+                                            [ngClass]="{'is-invalid':f['plateNo'].errors}"
+                                            (keypress)="this.vs.alphaNumeric($event)" maxlength="15">
+                                        <mat-error class="text-danger">
+                                            <span *ngIf="f['plateNo'].errors">Plate Number required</span>
+                                        </mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-sm-4 form-group">
                                     <mat-form-field appearance="standard" class="w-100">
                                         <mat-label>Chassis No.</mat-label>
-                                        <input matInput class="form-control" formControlName="chassicNo">
+                                        <input matInput class="form-control" formControlName="chassicNo" required
+                                            [ngClass]="{'is-invalid':f['chassicNo'].errors}"
+                                            (keypress)="this.vs.onlyDigits($event)" maxlength="15">
+                                        <mat-error class="text-danger">
+                                            <span *ngIf="f['chassicNo'].errors">Chassis Number required</span>
+                                        </mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-sm-4 form-group">
                                     <mat-form-field appearance="standard" class="w-100">
                                         <mat-label>Brand</mat-label>
-                                        <input matInput class="form-control" formControlName="brand">
+                                        <input matInput class="form-control" formControlName="brand" required
+                                            [ngClass]="{'is-invalid':f['brand'].errors}"
+                                            (keypress)="this.vs.onlyAlphabets($event)" maxlength="15">
+                                        <mat-error class="text-danger">
+                                            <span *ngIf="f['brand'].errors">Brand required</span>
+                                        </mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-sm-4 form-group">
                                     <mat-form-field appearance="standard" class="w-100">
                                         <mat-label>Model</mat-label>
-                                        <input matInput class="form-control" formControlName="model">
+                                        <input matInput class="form-control" formControlName="model" required
+                                            [ngClass]="{'is-invalid':f['model'].errors}"
+                                            (keypress)="this.vs.alphaNumeric($event)" maxlength="10">
+                                        <mat-error class="text-danger">
+                                            <span *ngIf="f['model'].errors">Model required</span>
+                                        </mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-sm-12">
@@ -223,7 +256,12 @@
                                                         <mat-form-field appearance="standard" class="w-100">
                                                             <input matInput class="form-control"
                                                                 formControlName="insuranceExDate"
-                                                                placeholder="Document Number">
+                                                                placeholder="Document Number"
+                                                                [ngClass]="{'is-invalid':f['insuranceExDate'].errors}">
+                                                            <mat-error class="text-danger">
+                                                                <span *ngIf="f['insuranceExDate'].errors">Insurance
+                                                                    Expiry Date required</span>
+                                                            </mat-error>
                                                         </mat-form-field>
                                                     </div>
                                                 </td>
@@ -291,7 +329,12 @@
                                                         <mat-form-field appearance="standard" class="w-100">
                                                             <input matInput class="form-control"
                                                                 formControlName="pollutionExDate"
-                                                                placeholder="Document Number">
+                                                                placeholder="Document Number"
+                                                                [ngClass]="{'is-invalid':f['pollutionExDate'].errors}">
+                                                            <mat-error class="text-danger">
+                                                                <span *ngIf="f['pollutionExDate'].errors">Pollution
+                                                                    Expiry Date required</span>
+                                                            </mat-error>
                                                         </mat-form-field>
                                                     </div>
                                                 </td>
@@ -358,8 +401,13 @@
                                                     <div class="form-group">
                                                         <mat-form-field appearance="standard" class="w-100">
                                                             <input matInput class="form-control"
-                                                                formControlName="permitNo"
-                                                                placeholder="Document Number">
+                                                                formControlName="permitNo" placeholder="Document Number"
+                                                                [ngClass]="{'is-invalid':f['permitNo'].errors}"
+                                                                (keypress)="this.vs.alphaNumeric($event)">
+                                                            <mat-error class="text-danger">
+                                                                <span *ngIf="f['permitNo'].errors">National Permit
+                                                                    required</span>
+                                                            </mat-error>
                                                         </mat-form-field>
                                                     </div>
                                                 </td>
@@ -396,7 +444,8 @@
                 <div class="modal-footer">
                     <div class="form-container w-100">
                         <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-light-main" data-bs-dismiss="modal" (click)="closemodel()">Cancel</button>
+                            <button type="button" class="btn btn-light-main" data-bs-dismiss="modal"
+                                (click)="closemodel()">Cancel</button>
                             <button type="submit" class="btn btn-main" (click)="saveVehicleDetails()">Save</button>
                         </div>
                     </div>

@@ -76,22 +76,22 @@ export class ManageVehicleComponent implements OnInit {
       driverName: ['',Validators.required]
     })
     this.editVehicleForm = this.fb.group({
-      vhlNumber: ['',Validators.required],
-      profile: [''],
-      date: [''],
-      plateNo: [''],
-      chassicNo: [''],
-      brand: [''],
-      model: [''],
-      insuranceExDate: [''],
+      vhlNumber: ['',[Validators.compose([Validators.required,Validators.maxLength(15)])]],
+      profile: ['',Validators.required],
+      date: ['',Validators.required],
+      plateNo: ['',[Validators.compose([Validators.required,Validators.maxLength(15)])]],
+      chassicNo: ['',[Validators.compose([Validators.required,Validators.maxLength(15)])]],
+      brand: ['',[Validators.compose([Validators.required,Validators.maxLength(15)])]],
+      model: ['',[Validators.compose([Validators.required,Validators.maxLength(10)])]],
+      insuranceExDate: ['',Validators.required],
       insuranceDoc: [''],
       registerNo: [''],
       registerDoc: [''],
-      pollutionExDate: [''],
+      pollutionExDate: ['',Validators.required],
       pollutionDoc: [''],
       fitnessExDate: [''],
       fitnessDoc: [''],
-      permitNo: [''],
+      permitNo: ['',Validators.required],
       permitDoc: [''],
     }) 
   }
@@ -109,7 +109,7 @@ export class ManageVehicleComponent implements OnInit {
         });
         flag == 'search'?( this.searchHideShow = false, this.clearHideShow = true):'';
         this.totalItem = response.responseData.responseData2.totalRecords;
-        this.tostrservice.success(response.statusMessage);
+        // this.tostrservice.success(response.statusMessage);
       }
       else{
        this.error.handelError(response.statusCode);
@@ -327,5 +327,8 @@ export class ManageVehicleComponent implements OnInit {
     this.searchHideShow = true;
     this.clearHideShow = false;
     this.getVehicleData();
+  }
+  get f(){
+    return this.editVehicleForm.controls;
   }
 }

@@ -93,16 +93,16 @@ export class ForgetPasswordComponent implements OnInit {
   // -----------------------------------------Timer------------------------------------------------------------------------
   countDown() {
     this.clearTimer();
-    this.seconds =60;
+    this.seconds =10;
     this.timerFlag = true;
     this.intervalId = window.setInterval(() => {
       this.seconds -= 1;
-      if (this.seconds === 0) {
+      if (this.seconds == 0) {
       } else {
         if (this.seconds < 0) {
         } else if (this.seconds == 1) {
-          this.timerFlag = false;
           clearInterval(this.intervalId);
+          this.timerFlag = false;
         }
         this.timer = this.seconds;
       }

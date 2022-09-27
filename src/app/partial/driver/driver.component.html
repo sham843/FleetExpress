@@ -36,8 +36,9 @@
                                     </div>
                                     <div class="col-sm-8">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Driver Name"
-                                                formControlName="driverName" (keypress)="this.vs.alphabetsWithSpaces($event)">
+                                            <input type="text" class="form-control" placeholder="Driver Name" 
+                                                formControlName="driverName" (keypress)="this.vs.alphabetsWithSpaces($event)"
+                                                required maxlength="15">
                                                 <div class="input-group-text" *ngIf="searchHideShow && this.searchDriverForm.value.driverName"><i class="fa-solid fa-magnifying-glass"
                                                     (click)="getDriverDetails('search')"></i></div>
                                                 <div class="input-group-text" *ngIf="clearHideShow"><i class="fa-solid fa-xmark"
@@ -133,7 +134,7 @@
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
                                     <input type="file" #profileUpload name="myfile" class="form-control"
-                                        formControlName="profilePhoto" (change)="profileUploads($event)"/>
+                                        formControlName="profilePhoto" (change)="profileUploads($event)" matTooltip="Upload only png,jpg,jpeg file"/>
                                 </div>
                             </div>
                         </div>
@@ -145,10 +146,10 @@
                                             formControlName="mobileNo" (keypress)="this.vs.onlyDigits($event)"
                                             (keyup)="this.vs.noSpaces($event)" maxlength="10">
                                         <mat-error *ngIf="f['mobileNo'].errors">
+                                            <span class="text-danger" *ngIf="f['mobileNo'].hasError('required')">
+                                                 Mobile Number is required</span>
                                             <span class="text-danger" *ngIf="f['mobileNo'].hasError('pattern')">Enter
                                                 valid mobile Number</span>
-                                            <span class="text-danger" *ngIf="f['mobileNo'].hasError('maxlength')">Enter
-                                                10 digit mobile Number</span>
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
@@ -156,7 +157,7 @@
                                     <mat-form-field class="w-100" appearance="standard">
                                         <input matInput placeholder="First Name" value="" class="form-control"
                                             formControlName="firstName" (keypress)="this.vs.onlyAlphabets($event)"
-                                            (keyup)="this.vs.noSpaces($event)">
+                                            (keyup)="this.vs.noSpaces($event)" maxlength="15">
                                         <mat-error *ngIf="f['firstName'].errors">first Name is required
                                         </mat-error>
                                     </mat-form-field>
@@ -165,7 +166,7 @@
                                     <mat-form-field class="w-100" appearance="standard">
                                         <input matInput placeholder="Last Name" value="" class="form-control"
                                             formControlName="lastName" (keypress)="this.vs.onlyAlphabets($event)"
-                                            (keyup)="this.vs.noSpaces($event)">
+                                            (keyup)="this.vs.noSpaces($event)" maxlength="15">
                                         <mat-error *ngIf="f['lastName'].errors">Last Name is required
                                         </mat-error>
                                     </mat-form-field>
@@ -198,7 +199,7 @@
                                                     <div class="form-group">
                                                         <mat-form-field appearance="standard" class="w-100">
                                                             <input matInput class="form-control" formControlName="licenceNumber" [ngClass]="{'is-invalid':f['licenceNumber'].errors}"
-                                                             placeholder="Licence Number" maxlength="15" minlength="15">
+                                                             placeholder="Licence Number" maxlength="20" minlength="15">
                                                              <mat-error>
                                                                 <span class="text-danger" *ngIf="f['licenceNumber'].hasError('pattern')">Enter valid licence number</span>
                                                                 <span class="text-danger" *ngIf="f['licenceNumber'].hasError('minlength')">Enter valid licence number</span>
@@ -211,12 +212,13 @@
                                                 </td>
                                                 <td>
                                                     <div class="upload-btn-wrapper form-group">
-                                                        <button type="submit" class="btn btn-light-main btn-icon" [disabled]="this.driverRegForm.value.licenceDoc?.length > 0">
+                                                        <button type="button" class="btn btn-light-main btn-icon" [disabled]="this.licenceDoc?.length">
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
                                                         <input type="file" #licenceUpload name="myfile" class="form-control"
-                                                            formControlName="licenceDoc" (change)="imageUpload($event,'licence')"/>
-                                                    </div>
+                                                            formControlName="licenceDoc" (change)="imageUpload($event,'licence')"
+                                                             required matTooltip="Upload only PDF file"/>
+                                                        </div>
                                                 </td>
                                                 <td>
                                                     <button type="button"
@@ -243,17 +245,18 @@
                                                 </td>
                                                 <td>
                                                     <div class="upload-btn-wrapper form-group">
-                                                        <button type="submit" class="btn btn-light-main btn-icon" [disabled]="this.driverRegForm.value.aadharCardDoc?.length > 0">
+                                                        <button type="button" class="btn btn-light-main btn-icon" [disabled]="this.aadharDoc?.length">
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
                                                         <input type="file" name="myfile" #aadharUpload class="form-control" (keyup)="this.vs.noSpaces($event)" (keypress)="this.vs.onlyDigits($event)"
-                                                         formControlName="aadharCardDoc" (change)="imageUpload($event,'aadhar')"/>
+                                                         formControlName="aadharCardDoc" (change)="imageUpload($event,'aadhar')" required matTooltip="Upload only PDF file"/>
                                                         
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <button type="submit"
-                                                        class="btn bg-danger bg-opacity-10 text-danger" [disabled]="!this.driverRegForm.value.aadharCardDoc?.length" (click)="clearDoc('aadhar')">
+                                                    <button type="button"
+                                                        class="btn bg-danger bg-opacity-10 text-danger" [disabled]="!this.driverRegForm.value.aadharCardDoc?.length"
+                                                         (click)="clearDoc('aadhar')">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
                                                 </td>
@@ -264,7 +267,7 @@
                                                 <td>
                                                     <div class="form-group">
                                                         <mat-form-field appearance="standard" class="w-100">
-                                                            <input matInput class="form-control" formControlName="panNumber"  matTooltip="AAAAA1234A"
+                                                            <input matInput class="form-control" formControlName="panNumber"
                                                                 placeholder="PAN Number" maxlength="10" (keyup)="this.vs.noSpaces($event)" [ngClass]="{'is-invalid':f['panNumber'].errors}">
                                                                 <mat-error>
                                                                     <span class="text-danger" *ngIf="f['panNumber'].hasError('pattern')">Enter valid pan card number</span>
@@ -278,15 +281,15 @@
                                                 </td>
                                                 <td>
                                                     <div class="upload-btn-wrapper form-group">
-                                                        <button type="submit" class="btn btn-light-main btn-icon" [disabled]="this.driverRegForm.value.panCardDoc?.length >0">
+                                                        <button type="button" class="btn btn-light-main btn-icon" [disabled]="this.panDoc?.length">
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
                                                         <input type="file" name="myfile" #panUpload class="form-control"
-                                                            formControlName="panCardDoc" (change)="imageUpload($event,'pan')"/>
+                                                            formControlName="panCardDoc" (change)="imageUpload($event,'pan')" required matTooltip="Upload only PDF file"/>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <button type="submit"
+                                                    <button type="button"
                                                         class="btn bg-danger bg-opacity-10 text-danger" [disabled]="!this.driverRegForm.value.panCardDoc?.length" (click)="clearDoc('pan')">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
@@ -297,7 +300,7 @@
                                 </div>
                                 <div class="col-sm-6 form-group">
                                     <mat-form-field appearance="standard" class="w-100">
-                                        <textarea matInput class="form-control" formControlName="presentAddress" placeholder="Present Address"></textarea>
+                                        <textarea matInput class="form-control" formControlName="presentAddress" placeholder="Present Address" maxlength="150"></textarea>
                                         <mat-error *ngIf="f['presentAddress'].errors">Present Address is
                                             required</mat-error>
                                     </mat-form-field>
@@ -305,7 +308,7 @@
                                 <div class="col-sm-6 form-group">
                                     <mat-form-field appearance="standard" class="w-100">
                                         <textarea matInput class="form-control"
-                                            formControlName="permanentAddress"  placeholder="Permanent Address"></textarea>
+                                            formControlName="permanentAddress"  placeholder="Permanent Address" maxlength="150"></textarea>
                                         <mat-error *ngIf="f['permanentAddress'].errors">Permanent Address is
                                             required</mat-error>
                                     </mat-form-field>
@@ -322,7 +325,7 @@
                 <div class="form-container w-100">
                     <div class="d-flex justify-content-between">
                         <button class="btn btn-light-main" #closeModel data-bs-dismiss="modal" (click)="closeModels()">Cancel</button>
-                        <button class="btn btn-main" (click)="registerDriverSave()">Save</button>
+                        <button type="submit" class="btn btn-main" (click)="registerDriverSave()">Save</button>
                     </div>
                 </div>
             </div>
