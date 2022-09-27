@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required,Validators.maxLength(20)]],
       password: ['', [Validators.compose([Validators.required,Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$'),Validators.minLength(8),Validators.maxLength(20)])]],
-      captcha: ['', Validators.required]
+      captcha: ['', [Validators.compose([Validators.required,Validators.minLength(5),Validators.maxLength(6)])]]
     })
   }
   reCaptcha(){
