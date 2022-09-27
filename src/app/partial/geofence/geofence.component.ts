@@ -7,11 +7,11 @@ import { ToastrService } from 'ngx-toastr';
 import { CommanService } from 'src/app/services/comman.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { ValidationService } from 'src/app/services/validation.service';
-import { Subscription } from 'rxjs';
+import { observable, Observable, Subscription } from 'rxjs';
 import { MapsAPILoader } from '@agm/core';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { interval } from 'rxjs';
 declare var google: any;
-
 @Component({
   selector: 'app-geofence',
   templateUrl: './geofence.component.html',
@@ -33,6 +33,8 @@ export class GeofenceComponent implements OnInit {
   lat: any = '';
   lng: any = '';
   zoom: number = 12;
+  circleradius: number = 1000;
+  locationDTArray: any = [{ Scolor: '', latitude: 0, longitude: 0 }];
   @ViewChild('search') searchElementRef!: ElementRef;
   constructor(private common: CommanService,
     private toastrService: ToastrService,
@@ -54,8 +56,10 @@ export class GeofenceComponent implements OnInit {
     });
     this.searchAutoComplete();
   }
+
   //  ------------------------------------------form Controls---------------------------------------------------------------
   CreateGeofence() {
+    let data;
     this.CreateGeoForm = this.fb.group({
       vhlNumbers: [''],
       loaction: ['']
@@ -64,6 +68,13 @@ export class GeofenceComponent implements OnInit {
       roleName: [],
       topping: [],
     })
+    data = [{
+      Scolor: '', latitude:18.44215868731478, longitude:73.83636474609375
+    },
+    {
+      Scolor: '', latitude:18.451318499612846, longitude:73.87494564056396
+    }]
+    this.locationDTArray.push(data);
   }
 
   //  ---------------------------------------------Get Vehicle List------------------------------------------------------------
@@ -73,12 +84,13 @@ export class GeofenceComponent implements OnInit {
       next: (res: any) => {
         if (res.statusCode === "200") {
           this.VehicleDtArr = res.responseData;
-        }else{
+        } else {
           this.error.handelError(res.statusCode);
         }
-      }},
+      }
+    },
       (error: any) => {
-          this.error.handelError(error.status);
+        this.error.handelError(error.status);
       });
   }
   // --------------------------------------------Checkbox Multiselect-------------------------------------------------------
@@ -109,15 +121,15 @@ export class GeofenceComponent implements OnInit {
     });
   }
   getAddress(lat: any, long: any) {
-    // this.spinner.show();
+    this.spinner.show();
     this.geoCoder.geocode({ 'location': { lat: Number(lat), lng: Number(long) } }, (results: any, status: any) => {
       if (status === 'OK') {
         if (results[0]) {
-          // this.spinner.hide();
+          this.spinner.hide();
           this.address = results[0].formatted_address;
           this.CreateGeoForm.controls['loaction']?.setValue(this.address)
         } else {
-          // this.spinner.hide();
+          this.spinner.hide();
         }
       }
       this.spinner.hide();
@@ -130,6 +142,7 @@ export class GeofenceComponent implements OnInit {
     this.lat = data?.coords.lat;
     this.lng = data?.coords.lng;
     this.getAddress(this.lat, this.lng)
+    console.log(data);
   }
   clearlatlong(event: any) {
 

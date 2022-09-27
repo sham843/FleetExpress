@@ -122,7 +122,6 @@ getNotificatinsData() {
     next: (res: any) => {
       if (res.statusCode === "200") {
         this.notificatinsData = res.responseData;
-        console.log(this.notificatinsData)
       } else {
         if (res.statusCode != "404") {
           this.error.handelError(res.statusCode)
@@ -153,7 +152,6 @@ getVehicleNotificatinsData() {
   });
 }
 // userBlockUnBlockModal(element: any) {
-//   console.log(element)
 //   let Title: string, dialogText: string;
 //   element.isVisibleToOfficer == true ? Title = 'User Block' : Title = 'User Unblock';
 //   element.isVisibleToOfficer == true ? dialogText = 'Do you want to User Block ?' : dialogText = 'Do you want to User Unblock ?';

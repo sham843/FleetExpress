@@ -57,8 +57,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       progressBar:true,
       preventDuplicates: true,
     }),
-    NgbModule,
-    
+    NgbModule
   ], 
   providers: [ {
     provide: PERFECT_SCROLLBAR_CONFIG,

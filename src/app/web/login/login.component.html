@@ -17,7 +17,7 @@
                                         (keypress)="this.valService.noSpaces($event);this.valService.alphaNumeric($event)" maxlength="20">
                                     <mat-error>
                                         <span *ngIf="f['username'].errors?.required" class="text-danger">
-                                            username is required</span>
+                                            Username is required</span>
                                     </mat-error>
                                 </mat-form-field>
                             </div>
@@ -46,11 +46,12 @@
                                     <div id="captcha">
                                     </div>
                                 </div>
-                                <div class="col-sm-1">
-                                    <button class="btn btn-light p-2 mb-3" type="button" (click)="reCaptcha()"><i
-                                            class="fa fa-sync"></i></button>
+                                <div class="col-sm-2">
+                                    <button class="mat-icon-button btn btn-light p-2 mb-3 bg-light" type="button" (click)="reCaptcha()">
+                                        <mat-icon>cached</mat-icon>
+                                    </button>
                                 </div>
-                                <div class="col-sm-7">
+                                <div class="col-sm-6">
                                     <mat-form-field appearance="outline" class="w-100">
                                         <mat-label>Enter Captcha</mat-label>
                                         <input matInput placeholder="Enter Captcha" formControlName="captcha" required

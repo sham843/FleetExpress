@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { SharedService } from 'src/app/services/shared.service';
 import { ValidationService } from 'src/app/services/validation.service';
 
 @Component({
@@ -11,36 +12,52 @@ import { ValidationService } from 'src/app/services/validation.service';
 export class MyProfileComponent implements OnInit {
   myProfileForm!: FormGroup;
   userDetails: any;
+  totalVehicle!:number;
   constructor(private tostrService: ToastrService,
     public vs: ValidationService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder,
+    private sharedService:SharedService) { }
 
   ngOnInit(): void {
     this.getLoginUserDetails();
+    this.ProfileFormControl();
+    this.sharedService.vehicleCount().subscribe({
+      next: (ele: any) => {
+       this.totalVehicle=ele.responseData.responseData2.totalRecords;
+      }
+    })
   }
+  // ----------------------------------------------------form-control--------------------------------------------------------------
   ProfileFormControl() {
     this.myProfileForm = this.fb.group({
       profilePhoto: [''],
       name: [''],
       designation: [''],
       address: [''],
-      contact: [''],
+      mobileNo1: [''],
       email: [''],
       website: [''],
     })
-
   }
+  // ----------------------------------------------------get user Details------------------------------------------------------
   getLoginUserDetails() {
     let sessionData: any;
     if (sessionStorage.getItem('loginDetails')) {
       sessionData = sessionStorage.getItem('loginDetails');
       this.userDetails = JSON.parse(sessionData).responseData[0];
-      console.log(this.userDetails)
     }
     else {
       this.tostrService.error("Data not found");
       return
     }
+  }
+  // ----------------------------------------------------edit and save Profile------------------------------------------------------------
+  editProfile(profileData:any){
+    console.log(profileData);
+    this.myProfileForm.patchValue({
+      name:profileData.name,
+      mobileNo1:profileData.mobileNo1
+    }) 
   }
   profileSave() {
 

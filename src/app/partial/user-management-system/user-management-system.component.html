@@ -220,9 +220,9 @@
                                     </mat-option>
                                     <!-- [disabled]="(vehicles.userId != editData?.id && vehicles.userId != 0  && editFlag==true) || (editFlag==false && vehicles.userId != 0) " -->
                                 </mat-select>
-                                <button mat-icon-button matSuffix mat-stroked-button>
+                               <!--  <button mat-icon-button matSuffix mat-stroked-button>
                                     {{user['assignedVehicle'].value? user['assignedVehicle'].value.length: 0}}
-                                </button>
+                                </button> -->
                             </mat-form-field>
                             <mat-error *ngIf="userformSubmitted && user['assignedVehicle'].errors"></mat-error>
                             <div class="d-flex">

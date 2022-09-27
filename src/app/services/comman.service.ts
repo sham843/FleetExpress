@@ -88,7 +88,7 @@ export class CommanService {
       let currentDateTime: any = (Math.round(new Date().getTime() / 1000));
       if (currentDateTime >= expireAccessToken) {
         if (currentDateTime <= tokenExpireDateTime) {
-          this.tokanExpiredFlag = true
+          // this.tokanExpiredFlag = true
           let obj = {
             UserId: this.getUserId(),
             RefreshToken: this.tokenExpireRefreshString()
