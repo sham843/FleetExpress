@@ -358,7 +358,7 @@ export class UserManagementSystemComponent implements OnInit {
       }
       objDeleteData.push(obj)
     }
-    this.common.setHttp('POST', 'userdetail/Delete-User', true, objDeleteData, false, 'vehicletrackingBaseUrlApi');
+    this.common.setHttp('DELETE', 'userdetail/Delete-User', true, objDeleteData, false, 'vehicletrackingBaseUrlApi');
     this.subscription = this.common.getHttp().subscribe({
       next: (res: any) => {
         this.spinner.hide();

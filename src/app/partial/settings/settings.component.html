@@ -220,11 +220,10 @@
                                                     </div>
                                                     <div class="col-sm-8">
                                                         <div class="input-group">
-                                                          
-                                                                <input type="text" placeholder="Search" [formControl]="searchContent">
-                                                                <div class="input-group-text" *ngIf="!searchContent.value"><i class="fa-solid fa-magnifying-glass"></i></div>
-                                                                <div class="input-group-text" *ngIf="searchContent.value"><i class="fa fa-times" (click)="searchContent.reset()"></i></div>
-                                                            <!-- </div> -->
+                                                            <input type="text"  class="form-control" placeholder="Search" [formControl]="searchContent">
+                                                            <div class="input-group-text" *ngIf="!searchContent.value"><i class="fa-solid fa-magnifying-glass"></i></div>
+                                                            <div class="input-group-text" *ngIf="searchContent.value"><i class="fa fa-times"
+                                                                    (click)="searchContent.reset()"></i></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -243,7 +242,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody *ngFor="let element of vehicleNotificatinsData; let i=index">
-                                                <tr data-bs-toggle="collapse" [attr.data-bs-target]="'#collapseOne'+i"
+                                                <tr data-bs-toggle="collapse" [attr.data-bs-target]="'#collapseOne'+i" id="{{'#headingOne'+i}}"
                                                     aria-expanded="true" [attr.aria-controls]="'#collapseOne'+i" class="row-select collapsed">
                                                     <td>{{ this.itemsPerPage * (currentPage - 1) + (i+1) }}</td>
                                                     <td><img src="../../../assets/images/Driver-profile.svg" class="vehicle-image"></td>
@@ -257,9 +256,9 @@
                                                 </tr>
 
                                                 <tr>
-                                                    <td colspan="5" class="bg-light" >
+                                                    <td colspan="5" class="bg-light"  >
                                                         <div id="{{'collapseOne'+i}}" class="accordion-collapse collapse "
-                                                            [attr.aria-labelledby]="('headingOne'+i)" data-bs-parent="#accordion">
+                                                            [attr.aria-labelledby]="'headingOne'+i">
                                                             <div class="row">
                                                                 <div class="col-sm-6">
                                                                     <ul class="list-group list-group-flush">
