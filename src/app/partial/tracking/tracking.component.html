@@ -38,7 +38,7 @@
     <div class="col-sm-4">
         <div class="card border-0 rounded">
             <div class="card-body fixed-height p-0">
-                <a class="d-flex vehicle p-3 active" routerLink="#" routerLinkActive="active" data-bs-toggle="offcanvas"
+                <a class="d-flex vehicle p-3 active" href="#" routerLinkActive="active" data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
                     <div class="flex-shrink-0">
                         <div class="bg-success bg-opacity-25 text-success rounded-circle vehicle-icon">
@@ -135,10 +135,12 @@
                 </a>
                 <ng-template #popContent class="bg-danger">
                     <p>GPS Wire Cut. Is the vehicle in maintenance?</p>
-                    <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
-                        data-bs-target="#RaiseTicketModal">No</button>
-                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                        data-bs-target="#MaintenanceModal">Yes</button>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-sm btn-outline-danger text-dark" data-bs-toggle="modal"
+                            data-bs-target="#RaiseTicketModal">No</button>
+                        <button class="btn btn-sm btn-outline-danger text-dark" data-bs-toggle="modal"
+                            data-bs-target="#MaintenanceModal">Yes</button>
+                    </div>
                 </ng-template>
                 <a class="d-flex vehicle p-3 bg-opacity-10 bg-danger" placement="top" routerLinkActive="active"
                     [ngbPopover]="popContent">
@@ -172,10 +174,10 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="vehicle-status">
                                 <div class="d-flex">
-                                    <span><img src="assets/images/Tracking/battery.svg" class="me-1"> 50%</span>
+                                    <span><img src="assets/images/Tracking/battery.svg" class="me-1"> --</span>
                                     <span class="mx-3"><img src="assets/images/Tracking/network.svg" class="me-1">
-                                        100%</span>
-                                    <span><img src="assets/images/Tracking/ON-vehicle.svg" class="me-1"> ON</span>
+                                        --</span>
+                                    <span><img src="assets/images/Tracking/ON-vehicle.svg" class="me-1"> --</span>
                                 </div>
                             </div>
                             <div class="share-call">
@@ -330,7 +332,7 @@
                     <!-- <iframe id="gmap_canvas"
                         src="https://maps.google.com/maps?q=shaurya%20technosoft&t=&z=19&ie=UTF8&iwloc=&output=embed"
                         frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe> -->
-                        <agm-map [latitude]="23.7541318" [zoom]="6" [longitude]="80.3681253"></agm-map>
+                    <agm-map [latitude]="23.7541318" [zoom]="6" [longitude]="80.3681253"></agm-map>
                 </div>
             </div>
             <div class="offcanvas offcanvas-bottom position-absolute shadow-lg border-0" data-bs-scroll="true"
@@ -434,7 +436,7 @@
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <span class="text-primary">Stopped Since 14 hrs : 21 min</span>
+                                                    <span class="text-primary"><i class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs : 21 min</span>
                                                 </td>
                                                 <td>
                                                     <span class="text-dark">Harjuna Post Office, Harjuna, Yavatmal,
@@ -453,7 +455,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <span class="text-danger">Stopped Since 14 hrs : 21 min</span>
+                                                    <span class="text-danger"><i class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs : 21 min</span>
                                                 </td>
                                                 <td>
                                                     <span class="text-dark">Harjuna Post Office, Harjuna, Yavatmal,
@@ -472,7 +474,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <span class="text-success">Stopped Since 14 hrs : 21 min</span>
+                                                    <span class="text-success"><i class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs : 21 min</span>
                                                 </td>
                                                 <td>
                                                     <span class="text-dark">Harjuna Post Office, Harjuna, Yavatmal,
@@ -491,7 +493,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <span class="text-warning">Stopped Since 14 hrs : 21 min</span>
+                                                    <span class="text-warning"><i class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs : 21 min</span>
                                                 </td>
                                                 <td>
                                                     <span class="text-dark">Harjuna Post Office, Harjuna, Yavatmal,
@@ -510,7 +512,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <span class="text-warning">Stopped Since 14 hrs : 21 min</span>
+                                                    <span class="text-warning"><i class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs : 21 min</span>
                                                 </td>
                                                 <td>
                                                     <span class="text-dark">Harjuna Post Office, Harjuna, Yavatmal,
@@ -540,11 +542,14 @@
                                         <img src="assets/images/Driver-profile.svg">
                                     </div>
                                     <div class="col-sm-10">
-                                        <div class="d-flex mb-4">
-                                            <div class="driver-name">
+                                        <div class="d-flex mb-4 align-items-center">
+                                            <div class="driver-name me-3">
                                                 <p>Nilesh Rajashi</p>
                                                 <small>+91 9768564567</small>
                                             </div>
+                                            <a class="call-driver bg-success" href="#">
+                                                <i class="fa-solid fa-phone"></i>
+                                            </a>
                                         </div>
                                         <div class="row driver-info">
                                             <div class="col-sm">
