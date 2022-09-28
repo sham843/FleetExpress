@@ -204,7 +204,7 @@
                             <mat-form-field appearance="standard" class="w-100">
                                 <mat-label>Mobile Number</mat-label>
                                 <input matInput placeholder="Enter Mobile Number" formControlName="mobileNumber"
-                                    (keypress)="validationService.onlyDigits($event)">
+                                    (keypress)="validationService.onlyDigits($event)" [maxLength]="10">
                             </mat-form-field>
                             <mat-error *ngIf="userformSubmitted && user['mobileNumber'].errors">
                                 <span class="text-danger"
