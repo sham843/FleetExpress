@@ -41,28 +41,28 @@
                                             <span class="noti-title">Boxopen-Off</span>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
-                                                    formControlName="BoxopenOff"
+                                                    formControlName="BoxopenOff" [(ngModel)]="notificatinsData[0].isNotification"
                                                     (change)="switchNotification(notificatinsData[0],'BoxopenOff')"
                                                     id="BoxopenOff">
                                             </div>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center"
-                                            *ngIf="!notificatinsData[5]?.isVisibleToOfficer">
+                                            *ngIf="!notificatinsData[4]?.isVisibleToOfficer">
                                             <span class="noti-title">Geofence-In</span>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
-                                                    formControlName="GeofenceIn"
-                                                    (change)="switchNotification(notificatinsData[5],'GeofenceIn')"
+                                                    formControlName="GeofenceIn" [(ngModel)]="notificatinsData[4].isNotification"
+                                                    (change)="switchNotification(notificatinsData[4],'GeofenceIn')"
                                                     id="GeofenceIn">
                                             </div>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center"
-                                            *ngIf="!notificatinsData[8]?.isVisibleToOfficer">
+                                            *ngIf="!notificatinsData[7]?.isVisibleToOfficer">
                                             <span class="noti-title">Ignition-Off</span>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
-                                                    formControlName="IgnitionOff"
-                                                    (change)="switchNotification(notificatinsData[8],'IgnitionOff')"
+                                                    formControlName="IgnitionOff" [(ngModel)]="notificatinsData[7].isNotification"
+                                                    (change)="switchNotification(notificatinsData[7],'IgnitionOff')"
                                                     id="IgnitionOff">
                                             </div>
                                         </li>
@@ -71,7 +71,7 @@
                                             <span class="noti-title">Power-Cut</span>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
-                                                    formControlName="PowerCut"
+                                                    formControlName="PowerCut"[(ngModel)]="notificatinsData[11].isNotification"
                                                     (change)="switchNotification(notificatinsData[11],'PowerCut')"
                                                     id="PowerCut">
                                             </div>
@@ -119,38 +119,35 @@
                                             <span class="noti-title">Boxopen-On</span>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
-                                                 
-                                                    formControlName="BoxopenOn" id="BoxopenOn"
-                                                    (change)="switchNotification(notificatinsData[9],'BoxopenOn')">
+                                                    formControlName="BoxopenOn" id="BoxopenOn" [(ngModel)]="notificatinsData[1].isNotification"
+                                                    (change)="switchNotification(notificatinsData[1],'BoxopenOn')">
                                             </div>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center"
-                                            *ngIf="!notificatinsData[6]?.isVisibleToOfficer">
+                                            *ngIf="!notificatinsData[5]?.isVisibleToOfficer">
                                             <span class="noti-title">Geofence-Out</span>
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch"
-                                                   
-                                                    formControlName="GeofenceOut" id="GeofenceOut"
-                                                    (change)="switchNotification(notificatinsData[9],'GeofenceOut')">
+                                                <input class="form-check-input" type="checkbox" role="switch"5
+                                                    formControlName="GeofenceOut" id="GeofenceOut" [(ngModel)]="notificatinsData[5].isNotification"
+                                                    (change)="switchNotification(notificatinsData[5],'GeofenceOut')">
                                             </div>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center"
-                                            *ngIf="!notificatinsData[9]?.isVisibleToOfficer">
+                                            *ngIf="!notificatinsData[8]?.isVisibleToOfficer">
                                             <span class="noti-title">Ignition-On</span>
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch"
-                                                   
+                                                <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="notificatinsData[8].isNotification"
                                                     formControlName="IgnitionOn" id="IgnitionOn"
-                                                    (change)="switchNotification(notificatinsData[9],'IgnitionOn')">
+                                                    (change)="switchNotification(notificatinsData[8],'IgnitionOn')">
                                             </div>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center"
-                                            *ngIf="!notificatinsData[11]?.isVisibleToOfficer">
+                                            *ngIf="!notificatinsData[10]?.isVisibleToOfficer">
                                             <span class="noti-title">Power-Connected</span>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
-                                                    formControlName="PowerConnected" id="PowerConnected"
-                                                    (change)="switchNotification(notificatinsData[9],'PowerConnected')">
+                                                    formControlName="PowerConnected" id="PowerConnected" [(ngModel)]="notificatinsData[10].isNotification"
+                                                    (change)="switchNotification(notificatinsData[10],'PowerConnected')">
                                             </div>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
