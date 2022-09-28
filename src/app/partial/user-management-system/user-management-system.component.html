@@ -154,6 +154,9 @@
                                                         </button>
                                                     </div>
                                                 </td>
+                                                <td>
+                                                    <mat-checkbox></mat-checkbox>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -369,15 +372,15 @@
         </div>
         <div class="modal-body">
             <div class="row justify-content-between">
-                <div class="col-sm-12">
+                <div class="col-sm-6">
                     <mat-form-field appearance="standard" class="w-100">
                         <mat-label>Enter Role Name</mat-label>
                         <input matInput placeholder="Enter Role Name">
                     </mat-form-field>
                 </div>
-                <div class="col-sm-12">
+                <div class="col-sm-6">
                     <mat-form-field appearance="standard" class="w-100">
-                        <mat-label>Toppings</mat-label>
+                        <mat-label>Assign Responsibilities</mat-label>
                         <mat-select multiple>
                             <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}
                             </mat-option>
