@@ -1,14 +1,17 @@
 
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { SharedService } from './shared.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ErrorsService {
 
-  constructor(private spinner: NgxSpinnerService, private toaster: ToastrService) { }
+  constructor(private spinner: NgxSpinnerService, private toaster: ToastrService,
+    private router:Router, private sharedService:SharedService) { }
 
   handelError(error: any) {
     this.spinner.hide();
@@ -37,7 +40,7 @@ export class ErrorsService {
                     case 307: msg = "Temporary Redirect"; break;
                     case 308: msg = "Permanent Redirect"; break;
                     case 400: msg = "Bad Request"; break;
-                    case 401: msg = "Unauthorized"; break;
+                    case 401: msg = "Unauthorized";this.sharedService.logOut(); break;
                     case 402: msg = "Payment Required"; break;
                     case 403: msg = "Forbidden"; break;
                     case 404: msg = "Data Not Found"; break;
