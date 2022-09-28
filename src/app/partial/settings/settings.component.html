@@ -8,21 +8,20 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="pills-notifications-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-notifications" type="button" role="tab"
-                        aria-controls="pills-notifications" aria-selected="true">Notifications</button>
+                        aria-controls="pills-notifications" aria-selected="true" (click)="showvehicleNotification('Notifications')">Notifications</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-change-password-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-change-password" type="button" role="tab"
-                        aria-controls="pills-change-password" aria-selected="false">Change Password</button>
+                        aria-controls="pills-change-password" aria-selected="false" (click)="showvehicleNotification('ChangePassword')">Change Password</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-vehicle-notifications-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-vehicle-notifications" type="button" role="tab"
-                        aria-controls="pills-vehicle-notifications" aria-selected="false">Vehicle
-                        Notifications</button>
+                        aria-controls="pills-vehicle-notifications" aria-selected="false" (click)="showvehicleNotification('VehicleNotifications')">Vehicle Notifications</button>
                 </li>
-                <div class="vr mx-4"></div>
-                <div class="d-flex justify-content-between align-items-center small" >
+                <div class="vr mx-4" *ngIf="vehicleNotificationFlag"></div>
+                <div class="d-flex justify-content-between align-items-center small" *ngIf="vehicleNotificationFlag">
                     <span class="me-4">Total Vehicle Notifications</span> <h6 class="mb-0">100</h6>
                 </div>
             </ul>
@@ -41,7 +40,7 @@
                                             <span class="noti-title">Boxopen-Off</span>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
-                                                    formControlName="BoxopenOff" [(ngModel)]="notificatinsData[0].isNotification"
+                                                    formControlName="BoxopenOff" 
                                                     (change)="switchNotification(notificatinsData[0],'BoxopenOff')"
                                                     id="BoxopenOff">
                                             </div>
@@ -51,7 +50,7 @@
                                             <span class="noti-title">Geofence-In</span>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
-                                                    formControlName="GeofenceIn" [(ngModel)]="notificatinsData[4].isNotification"
+                                                    formControlName="GeofenceIn"
                                                     (change)="switchNotification(notificatinsData[4],'GeofenceIn')"
                                                     id="GeofenceIn">
                                             </div>
@@ -61,7 +60,7 @@
                                             <span class="noti-title">Ignition-Off</span>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
-                                                    formControlName="IgnitionOff" [(ngModel)]="notificatinsData[7].isNotification"
+                                                    formControlName="IgnitionOff" 
                                                     (change)="switchNotification(notificatinsData[7],'IgnitionOff')"
                                                     id="IgnitionOff">
                                             </div>
@@ -71,7 +70,7 @@
                                             <span class="noti-title">Power-Cut</span>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
-                                                    formControlName="PowerCut"[(ngModel)]="notificatinsData[11].isNotification"
+                                                    formControlName="PowerCut"
                                                     (change)="switchNotification(notificatinsData[11],'PowerCut')"
                                                     id="PowerCut">
                                             </div>
@@ -119,7 +118,7 @@
                                             <span class="noti-title">Boxopen-On</span>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
-                                                    formControlName="BoxopenOn" id="BoxopenOn" [(ngModel)]="notificatinsData[1].isNotification"
+                                                    formControlName="BoxopenOn" id="BoxopenOn" 
                                                     (change)="switchNotification(notificatinsData[1],'BoxopenOn')">
                                             </div>
                                         </li>
@@ -128,7 +127,7 @@
                                             <span class="noti-title">Geofence-Out</span>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
-                                                    formControlName="GeofenceOut" id="GeofenceOut" [(ngModel)]="notificatinsData[5].isNotification"
+                                                    formControlName="GeofenceOut" id="GeofenceOut"
                                                     (change)="switchNotification(notificatinsData[5],'GeofenceOut')">
                                             </div>
                                         </li>
@@ -136,7 +135,7 @@
                                             *ngIf="!notificatinsData[8]?.isVisibleToOfficer">
                                             <span class="noti-title">Ignition-On</span>
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="notificatinsData[8].isNotification"
+                                                <input class="form-check-input" type="checkbox" role="switch" 
                                                     formControlName="IgnitionOn" id="IgnitionOn"
                                                     (change)="switchNotification(notificatinsData[8],'IgnitionOn')">
                                             </div>
@@ -146,7 +145,7 @@
                                             <span class="noti-title">Power-Connected</span>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
-                                                    formControlName="PowerConnected" id="PowerConnected" [(ngModel)]="notificatinsData[10].isNotification"
+                                                    formControlName="PowerConnected" id="PowerConnected" 
                                                     (change)="switchNotification(notificatinsData[10],'PowerConnected')">
                                             </div>
                                         </li>
