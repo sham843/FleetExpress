@@ -62,7 +62,7 @@ export class DriverComponent implements OnInit {
       dob: ['', Validators.required],
       licenceNumber: ['', Validators.compose([Validators.required, Validators.pattern('^[A-Z]{2}[0-9]{13}$'), Validators.maxLength(20), Validators.minLength(15)])],
       licenceDoc: ['', Validators.required],
-      aadharNumber: ['', Validators.compose([Validators.required, Validators.maxLength(12), Validators.minLength(12)])],
+      aadharNumber: ['', Validators.compose([Validators.required,Validators.pattern('^[0-9]{12}$'),Validators.maxLength(12), Validators.minLength(12)])],
       aadharCardDoc: ['', Validators.required],
       panNumber: ['', Validators.compose([Validators.required, Validators.pattern('[A-Z]{3}[ABCFGHLJPTF]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}'), Validators.maxLength(10)])],
       panCardDoc: ['', Validators.required],

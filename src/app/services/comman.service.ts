@@ -23,6 +23,7 @@ export class CommanService {
       case 'driverBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/driver/'; break
       case 'userDetailsBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/userdetail/'; break
       case 'uploadDocumentBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/upload/'; break
+      case 'vehicleOwnerBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/vehicle-owner/'; break
       default: return ''; break;
     }
   }
@@ -97,7 +98,8 @@ export class CommanService {
         } else {
           this.spinner.hide();
           sessionStorage.clear();
-          this.router.navigate(['/login']);
+          // this.router.navigate(['/login']);
+          this.router.navigate(['login']);
           this.toastrService.info('Your Session Has Expired. Please Re-Login Again.');
           return;
         }
@@ -144,12 +146,13 @@ export class CommanService {
         this.tokanExpiredFlag = false;
       }
       else if (res.statusCode === "409") {
+        this.toastrService.error(res.statusMessage);
         this.spinner.hide();
       }
       else {
         this.spinner.hide();
         sessionStorage.clear();
-        this.router.navigate(['/login']);
+        this.router.navigate(['login']);
         this.toastrService.info('Your Session Has Expired. Please Re-Login Again.')
       }
     })

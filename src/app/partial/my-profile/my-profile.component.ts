@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { CommanService } from 'src/app/services/comman.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ValidationService } from 'src/app/services/validation.service';
 
@@ -12,18 +13,19 @@ import { ValidationService } from 'src/app/services/validation.service';
 export class MyProfileComponent implements OnInit {
   myProfileForm!: FormGroup;
   userDetails: any;
-  totalVehicle!:number;
+  totalVehicle!: number;
   constructor(private tostrService: ToastrService,
     public vs: ValidationService,
     private fb: FormBuilder,
-    private sharedService:SharedService) { }
+    private sharedService: SharedService,
+    private comman: CommanService) { }
 
   ngOnInit(): void {
     this.getLoginUserDetails();
     this.ProfileFormControl();
     this.sharedService.vehicleCount().subscribe({
       next: (ele: any) => {
-       this.totalVehicle=ele.responseData.responseData2.totalRecords;
+        this.totalVehicle = ele.responseData.responseData2.totalRecords;
       }
     })
   }
@@ -41,28 +43,29 @@ export class MyProfileComponent implements OnInit {
   }
   // ----------------------------------------------------get user Details------------------------------------------------------
   getLoginUserDetails() {
-    let sessionData: any;
-    if (sessionStorage.getItem('loginDetails')) {
-      sessionData = sessionStorage.getItem('loginDetails');
-      this.userDetails = JSON.parse(sessionData).responseData[0];
-    }
+    if (this.comman.getVehicleOwnerId()) {
+      this.comman.setHttp('get', 'get-vehicle-owner?VehicleOwnerId=256&nopage=1&rowperpage=10', true, false, false, 'vehicleOwnerBaseUrlApi');
+        this.comman.getHttp().subscribe((res: any) => {
+        this.userDetails=res.responseData.responseData1[0];
+        console.log(this.userDetails);
+        })
+      }
     else {
-      this.tostrService.error("Data not found");
-      return
+      this.tostrService.error("please login")
     }
-  }
+  } 
   // ----------------------------------------------------edit and save Profile------------------------------------------------------------
-  editProfile(profileData:any){
+  editProfile(profileData: any) {
     console.log(profileData);
     this.myProfileForm.patchValue({
-      name:profileData.name,
-      mobileNo1:profileData.mobileNo1
-    }) 
+      name: profileData.name,
+      mobileNo1: profileData.mobileNo1
+    })
   }
   profileSave() {
 
   }
-  get f(){
+  get f() {
     return this.myProfileForm.controls;
   }
 }

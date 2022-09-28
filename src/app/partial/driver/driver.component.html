@@ -242,7 +242,8 @@
                                                             <input matInput class="form-control" [ngClass]="{'is-invalid':f['aadharNumber'].errors}" 
                                                                 formControlName="aadharNumber" placeholder="Aadhaar Number"  maxlength="12" minlength="12">
                                                                 <mat-error>
-                                                                    <span class="text-danger" *ngIf="f['aadharNumber'].hasError('minlength')">Enter 12 digit Aadhar card number</span>
+                                                                    <span class="text-danger" *ngIf="f['aadharNumber'].hasError('pattern')">Enter Valid Aadhar card number</span>
+                                                                    <!-- <span class="text-danger" *ngIf="f['aadharNumber'].hasError('minlength')">Enter 12 digit Aadhar card number</span> -->
                                                                 </mat-error>
                                                         </mat-form-field>
                                                     </div>

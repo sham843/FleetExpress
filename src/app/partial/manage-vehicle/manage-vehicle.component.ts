@@ -196,6 +196,7 @@ export class ManageVehicleComponent implements OnInit {
     },
     (error: any) => {
       this.error.handelError(error.status);
+      this.spinner.hide();
   })
   }
   closeModels(){
@@ -245,34 +246,34 @@ export class ManageVehicleComponent implements OnInit {
   } 
   // ---------------------------------------------------------------------Upload Photo And Document---------------------------
   profilePhotoUpd(event: any) {
-    this.spinner.show();
+    // this.spinner.show();
     let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'vehicleProfile', "png,jpg,jpeg");
     documentUrl.subscribe({
       next: (ele: any) => {
        if(ele.statusCode=="200"){
-        this.spinner.hide();
+        // this.spinner.hide();
         this.profilePhotoImg = ele.responseData;
         this.profilePhoto=this.profilePhotoImg;
        }
        else{
-        this.spinner.hide();
+        // this.spinner.hide();
         this.error.handelError(ele.statusCode);
       }
     }})
 }
   
   imageUpload(event: any,flag:any) {
-    this.spinner.show();
+    // this.spinner.show();
     let documentUrl: any = this.sharedService.uploadDocuments(event, "pdf");
     documentUrl.subscribe({
       next: (ele: any) => {
        if(ele.statusCode=="200"){
-        this.spinner.hide();
+        // this.spinner.hide();
         flag=='insurance'?this.insuranceImg=ele.responseData:flag=='register'?this.registerImg=ele.responseData:flag=='pollution'?this.pollutionImg=ele.responseData:flag=='fitness'?this.fitnessImg=ele.responseData:this.nationalImg=ele.responseData;
        this.tostrservice.success(ele.statusMessage);
       }
       else{
-        this.spinner.hide();
+        // this.spinner.hide();
         this.tostrservice.success(ele.statusMessage);
       }}
     }) 
@@ -360,6 +361,7 @@ export class ManageVehicleComponent implements OnInit {
         }
       },(error: any) => {
         this.error.handelError(error.status);
+        this.spinner.hide()
     })
     }
   }
