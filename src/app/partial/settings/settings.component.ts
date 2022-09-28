@@ -51,6 +51,7 @@ export class SettingsComponent implements OnInit {
   searchContent = new FormControl();
   expandedElement: any;
   vehicleNotificationFlag:boolean=false;
+  totalVehicleNotificatinsData:any;
   getSliderTickInterval(): number | 'auto' {
     if (this.showTicks) {
       return this.autoTicks ? 'auto' : this.tickInterval;
@@ -185,6 +186,7 @@ getVehicleNotificatinsData() {
     next: (res: any) => {
       if (res.statusCode === "200") {
         this.vehicleNotificatinsData = res.responseData.responseData1 ;
+        this.totalVehicleNotificatinsData=res.responseData.responseData2?.totalRecords
 
       } else {
         if (res.statusCode != "404") {
