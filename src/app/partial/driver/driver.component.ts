@@ -21,8 +21,8 @@ export class DriverComponent implements OnInit {
   editId: number = 0;
   searchHideShow: boolean = true;
   clearHideShow: boolean = false;
-  buttonFlag:boolean=true;
-  buttonText='Save';
+  buttonFlag: boolean = true;
+  buttonText = 'Save';
   licenceDoc: any;
   panDoc: any;
   aadharDoc: any;
@@ -37,6 +37,7 @@ export class DriverComponent implements OnInit {
   @ViewChild('panUpload') panUpload: any;
   @ViewChild('aadharUpload') aadharUpload: any;
   @ViewChild('licenceUpload') licenceUpload: any;
+  @ViewChild('profileUpload') profileUpload: any;
   @ViewChild(FormGroupDirective) formGroupDirective!: FormGroupDirective;
 
   constructor(private fb: FormBuilder,
@@ -62,7 +63,7 @@ export class DriverComponent implements OnInit {
       dob: ['', Validators.required],
       licenceNumber: ['', Validators.compose([Validators.required, Validators.pattern('^[A-Z]{2}[0-9]{13}$'), Validators.maxLength(20), Validators.minLength(15)])],
       licenceDoc: ['', Validators.required],
-      aadharNumber: ['', Validators.compose([Validators.required,Validators.pattern('^[0-9]{12}$'),Validators.maxLength(12), Validators.minLength(12)])],
+      aadharNumber: ['', Validators.compose([Validators.required, Validators.pattern('^[0-9]{12}$'), Validators.maxLength(12), Validators.minLength(12)])],
       aadharCardDoc: ['', Validators.required],
       panNumber: ['', Validators.compose([Validators.required, Validators.pattern('[A-Z]{3}[ABCFGHLJPTF]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}'), Validators.maxLength(10)])],
       panCardDoc: ['', Validators.required],
@@ -155,33 +156,38 @@ export class DriverComponent implements OnInit {
       (error: any) => {
         this.error.handelError(error.status);
       })
-      this.spinner.hide();
+    this.spinner.hide();
   }
   imageUpload(event: any, flag: any) {
     this.spinner.show();
     let documentUrl: any = this.sharedService.uploadDocuments(event, "pdf");
     documentUrl.subscribe({
       next: (ele: any) => {
-        if(ele.statusCode=="200"){
+        if (ele.statusCode == "200") {
           this.spinner.hide()
           flag == 'licence' ? this.licenceDoc = ele.responseData : flag == 'pan' ? this.panDoc = ele.responseData : this.aadharDoc = ele.responseData;
           this.tostrService.success(ele.statusMessage);
         }
-        else{
+        else {
           this.spinner.hide();
           this.tostrService.success(ele.statusMessage);
         }
       }
     })
   }
-  clearDoc(flag: any) {
-    flag == 'pan' ? (this.panUpload.nativeElement.value = null, this.driverRegForm.controls['panDoc'].setValue('')) :
-      flag == 'aadhar' ? (this.aadharUpload.nativeElement.value = null, this.driverRegForm.controls['aadharDoc'].setValue('')) :
-        (this.licenceUpload.nativeElement.value = null, this.driverRegForm.controls['licenceDoc'].setValue(''));
+  viewDocument(flag:any){
+   flag=='licence'?window.open(this.licenceDoc):flag=='pan'?window.open(this.panDoc):window.open(this.aadharDoc); 
+    
   }
+  clearDoc(flag?: any) {
+    flag == 'pan' ? (this.panUpload.nativeElement.value = '',this.panDoc='') :
+      flag == 'aadhar' ? (this.aadharUpload.nativeElement.value = '',this.aadharDoc='') :
+        (this.licenceUpload.nativeElement.value = '',this.licenceDoc='');
+  }
+  // , this.driverRegForm.controls['aadharDoc'].setValue(''); this.driverRegForm.controls['panDoc'].setValue('')
   // -------------------------------------------------------Update Driver Details------------------------------------------------------------
   editDriverData(driverData: any) {
-    this.buttonFlag=false;
+    this.buttonFlag = false;
     this.highLightRow = driverData.driverId;
     this.editId = driverData?.driverId
     this.driverRegForm.patchValue({
@@ -196,18 +202,20 @@ export class DriverComponent implements OnInit {
       aadharNumber: driverData?.aadharNumber,
       flag: "u"
     })
-
     this.licenceDoc = driverData?.licenceDoc;
     this.panDoc = driverData?.panCardDoc;
     this.aadharDoc = driverData?.aadharCardDoc;
     this.profilePhotoupd = driverData?.profilePhoto;
-    console.log(this.aadharDoc)
   }
-  closeModels() {
+  closeModels(formDirective: any) {
     this.highLightRow = '';
-    this.driverRegForm.controls['mobileNo'].setValue('');
-    this.formGroupDirective.resetForm();
-    this.getRegFormData();
+    formDirective.resetForm();
+    this.buttonFlag = true;
+    this.profilePhotoupd='assets/images/Driver-profile.svg';
+    // this.profileUpload.nativeElement.value = '';
+    this.panDoc='';
+    this.aadharDoc='';
+    this.licenceDoc='';
   }
   // ----------------------------------------------Delete Record----------------------------------------------------------------
   removeDriverData(data: any) {
@@ -236,35 +244,36 @@ export class DriverComponent implements OnInit {
       })
   }
   // --------------------------------------------Save--------------------------------------------------------------------------
-  registerDriverSave() {
-    this.buttonFlag=false;
+  registerDriverSave(formDirective: any) {
+    this.buttonFlag = false;
     this.highLightRow = '';
     let formData = this.driverRegForm.value;
     formData.id = this.editId;
     formData.middleName = '';
-    formData.dob = this.datepipe.transform(formData.dob, 'yyyy/MM/dd')
+    formData.dob = this.datepipe.transform(formData.dob, 'yyyy/MM/dd');
     formData.createdBy = this.comman.getUserId();
     formData.createdDate = this.date.toISOString();
-    formData.modifiedBy = 0,
-      formData.modifiedDate = this.date.toISOString(),
-      formData.name = "",
-      formData.panCardDoc = this.panDoc;
-    formData.aadharCardDoc = this.aadharDoc || '',
-      formData.licenceDoc = this.licenceDoc || '',
-      formData.profilePhoto = this.profilePhotoupd != 'assets/images/Driver-profile.svg' ? this.profilePhotoupd : '';
+    formData.modifiedBy = 0;
+    formData.modifiedDate = this.date.toISOString();
+    formData.name = "";
+    formData.panCardDoc = this.panDoc;
+    formData.aadharCardDoc = this.aadharDoc || '';
+    formData.licenceDoc = this.licenceDoc || '';
+    formData.profilePhoto = this.profilePhotoupd != 'assets/images/Driver-profile.svg' ? this.profilePhotoupd : '';
+
     if (this.driverRegForm.invalid) {
       !this.driverRegForm.value.panCardDoc ? this.tostrService.error("Pancard upload is required") : '';
       !this.driverRegForm.value.aadharCardDoc ? this.tostrService.error("Aadhar card upload is required") : '';
       !this.driverRegForm.value.licenceDoc ? this.tostrService.error("Licence upload is required") : '';
       return;
-    } else { 
+    } else {
       this.closeModel.nativeElement.click();
       this.spinner.show();
       this.comman.setHttp('post', 'save-update-deriver-details', true, formData, false, 'driverBaseUrlApi');
       this.comman.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
           this.spinner.hide();
-          this.formGroupDirective.resetForm();
+          formDirective.resetForm();
           this.highLightRow = '';
           this.tostrService.success(response.statusMessage);
 
@@ -278,7 +287,7 @@ export class DriverComponent implements OnInit {
         (error: any) => {
           this.error.handelError(error.status);
         })
-        this.spinner.hide();
+      this.spinner.hide();
     }
   }
   onPagintion(pageNo: any) {
