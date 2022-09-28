@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgxSpinner, Spinner } from 'ngx-spinner/lib/ngx-spinner.enum';
 import { ToastrService } from 'ngx-toastr';
@@ -15,7 +16,8 @@ export class SharedService {
   constructor(private comman: CommanService,
     private spinner: NgxSpinnerService,
     private tostrservice: ToastrService,
-    private http: HttpClient) {
+    private http: HttpClient,
+    private router:Router) {
   }
   ngOnInit() {
   }
@@ -149,6 +151,10 @@ export class SharedService {
         this.tostrservice.error('Please Select Valid Document');
       }
     })
+  }
+  logOut() {
+    sessionStorage.clear();
+    this.router.navigate(['login']);
   }
 }
 
