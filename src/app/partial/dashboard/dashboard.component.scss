@@ -81,7 +81,15 @@
     color: rgb(255, 116, 67);
     background-color: rgba(255, 116, 67, 0.15);
 }
-
 .apexcharts-toolbar {
+    position: absolute;
+    z-index: 11;
+    max-width: 176px;
+    text-align: right;
+    border-radius: 3px;
+    padding: 0px 6px 2px 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     display: none !important;
 }

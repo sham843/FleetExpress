@@ -59,11 +59,18 @@ export class DashboardComponent implements OnInit {
       series: [],
       chart: {
         type: "bar",
-        height: 220
+        height: 220,
+        toolbar: {
+          show: false
+        },
       },
+      colors: ['#33b2df', '#546E7A', '#d4526e', '#13d8aa', '#A5978B', '#2b908f', '#f9a3a4', '#90ee7e',
+        '#f48024', '#69d2e7'
+      ],
       plotOptions: {
         bar: {
-          horizontal: true
+          horizontal: true,
+          distributed: true,
         }
       },
       dataLabels: {
