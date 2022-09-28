@@ -49,7 +49,8 @@ export class DashboardComponent implements OnInit {
   gaugeAppendText = "mph";
   gaugeThick = 15;
   guageCap:any ='round';
-  vehiclesMoving:any
+  vehiclesMoving:any;
+  currentdate=new Date()
   constructor(private cs: CommanService,
     public dialog: MatDialog,
     private error:ErrorsService,
@@ -58,7 +59,7 @@ export class DashboardComponent implements OnInit {
       series: [],
       chart: {
         type: "bar",
-        height: 350
+        height: 220
       },
       plotOptions: {
         bar: {
@@ -70,24 +71,14 @@ export class DashboardComponent implements OnInit {
       },
       xaxis: {
         categories: []
-      }
+      },
     };
     this.chartOptions1 = {
       series: [],
       chart: {
-        // width: 320,
-        // height: 160,
         type: 'donut'
       },
       labels: ["Idle", "Stopped", "Running", "Offline"],
-      // theme: {
-      //   monochrome: {
-      //     enabled: true,
-      //     color: '#323095',
-      //     shadeTo: 'light',
-      //     shadeIntensity: 0.65
-      //   }
-      // },
       fill: {
         type: "solid",
         colors: ["#00E396", "#F9CE1D", "#D4526E", "#D7263D"]
@@ -112,98 +103,6 @@ export class DashboardComponent implements OnInit {
         }
       }
     };
-    // this.chartOptions2 = {
-    //   series: [76],
-    //   chart: {
-    //     type: "radialBar",
-    //     offsetY: -20
-    //   },
-    //   plotOptions: {
-    //     radialBar: {
-    //       startAngle: -130,
-    //       endAngle: 130,
-    //       track: {
-    //         background: "#e7e7e7",
-    //         strokeWidth: "97%",
-    //         margin: 5, // margin is in pixels
-    //         dropShadow: {
-    //           enabled: true,
-    //           top: 2,
-    //           left: 0,
-    //           opacity: 0.31,
-    //           blur: 2
-    //         }
-    //       },
-    //       dataLabels: {
-    //         name: {
-    //           show: false
-    //         },
-    //         value: {
-    //           offsetY: -2,
-    //           fontSize: "22px"
-    //         }
-    //       }
-    //     }
-    //   },
-    //   fill: {
-    //     type: "gradient",
-    //     gradient: {
-    //       shade: "light",
-    //       shadeIntensity: 0.4,
-    //       inverseColors: false,
-    //       opacityFrom: 1,
-    //       opacityTo: 1,
-    //       stops: [0, 50, 53, 91]
-    //     }
-    //   },
-    //   labels: ["Average Results"]
-    // };
-    // this.chartOptions3 = {
-    //   series: [76],
-    //   chart: {
-    //     type: "radialBar",
-    //     offsetY: -20
-    //   },
-    //   plotOptions: {
-    //     radialBar: {
-    //       startAngle: -130,
-    //       endAngle: 130,
-    //       track: {
-    //         background: "#e7e7e7",
-    //         strokeWidth: "97%",
-    //         margin: 5, // margin is in pixels
-    //         dropShadow: {
-    //           enabled: true,
-    //           top: 2,
-    //           left: 0,
-    //           opacity: 0.31,
-    //           blur: 2
-    //         }
-    //       },
-    //       dataLabels: {
-    //         name: {
-    //           show: false
-    //         },
-    //         value: {
-    //           offsetY: -2,
-    //           fontSize: "22px"
-    //         }
-    //       }
-    //     }
-    //   },
-    //   fill: {
-    //     type: "gradient",
-    //     gradient: {
-    //       shade: "light",
-    //       shadeIntensity: 0.4,
-    //       inverseColors: false,
-    //       opacityFrom: 1,
-    //       opacityTo: 1,
-    //       stops: [0, 50, 53, 91]
-    //     }
-    //   },
-    //   labels: ["Average Results"]
-    // };
   }
 
   ngOnInit(): void {
@@ -213,14 +112,6 @@ export class DashboardComponent implements OnInit {
     this.getOverSpeedData();
     this.getSIMRenewalReminderData();
   }
-  // openDialog(): void {
-  //   const dialogRef = this.dialog.open(BlockUnblockComponent, {
-  //     width: '300px'
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //   });
-  // }
 
   getvehicleAllData() {
     this.vehicleAllData = [];
@@ -359,7 +250,6 @@ export class DashboardComponent implements OnInit {
       categoriesData.push(items[i].vehicleNo);
     }
     if (items.length > 0) {
-      // this.isAllZero = seriesArray.every((item: any) => item === 0);
       this.chartOptions.series = [{
         name: "basic",
         data: seriesData
