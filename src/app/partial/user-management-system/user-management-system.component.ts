@@ -162,7 +162,7 @@ export class UserManagementSystemComponent implements OnInit {
     this.userForm.controls['assignedVehicle'].setValue(selectedVehicleObj);
   }
   open(modal:any) {
-    this.modalService.open(modal, { size: 'lg' });
+    this.modalService.open(modal, { size: 'lg' ,centered: true });
   }
   
   submitUser(){
