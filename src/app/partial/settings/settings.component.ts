@@ -139,6 +139,11 @@ getNotificatinsData() {
     next: (res: any) => {
       if (res.statusCode === "200") {
         this.notificatinsData = res.responseData;
+        // this.notificatinsData.sort((a,b) => a.sortOrder.localeCompare(b.sortOrder));
+        this.notificatinsData.sort(function (a, b) {
+          return a.sortOrder - b.sortOrder;
+        });
+        console.log(this.notificatinsData)
       } else {
         if (res.statusCode != "404") {
           this.error.handelError(res.statusCode)
@@ -170,7 +175,8 @@ getVehicleNotificatinsData() {
 }
 switchNotification(rowData:any, lable:any){ 
   this.spinner.show();
-  this.comman.setHttp('PUT', 'notification/set-Visibity-Notification?alertype='+rowData.alertType+'&Isnotification='+rowData.isVisibleToOfficer, true, false, false, 'vehicletrackingBaseUrlApi');
+  console.log(rowData)
+  this.comman.setHttp('PUT', 'notification/set-Visibity-Notification?alertype='+rowData.alertType+'&Isnotification='+ rowData.isNotification , true, false, false, 'vehicletrackingBaseUrlApi');
   this.subscription = this.comman.getHttp().subscribe({
     next: (res: any) => {
       this.spinner.hide();
