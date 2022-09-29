@@ -5,6 +5,7 @@ import { TrackingComponent } from './tracking.component';
 import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.module';
 import { AgmCoreModule } from '@agm/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -15,6 +16,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     CommonModule,
     TrackingRoutingModule,
     MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
      NgbModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAkNBALkBX7trFQFCrcHO2I85Re2MmzTo8',
