@@ -50,15 +50,15 @@
                 <div *ngFor="let item of (selectedTab=='Running'?allRunningVehiclelData:selectedTab=='Stopped'?allStoppedVehiclelData:selectedTab=='Idle'?allIdleVehiclelData:selectedTab=='Offline'?allOfflineVehiclelData:allVehiclelData); let i=index">
                     <ng-container *ngIf="item?.gpsStatus=='Offline'; else templateA">
                         <a class="d-flex vehicle p-3 bg-opacity-10 bg-danger" placement="top" routerLinkActive="active" [class.active]="selectedIndex === i"
-                        [ngbPopover]="popContent"  (click)="setIndex(i)">
+                         (click)="setIndex(i)">
                         <div class="flex-shrink-0">
                             <div class="bg-danger bg-opacity-25 text-danger rounded-circle vehicle-icon">
                                 <i class="fa-solid fa-car"></i>
                             </div>
                         </div>
                         <div class="flex-grow-1 ms-2">
-                            <div class="d-flex justify-content-between align-items-center my-2">
-                                <a class="text-danger">
+                            <div class="d-flex justify-content-between align-items-center my-2" >
+                                <a class="text-danger"  [ngbPopover]="popContent" placement="end" triggers="mouseenter:mouseleave">
                                     <p class="vehicle-no">{{item?.vehicleNo}}</p>
                                 </a>
                                 <span class="text-danger veh-status">
@@ -151,7 +151,7 @@
                         </div>
                     </a>
                     </ng-template>
-                    <ng-template #popContent class="bg-danger">
+                    <ng-template #popContent class="bg-danger" >
                         <p>GPS Wire Cut. Is the vehicle in maintenance?</p>
                         <div class="d-flex justify-content-end">
                             <button class="btn btn-sm btn-outline-danger text-dark" data-bs-toggle="modal"
