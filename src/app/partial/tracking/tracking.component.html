@@ -103,7 +103,7 @@
                         data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom"  [class.active]="selectedIndex === i"
                         (click)="setIndex(i)">
                         <div class="flex-shrink-0">
-                            <div class="bg-opacity-25 rounded-circle vehicle-icon"  [ngClass]="{'text-success, bg-success':item?.gpsStatus=='Running','text-warning, bg-warning':item?.gpsStatus=='Stopped','text-primary, bg-primary':item?.gpsStatus=='Idle'}">
+                            <div class="bg-opacity-25 rounded-circle vehicle-icon"  [ngClass]="{'text-success bg-success':item?.gpsStatus=='Running','text-warning bg-warning':item?.gpsStatus=='Stopped','text-primary bg-primary':item?.gpsStatus=='Idle'}">
                                 <i class="fa-solid fa-car"></i>
                             </div>
                         </div>
