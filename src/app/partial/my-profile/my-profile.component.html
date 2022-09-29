@@ -13,12 +13,12 @@
                         <img src="assets/images/Driver-profile.svg" class="profile-pic">
                     </div>
                     <div class="col-sm-8">
-                        <h5 class="name">{{userDetails.name}}</h5>
+                        <h5 class="name">{{userDetails?.name}}</h5>
                         <small class="desi">Transporter</small>
                         <div class="d-flex justify-content-between mt-4">
                             <p class="mb-0">
                                 <img src="../../../assets/images/location-vehicle.svg" class="me-2">
-                               {{userDetails.address}}
+                               {{userDetails?.address}}
                             </p>
                             <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
                                 id="openmodal" data-bs-target="#profileEditModal" (click)="editProfile(userDetails)">Edit</button>
@@ -29,15 +29,15 @@
                                 <div class="row">
                                     <div class="col-sm-4">
                                         <small class="text-label">Contact</small>
-                                        <p class="mb-0 text-data">+91{{userDetails.mobileNo}}</p>
+                                        <p class="mb-0 text-data">+91{{userDetails?.mobileNo}}</p>
                                     </div>
                                     <div class="col-sm-4">
                                         <small class="text-label">Email</small>
-                                        <p class="mb-0 text-data">{{userDetails.emailId}}</p>
+                                        <p class="mb-0 text-data">{{userDetails?.emailId}}</p>
                                     </div>
                                     <div class="col-sm-4">
                                         <small class="text-label">Website</small>
-                                        <p class="mb-0 text-data">{{userDetails.webiste}}</p>
+                                        <p class="mb-0 text-data">{{userDetails?.webiste}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -49,21 +49,21 @@
                                     <div class="col-sm-4">
                                         <small class="text-label">Adhar No</small>
                                         <p class="mb-0 text-data">
-                                            {{userDetails.adharNo}}
+                                            {{userDetails?.adharNo}}
                                             <i class="fa-solid fa-file-pdf text-danger ms-2"></i>
                                         </p>
                                     </div>
                                     <div class="col-sm-4">
                                         <small class="text-label">Pan No</small>
                                         <p class="mb-0 text-data">
-                                            {{userDetails.panNo}}
+                                            {{userDetails?.panNo}}
                                             <i class="fa-solid fa-file-pdf text-danger ms-2"></i>
                                         </p>
                                     </div>
                                     <div class="col-sm-4">
                                         <small class="text-label">License No</small>
                                         <p class="mb-0 text-data">
-                                            {{userDetails.licenceNo}}
+                                            {{userDetails?.licenceNo}}
                                             <i class="fa-solid fa-file-pdf text-danger ms-2"></i>
                                         </p>
                                     </div>

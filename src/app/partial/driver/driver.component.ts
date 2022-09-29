@@ -1,7 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { invalid } from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { CommanService } from 'src/app/services/comman.service';
@@ -22,6 +21,7 @@ export class DriverComponent implements OnInit {
   searchHideShow: boolean = true;
   clearHideShow: boolean = false;
   buttonFlag: boolean = true;
+  dobDisabled:boolean=true;
   buttonText = 'Save';
   licenceDoc: any;
   panDoc: any;
@@ -58,7 +58,7 @@ export class DriverComponent implements OnInit {
     this.driverRegForm = this.fb.group({
       profilePhoto: [''],
       mobileNo: ['', Validators.compose([Validators.required, Validators.pattern('^[6-9][0-9]{9}$'), Validators.maxLength(10)])],
-      firstName: ['', Validators.compose([Validators.required, Validators.maxLength(15)])],
+      firstName: ['', Validators.compose([Validators.required, Validators.maxLength(15),Validators.pattern('[a-zA-Z]')])],
       lastName: ['', Validators.compose([Validators.required, Validators.maxLength(15)])],
       dob: ['', Validators.required],
       licenceNumber: ['', Validators.compose([Validators.required, Validators.pattern('^[A-Z]{2}[0-9]{13}$'), Validators.maxLength(20), Validators.minLength(15)])],
@@ -177,7 +177,6 @@ export class DriverComponent implements OnInit {
   }
   viewDocument(flag:any){
    flag=='licence'?window.open(this.licenceDoc):flag=='pan'?window.open(this.panDoc):window.open(this.aadharDoc); 
-    
   }
   clearDoc(flag?: any) {
     flag == 'pan' ? (this.panUpload.nativeElement.value = '',this.panDoc='') :
@@ -207,6 +206,7 @@ export class DriverComponent implements OnInit {
     this.aadharDoc = driverData?.aadharCardDoc;
     this.profilePhotoupd = driverData?.profilePhoto;
   }
+  // -----------------------------------------------------close module-----------------------------------------------------------
   closeModels(formDirective: any) {
     this.highLightRow = '';
     formDirective.resetForm();
@@ -273,10 +273,9 @@ export class DriverComponent implements OnInit {
       this.comman.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
           this.spinner.hide();
-          formDirective.resetForm();
           this.highLightRow = '';
           this.tostrService.success(response.statusMessage);
-
+          formDirective.resetForm();
           this.getDriverDetails();
         }
         else {
