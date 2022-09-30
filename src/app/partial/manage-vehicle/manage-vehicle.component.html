@@ -13,7 +13,28 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <div class="card card-body border-0">
+        <!-- <div class="card card-body border-0">
+        <div class="card form-card">
+            <div class="card-header">
+                 <div class="row justify-content-between">
+                    <div class="col-sm-4"> -->
+                        <!-- <div class="row align-items-center">
+                            <div class="col-sm-auto">
+                                Vehicle List
+                            </div>
+                            <div class="col-sm-3">
+                            <form [formGroup]="serchVehicle" (ngSubmit)="paginationNo=1;getVehicleData('search')"> -->
+                                <!-- <div class="col-sm-8 form-group"> -->
+                                    <!-- <div class="input-group">
+                                        <input type="text" placeholder="Vehicle Number"
+                                            formControlName="searchVhl" (keypress)="this.vs.alphaNumeric($event)">
+                                        <div *ngIf="searchHideShow && this.serchVehicle.value.searchVhl"
+                                            class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></div>
+                                        <div *ngIf="clearHideShow" class="input-group-text"><i class="fa-solid fa-xmark"
+                                                (click)="clearSearchData()"></i></div>
+                                    </div> --> 
+
+  <div class="card card-body border-0">
             <div class="card form-card">
                 <div class="card-header">
                     <div class="row align-items-center">
@@ -22,16 +43,16 @@
                         </div>
 
                         <div class="col-sm-3">
-                            <form [formGroup]="serchVehicle">
+                            <form [formGroup]="serchVehicle" (ngSubmit)="paginationNo=1;getVehicleData('search')">
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Vehicle Number"
                                         formControlName="searchVhl" (keypress)="this.vs.alphaNumeric($event)">
                                     <div *ngIf="searchHideShow && this.serchVehicle.value.searchVhl"
-                                        class="input-group-text"><i class="fa-solid fa-magnifying-glass"
-                                            (click)="getVehicleData('search')"></i></div>
+                                        class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></div>
                                     <div *ngIf="clearHideShow" class="input-group-text"><i class="fa-solid fa-xmark"
                                             (click)="clearSearchData()"></i></div>
                                 </div>
+
                             </form>
                         </div>
                     </div>
@@ -55,7 +76,7 @@
                             currentPage: paginationNo, totalItems:totalItem}; let i = index"
                                 [ngClass]="{'highLightRow':highLightRow==vehicle.vehicleId}">
                                 <td>{{vehicle.srNo}}</td>
-                                <td><img src="../../../assets/images/Idle-vehicle.svg" alt=""></td>
+                                <td><img src="../../../assets/images/Vehicle-profile.svg" alt=""></td>
                                 <td>
                                     <span>{{vehicle.vehicleNo || '-'}}</span>
                                 </td>
@@ -89,10 +110,38 @@
                         </tbody>
                     </table>
                     <div *ngIf="!vehicleData">
-                        <tr colspan="5">
-                            <td>
-                                <div class="alert alert-danger text-center errorMSG">Data is not available</div>
+                     <tr colspan="5">
+                            <!--    <td>
+                                <span>{{vehicle.vehicleNo || '-'}}</span>
                             </td>
+                            <td>
+                                <span>{{vehicle.driverName || '-'}}</span>
+                            </td>
+                            <td>{{vehicle.mobileNo ||'-'}}</td>
+                            <td>
+                                <button class="btn btn-outline-primary text-primary" *ngIf="!vehicle.driverName?.length"
+                                    data-bs-toggle="modal" id="openmodal" data-bs-target="#AssignDriverModal"
+                                    (click)="getAssignDriver(vehicle)">Assign driver</button>
+                                <button class="btn btn-outline-warning text-warning" *ngIf="vehicle.driverName?.length"
+                                    (click)="assignDriverToVehicle(formDirective,vehicle)"> Unassign driver </button>
+                            </td>
+                            <td>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch"
+                                        id="flexSwitchCheckDefault" (change)="blockUnblockVhl(vehicle,$event)"
+                                        [checked]="vehicle.isBlockFlag">
+                                </div>
+                            </td>
+                            <td>
+                                <button class="btn btn-light-main btn-icon" data-bs-toggle="modal"
+                                    data-bs-target="#EditVehicleDetailsModal" (click)="editVehicleDetail(vehicle)">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </button> -->
+                               <td>
+                                <div class="alert alert-danger text-center errorMSG">Data is not available</div>
+                               </td>
+                        
+                            <!-- </td> -->
                         </tr>
                     </div>
                     <pagination-controls *ngIf="vehicleData?.length != 0" previousLabel="" nextLabel=""
@@ -165,8 +214,8 @@
                                     <button class="btn bg-light text-primary" (click)="uploadprofile.click()">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
-                                    <input type="file" name="myfile" class="form-control" formControlName="profile"
-                                        #uploadprofile (change)="profilePhotoUpd($event)" accept=".png,.jpg,.jpeg" />
+                                    <input type="file" name="myfile" formControlName="profile"
+                                        #uploadprofile (change)="profilePhotoUpd($event)" accept=".png,.jpg,.jpeg"/>
                                 </div>
                             </div>
                         </div>
@@ -175,7 +224,7 @@
                                 <div class="col-sm-4 form-group">
                                     <mat-form-field appearance="standard" class="w-100">
                                         <mat-label>Vehicle No</mat-label>
-                                        <input matInput class="form-control" formControlName="vhlNumber" required
+                                        <input matInput formControlName="vhlNumber" required
                                             [ngClass]="{'is-invalid':f['vhlNumber'].errors}"
                                             (keypress)="this.vs.alphaNumeric($event)" maxlength="15">
                                         <mat-error class="text-danger">
@@ -186,7 +235,7 @@
                                 <div class="col-sm-4 form-group">
                                     <mat-form-field appearance="standard" class="w-100">
                                         <mat-label>Date Added</mat-label>
-                                        <input matInput [matDatepicker]="picker" class="form-control"
+                                        <input matInput [matDatepicker]="picker"
                                             formControlName="date" required [ngClass]="{'is-invalid':f['date'].errors}">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
@@ -198,7 +247,7 @@
                                 <div class="col-sm-4 form-group">
                                     <mat-form-field appearance="standard" class="w-100">
                                         <mat-label>Plate No</mat-label>
-                                        <input matInput class="form-control" formControlName="plateNo" required
+                                        <input matInput formControlName="plateNo" required
                                             [ngClass]="{'is-invalid':f['plateNo'].errors}"
                                             (keypress)="this.vs.alphaNumeric($event)" maxlength="15">
                                         <mat-error class="text-danger">
@@ -209,7 +258,7 @@
                                 <div class="col-sm-4 form-group">
                                     <mat-form-field appearance="standard" class="w-100">
                                         <mat-label>Chassis No.</mat-label>
-                                        <input matInput class="form-control" formControlName="chassicNo" required
+                                        <input matInput formControlName="chassicNo" required
                                             [ngClass]="{'is-invalid':f['chassicNo'].errors}"
                                             (keypress)="this.vs.onlyDigits($event)" maxlength="15">
                                         <mat-error class="text-danger">
@@ -220,7 +269,7 @@
                                 <div class="col-sm-4 form-group">
                                     <mat-form-field appearance="standard" class="w-100">
                                         <mat-label>Brand</mat-label>
-                                        <input matInput class="form-control" formControlName="brand" required
+                                        <input matInput formControlName="brand" required
                                             [ngClass]="{'is-invalid':f['brand'].errors}"
                                             (keypress)="this.vs.onlyAlphabets($event)" maxlength="15">
                                         <mat-error class="text-danger">
@@ -231,7 +280,7 @@
                                 <div class="col-sm-4 form-group">
                                     <mat-form-field appearance="standard" class="w-100">
                                         <mat-label>Model</mat-label>
-                                        <input matInput class="form-control" formControlName="model" required
+                                        <input matInput formControlName="model" required
                                             [ngClass]="{'is-invalid':f['model'].errors}"
                                             (keypress)="this.vs.alphaNumeric($event)" maxlength="10">
                                         <mat-error class="text-danger">
@@ -256,7 +305,7 @@
                                                 <td>
                                                     <div class="form-group">
                                                         <mat-form-field appearance="standard" class="w-100">
-                                                            <input matInput class="form-control"
+                                                            <input matInput
                                                                 formControlName="insuranceExDate"
                                                                 placeholder="Document Number"
                                                                 [ngClass]="{'is-invalid':f['insuranceExDate'].errors}">
@@ -273,19 +322,22 @@
                                                 <td>
                                                     <div class="upload-btn-wrapper form-group">
                                                         <button type="submit" class="btn btn-light-main btn-icon"
-                                                            [disabled]="this.editVehicleForm.value.insuranceDoc?.length>0">
+                                                        *ngIf="!this.insuranceImg?.length">
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
-                                                        <input type="file" #uploadDoc name="myfile" class="form-control"
+                                                        <input type="file" #uploadDoc name="myfile"
                                                             formControlName="insuranceDoc"
                                                             (change)="imageUpload($event,'insurance')" accept=".pdf" />
                                                     </div>
+                                                    <button type="button" *ngIf="this.insuranceImg?.length" class="btn btn-light-main btn-icon-view" (click)="viewDocument('insurance')">
+                                                        <mat-icon>visibility</mat-icon>
+                                                    </button>
                                                 </td>
                                                 <td>
                                                     <button type="button"
                                                         class="btn bg-danger bg-opacity-10 text-danger"
                                                         (click)="clearDocument('uploadDoc')"
-                                                        [disabled]="!this.editVehicleForm.value.insuranceDoc?.length">
+                                                        [disabled]="!this.insuranceImg?.length">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
                                                 </td>
@@ -295,7 +347,7 @@
                                                 <td>
                                                     <div class="form-group">
                                                         <mat-form-field appearance="standard" class="w-100">
-                                                            <input matInput class="form-control"
+                                                            <input matInput
                                                                 formControlName="registerNo"
                                                                 placeholder="Document Number">
                                                         </mat-form-field>
@@ -307,19 +359,22 @@
                                                 <td>
                                                     <div class="upload-btn-wrapper form-group">
                                                         <button type="submit" class="btn btn-light-main btn-icon"
-                                                            [disabled]="this.editVehicleForm.value.registerDoc?.length>0">
+                                                        *ngIf="!this.registerImg?.length">
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
                                                         <input type="file" #uploadDoc1 name="myfile"
-                                                            class="form-control" formControlName="registerDoc"
-                                                            (change)="imageUpload($event,'register')" accept=".pdf" />
+                                                            formControlName="registerDoc"
+                                                            (change)="imageUpload($event,'register')" accept=".pdf"/>
                                                     </div>
+                                                    <button type="button" *ngIf="this.registerImg?.length" class="btn btn-light-main btn-icon-view" (click)="viewDocument('register')">
+                                                        <mat-icon>visibility</mat-icon>
+                                                    </button>
                                                 </td>
                                                 <td>
                                                     <button type="button"
                                                         class="btn bg-danger bg-opacity-10 text-danger"
                                                         (click)="clearDocument('uploadDoc1')"
-                                                        [disabled]="!this.editVehicleForm.value.registerDoc?.length">
+                                                        [disabled]="!this.registerImg?.length">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
                                                 </td>
@@ -329,7 +384,7 @@
                                                 <td>
                                                     <div class="form-group">
                                                         <mat-form-field appearance="standard" class="w-100">
-                                                            <input matInput class="form-control"
+                                                            <input matInput
                                                                 formControlName="pollutionExDate"
                                                                 placeholder="Document Number"
                                                                 [ngClass]="{'is-invalid':f['pollutionExDate'].errors}">
@@ -346,19 +401,22 @@
                                                 <td>
                                                     <div class="upload-btn-wrapper form-group">
                                                         <button type="submit" class="btn btn-light-main btn-icon"
-                                                            [disabled]="this.editVehicleForm.value.pollutionDoc?.length>0">
+                                                        *ngIf="!this.pollutionImg?.length">
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
                                                         <input type="file" #uploadDoc2 name="myfile"
-                                                            class="form-control" formControlName="pollutionDoc"
-                                                            (change)="imageUpload($event,'pollution')" accept=".pdf" />
+                                                            formControlName="pollutionDoc"
+                                                            (change)="imageUpload($event,'pollution')" accept=".pdf"/>
                                                     </div>
+                                                    <button type="button" *ngIf="this.pollutionImg?.length" class="btn btn-light-main btn-icon-view" (click)="viewDocument('pollution')">
+                                                        <mat-icon>visibility</mat-icon>
+                                                    </button>
                                                 </td>
                                                 <td>
                                                     <button type="submit"
                                                         class="btn bg-danger bg-opacity-10 text-danger"
                                                         (click)="clearDocument('uploadDoc2')"
-                                                        [disabled]="!this.editVehicleForm.value.pollutionDoc?.length">
+                                                        [disabled]="!this.pollutionImg?.length">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
                                                 </td>
@@ -368,7 +426,7 @@
                                                 <td>
                                                     <div class="form-group">
                                                         <mat-form-field appearance="standard" class="w-100">
-                                                            <input matInput class="form-control"
+                                                            <input matInput
                                                                 formControlName="fitnessExDate"
                                                                 placeholder="Document Number">
                                                         </mat-form-field>
@@ -380,19 +438,22 @@
                                                 <td>
                                                     <div class="upload-btn-wrapper form-group">
                                                         <button type="submit" class="btn btn-light-main btn-icon"
-                                                            [disabled]="this.editVehicleForm.value.fitnessDoc?.length>0">
+                                                        *ngIf="!this.fitnessImg?.length">
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
                                                         <input type="file" #uploadDoc3 name="myfile"
-                                                            class="form-control" formControlName="fitnessDoc"
-                                                            (change)="imageUpload($event,'fitness')" accept=".pdf" />
+                                                            formControlName="fitnessDoc"
+                                                            (change)="imageUpload($event,'fitness')"accept=".pdf" />
                                                     </div>
+                                                    <button type="button" *ngIf="this.fitnessImg?.length" class="btn btn-light-main btn-icon-view" (click)="viewDocument('fitness')">
+                                                        <mat-icon>visibility</mat-icon>
+                                                    </button>
                                                 </td>
                                                 <td>
                                                     <button type="submit"
                                                         class="btn bg-danger bg-opacity-10 text-danger"
                                                         (click)="clearDocument('uploadDoc3')"
-                                                        [disabled]="!this.editVehicleForm.value.fitnessDoc?.length">
+                                                        [disabled]="!this.fitnessImg?.length">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
                                                 </td>
@@ -402,7 +463,7 @@
                                                 <td>
                                                     <div class="form-group">
                                                         <mat-form-field appearance="standard" class="w-100">
-                                                            <input matInput class="form-control"
+                                                            <input matInput 
                                                                 formControlName="permitNo" placeholder="Document Number"
                                                                 [ngClass]="{'is-invalid':f['permitNo'].errors}"
                                                                 (keypress)="this.vs.alphaNumeric($event)">
@@ -419,19 +480,22 @@
                                                 <td>
                                                     <div class="upload-btn-wrapper">
                                                         <button type="submit" class="btn btn-light-main btn-icon"
-                                                            [disabled]="this.editVehicleForm.value.permitDoc?.length>0">
+                                                        *ngIf="!this.nationalImg?.length">
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
                                                         <input type="file" #uploadDoc4 name="myfile"
-                                                            class="form-control" formControlName="permitDoc"
-                                                            (change)="imageUpload($event,'national')" accept=".pdf" />
+                                                           formControlName="permitDoc"
+                                                            (change)="imageUpload($event,'national')" accept=".pdf"/>
                                                     </div>
+                                                    <button type="button" *ngIf="this.nationalImg?.length" class="btn btn-light-main btn-icon-view" (click)="viewDocument('national')">
+                                                        <mat-icon>visibility</mat-icon>
+                                                    </button>
                                                 </td>
                                                 <td>
                                                     <button type="submit"
                                                         class="btn bg-danger bg-opacity-10 text-danger"
                                                         (click)="clearDocument('uploadDoc4')"
-                                                        [disabled]="this.editVehicleForm.value.permitDoc?.length==0">
+                                                        [disabled]="!this.nationalImg?.length">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
                                                 </td>

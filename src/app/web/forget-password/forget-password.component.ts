@@ -23,14 +23,15 @@ export class ForgetPasswordComponent implements OnInit {
   passContainer: boolean = false;
   mobileNoSubmitted: boolean = false;
   passwordChenged: boolean = false;
+  otpFlag:boolean=false;
   otpLoginUserId!: number;
   mobileNum: any;
   checkOtp:any;
   intervalId = 0;
   timer = '';
   timerFlag: boolean = true;
-  seconds: any;
-
+  timeLeft: any = 10;
+  interval:any;
   constructor(private fb: FormBuilder,
     public vs: ValidationService,
     private comman: CommanService,
@@ -59,8 +60,6 @@ export class ForgetPasswordComponent implements OnInit {
     })
   }
 
-  ngOnDestroy() { this.clearTimer(); }
-  stop() { this.clearTimer(); }
   // -------------------------------------------OTP-----------------------------------------------------------
   sendOTP() {
     this.countDown();
@@ -91,41 +90,48 @@ export class ForgetPasswordComponent implements OnInit {
     }
   }
   // -----------------------------------------Timer------------------------------------------------------------------------
-  countDown() {
-    this.clearTimer();
-    this.seconds =60;
+countDown() {
+    this.timeLeft = 60;
     this.timerFlag = true;
-    this.intervalId=window.setInterval(()=>{
-      this.seconds--;
-      if(this.seconds == 0){
-        clearInterval(this.intervalId);
-        this.timerFlag=false;
-      }
-      this.timer=this.seconds;
-    },1000);
+      this.interval = setInterval(() => {
+        if(this.timeLeft > 0) {
+          this.timeLeft--;
+          this.timer=this.timeLeft;
+        } else {
+          this.pauseTimer();
+          this.timerFlag=false;
+        }
+      },1000)
   }
-  clearTimer() {
-    clearInterval(this.intervalId);
+  pauseTimer() {
+    clearInterval(this.interval);
   }
+
 // -----------------------------------------------------verify OTp------------------------------------------------------------
-  verifyOTP() {
+onchangeOTP(){
+  this.otpFlag=true;
+}  
+verifyOTP() {
     let otp = this.verifyOTPForm.value.otpA + this.verifyOTPForm.value.otpB + this.verifyOTPForm.value.otpC + this.verifyOTPForm.value.otpD + this.verifyOTPForm.value.otpE;
     if (this.verifyOTPForm.invalid) {
+      this.OTPContainer=true;
       return;
     }
     else if(this.checkOtp!=otp){
+      this.OTPContainer=false;
       this.toastrService.error("Invalid OTP")
       return;
     }
     else {
+      this.OTPContainer=false;
       this.spinner.show();
-      // let otp = this.verifyOTPForm.value.otpA + this.verifyOTPForm.value.otpB + this.verifyOTPForm.value.otpC + this.verifyOTPForm.value.otpD + this.verifyOTPForm.value.otpE;
       this.comman.setHttp('get', 'login-by-otp?MobileNo=' + this.mobileNum + '&OTP=' + otp, false, false, false, 'loginBaseUrlApi');
       this.comman.getHttp().subscribe((res: any) => {
         if (res.statusCode == "200") {
           this.spinner.hide();
           this.toastrService.success(res.statusMessage);
-          this.otpLoginUserId = res.responseData[0].id
+          this.otpLoginUserId = res.responseData[0].id;
+          this.otpFlag=false;
           this.OTPContainer = false;
           this.passContainer = true;
 
@@ -147,7 +153,7 @@ export class ForgetPasswordComponent implements OnInit {
         this.comman.getHttp().subscribe((res: any) => {
           if (res.statusCode == "200") {
             this.spinner.hide();
-            this.toastrService.success(res.statusMessage);
+            this.toastrService.success(res.responseData);
             this.changePassword.reset();
             this.router.navigate(['/login']);
             this.spinner.hide();

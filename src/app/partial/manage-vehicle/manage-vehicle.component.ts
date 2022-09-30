@@ -159,6 +159,7 @@ export class ManageVehicleComponent implements OnInit {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.driverData = response.responseData.responseData1;
+        console.log(this.driverData)
         this.tostrservice.success(response.statusMessage);
       } else {
         this.spinner.hide();
@@ -170,6 +171,7 @@ export class ManageVehicleComponent implements OnInit {
       })
   }
   assignDriverToVehicle(formDirective: any, vehicleData?: any) {
+    console.log(vehicleData)
     let param = {
       "id": 0,
       "driverId": this.assignDriverForm.value.driverName ? this.assignDriverForm.value.driverName : vehicleData.driverId,
@@ -200,11 +202,12 @@ export class ManageVehicleComponent implements OnInit {
         this.spinner.hide();
       })
   }
+  // -------------------------------------------close Model-------------------------------------------------------------------
   closeModels(formDirective: any) {
     formDirective.resetForm();
     this.assignDriverForm.controls['driverName'].setValue('');
   }
-  // -----------------------------------Update-----------------------------------------------------------------
+  // -----------------------------------Update---------------------------------------------------------------------------------
   editVehicleDetail(vhl: any) {
     this.spinner.show();
     this.comman.setHttp('get', 'get-vehicles?vehicleId=' + vhl.vehicleId, true, false, false, 'userDetailsBaseUrlApi');
@@ -224,6 +227,7 @@ export class ManageVehicleComponent implements OnInit {
       })
   }
   patchEditVhlData(data: any, vehicleName: any) {
+    console.log(data);
     this.highLightRow = data.vehicleId;
     this.vhlId = data.vehicleId;
     this.driverName = vehicleName.driverName;
@@ -244,62 +248,76 @@ export class ManageVehicleComponent implements OnInit {
       fitnessExDate: this.datepipe.transform(data?.fitnessExpiryDate, 'dd-MM-yyyy'),
       fitnessDoc: data?.fitnessDoc,
       permitNo: data?.nationalPermit,
+      permitDoc:data?.nationalPermitDoc
     })
   }
   // ---------------------------------------------------------------------Upload Photo And Document---------------------------
   profilePhotoUpd(event: any) {
-    // this.spinner.show();
+    this.spinner.show();
     let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'vehicleProfile', "png,jpg,jpeg");
     documentUrl.subscribe({
       next: (ele: any) => {
         if (ele.statusCode == "200") {
-          // this.spinner.hide();
+          this.spinner.hide();
           this.profilePhotoImg = ele.responseData;
           this.profilePhoto = this.profilePhotoImg;
         }
         else {
-          // this.spinner.hide();
+          this.spinner.hide();
           this.error.handelError(ele.statusCode);
         }
       }
+    },(error: any) => {
+      this.error.handelError(error.status);
     })
+    this.spinner.hide();
   }
 
   imageUpload(event: any, flag: any) {
-    // this.spinner.show();
+    this.spinner.show();
     let documentUrl: any = this.sharedService.uploadDocuments(event, "pdf");
     documentUrl.subscribe({
       next: (ele: any) => {
         if (ele.statusCode == "200") {
-          // this.spinner.hide();
+          this.spinner.hide();
           flag == 'insurance' ? this.insuranceImg = ele.responseData : flag == 'register' ? this.registerImg = ele.responseData : flag == 'pollution' ? this.pollutionImg = ele.responseData : flag == 'fitness' ? this.fitnessImg = ele.responseData : this.nationalImg = ele.responseData;
           this.tostrservice.success(ele.statusMessage);
         }
         else {
-          // this.spinner.hide();
+          this.spinner.hide();
           this.tostrservice.success(ele.statusMessage);
         }
       }
+    },(error: any) => {
+      this.error.handelError(error.status);
     })
+    this.spinner.hide();
   }
   clearDocument(flag: any) {
-    flag == 'uploadDoc' ? (this.uploadDoc.nativeElement.value = null, this.editVehicleForm.controls['insuranceDoc'].setValue('')) :
-      flag == 'uploadDoc1' ? (this.uploadDoc1.nativeElement.value = null, this.editVehicleForm.controls['registerDoc'].setValue('')) :
-        flag == 'uploadDoc2' ? (this.uploadDoc2.nativeElement.value = null, this.editVehicleForm.controls['pollutionDoc'].setValue('')) :
-          flag == 'uploadDoc3' ? (this.uploadDoc3.nativeElement.value = null, this.editVehicleForm.controls['fitnessDoc'].setValue('')) :
-            (this.uploadDoc4.nativeElement.value = null, this.editVehicleForm.controls['permitDoc'].setValue(''));
+    flag == 'uploadDoc' ? (this.uploadDoc.nativeElement.value = '', this.insuranceImg ='') :
+      flag == 'uploadDoc1' ? (this.uploadDoc1.nativeElement.value = '',this.registerImg='') :
+        flag == 'uploadDoc2' ? (this.uploadDoc2.nativeElement.value = '',this.pollutionImg='') :
+          flag == 'uploadDoc3' ? (this.uploadDoc3.nativeElement.value = '', this.fitnessImg='') :
+            (this.uploadDoc4.nativeElement.value = '', this.nationalImg='');
+  }
+  viewDocument(flag:any){
+    flag=='insurance'?window.open(this.insuranceImg):flag=='register'?window.open(this.registerImg):flag=='pollution'?window.open(this.pollutionImg):flag=='fitness'?window.open(this.fitnessImg):window.open(this.nationalImg);
   }
   // --------------------------------------------save--------------------------------------------------------------
   saveVehicleDetails(formDirective: any) {
     this.highLightRow = '';
     let vhlaData = (this.editVehicleForm.value.vhlNumber).split('');
+    let first=vhlaData.splice(0, 2).join('');
+    let second=vhlaData.splice(0, 2).join('');
+    let third=vhlaData.splice(0, 2).join('');
+    let forth=vhlaData.join('');
     let param = {
       "oldVehNo1": "",
       "oldVehNo2": "",
-      "newVehNo1": vhlaData.splice(0, 2).join(''),
-      "newVehNo2": vhlaData.splice(4, 2).join(''),
-      "newVehNo3": vhlaData.splice(2, 2).join(''),
-      "newVehNo4": vhlaData.join(''),
+      "newVehNo1":first ,
+      "newVehNo2":second ,
+      "newVehNo3":third,
+      "newVehNo4":forth,
       "driverName": this.driverName,
       "driverNo": "",
       "vehicleTypeId": 0,
