@@ -50,7 +50,8 @@
                             </div>
                         </div>
                         <div class="col-sm-4 text-end">
-                            <button type="button" class="btn btn-add" data-bs-toggle="modal" data-bs-target="#AddDriverModal">
+                            <button type="button" class="btn btn-add" data-bs-toggle="modal"
+                                data-bs-target="#AddDriverModal">
                                 <i class="fa-solid fa-plus"></i>
                             </button>
                         </div>
@@ -70,7 +71,8 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let driver of driverDetails | paginate: {itemsPerPage: pageSize, 
-                                currentPage: paginationNo, totalItems:totalItem};let i=index" [ngClass]="{'highLightRow':highLightRow==driver.driverId}">
+                                currentPage: paginationNo, totalItems:totalItem};let i=index"
+                                [ngClass]="{'highLightRow':highLightRow==driver.driverId}">
                                 <td>{{((paginationNo + 1) * 10 + i + 1)-20}}</td>
                                 <td>
                                     <img src="../../../assets/images/Driver-profile.svg" alt="" class="vehicle-image">
@@ -87,11 +89,13 @@
                                 </td>
                                 <td>
                                     <div class="d-flex">
-                                        <button type="button" class="btn btn-light-main btn-icon me-2" data-bs-toggle="modal"
-                                            data-bs-target="#AddDriverModal" (click)="editDriverData(driver)">
+                                        <button type="button" class="btn btn-light-main btn-icon me-2"
+                                            data-bs-toggle="modal" data-bs-target="#AddDriverModal"
+                                            (click)="editDriverData(driver)">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                         </button>
-                                        <button type="button" class="btn bg-danger bg-opacity-10 text-danger" (click)="removeDriverData(driver)">
+                                        <button type="button" class="btn bg-danger bg-opacity-10 text-danger"
+                                            (click)="removeDriverData(driver)">
                                             <i class="fa-solid fa-trash-can"></i>
                                         </button>
                                     </div>
@@ -131,7 +135,8 @@
                             <div class="position-relative form-group">
                                 <img src="{{profilePhotoupd}}" class="vehicle-image">
                                 <div class="vehicle-buttons d-flex flex-column upload-btn-wrapper">
-                                    <button type="button" class="btn bg-light text-primary" (click)="profileUpload.click()">
+                                    <button type="button" class="btn bg-light text-primary"
+                                        (click)="profileUpload.click()">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
                                     <input type="file" #profileUpload name="myfile" accept=".jpg,.jpeg,.png"
@@ -148,7 +153,7 @@
                                             (keyup)="this.vs.noSpaces($event)" maxlength="10" format="number">
                                         <mat-error *ngIf="f['mobileNo'].errors">
                                             <span class="text-danger" *ngIf="f['mobileNo'].hasError('required')">
-                                                 Mobile Number is required</span>
+                                                Mobile Number is required</span>
                                             <span class="text-danger" *ngIf="f['mobileNo'].hasError('pattern')">Enter
                                                 valid mobile Number</span>
                                         </mat-error>
@@ -202,7 +207,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>     
+                                            <tr>
                                                 <td>Licence Number</td>
                                                 <td>
                                                     <div class="form-group">
@@ -221,7 +226,8 @@
                                                 </td>
                                                 <td>
                                                     <div class="upload-btn-wrapper form-group">
-                                                        <button type="button" *ngIf="!this.licenceDoc?.length" class="btn btn-light-main btn-icon">
+                                                        <button type="button" *ngIf="!this.licenceDoc?.length"
+                                                            class="btn btn-light-main btn-icon">
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
                                                         <input type="file" #licenceUpload name="myfile"
@@ -234,7 +240,9 @@
                                                 </td>
                                                 <td>
                                                     <button type="button"
-                                                        class="btn bg-danger bg-opacity-10 text-danger" [disabled]="!this.licenceDoc?.length" (click)="clearDoc('licence')">
+                                                        class="btn bg-danger bg-opacity-10 text-danger"
+                                                        [disabled]="!this.licenceDoc?.length"
+                                                        (click)="clearDoc('licence')">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
                                                 </td>
@@ -252,32 +260,36 @@
                                                                 </mat-error>
                                                         </mat-form-field>
                                                     </div>
-                                                </td>                       
+                                                </td>
                                                 <td>
                                                     <img src="assets/images/Driver-profile.svg" class="vehicle-image">
                                                 </td>
                                                 <td>
                                                     <div class="upload-btn-wrapper form-group">
-                                                        <button type="button" class="btn btn-light-main btn-icon" *ngIf="!this.aadharDoc?.length">
+                                                        <button type="button" class="btn btn-light-main btn-icon"
+                                                            *ngIf="!this.aadharDoc?.length">
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
                                                         <input type="file" name="myfile" #aadharUpload (keyup)="this.vs.noSpaces($event)" (keypress)="this.vs.onlyDigits($event)"
                                                          formControlName="aadharCardDoc" (change)="imageUpload($event,'aadhar')" required matTooltip="Upload only PDF file" accept=".pdf"/>
                                                     </div>
-                                                    <button type="button" *ngIf="this.aadharDoc?.length" class="btn btn-light-main btn-icon-view" (click)="viewDocument('aadhar')">
+                                                    <button type="button" *ngIf="this.aadharDoc?.length"
+                                                        class="btn btn-light-main btn-icon-view"
+                                                        (click)="viewDocument('aadhar')">
                                                         <mat-icon>visibility</mat-icon>
                                                     </button>
                                                 </td>
                                                 <td>
                                                     <button type="button"
-                                                        class="btn bg-danger bg-opacity-10 text-danger" [disabled]="!this.aadharDoc?.length"
-                                                         (click)="clearDoc('aadhar')">
+                                                        class="btn bg-danger bg-opacity-10 text-danger"
+                                                        [disabled]="!this.aadharDoc?.length"
+                                                        (click)="clearDoc('aadhar')">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
                                                 </td>
                                             </tr>
                                             <tr>
-                                            <tr>   
+                                            <tr>
                                                 <td>PAN Number</td>
                                                 <td>
                                                     <div class="form-group">
@@ -296,19 +308,23 @@
                                                 </td>
                                                 <td>
                                                     <div class="upload-btn-wrapper form-group">
-                                                        <button type="button" class="btn btn-light-main btn-icon" *ngIf="!this.panDoc?.length">
+                                                        <button type="button" class="btn btn-light-main btn-icon"
+                                                            *ngIf="!this.panDoc?.length">
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
                                                         <input type="file" name="myfile" #panUpload
                                                             formControlName="panCardDoc" (change)="imageUpload($event,'pan')" required matTooltip="Upload only PDF file" accept=".pdf"/>
                                                     </div>
-                                                    <button type="button" *ngIf="this.panDoc?.length" class="btn btn-light-main btn-icon-view" (click)="viewDocument('pan')">
+                                                    <button type="button" *ngIf="this.panDoc?.length"
+                                                        class="btn btn-light-main btn-icon-view"
+                                                        (click)="viewDocument('pan')">
                                                         <mat-icon>visibility</mat-icon>
                                                     </button>
                                                 </td>
                                                 <td>
                                                     <button type="button"
-                                                        class="btn bg-danger bg-opacity-10 text-danger" [disabled]="!this.panDoc?.length" (click)="clearDoc('pan')">
+                                                        class="btn bg-danger bg-opacity-10 text-danger"
+                                                        [disabled]="!this.panDoc?.length" (click)="clearDoc('pan')">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
                                                 </td>
@@ -320,8 +336,10 @@
                                     <mat-form-field appearance="standard" class="w-100">
                                         <textarea matInput formControlName="presentAddress" placeholder="Present Address" maxlength="150"></textarea>
                                         <mat-error *ngIf="f['presentAddress'].errors">
-                                            <span class="text-danger" *ngIf="f['presentAddress'].hasError('required')">Present Address is
-                                                required</span></mat-error>
+                                            <span class="text-danger"
+                                                *ngIf="f['presentAddress'].hasError('required')">Present Address is
+                                                required</span>
+                                        </mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-sm-6 form-group">
@@ -329,16 +347,19 @@
                                         <textarea matInput
                                             formControlName="permanentAddress"  placeholder="Permanent Address" maxlength="150"></textarea>
                                         <mat-error *ngIf="f['permanentAddress'].errors">
-                                            <span class="text-danger" *ngIf="f['permanentAddress'].hasError('required')">Permanent Address is
-                                                required</span></mat-error>
+                                            <span class="text-danger"
+                                                *ngIf="f['permanentAddress'].hasError('required')">Permanent Address is
+                                                required</span>
+                                        </mat-error>
                                     </mat-form-field>
                                 </div>
                                 <ng-container class="form-group">
                                     <input matInput class="d-none" formControlName="flag">
                                 </ng-container>
-                            </div>  
+                            </div>
                         </div>
-                   
+
+                    </div>
                 </div>
             </div>
             <div class="modal-footer border-0">
@@ -349,7 +370,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
     </div>
 </div>

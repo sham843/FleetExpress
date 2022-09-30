@@ -9,13 +9,28 @@ import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { BlockUnblockComponent } from 'src/app/dialogs/block-unblock/block-unblock.component';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-
+export interface PeriodicElement {
+  name: string;
+  position: number;
+  weight: number;
+  symbol: string;
+  description: string;
+}
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class SettingsComponent implements OnInit {
+  columnsToDisplay:any=['SR.NO','VEHICLE NO','VEHICLE TYPE'];
+  columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   changePassForm!:FormGroup;
   hide = true;
   hide1=true;
@@ -34,8 +49,9 @@ export class SettingsComponent implements OnInit {
   pageSize: any;
   pageNumber: number=1;
   searchContent = new FormControl();
-  columnsToDisplay:any=['SR.NO','VEHICLE NO','VEHICLE TYPE'];
   expandedElement: any;
+  vehicleNotificationFlag:boolean=false;
+  totalVehicleNotificatinsData:any;
   getSliderTickInterval(): number | 'auto' {
     if (this.showTicks) {
       return this.autoTicks ? 'auto' : this.tickInterval;
@@ -119,12 +135,41 @@ get fpass(){
 get f(){
   return this.notificationForm.controls;
 }
+showvehicleNotification(tabLabel:any){
+  if(tabLabel=='VehicleNotifications'){
+    this.vehicleNotificationFlag=true;
+  }else{
+    this.vehicleNotificationFlag=false;
+  }
+}
 getNotificatinsData() {
   this.comman.setHttp('get', 'notification/get-alert-types', true, false, false, 'vehicletrackingBaseUrlApi');
   this.subscription = this.comman.getHttp().subscribe({
     next: (res: any) => {
       if (res.statusCode === "200") {
         this.notificatinsData = res.responseData;
+        // this.notificatinsData.sort((a,b) => a.sortOrder.localeCompare(b.sortOrder));
+        this.notificatinsData.sort(function (a, b) {
+          return a.sortOrder - b.sortOrder;
+        });
+        this.notificationForm.patchValue({
+          BoxopenOff:this.notificatinsData[0].isNotification,
+          BoxopenOn:this.notificatinsData[1].isNotification,
+          GeofenceIn:this.notificatinsData[4].isNotification,
+          GeofenceOut:this.notificatinsData[5].isNotification,
+          IgnitionOff:this.notificatinsData[7].isNotification,
+          IgnitionOn:this.notificatinsData[8].isNotification,
+          PowerCut:this.notificatinsData[11].isNotification,
+          PowerConnected:this.notificatinsData[10].isNotification,
+          Lowbatteryremoved:false,
+          ConnectbacktomainBattery:false,
+          DisconnectBattery:false,
+          Lowbattery:false,
+          OverSpeed:false,
+          Tilt:false,   
+        })
+        console.log(this.notificationForm.value);
+
       } else {
         if (res.statusCode != "404") {
           this.error.handelError(res.statusCode)
@@ -141,6 +186,8 @@ getVehicleNotificatinsData() {
     next: (res: any) => {
       if (res.statusCode === "200") {
         this.vehicleNotificatinsData = res.responseData.responseData1 ;
+        this.totalVehicleNotificatinsData=res.responseData.responseData2?.totalRecords
+
       } else {
         if (res.statusCode != "404") {
           this.vehicleNotificatinsData=[];
@@ -156,7 +203,7 @@ getVehicleNotificatinsData() {
 }
 switchNotification(rowData:any, lable:any){ 
   this.spinner.show();
-  this.comman.setHttp('PUT', 'notification/set-Visibity-Notification?alertype='+rowData.alertType+'&Isnotification='+rowData.isVisibleToOfficer, true, false, false, 'vehicletrackingBaseUrlApi');
+  this.comman.setHttp('PUT', 'notification/set-Visibity-Notification?alertype='+rowData.alertType+'&Isnotification='+ !rowData.isNotification , true, false, false, 'vehicletrackingBaseUrlApi');
   this.subscription = this.comman.getHttp().subscribe({
     next: (res: any) => {
       this.spinner.hide();
