@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { CommanService } from 'src/app/services/comman.service';
 import { ErrorsService } from 'src/app/services/errors.service';
@@ -43,14 +44,10 @@ export class TrackingComponent implements OnInit {
     private common: CommanService,
     private error: ErrorsService,
     private fb: FormBuilder,
-    private spinner: NgxSpinnerService) { }
+    private spinner: NgxSpinnerService,
+    private toastrService:ToastrService) { }
 
   ngOnInit(): void {
-    this.sharedService.vehicleCount().subscribe({
-      next: (ele: any) => {
-        this.totalVehicle = ele.responseData.responseData2.totalRecords;
-      }
-    })
     this.getMaintananceForm();
     this.getAllVehicleListData();
     this.setIndex(0)
@@ -73,6 +70,7 @@ export class TrackingComponent implements OnInit {
   }
   selectionTab(lable: any) {
     this.selectedTab = lable;
+    this.selectedIndex=0;
   }
 
   getAllVehicleListData() {
@@ -84,7 +82,6 @@ export class TrackingComponent implements OnInit {
           res.responseData.map((x: any) => {
             x.deviceDatetime = new Date(x.deviceDatetime);
           })
-
           this.allVehiclelData = res.responseData;
           this.allRunningVehiclelData = res.responseData.filter((x: any) => x.gpsStatus == 'Running');
           this.allStoppedVehiclelData = res.responseData.filter((x: any) => x.gpsStatus == 'Stopped');
@@ -114,15 +111,14 @@ export class TrackingComponent implements OnInit {
       return;
     } else {
       const userFormData = this.maintananceForm.value;
-      let vehiclearray: any = [];
-
       const obj = {
+        ... userFormData, 
+        ...this.common.createdByProps(),
         "id": 0,
+        "maintenanceType":parseInt(userFormData?.maintenanceType),
         "vehicleId": this.vehicleDetails?.vehicleId,
         "vehicleNumber":this.vehicleDetails?.vehicleNo,
         "flag": "I",
-        ... userFormData, 
-        ...this.common.createdByProps()
       }
       this.spinner.show();
       this.common.setHttp('post', 'maintenance/save-update-maintenance', true, obj, false, 'vehicletrackingBaseUrlApi');
@@ -130,25 +126,21 @@ export class TrackingComponent implements OnInit {
         next: (res: any) => {
           this.spinner.hide();
           if (res.statusCode === "200") {
-            // if (res.responseData.responseData1[0].isSuccess) {
-            //   this.roleDtArr = res.responseData;
-            //   this.getUserTableData();
-            //   this.toastrService.success(res.responseData.responseData1[0].msg);
-            // } else {
-            //   this.toastrService.error(res.responseData.responseData1[0].msg)
-            // }
+            if (res.responseData.responseData1[0].isSuccess) {
+              this.toastrService.success(res.responseData.statusMessage);
+              this.getAllVehicleListData();
+            } else {
+              this.toastrService.error(res.responseData.statusMessage)
+            }
 
           } else {
             if (res.statusCode != "404") {
               this.error.handelError(res.statusCode)
             }
           }
-          //this.modalClose();
-          //this.editFlag = false;
         },
         error: ((error: any) => {
           this.spinner.hide();
-          //  this.editFlag=false;
           this.error.handelError(error.status)
         })
 

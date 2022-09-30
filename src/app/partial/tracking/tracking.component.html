@@ -61,8 +61,8 @@
                                 <a class="text-danger"  [ngbPopover]="popContent" placement="end" >
                                     <p class="vehicle-no">{{item?.vehicleNo}} </p>
                                 </a>
-                                <!-- <span class="text-dark" >({{' ticket raised '}})</span>
-                                 <span class="text-primary"  data-bs-toggle="modal" data-bs-target="#MaintenanceviewModal"> View Details</span> -->
+                                <span class="text-dark" >({{' ticket raised '}})</span>
+                                 <span class="text-primary"  data-bs-toggle="modal" data-bs-target="#MaintenanceviewModal"> View Details</span>
                                 <span class="text-danger veh-status">
                                     <i class="fa-solid fa-circle me-2"></i>{{item?.gpsStatus}}
                                 </span>
@@ -1112,15 +1112,15 @@
                             </div> -->
                             <div class="d-flex align-items-center ps-3">
                                 <div class="form-check form-switch d-flex align-items-center me-4">
-                                    <input class="me-2" type="radio" value="Scheduled" id="flexRadioDefault1" formControlName="maintenanceType">
+                                    <input class="me-2" type="radio" value="1" id="flexRadioDefault1" formControlName="maintenanceType">
                                     <label class="form-check-label" for="flexRadioDefault1">Scheduled</label>
                                 </div>
                                 <div class="form-check form-switch d-flex align-items-center me-4">
-                                    <input class="me-2" type="radio" value="Repair" id="flexRadioDefault2" formControlName="maintenanceType">
+                                    <input class="me-2" type="radio" value="2" id="flexRadioDefault2" formControlName="maintenanceType">
                                     <label class="form-check-label" for="flexRadioDefault2">Repair</label>
                                 </div>
                                 <div class="form-check form-switch d-flex align-items-center">
-                                    <input class="me-2" type="radio" value="Accident"id="flexRadioDefault3"  formControlName="maintenanceType">
+                                    <input class="me-2" type="radio" value="3"id="flexRadioDefault3"  formControlName="maintenanceType">
                                     <label class="form-check-label" for="flexRadioDefault3">Accident</label>
                                 </div>
                             </div>
@@ -1181,7 +1181,7 @@
 </div>
 
 <!-- Modal for raise maintenance View -->
-<div class="modal fade" id="MaintenanceviewModal" tabindex="-1" aria-labelledby="MaintenanceModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="MaintenanceviewModal" tabindex="-1" aria-labelledby="MaintenanceModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
                 <div class="modal-header bg-light-gradient text-dark">
@@ -1245,4 +1245,4 @@
                 </div>
         </div>
     </div>
-</div>
+</div> -->
