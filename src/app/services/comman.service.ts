@@ -14,7 +14,9 @@ export class CommanService {
   userObjData: any;
   tokanExpiredFlag: boolean = false;
   loginObj: any;
+  userData:any;
   disableCloseFlag: boolean = true//modal disableCloseFlag
+  
   getBaseurl(url: string) {
     switch (url) {
       case 'vehicletrackingBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/'; break
@@ -51,8 +53,8 @@ export class CommanService {
     return sessionData;
   }
   getUser() {
-    let userData = this.getsessionStorageData();
-    return userData;
+    this.userData = this.getsessionStorageData();
+    return this.userData;
   }
   getUserId() {
     let vehOwnerId = this.getsessionStorageData();
@@ -72,6 +74,27 @@ export class CommanService {
     let sessionData = JSON.parse(loginObj).responseData3;
     return sessionData.expireAccessToken;
   }
+  createdByProps(): any {
+    return {
+        "createdBy": (this.userData && (this.userData.id ?? 0)) || 0,
+        // "modifiedBy": (this.userData && (this.userData.id ?? 0)) || 0,
+        "createdDate": this.getCreatedDate(),
+        // "modifiedDate": this.getCreatedDate(),
+        "isDeleted": false
+    }
+}
+
+getCreatedDate() {
+  const date = new Date();
+  return date.getFullYear() +
+      "-" + ((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1) +
+      "-" + (date.getDate() < 10 ? '0' : '') + date.getDate() +
+      "T" + (date.getHours() < 10 ? '0' : '') + date.getHours() +
+      ":" + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes() +
+      ":" + (date.getSeconds() < 10 ? '0' : '') + date.getSeconds() +
+      "." + (date.getMilliseconds() < 10 ? '00' : (date.getMilliseconds() < 100 ? '0' : '')) + date.getMilliseconds() +
+      "Z"
+}
   getHttp(): any {
     let temp: any = undefined;
     !this.httpObj.options.body && (delete this.httpObj.options.body)
