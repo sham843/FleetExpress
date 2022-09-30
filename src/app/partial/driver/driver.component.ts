@@ -32,6 +32,7 @@ export class DriverComponent implements OnInit {
   pageSize: number = 10;
   highLightRow!: string;
   date: any = new Date();
+  maxDate=new Date();
   profilePhotoupd: any = 'assets/images/Driver-profile.svg';
   @ViewChild('closeModel') closeModel: any;
   @ViewChild('panUpload') panUpload: any;
@@ -58,8 +59,8 @@ export class DriverComponent implements OnInit {
     this.driverRegForm = this.fb.group({
       profilePhoto: [''],
       mobileNo: ['', Validators.compose([Validators.required, Validators.pattern('^[6-9][0-9]{9}$'), Validators.maxLength(10)])],
-      firstName: ['', Validators.compose([Validators.required, Validators.maxLength(15),Validators.pattern('[a-zA-Z]')])],
-      lastName: ['', Validators.compose([Validators.required, Validators.maxLength(15)])],
+      firstName: ['', Validators.compose([Validators.required, Validators.maxLength(15),Validators.pattern('[a-zA-Z][a-zA-Z ]+')])],
+      lastName: ['', Validators.compose([Validators.required, Validators.maxLength(15),Validators.pattern('[a-zA-Z][a-zA-Z ]+')])],
       dob: ['', Validators.required],
       licenceNumber: ['', Validators.compose([Validators.required, Validators.pattern('^[A-Z]{2}[0-9]{13}$'), Validators.maxLength(20), Validators.minLength(15)])],
       licenceDoc: ['', Validators.required],
