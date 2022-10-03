@@ -39,7 +39,7 @@ export class ManageVehicleComponent implements OnInit {
   vhlId: number | any;
   highLightRow!: string;
   assignUnassignVhl: boolean = false;
-  profilePhoto: string = "assets/images/Driver-profile.svg";
+  profilePhoto: string= "assets/images/Driver-profile.svg";
   insuranceUpload: string = "assets/images/Driver-profile.svg";
   date: any = new Date();
   subscription!: Subscription;
