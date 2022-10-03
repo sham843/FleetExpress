@@ -24,7 +24,7 @@
       "dom"
     ],
     // unused variable remove
-    "noUnusedLocals":true,
+    "noUnusedLocals": true,
     "noUnusedParameters": true
   },
   "angularCompilerOptions": {

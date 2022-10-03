@@ -214,6 +214,7 @@ mat-form-field{
 }
 .dashboard-table{
   font-size: 0.85rem;
+  font-family: "Poppins", sans-serif !important;
 }
 .dashboard-table th{
   background-color:#fff;
@@ -321,6 +322,10 @@ mat-form-field{
 }
 .mat-slider.mat-accent .mat-slider-track-fill, .mat-slider.mat-accent .mat-slider-thumb, .mat-slider.mat-accent .mat-slider-thumb-label{
   background-color: var(--main-color) !important;
+}
+.mat-form-field-appearance-outline .mat-form-field-outline-thick,
+.mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick{
+  color: #3C8FF8 !important;
 }
 .popover-body{
   font-family: 'Poppins';
