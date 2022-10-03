@@ -11,8 +11,8 @@ import 'jspdf-autotable';
 })
 export class ExcelPdfDownloadedService {
   dataToExportExel: any[] = [];
-  key:any;
-   headersArray:any;
+  key: any;
+  headersArray: any;
   constructor(private datepipe: DatePipe) { }
 
   downLoadPdf(data: any, pageName: any, responseData: any) {
@@ -40,13 +40,13 @@ export class ExcelPdfDownloadedService {
     else if (pageName == "Overspeed Report") {
       header = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
       this.key = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
-    } 
+    }
     else if (pageName == "Address Report") {
       header = ["Sr No.", " Date", "Address"];
-    } 
+    }
     else if (pageName == "Trip Report") {
       header = ["Sr No.", " Distance", "Duration", "Start Date", "Start Address", "End Date", "End Address"];
-      this.key = ['', 'travelledDistance', 'speed', 'startDateTime','startLatLong','endDateTime','endLatLong'];
+      this.key = ['', 'travelledDistance', 'speed', 'startDateTime', 'startLatLong', 'endDateTime', 'endLatLong'];
     } else {
       header = ["SrNo.", " Driver Name", "tripDurationInMins", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
     }
@@ -56,23 +56,23 @@ export class ExcelPdfDownloadedService {
     });
     doc.save("pdf");
   }
-  exportAsExcelFile(formData:any,pageName:any) {
-   if(pageName=="Speed Range Report"){
-     this.key = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
-     this.headersArray = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
-   }else if(pageName=="Overspeed Report"){
-     this.key = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
-     this.headersArray = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
-   }else if(pageName=="Address Report"){
-    this.key = ["Sr No.", " Date", "Address"];
-    this.headersArray = ['srNo', 'deviceDateTime', 'speed', 'address'];
-   }else if(pageName=="Trip Report"){
-     this.key = ["Sr No.", " Distance", "Duration", "Start Date", "Start Address", "End Date", "End Address"];
-     this.headersArray = ['', 'travelledDistance', 'speed', 'startDateTime','startLatLong','endDateTime','endLatLong'];
-   }else{
-     this.key = ["SrNo.", " Driver Name", "tripDurationInMins", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
-   
-   }
+  exportAsExcelFile(formData: any, pageName: any) {
+    if (pageName == "Speed Range Report") {
+      this.key = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
+      this.headersArray = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
+    } else if (pageName == "Overspeed Report") {
+      this.key = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
+      this.headersArray = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
+    } else if (pageName == "Address Report") {
+      this.key = ["Sr No.", " Date", "Address"];
+      this.headersArray = ['srNo', 'deviceDateTime', 'speed', 'address'];
+    } else if (pageName == "Trip Report") {
+      this.key = ["Sr No.", " Distance", "Duration", "Start Date", "Start Address", "End Date", "End Address"];
+      this.headersArray = ['', 'travelledDistance', 'speed', 'startDateTime', 'startLatLong', 'endDateTime', 'endLatLong'];
+    } else {
+      this.key = ["SrNo.", " Driver Name", "tripDurationInMins", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
+
+    }
     let keyCenterNo = ""
     if (this.key.length == 2) {
       keyCenterNo = "B"
@@ -80,13 +80,13 @@ export class ExcelPdfDownloadedService {
       keyCenterNo = String.fromCharCode(Math.ceil(this.key.length / 2) + 64)
     }
     const header = this.key;
-   /*  let result: any = ((obj: any) => {
-      let filterObj: any = {};
-      for (let i: any = 0; i < this.headersArray.length; i++) {
-        filterObj[this.headersArray[i]] = obj[this.headersArray[i]];
-      }
-      return filterObj;
-    }); */
+    /*  let result: any = ((obj: any) => {
+       let filterObj: any = {};
+       for (let i: any = 0; i < this.headersArray.length; i++) {
+         filterObj[this.headersArray[i]] = obj[this.headersArray[i]];
+       }
+       return filterObj;
+     }); */
     // Create workbook and worksheet
     const workbook = new ExcelJS.Workbook();
     workbook.creator = 'Snippet Coder';
@@ -103,23 +103,23 @@ export class ExcelPdfDownloadedService {
 
     if (pageName) {
       worksheet.mergeCells(keyCenterNo + '4:' + this.numToAlpha(header.length - 3) + '4');
-      worksheet.getCell(keyCenterNo + '4').value = "From : " + this.datepipe.transform(formData.fromDate,'dd/MM/YYYY hh:mm a')+" "+" To : "+this.datepipe.transform(formData.toDate, 'dd/MM/YYYY hh:mm a');
+      worksheet.getCell(keyCenterNo + '4').value = "From : " + this.datepipe.transform(formData.fromDate, 'dd/MM/YYYY hh:mm a') + " " + " To : " + this.datepipe.transform(formData.toDate, 'dd/MM/YYYY hh:mm a');
       worksheet.getCell(keyCenterNo + '4').alignment = { horizontal: 'center' };
       worksheet.getCell(keyCenterNo + '4').font = { size: 12 };
 
       worksheet.mergeCells(keyCenterNo + '5:' + this.numToAlpha(header.length - 3) + '5');
-      worksheet.getCell(keyCenterNo + '5').value = "Vehicle : "+formData.VehicleNumber+ " ("+formData.vehicleName+")" ;
+      worksheet.getCell(keyCenterNo + '5').value = "Vehicle : " + formData.VehicleNumber + " (" + formData.vehicleName + ")";
       worksheet.getCell(keyCenterNo + '5').alignment = { horizontal: 'center' };
       worksheet.getCell(keyCenterNo + '5').font = { size: 12 };
 
       worksheet.mergeCells(keyCenterNo + '6:' + this.numToAlpha(header.length - 3) + '6');
-      worksheet.getCell(keyCenterNo + '6').value = "Date : "+this.datepipe.transform(new Date,'dd/MM/YYYY') ;
+      worksheet.getCell(keyCenterNo + '6').value = "Date : " + this.datepipe.transform(new Date, 'dd/MM/YYYY');
       worksheet.getCell(keyCenterNo + '6').alignment = { horizontal: 'center' };
       worksheet.getCell(keyCenterNo + '6').font = { size: 12 };
     } else {
       worksheet.addRow([]);
     }
- 
+
 
     const headerRow = worksheet.addRow(header);
 
@@ -151,9 +151,8 @@ export class ExcelPdfDownloadedService {
   }
 
 
-private numToAlpha(num: number) {
-  console.log(num);
-  let alpha = '';
-  return alpha;
-}
+  private numToAlpha(_num: number) {
+    let alpha = '';
+    return alpha;
+  }
 }

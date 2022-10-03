@@ -8,8 +8,9 @@ import {
   ApexXAxis,
   ApexPlotOptions
 } from "ng-apexcharts";
-import { CommanService } from 'src/app/services/comman.service';
+import { ApiCallService } from 'src/app/services/api-call.service';
 import { ErrorsService } from 'src/app/services/errors.service';
+import { WebStorageService } from 'src/app/services/web-storage.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -46,8 +47,9 @@ export class DashboardComponent implements OnInit {
   gaugeThick = 15;
   guageCap:any ='round';
   vehiclesMoving:any;
-  currentdate=new Date()
-  constructor(private cs: CommanService,
+  currentdate=new Date();
+
+  constructor(private webStorage: WebStorageService, private apiCall:ApiCallService,
     private error:ErrorsService) {
     this.chartOptions = {
       series: [],
@@ -117,8 +119,8 @@ export class DashboardComponent implements OnInit {
   getvehicleAllData() {
     this.vehicleAllData = [];
     this.maxSpeedObj=[];
-    this.cs.setHttp('get', 'dashboard/get-vehicle-current-location-list?VehicleNo=' + '&UserId=' + this.cs.getUserId() + '&GpsStatus=Running', true, false, false, 'vehicletrackingBaseUrlApi');
-    this.cs.getHttp().subscribe((responseData: any) => {
+    this.apiCall.setHttp('get', 'dashboard/get-vehicle-current-location-list?VehicleNo=' + '&UserId=' + this.webStorage.getUserId() + '&GpsStatus=Running', true, false, false, 'vehicletrackingBaseUrlApi');
+    this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
         this.vehicleAllData = responseData.responseData;
         this.vehicleAllData.map((x:any)=>{
@@ -169,8 +171,8 @@ export class DashboardComponent implements OnInit {
   }
   getvehicleStatusData() {
     this.vehicleAllData = [];
-    this.cs.setHttp('get', 'dashboard/get-vehicle-status-count?UserId=' + this.cs.getUserId(), true, false, false, 'vehicletrackingBaseUrlApi');
-    this.cs.getHttp().subscribe((responseData: any) => {
+    this.apiCall.setHttp('get', 'dashboard/get-vehicle-status-count?UserId=' + this.webStorage.getUserId(), true, false, false, 'vehicletrackingBaseUrlApi');
+    this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
         this.vehicleStatusData = responseData.responseData;
         this.getpieChartData(this.vehicleStatusData);
@@ -187,8 +189,8 @@ export class DashboardComponent implements OnInit {
   }
   getPOIAlertData() {
     this.pOIAlertData = [];
-    this.cs.setHttp('get', 'dashboard/get-vehicles-count-dashboard?UserId=' + this.cs.getUserId(), true, false, false, 'vehicletrackingBaseUrlApi');
-    this.cs.getHttp().subscribe((responseData: any) => {
+    this.apiCall.setHttp('get', 'dashboard/get-vehicles-count-dashboard?UserId=' + this.webStorage.getUserId(), true, false, false, 'vehicletrackingBaseUrlApi');
+    this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
         this.pOIAlertData = responseData.responseData;
       }
@@ -206,8 +208,8 @@ export class DashboardComponent implements OnInit {
     this.overSpeedData = [];
     const Fromdate=moment.utc().startOf('day').toISOString();
     const ToDate=moment.utc().toISOString();
-    this.cs.setHttp('get', 'dashboard/get-vehicle-alert-count-dashboard?UserId=' + this.cs.getUserId()+'&Fromdate='+Fromdate+'&ToDate='+ToDate, true, false, false, 'vehicletrackingBaseUrlApi');
-    this.cs.getHttp().subscribe((responseData: any) => {
+    this.apiCall.setHttp('get', 'dashboard/get-vehicle-alert-count-dashboard?UserId=' + this.webStorage.getUserId()+'&Fromdate='+Fromdate+'&ToDate='+ToDate, true, false, false, 'vehicletrackingBaseUrlApi');
+    this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
         this.overSpeedData = responseData.responseData;
       }
@@ -223,8 +225,8 @@ export class DashboardComponent implements OnInit {
   }
   getSIMRenewalReminderData() {
     this.SIMRenewalReminderData = [];
-    this.cs.setHttp('get', 'dashboard/get-sim-due-and-over-due?UserId=' + this.cs.getUserId(), true, false, false, 'vehicletrackingBaseUrlApi');
-    this.cs.getHttp().subscribe((responseData: any) => {
+    this.apiCall.setHttp('get', 'dashboard/get-sim-due-and-over-due?UserId=' + this.webStorage.getUserId(), true, false, false, 'vehicletrackingBaseUrlApi');
+    this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
         this.SIMRenewalReminderData = responseData.responseData;
       }

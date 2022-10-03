@@ -3,19 +3,34 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { WebStorageService } from './web-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CommanService {
+export class ApiCallService {
+
   vhlCount: any;
   UserLoginDetails: any;
   userObj: any;
   userObjData: any;
   tokanExpiredFlag: boolean = false;
   loginObj: any;
-  userData:any;
+  userData: any;
   disableCloseFlag: boolean = true//modal disableCloseFlag
+  private httpObj: any = {
+    type: '',
+    url: '',
+    options: Object
+  };
+
+  constructor(private http: HttpClient,
+    private router: Router,
+    private webStorage: WebStorageService,
+    private spinner: NgxSpinnerService,
+    private toastrService: ToastrService) {
+  }
+
   
   getBaseurl(url: string) {
     switch (url) {
@@ -29,77 +44,20 @@ export class CommanService {
       default: return ''; break;
     }
   }
-  private httpObj: any = {
-    type: '',
-    url: '',
-    options: Object
-  };
+ 
+
   clearHttp() {
     this.httpObj.type = '';
     this.httpObj.url = '';
     this.httpObj.options = {};
   }
 
-  constructor(private http: HttpClient,
-    private router: Router,
-    private spinner: NgxSpinnerService,
-    private toastrService: ToastrService) {
-  }
-  ngOnInit(): void {
-  }
-  getsessionStorageData() {
-    let loginObj: any = sessionStorage.getItem('loginDetails');
-    let sessionData = JSON.parse(loginObj).responseData[0];
-    return sessionData;
-  }
-  getUser() {
-    this.userData = this.getsessionStorageData();
-    return this.userData;
-  }
-  getUserId() {
-    let vehOwnerId = this.getsessionStorageData();
-    return vehOwnerId.id;
-  }
-  getVehicleOwnerId() {
-    let vehOwnerId = this.getsessionStorageData();
-    return vehOwnerId.vehicleOwnerId
-  }
-  tokenExpireRefreshString() {
-    let loginObj: any = sessionStorage.getItem('loginDetails');
-    let sessionData = JSON.parse(loginObj).responseData3;
-    return sessionData.refreshToken.tokenString;
-  }
-  tokenExpireDateTime() {
-    let loginObj: any = sessionStorage.getItem('loginDetails');
-    let sessionData = JSON.parse(loginObj).responseData3;
-    return sessionData.expireAccessToken;
-  }
-  createdByProps(): any {
-    return {
-        "createdBy": (this.userData && (this.userData.id ?? 0)) || 0,
-        // "modifiedBy": (this.userData && (this.userData.id ?? 0)) || 0,
-        "createdDate": this.getCreatedDate(),
-        // "modifiedDate": this.getCreatedDate(),
-        "isDeleted": false
-    }
-}
-
-getCreatedDate() {
-  const date = new Date();
-  return date.getFullYear() +
-      "-" + ((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1) +
-      "-" + (date.getDate() < 10 ? '0' : '') + date.getDate() +
-      "T" + (date.getHours() < 10 ? '0' : '') + date.getHours() +
-      ":" + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes() +
-      ":" + (date.getSeconds() < 10 ? '0' : '') + date.getSeconds() +
-      "." + (date.getMilliseconds() < 10 ? '00' : (date.getMilliseconds() < 100 ? '0' : '')) + date.getMilliseconds() +
-      "Z"
-}
   getHttp(): any {
     !this.httpObj.options.body && (delete this.httpObj.options.body)
     !this.httpObj.options.params && (delete this.httpObj.options.params)
     return this.http.request(this.httpObj.type, this.httpObj.url, this.httpObj.options);
   }
+
   setHttp(type: string, url: string, isHeader: Boolean, obj: any, params: any, baseUrl: any) {
     // isHeader = false;
     // check user is login or not 
@@ -113,8 +71,8 @@ getCreatedDate() {
         if (currentDateTime <= tokenExpireDateTime) {
           // this.tokanExpiredFlag = true
           let obj = {
-            UserId: this.getUserId(),
-            RefreshToken: this.tokenExpireRefreshString()
+            UserId: this.webStorage.getUserId(),
+            RefreshToken: this.webStorage.tokenExpireRefreshString()
           }
           this.tokenExpiredAndRefresh(obj);
         } else {
@@ -137,7 +95,7 @@ getCreatedDate() {
     this.httpObj.url = this.getBaseurl(baseUrl) + url;
     if (isHeader) {
       let tempObj: any = {
-        "UserId": this.getUserId().toString(),
+        "UserId": this.webStorage.getUserId().toString(),
         "Authorization": "Bearer " + this.userObjData.responseData3.accessToken // token set
       };
 
@@ -157,6 +115,7 @@ getCreatedDate() {
       this.httpObj.options.params = false;
     }
   }
+  
   tokenExpiredAndRefresh(obj: any) {
     let callRefreshTokenAPI = this.http.post('https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/login/refresh-token', obj);
     callRefreshTokenAPI.subscribe((res: any) => {
