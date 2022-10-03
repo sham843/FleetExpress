@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { ApiCallService } from 'src/app/services/api-call.service';
+import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ExcelPdfDownloadedService } from 'src/app/services/excel-pdf-downloaded.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
 
@@ -20,12 +21,12 @@ interface timePeriodArray {
 export class ReportsComponent implements OnInit {
   reportForm!: FormGroup;
   maxEndDate: any = new Date();
-  vehicleList:object |any;
+  vehicleList=new Array();
   showTimePeriod: boolean = true;
   selectedTablabel!: string;
   reportResponseData=new Array();
   currentDate = moment().toISOString();
-
+  VehicleDtArr=new Array();
   timePeriodArray: timePeriodArray[] = [
     { value: '1', viewValue: 'Today' },
     { value: '2', viewValue: '24hr' },
@@ -40,7 +41,8 @@ export class ReportsComponent implements OnInit {
     private apiCall: ApiCallService,
     private excelService: ExcelPdfDownloadedService,
      private datepipe: DatePipe,
-     private webStorage:WebStorageService
+     private webStorage:WebStorageService,
+     private commonMethods:CommonMethodsService
     ) { }
 
   ngOnInit(): void {
@@ -127,7 +129,10 @@ export class ReportsComponent implements OnInit {
     this.apiCall.setHttp('get', 'userdetail/get-vehicle-list?vehicleOwnerId='+ this.webStorage.getVehicleOwnerId(), true, false, false, 'vehicletrackingBaseUrlApi');
     this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200") {
-        this.vehicleList = responseData.responseData;
+        this.VehicleDtArr = responseData.responseData;
+      }
+      else {
+        this.commonMethods.snackBar(responseData.statusMessage,0);
       }
     })
   }
@@ -175,7 +180,6 @@ export class ReportsComponent implements OnInit {
         this.reportForm.controls['toDate'].patchValue('')
       }
     }
-    // this.reportForm.controls['toDate'].patchValue((new Date(reportData.toDate).toISOString()< new Date(reportData.fromDate).toISOString())?moment(reportData.toDate).toString():'')
   }
   getQueryString() {
    const reportData = this.reportForm.value
@@ -206,7 +210,9 @@ export class ReportsComponent implements OnInit {
         if (responseData.statusCode === "200" || responseData.length > 0) {
           this.reportResponseData = responseData.responseData;
         }
-       
+        else {
+        this.commonMethods.snackBar(responseData.statusMessage,0);
+        }
       })
     }
   }
