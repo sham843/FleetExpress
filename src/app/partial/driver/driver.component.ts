@@ -25,9 +25,9 @@ export class DriverComponent implements OnInit {
   buttonFlag: boolean = true;
   dobDisabled:boolean=true;
   buttonText:string= 'Save';
-  licenceDoc!: string;
-  panDoc!: string;
-  aadharDoc!: string;
+  licenceDoc: string |any;
+  panDoc: string|any;
+  aadharDoc: string|any;
   totalItem!: number;
   paginationNo: number = 1;
   pageSize: number = 10;
@@ -35,7 +35,7 @@ export class DriverComponent implements OnInit {
   date: any = new Date();
   maxDate=new Date();
   subscription!: Subscription;
-  profilePhotoupd: string = 'assets/images/Driver-profile.svg';
+  profilePhotoupd: string |any= 'assets/images/Driver-profile.svg';
 
   @ViewChild('closeModel') closeModel: any;
   @ViewChild('panUpload') panUpload: any;

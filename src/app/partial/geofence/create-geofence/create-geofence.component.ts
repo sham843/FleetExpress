@@ -19,13 +19,13 @@ export class CreateGeofenceComponent implements OnInit {
   constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private fb:FormBuilder) { }
 
   ngOnInit(): void {
-    this.geofenceForm = this.fb.group({
+    /* this.geofenceForm = this.fb.group({
       geofenceType:[''],
       latitude:[''],
       longitude:[''],
       distance:[''],
       polygonText:['']
-    })
+    }) */
     
   }
 

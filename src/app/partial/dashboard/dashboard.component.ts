@@ -27,11 +27,8 @@ export type ChartOptions = {
 export class DashboardComponent implements OnInit {
   @ViewChild("chart") chart: ChartComponent | any;
   
-  public chartOptions: Partial<ChartOptions> | any;
-  public chartOptions1: Partial<ChartOptions> | any;
-  public chartOptions2: Partial<ChartOptions> | any;
-  public chartOptions3: Partial<ChartOptions> | any;
-
+  public VehiclesLastUpdatedbarChartOptions: Partial<ChartOptions> | any;
+  public FleetStatusPieChartOption: Partial<ChartOptions> | any;
   vehicleAllData= new Array();
   vehicleStatusData= new Array();
   pOIAlertData = new Array();
@@ -53,7 +50,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(private webStorage: WebStorageService, private apiCall:ApiCallService,
     private error:ErrorsService) {
-    this.chartOptions = {
+    this.VehiclesLastUpdatedbarChartOptions = {
       series: [],
       chart: {
         type: "bar",
@@ -78,7 +75,7 @@ export class DashboardComponent implements OnInit {
         categories: []
       },
     };
-    this.chartOptions1 = {
+    this.FleetStatusPieChartOption = {
       series: [],
       chart: {
         type: 'donut'
@@ -121,7 +118,7 @@ export class DashboardComponent implements OnInit {
   getvehicleAllData() {
     this.vehicleAllData = [];
     this.maxSpeedObj=[];
-    this.apiCall.setHttp('get', 'dashboard/get-vehicle-current-location-list?VehicleNo=' + '&UserId=' + this.webStorage.getUserId() + '&GpsStatus=Running', true, false, false, 'vehicletrackingBaseUrlApi');
+    this.apiCall.setHttp('get', 'get-vehicle-current-location-list?VehicleNo=' + '&UserId=' + this.webStorage.getUserId() + '&GpsStatus=Running', true, false, false, 'dashboardBaseUrlApi');
     this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
         this.vehicleAllData = responseData.responseData;
@@ -156,11 +153,6 @@ export class DashboardComponent implements OnInit {
           'guageCap':  'round'
         }
         this.getBarChartData(this.vehiclesMoving);
-
-        
-      }
-      else if (responseData.statusCode === "404") {
-        this.error.handelError(responseData.statusCode);
       }
       else {
         (error: any) => {
@@ -173,7 +165,7 @@ export class DashboardComponent implements OnInit {
   }
   getvehicleStatusData() {
     this.vehicleAllData = [];
-    this.apiCall.setHttp('get', 'dashboard/get-vehicle-status-count?UserId=' + this.webStorage.getUserId(), true, false, false, 'vehicletrackingBaseUrlApi');
+    this.apiCall.setHttp('get', 'get-vehicle-status-count?UserId=' + this.webStorage.getUserId(), true, false, false, 'dashboardBaseUrlApi');
     this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
         this.vehicleStatusData = responseData.responseData;
@@ -188,60 +180,57 @@ export class DashboardComponent implements OnInit {
   }
   getPOIAlertData() {
     this.pOIAlertData = [];
-    this.apiCall.setHttp('get', 'dashboard/get-vehicles-count-dashboard?UserId=' + this.webStorage.getUserId(), true, false, false, 'vehicletrackingBaseUrlApi');
+    this.apiCall.setHttp('get', 'get-vehicles-count-dashboard?UserId=' + this.webStorage.getUserId(), true, false, false, 'dashboardBaseUrlApi');
     this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
         this.pOIAlertData = responseData.responseData;
-      }
-      else if (responseData.statusCode === "409") {
-        this.error.handelError(responseData.statusCode);
       }
       else {
         (error: any) => {
           this.error.handelError(error.status);
       }
       }
-    })
+    },(error: any) => {
+      this.error.handelError(error.status);
+  })
   }
   getOverSpeedData() {
     this.overSpeedData = [];
     const Fromdate=moment.utc().startOf('day').toISOString();
     const ToDate=moment.utc().toISOString();
-    this.apiCall.setHttp('get', 'dashboard/get-vehicle-alert-count-dashboard?UserId=' + this.webStorage.getUserId()+'&Fromdate='+Fromdate+'&ToDate='+ToDate, true, false, false, 'vehicletrackingBaseUrlApi');
+    this.apiCall.setHttp('get', 'get-vehicle-alert-count-dashboard?UserId=' + this.webStorage.getUserId()+'&Fromdate='+Fromdate+'&ToDate='+ToDate, true, false, false, 'dashboardBaseUrlApi');
     this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
         this.overSpeedData = responseData.responseData;
       }
-      else if (responseData.statusCode === "409") {
-        this.error.handelError(responseData.statusCode);
-      }
       else {
         (error: any) => {
           this.error.handelError(error.status);
       }
       }
-    })
+    },(error: any) => {
+      this.error.handelError(error.status);
+  })
   }
   getSIMRenewalReminderData() {
     this.SIMRenewalReminderData = [];
-    this.apiCall.setHttp('get', 'dashboard/get-sim-due-and-over-due?UserId=' + this.webStorage.getUserId(), true, false, false, 'vehicletrackingBaseUrlApi');
+    this.apiCall.setHttp('get', 'get-sim-due-and-over-due?UserId=' + this.webStorage.getUserId(), true, false, false, 'dashboardBaseUrlApi');
     this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
         this.SIMRenewalReminderData = responseData.responseData;
       }
-      else if (responseData.statusCode === "409") {
-        this.error.handelError(responseData.statusCode);
-      }
       else {
         (error: any) => {
           this.error.handelError(error.status);
       }
       }
-    })
+    },(error: any) => {
+      this.error.handelError(error.status);
+  })
   }
   getBarChartData(items: any) {
-    this.chartOptions.xaxis = {};
-    this.chartOptions.series = [];
+    this.VehiclesLastUpdatedbarChartOptions.xaxis = {};
+    this.VehiclesLastUpdatedbarChartOptions.series = [];
     const seriesData: any[] = [];
     const categoriesData: any[] = [];
     for (let i = 0; i < items.length; i++) {
@@ -249,16 +238,16 @@ export class DashboardComponent implements OnInit {
       categoriesData.push(items[i].vehicleNo);
     }
     if (items.length > 0) {
-      this.chartOptions.series = [{
+      this.VehiclesLastUpdatedbarChartOptions.series = [{
         name: "basic",
         data: seriesData
       }];
-      this.chartOptions.xaxis = {};
-      this.chartOptions.xaxis.categories = categoriesData;
+      this.VehiclesLastUpdatedbarChartOptions.xaxis = {};
+      this.VehiclesLastUpdatedbarChartOptions.xaxis.categories = categoriesData;
     } else {
-      this.chartOptions.series = [];
-      this.chartOptions.xaxis = {};
-      this.chartOptions.xaxis.categories = categoriesData;
+      this.VehiclesLastUpdatedbarChartOptions.series = [];
+      this.VehiclesLastUpdatedbarChartOptions.xaxis = {};
+      this.VehiclesLastUpdatedbarChartOptions.xaxis.categories = categoriesData;
     }
     this.barChartDisplay = true;
   }
@@ -268,7 +257,7 @@ export class DashboardComponent implements OnInit {
     series[1] = items.stopVehicles|0;
     series[2] = items.runningVehicles|0;
     series[3] = items.offlineVehicles|0;
-    this.chartOptions1.series = series;
+    this.FleetStatusPieChartOption.series = series;
     this.pieChartDisplay = true;
   }
 }

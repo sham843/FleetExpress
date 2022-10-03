@@ -2,7 +2,6 @@ import { MapsAPILoader } from '@agm/core';
 import { Component, ElementRef,OnInit, ViewChild } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ToastrService } from 'ngx-toastr';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { ErrorsService } from 'src/app/services/errors.service';
@@ -51,7 +50,6 @@ export class TrackingComponent implements OnInit {
     private error: ErrorsService,
     private fb: FormBuilder,
     private spinner: NgxSpinnerService,
-    private toastrService:ToastrService,
     private mapsAPILoader: MapsAPILoader,
     private webStorage:WebStorageService
     ) { }
@@ -107,9 +105,8 @@ export class TrackingComponent implements OnInit {
             this.error.handelError(res.statusCode)
           }
         }
-      },
-      error: ((error: any) => { this.error.handelError(error.status) })
-    });
+      }
+    },(error: any) => { this.error.handelError(error.status) });
   }
   // getaddressdata(allVehiclelData:any){
   // //   const promises =  allVehiclelData.map(async (myValue:any) => {
@@ -147,10 +144,8 @@ export class TrackingComponent implements OnInit {
           this.spinner.hide();
           if (res.statusCode === "200") {
             if (res.responseData.responseData1[0].isSuccess) {
-              this.toastrService.success(res.responseData.statusMessage);
               this.getAllVehicleListData();
             } else {
-              this.toastrService.error(res.responseData.statusMessage)
             }
 
           } else {
@@ -158,14 +153,11 @@ export class TrackingComponent implements OnInit {
               this.error.handelError(res.statusCode)
             }
           }
-        },
-        error: ((error: any) => {
-          this.spinner.hide();
-          this.error.handelError(error.status)
-        })
-
+        }
+      },(error: any) => {
+        this.spinner.hide();
+        this.error.handelError(error.status)
       });
-
     }
   }
 

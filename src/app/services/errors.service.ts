@@ -2,16 +2,15 @@
 import { Injectable } from '@angular/core';
 
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ToastrService } from 'ngx-toastr';
-import { SharedService } from './shared.service';
+import { CommonMethodsService } from './common-methods.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ErrorsService {
 
-  constructor(private spinner: NgxSpinnerService, private toaster: ToastrService,
-  private sharedService:SharedService) { }
+  constructor(private spinner: NgxSpinnerService,
+    private commonMethods:CommonMethodsService) { }
 
   handelError(error: any) {
     this.spinner.hide();
@@ -40,7 +39,7 @@ export class ErrorsService {
                     case 307: msg = "Temporary Redirect"; break;
                     case 308: msg = "Permanent Redirect"; break;
                     case 400: msg = "Bad Request"; break;
-                    case 401: msg = "Unauthorized";this.sharedService.logOut(); break;
+                    case 401: msg = "Unauthorized"; break;
                     case 402: msg = "Payment Required"; break;
                     case 403: msg = "Forbidden"; break;
                     case 404: msg = "Data Not Found"; break;
@@ -83,7 +82,6 @@ export class ErrorsService {
         msg += "Error .."; break;
       }
     }
-
-    this.toaster.error(msg);
+    this.commonMethods.snackBar(msg, 1)
   }
 }
