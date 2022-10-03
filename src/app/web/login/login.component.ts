@@ -9,6 +9,7 @@ import { ErrorsService } from 'src/app/services/errors.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ValidationService } from 'src/app/services/validation.service';
 import { Subscription } from 'rxjs';
+import { CommonMethodsService } from 'src/app/services/common-methods.service';
 
 @Component({
   selector: 'app-login',
@@ -28,8 +29,7 @@ export class LoginComponent implements OnInit {
     private sharedService:SharedService,
     public valService:ValidationService,
     private apiCall:ApiCallService,
-    private router:Router,
-    private route:ActivatedRoute,
+    private commonMethods:CommonMethodsService,
     private spinner:NgxSpinnerService,
     private toastrService:ToastrService,
     private error:ErrorsService) { }
@@ -66,8 +66,9 @@ export class LoginComponent implements OnInit {
         if (res.statusCode === "200") {
           this.spinner.hide();
           sessionStorage.setItem('loginDetails', JSON.stringify(res));
-          this.router.navigate(['../dashboard'], { relativeTo: this.route });
-          this.toastrService.success(res.statusMessage)
+          this.commonMethods.routerLinkRedirect('../dashboard')
+          // this.toastrService.success(res.statusMessage)
+          // this.commonService.snackBar(res.statusMessage, 1)
         }
         else {
           this.spinner.hide();
