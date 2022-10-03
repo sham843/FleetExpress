@@ -1,16 +1,12 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, UntypedFormControl, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, FormGroup, UntypedFormControl} from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ToastrService } from 'ngx-toastr';
 import { CommanService } from 'src/app/services/comman.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { ValidationService } from 'src/app/services/validation.service';
-import { observable, Observable, Subscription } from 'rxjs';
+import {Subscription } from 'rxjs';
 import { MapsAPILoader } from '@agm/core';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { interval } from 'rxjs';
 declare var google: any;
 @Component({
   selector: 'app-geofence',
@@ -37,13 +33,10 @@ export class GeofenceComponent implements OnInit {
   locationDTArray: any = [{ Scolor: '', latitude: 0, longitude: 0 }];
   @ViewChild('search') searchElementRef!: ElementRef;
   constructor(private common: CommanService,
-    private toastrService: ToastrService,
     private fb: FormBuilder,
     public validationService: ValidationService,
     private error: ErrorsService,
     private spinner: NgxSpinnerService,
-    private modalService: NgbModal,
-    private dialog: MatDialog,
     private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone) { }
 

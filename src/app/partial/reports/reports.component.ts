@@ -236,7 +236,7 @@ export class ReportsComponent implements OnInit {
       this.reportForm.value['vehicleName']=vehicleName;
     });
     let resData = this.reportResponseData.map((item: any) => Object.assign({}, item));
-      data = resData.map((x: any, i:any) => {
+      data = resData.map((x: any) => {
         x.deviceDateTime = this.datepipe.transform(x.deviceDateTime, 'dd-MM-YYYY hh:mm a')
         return x
       });
@@ -263,7 +263,7 @@ export class ReportsComponent implements OnInit {
 
 
   showTableData() {
-    let Title: string, dialogText: string;
+    // let Title: string, dialogText: string;
     // event == true ? Title = 'User Block' : Title = 'User Unblock';
     // event == true ? dialogText = 'Do you want to User Block ?' : dialogText = 'Do you want to User Unblock ?';
     const dialogRef = this.dialog.open(ReportTableComponent, {

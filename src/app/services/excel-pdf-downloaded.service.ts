@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import jsPDF from 'jspdf';
 import * as FileSaver from 'file-saver';
 declare const ExcelJS: any;
-import * as XLSX from 'xlsx';
 import { DatePipe } from '@angular/common';
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 const EXCEL_EXTENSION = '.xlsx';
