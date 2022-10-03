@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { SharedService } from 'src/app/services/shared.service';
 import { SidebarService } from '../sidebar/sidebar.service';
 
@@ -10,7 +9,7 @@ import { SidebarService } from '../sidebar/sidebar.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(public sidebarservice: SidebarService,private router:Router, private sharedService:SharedService) { }
+  constructor(public sidebarservice: SidebarService,private sharedService:SharedService) { }
   toggleSidebar() {
     this.sidebarservice.setSidebarState(!this.sidebarservice.getSidebarState());
   }

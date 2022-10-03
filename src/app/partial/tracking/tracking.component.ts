@@ -1,12 +1,11 @@
 import { MapsAPILoader } from '@agm/core';
-import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core'
+import { Component, ElementRef,OnInit, ViewChild } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { CommanService } from 'src/app/services/comman.service';
 import { ErrorsService } from 'src/app/services/errors.service';
-import { SharedService } from 'src/app/services/shared.service';
 
 interface Food {
   value: string;
@@ -46,14 +45,14 @@ export class TrackingComponent implements OnInit {
   geocoder: any;
   @ViewChild('search') public searchElementRef!: ElementRef;
   get f() { return this.maintananceForm.controls };
-  constructor(private sharedService: SharedService,
+  constructor(
     private common: CommanService,
     private error: ErrorsService,
     private fb: FormBuilder,
     private spinner: NgxSpinnerService,
     private toastrService:ToastrService,
     private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone,) { }
+    ) { }
 
   ngOnInit(): void {
     this.getMaintananceForm();
@@ -87,7 +86,6 @@ export class TrackingComponent implements OnInit {
     this.subscription = this.common.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
-          let q:any;
           res.responseData.map(async (x: any) => {
             x.deviceDatetime = new Date(x.deviceDatetime);
              x.address= await this.findAddressByCoordinates(parseFloat(x.latitude) , parseFloat(x.longitude));

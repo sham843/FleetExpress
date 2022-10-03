@@ -11,6 +11,8 @@ import 'jspdf-autotable';
 })
 export class ExcelPdfDownloadedService {
   dataToExportExel: any[] = [];
+  key:any;
+   headersArray:any;
   constructor(private datepipe: DatePipe) { }
 
   downLoadPdf(data: any, pageName: any, responseData: any) {
@@ -19,7 +21,6 @@ export class ExcelPdfDownloadedService {
 
     let doc: any = new jsPDF();
     let header;
-    let key;
 
     doc.setFontSize(9);
     doc.setTextColor(0, 0, 0);
@@ -34,18 +35,18 @@ export class ExcelPdfDownloadedService {
 
     if (pageName == "Speed Range Report") {
       header = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
-      key = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
+      this.key = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
     }
     else if (pageName == "Overspeed Report") {
       header = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
-      key = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
+      this.key = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
     } 
     else if (pageName == "Address Report") {
       header = ["Sr No.", " Date", "Address"];
     } 
     else if (pageName == "Trip Report") {
       header = ["Sr No.", " Distance", "Duration", "Start Date", "Start Address", "End Date", "End Address"];
-      key = ['', 'travelledDistance', 'speed', 'startDateTime','startLatLong','endDateTime','endLatLong'];
+      this.key = ['', 'travelledDistance', 'speed', 'startDateTime','startLatLong','endDateTime','endLatLong'];
     } else {
       header = ["SrNo.", " Driver Name", "tripDurationInMins", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
     }
@@ -56,35 +57,33 @@ export class ExcelPdfDownloadedService {
     doc.save("pdf");
   }
   exportAsExcelFile(formData:any,pageName:any) {
-    let key;
-    let headersArray;
    if(pageName=="Speed Range Report"){
-     key = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
-     headersArray = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
+     this.key = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
+     this.headersArray = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
    }else if(pageName=="Overspeed Report"){
-     key = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
-   headersArray = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
+     this.key = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
+     this.headersArray = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
    }else if(pageName=="Address Report"){
-    key = ["Sr No.", " Date", "Address"];
-   headersArray = ['srNo', 'deviceDateTime', 'speed', 'address'];
+    this.key = ["Sr No.", " Date", "Address"];
+    this.headersArray = ['srNo', 'deviceDateTime', 'speed', 'address'];
    }else if(pageName=="Trip Report"){
-     key = ["Sr No.", " Distance", "Duration", "Start Date", "Start Address", "End Date", "End Address"];
-    headersArray = ['', 'travelledDistance', 'speed', 'startDateTime','startLatLong','endDateTime','endLatLong'];
+     this.key = ["Sr No.", " Distance", "Duration", "Start Date", "Start Address", "End Date", "End Address"];
+     this.headersArray = ['', 'travelledDistance', 'speed', 'startDateTime','startLatLong','endDateTime','endLatLong'];
    }else{
-     key = ["SrNo.", " Driver Name", "tripDurationInMins", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
+     this.key = ["SrNo.", " Driver Name", "tripDurationInMins", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
    
    }
     let keyCenterNo = ""
-    if (key.length == 2) {
+    if (this.key.length == 2) {
       keyCenterNo = "B"
     } else {
-      keyCenterNo = String.fromCharCode(Math.ceil(key.length / 2) + 64)
+      keyCenterNo = String.fromCharCode(Math.ceil(this.key.length / 2) + 64)
     }
-    const header = key;
+    const header = this.key;
    /*  let result: any = ((obj: any) => {
       let filterObj: any = {};
-      for (let i: any = 0; i < headersArray.length; i++) {
-        filterObj[headersArray[i]] = obj[headersArray[i]];
+      for (let i: any = 0; i < this.headersArray.length; i++) {
+        filterObj[this.headersArray[i]] = obj[this.headersArray[i]];
       }
       return filterObj;
     }); */
