@@ -10,10 +10,10 @@
         <div class="card mb-3 plain-card">
             <div class="card-header">Fleet Status</div>
             <div class="card-body" *ngIf="pieChartDisplay">
-                <apx-chart id="chartoptions" [series]="chartOptions1.series" [chart]="chartOptions1.chart" [labels]="chartOptions1.labels"
-                [title]="chartOptions1.title" [theme]="chartOptions1.theme" [fill]="chartOptions1.fill"
-                [yaxis]="chartOptions1.yaxis" [stroke]="chartOptions1.stroke" [legend]="chartOptions1.legend"
-                [plotOptions]="chartOptions1.plotOptions"></apx-chart>
+                <apx-chart id="chartoptions" [series]="FleetStatusPieChartOption.series" [chart]="FleetStatusPieChartOption.chart" [labels]="FleetStatusPieChartOption.labels"
+                [title]="FleetStatusPieChartOption.title" [theme]="FleetStatusPieChartOption.theme" [fill]="FleetStatusPieChartOption.fill"
+                [yaxis]="FleetStatusPieChartOption.yaxis" [stroke]="FleetStatusPieChartOption.stroke" [legend]="FleetStatusPieChartOption.legend"
+                [plotOptions]="FleetStatusPieChartOption.plotOptions"></apx-chart>
             </div>
         </div>
         <div class="card plain-card mb-3">
@@ -114,8 +114,8 @@
         <div class="card plain-card mb-3">
             <div class="card-header">Vehicles - Last Updated</div>
             <div class="card-body" *ngIf="barChartDisplay">
-                <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [dataLabels]="chartOptions.dataLabels"
-                [plotOptions]="chartOptions.plotOptions" [xaxis]="chartOptions.xaxis"></apx-chart>
+                <apx-chart [series]="VehiclesLastUpdatedbarChartOptions.series" [chart]="VehiclesLastUpdatedbarChartOptions.chart" [dataLabels]="VehiclesLastUpdatedbarChartOptions.dataLabels"
+                [plotOptions]="VehiclesLastUpdatedbarChartOptions.plotOptions" [xaxis]="VehiclesLastUpdatedbarChartOptions.xaxis"></apx-chart>
            
         </div>
         <!-- <div class="card plain-card">
