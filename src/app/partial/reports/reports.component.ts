@@ -3,8 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-import { CommanService } from 'src/app/services/comman.service';
+import { ApiCallService } from 'src/app/services/api-call.service';
 import { ExcelPdfDownloadedService } from 'src/app/services/excel-pdf-downloaded.service';
+import { WebStorageService } from 'src/app/services/web-storage.service';
 
 interface timePeriodArray {
   value: string;
@@ -19,13 +20,11 @@ interface timePeriodArray {
 })
 export class ReportsComponent implements OnInit {
   reportForm!: FormGroup;
-  formData: any;
   maxEndDate: any = new Date();
-  EndDateFilter: any;
-  VehicleDtArr: any;
+  vehicleList:object |any;
   showTimePeriod: boolean = true;
-  selectedTablabel: any;
-  reportResponseData: any[] = [];
+  selectedTablabel!: string;
+  reportResponseData=new Array();
   currentDate = moment().toISOString();
 
   timePeriodArray: timePeriodArray[] = [
@@ -39,10 +38,10 @@ export class ReportsComponent implements OnInit {
   selectedIndex: any;
   get f() { return this.reportForm.controls };
   constructor(private fb: FormBuilder, 
-    private comman: CommanService,
+    private apiCall: ApiCallService,
     private excelService: ExcelPdfDownloadedService,
      private datepipe: DatePipe,
-     private toastrService:ToastrService
+     private webStorage:WebStorageService
     ) { }
 
   ngOnInit(): void {
@@ -126,16 +125,10 @@ export class ReportsComponent implements OnInit {
   }
 
   getVehicleData() {
-    this.comman.setHttp('get', 'userdetail/get-vehicle-list?vehicleOwnerId='+ this.comman.getVehicleOwnerId(), true, false, false, 'vehicletrackingBaseUrlApi');
-    this.comman.getHttp().subscribe((responseData: any) => {
+    this.apiCall.setHttp('get', 'userdetail/get-vehicle-list?vehicleOwnerId='+ this.webStorage.getVehicleOwnerId(), true, false, false, 'vehicletrackingBaseUrlApi');
+    this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200") {
-        this.VehicleDtArr = responseData.responseData;
-      }
-      else if (responseData.statusCode === "409") {
-
-      }
-      else {
-        this.toastrService.error(responseData.statusMessage);
+        this.vehicleList = responseData.responseData;
       }
     })
   }
@@ -209,24 +202,19 @@ export class ReportsComponent implements OnInit {
         case "Speed Range Report": url = 'reports/get-overspeed-report-speedrange'; break;
       }
      
-      this.comman.setHttp('get', url + this.getQueryString() + '&UserId='+this.comman.getUserId()+'&VehicleOwnerId='+this.comman.getVehicleOwnerId(), true, false, false, 'vehicletrackingBaseUrlApi');
-      this.comman.getHttp().subscribe((responseData: any) => {
+      this.apiCall.setHttp('get', url + this.getQueryString() + '&UserId='+this.webStorage.getUserId()+'&VehicleOwnerId='+this.webStorage.getVehicleOwnerId(), true, false, false, 'vehicletrackingBaseUrlApi');
+      this.apiCall.getHttp().subscribe((responseData: any) => {
         if (responseData.statusCode === "200" || responseData.length > 0) {
           this.reportResponseData = responseData.responseData;
         }
-        else if (responseData.statusCode === "409") {
-
-        }
-        else {
-          this.toastrService.error(responseData.statusMessage);
-        }
+       
       })
     }
   }
   onDownloadPDF() {
     let vehicleName: any;
     let data;
-    this.VehicleDtArr.find((ele: any) => {
+    this.vehicleList.find((ele: any) => {
       if (this.reportForm.value.VehicleNumber == ele.vehicleNo) {
         vehicleName = ele.vehTypeName;
       }
@@ -246,7 +234,7 @@ export class ReportsComponent implements OnInit {
   }
   onDownloadExcel() {
     let vehicleName:any;
-    this.VehicleDtArr.find((ele: any) => {
+    this.vehicleList.find((ele: any) => {
       if (this.reportForm.value.VehicleNumber == ele.vehicleNo) {
         vehicleName = ele.vehTypeName;
       }
