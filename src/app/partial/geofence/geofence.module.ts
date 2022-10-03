@@ -3,9 +3,11 @@ import { CommonModule } from '@angular/common';
 import { GeofenceRoutingModule } from './geofence-routing.module';
 import { GeofenceComponent } from './geofence.component';
 import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.module';
-import { AgmCoreModule } from '@agm/core';
-import {FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { CreateGeofenceComponent } from './create-geofence/create-geofence.component';
+import { ConfigService } from 'src/app/services/config.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
   declarations: [
@@ -18,11 +20,7 @@ import { CreateGeofenceComponent } from './create-geofence/create-geofence.compo
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyAkNBALkBX7trFQFCrcHO2I85Re2MmzTo8',
-      language: 'en',
-      libraries: ['places', 'drawing', 'geometry'],
-    }),
+    AgmCoreModule.forRoot(ConfigService.googleApiObj),
   ]
 })
 export class GeofenceModule { }
