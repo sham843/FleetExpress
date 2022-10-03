@@ -86,9 +86,9 @@ export class MyProfileComponent implements OnInit {
       webiste: profileData.webiste,
       licenceNo: profileData.licenceNo,
       adharNo: profileData.adharNo,
-      licenceNoDoc: profileData.licenceNoDoc,
-      adharNoDoc: profileData.adharNoDoc,
-      panDoc: profileData.panDoc
+      licenceNoDoc: profileData.licenceNoDoc || '',
+      adharNoDoc: profileData.adharNoDoc || '',
+      panDoc: profileData.panDoc || ''
     })
   }
   // --------------------------------------------------------------image Upload--------------------------------------------------
@@ -139,35 +139,30 @@ export class MyProfileComponent implements OnInit {
         (this.licenceUpload.nativeElement.value = '', this.licenceDoc = '');
   }
 
-
-  viewDocuments(document: any, flag: any) {
-    flag == 'aadhar' ? window.open(document.adharNoDoc) : flag == 'licence' ? window.open(document.licenceNoDoc) : window.open(document.panDoc);
-  }
-  // ----------------------------------------------------------Save profile-----------------------------------------------------------
+  // ----------------------------------------------------------Edit profile-----------------------------------------------------------
   profileSave() {
     if (this.myProfileForm.invalid) {
       return
     }
     else {
       let formData = this.myProfileForm.value;
-      let param = {
-        "id": 0,
-        "ownerCompany": "",
-        "gstNo": "",
-        "stateId": 0,
-        "divisionId": 0,
-        "districtId": 0,
-        "latitude": 0,
-        "longitude": 0,
-        "materialIds": "",
-        "createdBy": this.comman.getUserId(),
-        "createdDate": "",
-        "isDeleted": true,
-        "isSnapToRoadService": 0,
-        "isAddressLocationService": 0,
-        "flag": 'u'
-      }
-      this.comman.setHttp('post', 'save-update-vehicle-owner', true, param, false, 'vehicleOwnerBaseUrlApi');
+      formData.id=this.comman.getUserId();
+      formData.ownerCompany='',
+      formData.gstNo='',
+      formData.stateId=0,
+      formData.divisionId=0,
+      formData.districtId=0,
+      formData.latitude=0,
+      formData.longitude=0,
+      formData.materialIds='',
+      formData.createdBy=this.comman.getUserId(),
+      formData.createdDate='',
+      formData.isDeleted=true,
+      formData.isSnapToRoadService= 0,
+      formData.isAddressLocationService=0,
+      formData.flag='u'
+     console.log(formData);
+      this.comman.setHttp('post', 'save-update-vehicle-owner', true, formData, false, 'vehicleOwnerBaseUrlApi');
       this.comman.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
           this.spinner.hide();

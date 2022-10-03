@@ -22,7 +22,10 @@
     "lib": [
       "es2020",
       "dom"
-    ]
+    ],
+    // unused variable remove
+    "noUnusedLocals":true,
+    "noUnusedParameters": true
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

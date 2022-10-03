@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { SharedService } from './shared.service';
@@ -11,7 +11,7 @@ import { SharedService } from './shared.service';
 export class ErrorsService {
 
   constructor(private spinner: NgxSpinnerService, private toaster: ToastrService,
-    private router:Router, private sharedService:SharedService) { }
+  private sharedService:SharedService) { }
 
   handelError(error: any) {
     this.spinner.hide();
