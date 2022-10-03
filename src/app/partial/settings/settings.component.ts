@@ -1,18 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ToastrService } from 'ngx-toastr';
-import { CommanService } from 'src/app/services/comman.service';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-  description: string;
-}
+import { CommonMethodsService } from 'src/app/services/common-methods.service';
+import { ApiCallService } from 'src/app/services/api-call.service';
+import { WebStorageService } from 'src/app/services/web-storage.service';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
@@ -29,39 +23,39 @@ export class SettingsComponent implements OnInit {
   columnsToDisplay:any=['SR.NO','vehicle-icon','VEHICLE NO','VEHICLE TYPE'];
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   changePassForm!:FormGroup;
-  hide = true;
-  hide1=true;
-  hide2=true;
-  submitted=false;
-  value = 0;
-  showTicks = false;
-  autoTicks = false;
-  tickInterval = 1;
-  notificatinsData:any[]=[];
-  vehicleNotificatinsData:any[]=[];
+  CurrentPasswordHide:boolean = true;
+  newPasswordHide:boolean=true;
+  retypePasswordHide:boolean=true;
+  submitted:boolean=false;
+  value:number = 0;
+  showTicks:boolean = false;
+  autoTicks:boolean = false;
+  tickInterval:number = 1;
+  notificatinsData = new Array();
+  vehicleNotificatinsData= new Array();
   subscription!: Subscription;
   notificationForm!:FormGroup;
-  currentPage = 1;
-  itemsPerPage = 10;
-  pageSize: any;
+  currentPage:number = 1;
+  itemsPerPage:number = 10;
+  pageSize !:number ;
   pageNumber: number=1;
   searchContent = new FormControl();
   expandedElement: any;
   vehicleNotificationFlag:boolean=false;
-  totalVehicleNotificatinsData:any;
+  totalVehicleNotificatinsData !:number;
   getSliderTickInterval(): number | 'auto' {
     if (this.showTicks) {
       return this.autoTicks ? 'auto' : this.tickInterval;
     }
-
     return 0;
   }
 
   constructor(private fb:FormBuilder,
-    private tostrService:ToastrService,
-    private comman:CommanService,
     private spinner:NgxSpinnerService,
-    private error:ErrorsService,) { }
+    private error:ErrorsService,
+    private commonMethods:CommonMethodsService,
+    private apiCall:ApiCallService,
+    private webStorage:WebStorageService) { }
 
   ngOnInit(): void {
     this.getChangePwd();
@@ -105,20 +99,20 @@ public onPageChange(pageNum: number): void {
 onChangePwd(){
   this.submitted=true;
   if(this.changePassForm.invalid){
-    this.tostrService.error("Please enter valid value")
+    this.commonMethods.snackBar("Please enter valid value",0);
     return;
   }
   else{
     if(this.changePassForm.value != this.changePassForm.value){
-      this.tostrService.error("new password and confirm password not match");
+      this.commonMethods.snackBar("new password and confirm password not match",0);
       return
     }else{
       this.spinner.show();
-    this.comman.setHttp('get', 'change-password?UserId='+this.comman.getUserId()+'&NewPassword='+this.changePassForm.value.reTypePwd+'&OldPassword='+this.changePassForm.value.currentPwd, true, false, false, 'loginBaseUrlApi');
-      this.comman.getHttp().subscribe((response: any) => {
+    this.apiCall.setHttp('get', 'change-password?UserId='+this.webStorage.getUserId()+'&NewPassword='+this.changePassForm.value.reTypePwd+'&OldPassword='+this.changePassForm.value.currentPwd, true, false, false, 'loginBaseUrlApi');
+      this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
           this.spinner.hide();
-          this.tostrService.success(response.statusMessage);
+          this.commonMethods.snackBar(response.statusMessage,0);
         }
       })
     }
@@ -138,12 +132,11 @@ showvehicleNotification(tabLabel:any){
   }
 }
 getNotificatinsData() {
-  this.comman.setHttp('get', 'notification/get-alert-types', true, false, false, 'vehicletrackingBaseUrlApi');
-  this.subscription = this.comman.getHttp().subscribe({
+  this.apiCall.setHttp('get', 'notification/get-alert-types', true, false, false, 'vehicletrackingBaseUrlApi');
+  this.subscription = this.apiCall.getHttp().subscribe({
     next: (res: any) => {
       if (res.statusCode === "200") {
         this.notificatinsData = res.responseData;
-        // this.notificatinsData.sort((a,b) => a.sortOrder.localeCompare(b.sortOrder));
         this.notificatinsData.sort(function (a, b) {
           return a.sortOrder - b.sortOrder;
         });
@@ -163,7 +156,6 @@ getNotificatinsData() {
           OverSpeed:false,
           Tilt:false,   
         })
-        console.log(this.notificationForm.value);
 
       } else {
         if (res.statusCode != "404") {
@@ -176,8 +168,8 @@ getNotificatinsData() {
 }
 getVehicleNotificatinsData() {
   this.vehicleNotificatinsData=[]
-  this.comman.setHttp('get', 'notification/get-Alert-linking?NoPage='+(this.searchContent.value?0:1)+'&RowsPerPage=10&SearchText='+this.searchContent.value, true, false, false, 'vehicletrackingBaseUrlApi');
-  this.subscription = this.comman.getHttp().subscribe({
+  this.apiCall.setHttp('get', 'notification/get-Alert-linking?NoPage='+(this.searchContent.value?0:1)+'&RowsPerPage=10&SearchText='+this.searchContent.value, true, false, false, 'vehicletrackingBaseUrlApi');
+  this.subscription = this.apiCall.getHttp().subscribe({
     next: (res: any) => {
       if (res.statusCode === "200") {
         this.vehicleNotificatinsData = res.responseData.responseData1 ;
@@ -198,12 +190,12 @@ getVehicleNotificatinsData() {
 }
 switchNotification(rowData:any){ 
   this.spinner.show();
-  this.comman.setHttp('PUT', 'notification/set-Visibity-Notification?alertype='+rowData.alertType+'&Isnotification='+ !rowData.isNotification , true, false, false, 'vehicletrackingBaseUrlApi');
-  this.subscription = this.comman.getHttp().subscribe({
+  this.apiCall.setHttp('PUT', 'notification/set-Visibity-Notification?alertype='+rowData.alertType+'&Isnotification='+ !rowData.isNotification , true, false, false, 'vehicletrackingBaseUrlApi');
+  this.subscription = this.apiCall.getHttp().subscribe({
     next: (res: any) => {
       this.spinner.hide();
       if (res.statusCode === "200") {
-        this.tostrService.success(res.statusMessage);
+        this.commonMethods.snackBar(res.statusMessage,0);
       } else {
         if (res.statusCode != "404") {
           this.error.handelError(res.statusMessage)
@@ -217,6 +209,8 @@ switchNotification(rowData:any){
      } )
   });
 }
-
+ngOnDestroy() {
+  this.subscription.unsubscribe();
+}
 }
 

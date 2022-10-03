@@ -5,7 +5,7 @@
         <div class="display-bar">
             <div class="d-flex">
                 <div class="pe-3">Total Vehicles</div>
-                <div class="fw-bold">{{totalVehicle}}</div>
+                <div class="fw-bold">{{totalItem}}</div>
             </div>
         </div>
     </div>
@@ -124,7 +124,7 @@
                 (ngSubmit)="assignDriverToVehicle('assign')">
                 <div class="modal-body">
                     <div class="">
-                        <h6>{{asgnVehicle}}</h6>
+                        <!-- <h6>{{asgnVehicle}}</h6> -->
                         <mat-form-field appearance="fill" class="w-100 form-group">
                             <mat-label>Select Driver Name</mat-label>
                             <mat-select formControlName="driverName">
@@ -285,9 +285,9 @@
                                                         *ngIf="!this.insuranceImg?.length">
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
-                                                        <input type="file" #uploadDoc name="myfile"
+                                                        <input type="file" #uploadInsurance name="myfile"
                                                             formControlName="insuranceDoc"
-                                                            (change)="imageUpload($event,'insurance')" accept=".pdf" />
+                                                            (change)="  documentUpload($event,'insurance')" accept=".pdf" />
                                                     </div>
                                                     <button type="button" *ngIf="this.insuranceImg?.length" class="btn btn-light-main btn-icon-view" (click)="viewDocument('insurance')">
                                                         <mat-icon>visibility</mat-icon>
@@ -296,7 +296,7 @@
                                                 <td>
                                                     <button type="button"
                                                         class="btn bg-danger bg-opacity-10 text-danger"
-                                                        (click)="clearDocument('uploadDoc')"
+                                                        (click)="clearDocument('uploadInsurance')"
                                                         [disabled]="!this.insuranceImg?.length">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
@@ -328,9 +328,9 @@
                                                         *ngIf="!this.registerImg?.length">
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
-                                                        <input type="file" #uploadDoc1 name="myfile"
+                                                        <input type="file" #uploadRegister name="myfile"
                                                             formControlName="registerDoc"
-                                                            (change)="imageUpload($event,'register')" accept=".pdf"/>
+                                                            (change)="  documentUpload($event,'register')" accept=".pdf"/>
                                                     </div>
                                                     <button type="button" *ngIf="this.registerImg?.length" class="btn btn-light-main btn-icon-view" (click)="viewDocument('register')">
                                                         <mat-icon>visibility</mat-icon>
@@ -339,7 +339,7 @@
                                                 <td>
                                                     <button type="button"
                                                         class="btn bg-danger bg-opacity-10 text-danger"
-                                                        (click)="clearDocument('uploadDoc1')"
+                                                        (click)="clearDocument('uploadRegister')"
                                                         [disabled]="!this.registerImg?.length">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
@@ -370,9 +370,9 @@
                                                         *ngIf="!this.pollutionImg?.length">
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
-                                                        <input type="file" #uploadDoc2 name="myfile"
+                                                        <input type="file" #uploadPollution name="myfile"
                                                             formControlName="pollutionDoc"
-                                                            (change)="imageUpload($event,'pollution')" accept=".pdf"/>
+                                                            (change)="  documentUpload($event,'pollution')" accept=".pdf"/>
                                                     </div>
                                                     <button type="button" *ngIf="this.pollutionImg?.length" class="btn btn-light-main btn-icon-view" (click)="viewDocument('pollution')">
                                                         <mat-icon>visibility</mat-icon>
@@ -381,7 +381,7 @@
                                                 <td>
                                                     <button type="submit"
                                                         class="btn bg-danger bg-opacity-10 text-danger"
-                                                        (click)="clearDocument('uploadDoc2')"
+                                                        (click)="clearDocument('uploadPollution')"
                                                         [disabled]="!this.pollutionImg?.length">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
@@ -407,9 +407,9 @@
                                                         *ngIf="!this.fitnessImg?.length">
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
-                                                        <input type="file" #uploadDoc3 name="myfile"
+                                                        <input type="file" #uploadFitness name="myfile"
                                                             formControlName="fitnessDoc"
-                                                            (change)="imageUpload($event,'fitness')"accept=".pdf" />
+                                                            (change)="  documentUpload($event,'fitness')"accept=".pdf" />
                                                     </div>
                                                     <button type="button" *ngIf="this.fitnessImg?.length" class="btn btn-light-main btn-icon-view" (click)="viewDocument('fitness')">
                                                         <mat-icon>visibility</mat-icon>
@@ -418,7 +418,7 @@
                                                 <td>
                                                     <button type="submit"
                                                         class="btn bg-danger bg-opacity-10 text-danger"
-                                                        (click)="clearDocument('uploadDoc3')"
+                                                        (click)="clearDocument('uploadFitness')"
                                                         [disabled]="!this.fitnessImg?.length">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
@@ -450,9 +450,9 @@
                                                         *ngIf="!this.nationalImg?.length">
                                                             <i class="fa-solid fa-upload"></i>
                                                         </button>
-                                                        <input type="file" #uploadDoc4 name="myfile"
+                                                        <input type="file" #uploadPermit name="myfile"
                                                            formControlName="permitDoc"
-                                                            (change)="imageUpload($event,'national')" accept=".pdf"/>
+                                                            (change)="  documentUpload($event,'national')" accept=".pdf"/>
                                                     </div>
                                                     <button type="button" *ngIf="this.nationalImg?.length" class="btn btn-light-main btn-icon-view" (click)="viewDocument('national')">
                                                         <mat-icon>visibility</mat-icon>
@@ -461,7 +461,7 @@
                                                 <td>
                                                     <button type="submit"
                                                         class="btn bg-danger bg-opacity-10 text-danger"
-                                                        (click)="clearDocument('uploadDoc4')"
+                                                        (click)="clearDocument('uploadPermit')"
                                                         [disabled]="!this.nationalImg?.length">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>

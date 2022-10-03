@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CommanService } from 'src/app/services/comman.service';
 
 @Component({
   selector: 'app-report-table',
@@ -11,7 +10,7 @@ export class ReportTableComponent implements OnInit {
   dialogData: any;
   displayedColumns: string[] = ['Sr No.', 'Driver Name', 'Mob. No.', 'Veh. Type', 'Running Time', 'Stoppage Time', 'Idle Time', 'Max Speed', 'Travelled Distance'];
   tableData:any[]=[];
-  constructor(  public commonService: CommanService,
+  constructor(  
 
     public dialogRef: MatDialogRef<ReportTableComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }

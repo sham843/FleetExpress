@@ -2,11 +2,13 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ToastrService } from 'ngx-toastr';
-import { CommanService } from 'src/app/services/comman.service';
+import { Subscription } from 'rxjs';
+import { ApiCallService } from 'src/app/services/api-call.service';
+import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ValidationService } from 'src/app/services/validation.service';
+import { WebStorageService } from 'src/app/services/web-storage.service';
 
 @Component({
   selector: 'app-manage-vehicle',
@@ -17,39 +19,40 @@ export class ManageVehicleComponent implements OnInit {
   serchVehicle!: FormGroup;
   assignDriverForm!: FormGroup;
   editVehicleForm!: FormGroup;
-  vehicleData: any;
-  driverData: any;
+  vehicleData: object |any;
+  driverData: object |any;
   totalItem!: number;
   paginationNo: number = 1;
   pageSize: number = 10;
-  assignVehicle: any;
-  asgnVehicle: any;
+  asgVehicleData: string |any;
+  asgVehicleNo: any;
   editVehicle: any;
   searchHideShow: boolean = true;
   clearHideShow: boolean = false;
-  insuranceImg: any;
-  registerImg: any;
-  pollutionImg: any;
-  fitnessImg: any;
-  nationalImg: any;
-  profilePhotoImg: any
+  insuranceImg!: string;
+  registerImg!: string;
+  pollutionImg!: string;
+  fitnessImg!: string;
+  nationalImg!: string;
+  profilePhotoImg!: string;
   driverName: string | any;
   vhlId: number | any;
   highLightRow!: string;
   assignUnassignVhl: boolean = false;
-  profilePhoto: any = "assets/images/Driver-profile.svg";
-  insuranceUpload: any = "assets/images/Driver-profile.svg";
-  countVehicle: any;
-  totalVehicle: any;
+  profilePhoto: string = "assets/images/Driver-profile.svg";
+  insuranceUpload: string = "assets/images/Driver-profile.svg";
   date: any = new Date();
+  subscription!: Subscription;
   @ViewChild('closeModel') closeModel: any;
-  @ViewChild('uploadDoc') uploadDoc: any;
-  @ViewChild('uploadDoc1') uploadDoc1: any;
-  @ViewChild('uploadDoc2') uploadDoc2: any;
-  @ViewChild('uploadDoc3') uploadDoc3: any;
-  @ViewChild('uploadDoc4') uploadDoc4: any;
-  constructor(private comman: CommanService,
-    private tostrservice: ToastrService,
+  @ViewChild('uploadInsurance') uploadInsurance: any;
+  @ViewChild('uploadRegister') uploadRegister: any;
+  @ViewChild('uploadPollution') uploadPollution: any;
+  @ViewChild('uploadFitness') uploadFitness: any;
+  @ViewChild('uploadPermit') uploadPermit: any;
+  constructor(
+  private commonMethods:CommonMethodsService,
+  private apiCall:ApiCallService,
+  private webStorage:WebStorageService,
     private fb: FormBuilder,
     private datepipe: DatePipe,
     public sharedService: SharedService,
@@ -61,11 +64,6 @@ export class ManageVehicleComponent implements OnInit {
   ngOnInit(): void {
     this.getformControls();
     this.getVehicleData();
-    this.sharedService.vehicleCount().subscribe({
-      next: (ele: any) => {
-        this.totalVehicle = ele.responseData.responseData2.totalRecords;
-      }
-    })
   }
 
   getformControls() {
@@ -100,8 +98,8 @@ export class ManageVehicleComponent implements OnInit {
     console.log(this.serchVehicle.value.searchVhl)
     this.spinner.show();
     let searchText = this.serchVehicle.value.searchVhl || '';
-    this.comman.setHttp('get', 'get-vehiclelists?searchtext=' + searchText + '&nopage=' + this.paginationNo, true, false, false, 'vehicleBaseUrlApi');
-    this.comman.getHttp().subscribe((response: any) => {
+    this.apiCall.setHttp('get', 'get-vehiclelists?searchtext=' + searchText + '&nopage=' + this.paginationNo, true, false, false, 'vehicleBaseUrlApi');
+    this.subscription =this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.vehicleData = response.responseData.responseData1;
@@ -110,7 +108,7 @@ export class ManageVehicleComponent implements OnInit {
         });
         flag == 'search' ? (this.searchHideShow = false, this.clearHideShow = true) : '';
         this.totalItem = response.responseData.responseData2.totalRecords;
-        // this.tostrservice.success(response.statusMessage);
+        this.commonMethods.snackBar(response.statusMessage, 1)
       }
       else {
         this.spinner.hide();
@@ -129,16 +127,16 @@ export class ManageVehicleComponent implements OnInit {
     let param = {
       "vehicleId": vhlData.vehicleId,
       "blockedDate": this.date.toISOString(),
-      "blockedBy": this.comman.getUserId(),
+      "blockedBy": this.webStorage.getUserId(),
       "isBlock": isBlock,
       "remark": ""
     }
     this.spinner.show();
-    this.comman.setHttp('put', 'BlockUnblockVehicle', true, param, false, 'vehicleBaseUrlApi');
-    this.comman.getHttp().subscribe((response: any) => {
+    this.apiCall.setHttp('put', 'BlockUnblockVehicle', true, param, false, 'vehicleBaseUrlApi');
+    this.subscription =this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
-        this.tostrservice.success(response.statusMessage);
+        this.commonMethods.snackBar(response.statusMessage, 1)
         this.getVehicleData();
       }
       else {
@@ -152,16 +150,16 @@ export class ManageVehicleComponent implements OnInit {
   }
   // --------------------------------------Assign Driver------------------------------------------------------------------
   getAssignDriver(vhlData: any) {
-   this.assignVehicle = vhlData;
-    this.asgnVehicle = vhlData.vehicleNo
+   this.asgVehicleData = vhlData;
+    this.asgVehicleNo = vhlData.vehicleNo
     this.spinner.show();
-    this.comman.setHttp('get', 'get-driver?searchText=' + '&pageno=1', true, false, false, 'driverBaseUrlApi');
-    this.comman.getHttp().subscribe((response: any) => {
+    this.apiCall.setHttp('get', 'get-driver?searchText=' + '&pageno=1', true, false, false, 'driverBaseUrlApi');
+    this.subscription =this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         console.log(response)
         this.spinner.hide();
         this.driverData = response.responseData.responseData1;
-        this.tostrservice.success(response.statusMessage);
+        this.commonMethods.snackBar(response.statusMessage, 1)
       } else {
         this.spinner.hide();
         this.error.handelError(response.statusCode);
@@ -175,21 +173,21 @@ export class ManageVehicleComponent implements OnInit {
    let param = {
       "id": 0,
       "driverId":flag=='unassign'?vehicleData.driverId:this.assignDriverForm.value.driverName,
-      "vehicleId": this.assignVehicle?.vehicleId ? this.assignVehicle?.vehicleId : 0,
-      "assignedby": this.comman.getUserId(),
+      "vehicleId": this.asgVehicleData?.vehicleId ? this.asgVehicleData?.vehicleId : 0,
+      "assignedby": this.webStorage.getUserId(),
       "assignedDate": this.date.toISOString(),
       "isDeleted": 0,
-      "vehicleNumber": this.assignVehicle?.vehicleNo ? this.assignVehicle?.vehicleNo : vehicleData.vehicleNo,
-      "userId": this.comman.getUserId()
+      "vehicleNumber": this.asgVehicleData?.vehicleNo ? this.asgVehicleData?.vehicleNo : vehicleData.vehicleNo,
+      "userId": this.webStorage.getUserId()
     }
     this.spinner.show();
-    this.comman.setHttp('put', 'assign-driver-to-vehicle', true, param, false, 'vehicleBaseUrlApi');
-    this.comman.getHttp().subscribe((response: any) => {
+    this.apiCall.setHttp('put', 'assign-driver-to-vehicle', true, param, false, 'vehicleBaseUrlApi');
+    this.subscription =this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.getVehicleData();
         this.closeModel.nativeElement.click();
-        this.tostrservice.success(response.statusMessage);
+        this.commonMethods.snackBar(response.statusMessage, 1)
         this.assignDriverForm.controls['driverName'].setValue('');
       } else {
         this.spinner.hide();
@@ -209,12 +207,12 @@ export class ManageVehicleComponent implements OnInit {
   // -----------------------------------Update---------------------------------------------------------------------------------
   editVehicleDetail(vhl: any) {
     this.spinner.show();
-    this.comman.setHttp('get', 'get-vehicles?vehicleId=' + vhl.vehicleId, true, false, false, 'userDetailsBaseUrlApi');
-    this.comman.getHttp().subscribe((response: any) => {
+   this.apiCall.setHttp('get', 'get-vehicles?vehicleId=' + vhl.vehicleId, true, false, false, 'userDetailsBaseUrlApi');
+   this.subscription =this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.editVehicle = response.responseData[0];
-        this.tostrservice.success(response.statusMessage);
+        this.commonMethods.snackBar(response.statusMessage, 1)
         this.patchEditVhlData(this.editVehicle, vhl)
       } else {
         this.spinner.hide();
@@ -225,6 +223,7 @@ export class ManageVehicleComponent implements OnInit {
         this.error.handelError(error.status);
       })
   }
+
   patchEditVhlData(data: any, vehicleName: any) {
     console.log(data);
     this.highLightRow = data.vehicleId;
@@ -252,55 +251,42 @@ export class ManageVehicleComponent implements OnInit {
   }
   // ---------------------------------------------------------------------Upload Photo And Document---------------------------
   profilePhotoUpd(event: any) {
-    this.spinner.show();
     let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'vehicleProfile', "png,jpg,jpeg");
     documentUrl.subscribe({
       next: (ele: any) => {
         if (ele.statusCode == "200") {
-          this.spinner.hide();
           this.profilePhotoImg = ele.responseData;
           this.profilePhoto = this.profilePhotoImg;
-        }
-        else {
-          this.spinner.hide();
-          this.error.handelError(ele.statusCode);
         }
       }
     },(error: any) => {
       this.error.handelError(error.status);
     })
-    this.spinner.hide();
   }
 
-  imageUpload(event: any, flag: any) {
-    this.spinner.show();
+  documentUpload(event: any, flag: any) {
     let documentUrl: any = this.sharedService.uploadDocuments(event, "pdf");
     documentUrl.subscribe({
       next: (ele: any) => {
         if (ele.statusCode == "200") {
-          this.spinner.hide();
           flag == 'insurance' ? this.insuranceImg = ele.responseData : flag == 'register' ? this.registerImg = ele.responseData : flag == 'pollution' ? this.pollutionImg = ele.responseData : flag == 'fitness' ? this.fitnessImg = ele.responseData : this.nationalImg = ele.responseData;
-          this.tostrservice.success(ele.statusMessage);
-        }
-        else {
-          this.spinner.hide();
-          this.tostrservice.success(ele.statusMessage);
+          this.commonMethods.snackBar(ele.statusMessage, 1)
         }
       }
     },(error: any) => {
       this.error.handelError(error.status);
     })
-    this.spinner.hide();
   }
+
   clearDocument(flag: any) {
-    flag == 'uploadDoc' ? (this.uploadDoc.nativeElement.value = '', this.insuranceImg ='') :
-      flag == 'uploadDoc1' ? (this.uploadDoc1.nativeElement.value = '',this.registerImg='') :
-        flag == 'uploadDoc2' ? (this.uploadDoc2.nativeElement.value = '',this.pollutionImg='') :
-          flag == 'uploadDoc3' ? (this.uploadDoc3.nativeElement.value = '', this.fitnessImg='') :
-            (this.uploadDoc4.nativeElement.value = '', this.nationalImg='');
+    flag == 'uploadInsurance' ? (this.uploadInsurance.nativeElement.value = '', this.insuranceImg ='') :
+      flag == 'uploadRegister' ? (this.uploadRegister.nativeElement.value = '',this.registerImg='') :
+        flag == 'uploadPollution' ? (this.uploadPollution.nativeElement.value = '',this.pollutionImg='') :
+          flag == 'uploadFitness' ? (this.uploadFitness.nativeElement.value = '', this.fitnessImg='') :
+            (this.uploadPermit.nativeElement.value = '', this.nationalImg='');
   }
   viewDocument(flag:any){
-    flag=='insurance'?window.open(this.insuranceImg):flag=='register'?window.open(this.registerImg):flag=='pollution'?window.open(this.pollutionImg):flag=='fitness'?window.open(this.fitnessImg):window.open(this.nationalImg);
+    flag=='insurance'?this.commonMethods.redirectToNewTab(this.insuranceImg):flag=='register'?this.commonMethods.redirectToNewTab(this.registerImg):flag=='pollution'?this.commonMethods.redirectToNewTab(this.pollutionImg):flag=='fitness'?this.commonMethods.redirectToNewTab(this.fitnessImg):this.commonMethods.redirectToNewTab(this.nationalImg);
   }
   // --------------------------------------------save--------------------------------------------------------------
   saveVehicleDetails(formDirective: any) {
@@ -328,7 +314,7 @@ export class ManageVehicleComponent implements OnInit {
       "deviceId": 0,
       "deviceCompanyId": 0,
       "deviceSIMNo": "",
-      "vehicleOwnerId": this.comman.getVehicleOwnerId(),
+      "vehicleOwnerId": this.webStorage.getVehicleOwnerId(),
       "vehicleMake": this.editVehicleForm.value.brand,
       "vehicleModel": this.editVehicleForm.value.model,
       "vehicleChassisNo": this.editVehicleForm.value.chassicNo,
@@ -362,24 +348,20 @@ export class ManageVehicleComponent implements OnInit {
       "profilePhoto": this.profilePhotoImg
     }
     if (this.editVehicleForm.invalid) {
-      /* !this.editVehicleForm.value.insuranceDoc ? this.tostrservice.error("Please Upload insurance document") : '';
-      !this.editVehicleForm.value.registerDoc ? this.tostrservice.error("Please Upload Register document") : '';
-      !this.editVehicleForm.value.pollutionDoc ? this.tostrservice.error("Please Upload Pollution document") : '';
-      !this.editVehicleForm.value.fitnessDoc ? this.tostrservice.error("Please Upload Fitness document") : '';
-      !this.editVehicleForm.value.permitDoc ? this.tostrservice.error("Please Upload permit document") : ''; */
+      /* !this.editVehicleForm.value.insuranceDoc ? this.commonMethods.error("Please Upload insurance document") : '';
+      !this.editVehicleForm.value.registerDoc ? this.commonMethods.error("Please Upload Register document") : '';
+      !this.editVehicleForm.value.pollutionDoc ? this.commonMethods.error("Please Upload Pollution document") : '';
+      !this.editVehicleForm.value.fitnessDoc ? this.commonMethods.error("Please Upload Fitness document") : '';
+      !this.editVehicleForm.value.permitDoc ? this.commonMethods.error("Please Upload permit document") : ''; */
     }
     else {
       this.spinner.show();
-      this.comman.setHttp('post', 'save-update-vehicle-details', true, param, false, 'vehicleBaseUrlApi');
-      this.comman.getHttp().subscribe((response: any) => {
+      this.apiCall.setHttp('post', 'save-update-vehicle-details', true, param, false, 'vehicleBaseUrlApi');
+      this.subscription =this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
           this.spinner.hide();
           formDirective.resetForm();
-          this.tostrservice.success(response.statusMessage);
-        }
-        else {
-          this.spinner.hide();
-          this.tostrservice.success(response.statusMessage);
+          this.commonMethods.snackBar(response.statusMessage, 1)
         }
       }, (error: any) => {
         this.error.handelError(error.status);
@@ -403,5 +385,8 @@ export class ManageVehicleComponent implements OnInit {
   }
   get f() {
     return this.editVehicleForm.controls;
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

@@ -4,8 +4,9 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
-import { CommanService } from 'src/app/services/comman.service';
+import { ApiCallService } from 'src/app/services/api-call.service';
 import { ErrorsService } from 'src/app/services/errors.service';
+import { WebStorageService } from 'src/app/services/web-storage.service';
 
 interface Food {
   value: string;
@@ -46,12 +47,13 @@ export class TrackingComponent implements OnInit {
   @ViewChild('search') public searchElementRef!: ElementRef;
   get f() { return this.maintananceForm.controls };
   constructor(
-    private common: CommanService,
+    private apiCall: ApiCallService,
     private error: ErrorsService,
     private fb: FormBuilder,
     private spinner: NgxSpinnerService,
     private toastrService:ToastrService,
     private mapsAPILoader: MapsAPILoader,
+    private webStorage:WebStorageService
     ) { }
 
   ngOnInit(): void {
@@ -82,8 +84,8 @@ export class TrackingComponent implements OnInit {
 
   getAllVehicleListData() {
     this.allVehiclelData = []
-    this.common.setHttp('get', 'tracking/get-vehicles-current-location?UserId=' + this.common.getUserId() + '&VehicleNo=' + (!this.searchContent.value ? '' : this.searchContent.value) + '&GpsStatus=', true, false, false, 'vehicletrackingBaseUrlApi');
-    this.subscription = this.common.getHttp().subscribe({
+    this.apiCall.setHttp('get', 'tracking/get-vehicles-current-location?UserId=' + this.webStorage.getUserId() + '&VehicleNo=' + (!this.searchContent.value ? '' : this.searchContent.value) + '&GpsStatus=', true, false, false, 'vehicletrackingBaseUrlApi');
+    this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
           res.responseData.map(async (x: any) => {
@@ -131,7 +133,7 @@ export class TrackingComponent implements OnInit {
       const userFormData = this.maintananceForm.value;
       const obj = {
         ... userFormData, 
-        ...this.common.createdByProps(),
+        // ...this.webStorage.createdByProps(),
         "id": 0,
         "maintenanceType":parseInt(userFormData?.maintenanceType),
         "vehicleId": this.vehicleDetails?.vehicleId,
@@ -139,8 +141,8 @@ export class TrackingComponent implements OnInit {
         "flag": "I",
       }
       this.spinner.show();
-      this.common.setHttp('post', 'maintenance/save-update-maintenance', true, obj, false, 'vehicletrackingBaseUrlApi');
-      this.subscription = this.common.getHttp().subscribe({
+      this.apiCall.setHttp('post', 'maintenance/save-update-maintenance', true, obj, false, 'vehicletrackingBaseUrlApi');
+      this.subscription = this.apiCall.getHttp().subscribe({
         next: (res: any) => {
           this.spinner.hide();
           if (res.statusCode === "200") {

@@ -119,7 +119,7 @@
                                         <div class="d-block">
                                             <mat-form-field appearance="standard" class="w-100">
                                                 <mat-select formControlName="VehicleNumber" required>
-                                                    <mat-option *ngFor="let vehicle of VehicleDtArr"
+                                                    <mat-option *ngFor="let vehicle of vehicleList"
                                                         [value]="vehicle.vehicleRegistrationNo">
                                                         {{vehicle.vehicleRegistrationNo}}
                                                     </mat-option>

@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ToastrService } from 'ngx-toastr';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
@@ -20,7 +18,6 @@ export class LoginComponent implements OnInit {
   hide:boolean = true;
   loginForm!:FormGroup | any;
   loginData:object | any;
-  
   subscription!: Subscription;
   
   constructor(
@@ -31,7 +28,6 @@ export class LoginComponent implements OnInit {
     private apiCall:ApiCallService,
     private commonMethods:CommonMethodsService,
     private spinner:NgxSpinnerService,
-    private toastrService:ToastrService,
     private error:ErrorsService) { }
 
   ngOnInit(): void {
@@ -55,7 +51,7 @@ export class LoginComponent implements OnInit {
       return;
     }
    else if (this.loginForm.value.captcha !=  this.sharedService.checkvalidateCaptcha()){
-    this.toastrService.error("Invalid Captcha");
+    this.commonMethods.snackBar("Invalid Captcha", 1)
     }
 
     else {
@@ -63,12 +59,11 @@ export class LoginComponent implements OnInit {
       this.loginData = this.loginForm.value;
       this.apiCall.setHttp('get', 'login/login-web?'+'UserName=' + this.loginData.username.trim() + '&Password=' + this.loginData.password.trim(), false, false, false, 'vehicletrackingBaseUrlApi');
       this.subscription = this.apiCall.getHttp().subscribe((res: any) => {
-        if (res.statusCode === "200") {
+        if (res.statusCode == "200") {
           this.spinner.hide();
           sessionStorage.setItem('loginDetails', JSON.stringify(res));
-          this.commonMethods.routerLinkRedirect('../dashboard')
-          // this.toastrService.success(res.statusMessage)
-          // this.commonService.snackBar(res.statusMessage, 1)
+          this.commonMethods.routerLinkRedirect('../dashboard');
+          this.commonMethods.snackBar(res.statusMessage, 1);
         }
         else {
           this.spinner.hide();

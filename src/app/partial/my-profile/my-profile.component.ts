@@ -2,10 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { CommanService } from 'src/app/services/comman.service';
+import { ApiCallService } from 'src/app/services/api-call.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ValidationService } from 'src/app/services/validation.service';
+import { WebStorageService } from 'src/app/services/web-storage.service';
 
 @Component({
   selector: 'app-my-profile',
@@ -29,18 +30,14 @@ export class MyProfileComponent implements OnInit {
     public vs: ValidationService,
     private fb: FormBuilder,
     private sharedService: SharedService,
-    private comman: CommanService,
     private spinner: NgxSpinnerService,
-    private error: ErrorsService) { }
+    private error: ErrorsService,
+    private webStorage:WebStorageService,
+    private apiCall:ApiCallService) { }
 
   ngOnInit(): void {
     this.getLoginUserDetails();
     this.ProfileFormControl();
-    this.sharedService.vehicleCount().subscribe({
-      next: (ele: any) => {
-        this.totalVehicle = ele.responseData.responseData2.totalRecords;
-      }
-    })
   }
   // ----------------------------------------------------form-control--------------------------------------------------------------
   ProfileFormControl() {
@@ -62,9 +59,9 @@ export class MyProfileComponent implements OnInit {
   }
   // ----------------------------------------------------get user Details------------------------------------------------------
   getLoginUserDetails() {
-    if (this.comman.getVehicleOwnerId()) {
-      this.comman.setHttp('get', 'get-vehicle-owner?VehicleOwnerId='+this.comman.getVehicleOwnerId()+'&nopage=1&rowperpage=10', true, false, false, 'vehicleOwnerBaseUrlApi');
-      this.comman.getHttp().subscribe((res: any) => {
+    if (this.webStorage.getVehicleOwnerId()) {
+      this.apiCall.setHttp('get', 'get-vehicle-owner?VehicleOwnerId='+this.webStorage.getVehicleOwnerId()+'&nopage=1&rowperpage=10', true, false, false, 'vehicleOwnerBaseUrlApi');
+      this.apiCall.getHttp().subscribe((res: any) => {
         this.userDetails = res.responseData.responseData1[0];
       })
     }
@@ -146,7 +143,7 @@ export class MyProfileComponent implements OnInit {
     }
     else {
       let formData = this.myProfileForm.value;
-      formData.id=this.comman.getUserId();
+      formData.id=this.webStorage.getUserId();
       formData.ownerCompany='',
       formData.gstNo='',
       formData.stateId=0,
@@ -155,15 +152,15 @@ export class MyProfileComponent implements OnInit {
       formData.latitude=0,
       formData.longitude=0,
       formData.materialIds='',
-      formData.createdBy=this.comman.getUserId(),
+      formData.createdBy=this.webStorage.getUserId(),
       formData.createdDate='',
       formData.isDeleted=true,
       formData.isSnapToRoadService= 0,
       formData.isAddressLocationService=0,
       formData.flag='u'
      console.log(formData);
-      this.comman.setHttp('post', 'save-update-vehicle-owner', true, formData, false, 'vehicleOwnerBaseUrlApi');
-      this.comman.getHttp().subscribe((response: any) => {
+      this.apiCall.setHttp('post', 'save-update-vehicle-owner', true, formData, false, 'vehicleOwnerBaseUrlApi');
+      this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
           this.spinner.hide();
           this.tostrService.success(response.responseData);

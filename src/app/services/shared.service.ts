@@ -1,42 +1,26 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
-import { CommanService } from './comman.service';
+import { Observable, Subscription } from 'rxjs';
+import { ApiCallService } from './api-call.service';
+import { CommonMethodsService } from './common-methods.service';
+import { ErrorsService } from './errors.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedService {
-  vhlData: any;
-  codecareerPage: any;
-  constructor(private comman: CommanService,
+  codecareerPage!: string;
+  subscription!: Subscription;
+  constructor(private commonMethods:CommonMethodsService,
+    private error:ErrorsService,
+    private apiCall:ApiCallService,
     private spinner: NgxSpinnerService,
-    private tostrservice: ToastrService,
-    private router:Router) {
+) {
   }
-  ngOnInit() {
-  }
-
-  vehicleCount(): any {
-    return new Observable(obj => {
-      this.comman.setHttp('get', 'get-vehiclelists', true, false, false, 'vehicleBaseUrlApi');
-      this.comman.getHttp().subscribe({
-        next: (res: any) => {
-          if (res.statusCode === "200") {
-            obj.next(res);
-          }
-        }
-      })
-    })
-  }
-
   createCaptchaCarrerPage() {
     //clear the contents of captcha div first
     let id: any = document.getElementById('captcha');
     id.innerHTML = "";
-
     var charsArray =
       "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     var lengthOtp = 6;
@@ -79,15 +63,15 @@ export class SharedService {
           reader.onload = () => {
             const formData = new FormData();
             formData.append(fileName, file);
-            this.comman.setHttp('post', 'upload-document', true, formData, false, 'uploadDocumentBaseUrlApi');
-            this.comman.getHttp().subscribe({
+            this.apiCall.setHttp('post', 'upload-document', true, formData, false, 'uploadDocumentBaseUrlApi');
+            this.subscription =this.apiCall.getHttp().subscribe({
               next: (res: any) => {
                 this.spinner.hide();
                 if (res.statusCode === "200") {
                   obj.next(res);
                 }
                 else {
-                  // this.commonService.checkDataType(res.statusMessage) == false ? this.error.handelError(res.statusCode) : this.toastrService.error(res.statusMessage);
+                  this.commonMethods.checkDataType(res.statusMessage) == false ? this.error.handelError(res.statusCode) : this.commonMethods.snackBar(res.statusMessage, 1);
                 }
               },
             })
@@ -98,7 +82,7 @@ export class SharedService {
 
       else {
         obj.error("Only " + allowedDocTypes + " file format allowed.");
-        this.tostrservice.error('Please Select Valid Document');
+        this.commonMethods.snackBar('Please Select Valid Document', 1);
       }
     })
   }
@@ -120,15 +104,15 @@ export class SharedService {
             const formData = new FormData();
             formData.append('DirName', folderName)
             formData.append(fileName, file);
-            this.comman.setHttp('post', 'upload-photo', true, formData, false, 'uploadDocumentBaseUrlApi');
-            this.comman.getHttp().subscribe({
+            this.apiCall.setHttp('post', 'upload-photo', true, formData, false, 'uploadDocumentBaseUrlApi');
+            this.subscription =this.apiCall.getHttp().subscribe({
               next: (res: any) => {
                 this.spinner.hide();
                 if (res.statusCode === "200") {
                   obj.next(res);
                 }
                 else {
-                  // this.commonService.checkDataType(res.statusMessage) == false ? this.error.handelError(res.statusCode) : this.toastrService.error(res.statusMessage);
+                  this.commonMethods.checkDataType(res.statusMessage) == false ? this.error.handelError(res.statusCode) :this.commonMethods.snackBar(res.statusMessage, 1);
                 }
               },
             })
@@ -139,13 +123,16 @@ export class SharedService {
 
       else {
         obj.error("Only " + allowedDocTypes + " file format allowed.");
-        this.tostrservice.error('Please Select Valid Document');
+        this.commonMethods.snackBar('Please Select Valid Document', 1);
       }
     })
   }
   logOut() {
     sessionStorage.clear();
-    this.router.navigate(['login']);
+    this.commonMethods.routerLinkRedirect('login');
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }
 

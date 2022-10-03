@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ToastrService } from 'ngx-toastr';
-import { CommanService } from 'src/app/services/comman.service';
+import { Subscription } from 'rxjs';
+import { ApiCallService } from 'src/app/services/api-call.service';
+import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { ValidationService } from 'src/app/services/validation.service';
 
@@ -26,19 +26,19 @@ export class ForgetPasswordComponent implements OnInit {
   passwordChenged: boolean = false;
   otpFlag: boolean = false;
   otpLoginUserId!: number;
-  mobileNum: any;
+  mobileNum!: number |string;
   checkOtp: any;
-  intervalId = 0;
-  timer = '';
+  intervalId:number = 0;
+  timer:string|number = '';
   timerFlag: boolean = true;
-  timeLeft: any = 10;
+  timeLeft:number= 10;
   interval: any;
+  subscription!: Subscription;
   constructor(private fb: FormBuilder,
+    private commonMethods:CommonMethodsService,
+    private apiCall:ApiCallService,
     public vs: ValidationService,
-    private comman: CommanService,
-    private router: Router,
     private spinner: NgxSpinnerService,
-    private toastrService: ToastrService,
     private error: ErrorsService
   ) { }
 
@@ -72,21 +72,17 @@ export class ForgetPasswordComponent implements OnInit {
     }
     else {
       this.spinner.show();
-      this.comman.setHttp('get', 'get-user-otp?MobileNo=' + mobileNom, false, false, false, 'loginBaseUrlApi');
-      this.comman.getHttp().subscribe((res: any) => {
+      this.apiCall.setHttp('get', 'get-user-otp?MobileNo=' + mobileNom, false, false, false, 'loginBaseUrlApi');
+      this.subscription = this.apiCall.getHttp().subscribe((res: any) => {
         if (res.statusCode == "200") {
           this.checkOtp = res.responseData[0].otp;
           this.mobileNum = res.responseData[0].mobileNo;
           this.spinner.hide();
-          this.toastrService.success(res.statusMessage);
+          this.commonMethods.snackBar(res.statusMessage, 1)
           this.generateOTPContain = false;
           this.OTPContainer = true;
           this.verifyOTPForm.reset();
           this.sendOTPForm.reset();
-        }
-        else {
-          this.spinner.hide();
-          this.toastrService.error('Mobile Number Not Register');
         }
       },
         (error: any) => {
@@ -129,17 +125,17 @@ export class ForgetPasswordComponent implements OnInit {
     }
     else if (this.checkOtp != otp) {
       this.OTPContainer = true;
-      this.toastrService.error("Invalid OTP")
+      this.commonMethods.snackBar("Invalid OTP", 1);
       return;
     }
     else {
       this.OTPContainer = false;
       this.spinner.show();
-      this.comman.setHttp('get', 'login-by-otp?MobileNo=' + this.mobileNum + '&OTP=' + otp, false, false, false, 'loginBaseUrlApi');
-      this.comman.getHttp().subscribe((res: any) => {
+      this.apiCall.setHttp('get', 'login-by-otp?MobileNo=' + this.mobileNum + '&OTP=' + otp, false, false, false, 'loginBaseUrlApi');
+      this.subscription = this.apiCall.getHttp().subscribe((res: any) => {
         if (res.statusCode == "200") {
           this.spinner.hide();
-          this.toastrService.success(res.statusMessage);
+          this.commonMethods.snackBar(res.statusMessage, 1)
           this.otpLoginUserId = res.responseData[0].id;
           this.otpFlag = false;
           this.OTPContainer = false;
@@ -168,18 +164,14 @@ export class ForgetPasswordComponent implements OnInit {
     else {
       this.spinner.show();
       if (this.changePassword.value.password == this.changePassword.value.confirmPassword) {
-        this.comman.setHttp('get', 'set-password?UserId=' + this.otpLoginUserId + '&NewPassword=' + this.changePassword.value.password, false, false, false, 'loginBaseUrlApi');
-        this.comman.getHttp().subscribe((res: any) => {
+        this.apiCall.setHttp('get', 'set-password?UserId=' + this.otpLoginUserId + '&NewPassword=' + this.changePassword.value.password, false, false, false, 'loginBaseUrlApi');
+        this.subscription = this.apiCall.getHttp().subscribe((res: any) => {
           if (res.statusCode == "200") {
             this.spinner.hide();
-            this.toastrService.success(res.responseData);
+            this.commonMethods.snackBar(res.statusMessage, 1)
             this.changePassword.reset();
-            this.router.navigate(['/login']);
+            this.commonMethods.routerLinkRedirect('/login');
             this.spinner.hide();
-          }
-          else {
-            this.spinner.hide();
-            this.toastrService.error("error")
           }
         },
         (error: any) => {
@@ -189,11 +181,14 @@ export class ForgetPasswordComponent implements OnInit {
       }
       else {
         this.spinner.hide();
-        this.toastrService.error("New password and Confirm password should not be same")
+        this.commonMethods.snackBar("New password and Confirm password should not be same", 1)
       }
     }
   }
   get sendOtp() { return this.sendOTPForm.controls };
   get verifyOtp() { return this.verifyOTPForm.controls };
   get passChange() { return this.changePassword.controls };
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 }
