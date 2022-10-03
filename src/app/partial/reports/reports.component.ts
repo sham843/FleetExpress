@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
+import { ErrorsService } from 'src/app/services/errors.service';
 import { ExcelPdfDownloadedService } from 'src/app/services/excel-pdf-downloaded.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
 
@@ -20,7 +21,7 @@ interface timePeriodArray {
 })
 export class ReportsComponent implements OnInit {
   reportForm!: FormGroup;
-  maxEndDate: any = new Date();
+  maxEndDate= new Date();
   vehicleList=new Array();
   showTimePeriod: boolean = true;
   selectedTablabel!: string;
@@ -33,23 +34,23 @@ export class ReportsComponent implements OnInit {
     { value: '3', viewValue: 'Weekly' },
     { value: '4', viewValue: 'Custom' },
   ];
-  maxTodayDate: any;
-  tabArrayData: any[] = [];
-  selectedIndex: any;
+  maxTodayDate !: Date |any;
+  tabArrayData=new Array() ;
+  selectedIndex !: number;
   get f() { return this.reportForm.controls };
   constructor(private fb: FormBuilder, 
     private apiCall: ApiCallService,
     private excelService: ExcelPdfDownloadedService,
      private datepipe: DatePipe,
      private webStorage:WebStorageService,
-     private commonMethods:CommonMethodsService
+     private commonMethods:CommonMethodsService,
+     private error:ErrorsService
     ) { }
 
   ngOnInit(): void {
     this.getStoppageData();
     this.selectedTab('stoppage');
     this.getVehicleData();
-    // this.setIndex(0,'Stopage Report');
   }
   getStoppageData() {
     this.reportForm = this.fb.group({
@@ -134,6 +135,9 @@ export class ReportsComponent implements OnInit {
       else {
         this.commonMethods.snackBar(responseData.statusMessage,0);
       }
+    },
+    (error:any)=>{
+      this.error.handelError(error.status)
     })
   }
   selectTimePeriod(value: any) {
