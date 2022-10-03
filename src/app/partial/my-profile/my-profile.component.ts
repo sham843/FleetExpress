@@ -15,12 +15,9 @@ import { WebStorageService } from 'src/app/services/web-storage.service';
 })
 export class MyProfileComponent implements OnInit {
   myProfileForm!: FormGroup;
-  userDetails: any;
+  userDetails!: object;
   totalVehicle!: number;
-  licenceDoc: any;
-  panDoc: any;
-  aadharDoc: any;
-  profilePhotoupd: any = 'assets/images/Driver-profile.svg';
+  profilePhotoupd: string = 'assets/images/Driver-profile.svg';
   @ViewChild('closeModel') closeModel: any;
   @ViewChild('panUpload') panUpload: any;
   @ViewChild('aadharUpload') aadharUpload: any;
@@ -109,33 +106,6 @@ export class MyProfileComponent implements OnInit {
       })
     this.spinner.hide();
   }
-
-  imageUpload(event: any, flag: any) {
-    this.spinner.show();
-    let documentUrl: any = this.sharedService.uploadDocuments(event, "pdf");
-    documentUrl.subscribe({
-      next: (ele: any) => {
-        if (ele.statusCode == "200") {
-          this.spinner.hide()
-          flag == 'licence' ? this.licenceDoc = ele.responseData : flag == 'pan' ? this.panDoc = ele.responseData : this.aadharDoc = ele.responseData;
-          this.tostrService.success(ele.statusMessage);
-        }
-        else {
-          this.spinner.hide();
-          this.tostrService.success(ele.statusMessage);
-        }
-      }
-    })
-  }
-  viewDocument(flag: any) {
-    flag == 'licence' ? window.open(this.licenceDoc) : flag == 'pan' ? window.open(this.panDoc) : window.open(this.aadharDoc);
-  }
-  clearDoc(flag?: any) {
-    flag == 'pan' ? (this.panUpload.nativeElement.value = '', this.panDoc = '') :
-      flag == 'aadhar' ? (this.aadharUpload.nativeElement.value = '', this.aadharDoc = '') :
-        (this.licenceUpload.nativeElement.value = '', this.licenceDoc = '');
-  }
-
   // ----------------------------------------------------------Edit profile-----------------------------------------------------------
   profileSave() {
     if (this.myProfileForm.invalid) {
