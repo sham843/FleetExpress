@@ -1,11 +1,8 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { auto } from '@popperjs/core';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-import { ReportTableComponent } from 'src/app/dialogs/report-table/report-table.component';
 import { CommanService } from 'src/app/services/comman.service';
 import { ExcelPdfDownloadedService } from 'src/app/services/excel-pdf-downloaded.service';
 
@@ -45,8 +42,8 @@ export class ReportsComponent implements OnInit {
     private comman: CommanService,
     private excelService: ExcelPdfDownloadedService,
      private datepipe: DatePipe,
-     private toastrService:ToastrService,
-     private dialog:MatDialog) { }
+     private toastrService:ToastrService
+    ) { }
 
   ngOnInit(): void {
     this.getStoppageData();
@@ -266,7 +263,7 @@ export class ReportsComponent implements OnInit {
     // let Title: string, dialogText: string;
     // event == true ? Title = 'User Block' : Title = 'User Unblock';
     // event == true ? dialogText = 'Do you want to User Block ?' : dialogText = 'Do you want to User Unblock ?';
-    const dialogRef = this.dialog.open(ReportTableComponent, {
+   /*  const dialogRef = this.dialog.open(ReportTableComponent, {
       width: '1000px' ,
       height:auto,
       data: { p1: this.reportResponseData, p2: '',  successBtnText: 'Yes', dialogIcon: 'done_outline', cancelBtnText: 'No' },
@@ -274,6 +271,6 @@ export class ReportsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((res: any) => {     
         // res == 'Yes' ?   this.checkBlock(element, event): element.isBlock = !event;   
-    });
+    }); */
   }
 }

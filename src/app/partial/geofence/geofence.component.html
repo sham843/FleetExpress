@@ -130,7 +130,7 @@
                                 <mat-label>Search Area</mat-label>
                                 <input matInput aria-label="Number" placeholder="Search Location" autocorrect="off"
                                     autocapitalize="off" spellcheck="off" autocomplete="off" type="text" #search
-                                    formControlName="loaction" required (keyup)="clearlatlong($event)"
+                                    formControlName="loaction" required
                                     (keydown.enter)="$event.preventDefault()">
                                 <mat-icon matSuffix>search</mat-icon>
                             </mat-form-field>

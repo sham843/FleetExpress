@@ -4,7 +4,6 @@ import { WebLayoutComponent } from './web/web-layout/web-layout.component';
 import { PartialLayoutComponent } from './partial/partial-layout/partial-layout.component';
 import { LoginAuthGuard } from './auth/login-auth.guard';
 import { LoggedInAuthGuard } from './auth/logged-in-auth.guard';
-import { LoginComponent } from './web/login/login.component';
 import { AccessDenideComponent } from './error/access-denide/access-denide.component';
 import { PageNotFoundComponent } from './error/page-not-found/page-not-found.component';
 

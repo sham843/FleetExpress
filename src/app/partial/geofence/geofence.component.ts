@@ -137,9 +137,6 @@ export class GeofenceComponent implements OnInit {
     this.getAddress(this.lat, this.lng)
     console.log(data);
   }
-  clearlatlong(event: any) {
-
-  }
   get f() {
     return this.CreateGeoForm.controls;
   }
