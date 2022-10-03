@@ -202,7 +202,7 @@
                                             formControlName="currentPwd"
                                             [ngClass]="{ 'is-invalid':fpass['currentPwd'].errors }">
                                         <button mat-icon-button matSuffix (click)="CurrentPasswordHide = !CurrentPasswordHide"
-                                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="CurrentPasswordHide">
                                             <mat-icon>{{CurrentPasswordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
                                         </button>
                                         <mat-error>
@@ -218,7 +218,7 @@
                                         <input matInput [type]="newPasswordHide ? 'password' : 'text'" formControlName="newPwd"
                                             [ngClass]="{ 'is-invalid':fpass['newPwd'].errors }">
                                         <button mat-icon-button matSuffix (click)="newPasswordHide = !newPasswordHide"
-                                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="newPasswordHide">
                                             <mat-icon>{{newPasswordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
                                         </button>
                                         <mat-error>
@@ -234,7 +234,7 @@
                                         <input matInput [type]="retypePasswordHide ? 'password' : 'text'" formControlName="reTypePwd"
                                             [ngClass]="{'is-invalid':fpass['reTypePwd'].errors}">
                                         <button mat-icon-button matSuffix (click)="retypePasswordHide = !retypePasswordHide"
-                                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="retypePasswordHide">
                                             <mat-icon>{{retypePasswordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
                                         </button>
                                         <mat-error>
