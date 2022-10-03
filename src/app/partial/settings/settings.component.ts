@@ -29,7 +29,7 @@ export interface PeriodicElement {
   ],
 })
 export class SettingsComponent implements OnInit {
-  columnsToDisplay:any=['SR.NO','VEHICLE NO','VEHICLE TYPE'];
+  columnsToDisplay:any=['SR.NO','vehicle-icon','VEHICLE NO','VEHICLE TYPE'];
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   changePassForm!:FormGroup;
   hide = true;
