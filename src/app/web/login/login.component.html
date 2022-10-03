@@ -10,7 +10,7 @@
                     <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
                         <div class="mb-0">
                             <div class="d-block">
-                                <mat-form-field appearance="outline" class="w-100">
+                                <mat-form-field [appearance]="config.matFormField" class="w-100">
                                     <mat-label>Username</mat-label>
                                     <input matInput placeholder="Enter Username" formControlName="username"
                                         autocomplete="off" required [ngClass]="{ 'is-invalid':f['username'].errors}"
@@ -23,7 +23,7 @@
                             </div>
                         </div>
                         <div class="mb-0">
-                            <mat-form-field appearance="outline" class="w-100">
+                            <mat-form-field [appearance]="config.matFormField" class="w-100">
                                 <mat-label>Password</mat-label>
                                 <input matInput [type]="hide ? 'password' : 'text'" formControlName="password"
                                     autocomplete="off" required [ngClass]="{ 'is-invalid':f['password'].errors}"

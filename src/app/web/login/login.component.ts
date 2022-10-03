@@ -3,7 +3,8 @@ import { FormBuilder, Validators, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { CommanService } from 'src/app/services/comman.service';
+import { ApiCallService } from 'src/app/services/api-call.service';
+import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ValidationService } from 'src/app/services/validation.service';
@@ -17,10 +18,12 @@ export class LoginComponent implements OnInit {
   hide = true;
   loginForm!:UntypedFormGroup | any;
   loginData:any;
-  constructor(private fb: FormBuilder,
+  constructor(
+    public config:ConfigService,
+    private fb: FormBuilder,
     private sharedService:SharedService,
     public valService:ValidationService,
-    private comman:CommanService,
+    private apiCall:ApiCallService,
     private router:Router,
     private route:ActivatedRoute,
     private spinner:NgxSpinnerService,
@@ -53,8 +56,8 @@ export class LoginComponent implements OnInit {
     else {
       this.spinner.show();
       this.loginData = this.loginForm.value;
-      this.comman.setHttp('get', 'login/login-web?'+'UserName=' + this.loginData.username.trim() + '&Password=' + this.loginData.password.trim(), false, false, false, 'vehicletrackingBaseUrlApi');
-      this.comman.getHttp().subscribe((res: any) => {
+      this.apiCall.setHttp('get', 'login/login-web?'+'UserName=' + this.loginData.username.trim() + '&Password=' + this.loginData.password.trim(), false, false, false, 'vehicletrackingBaseUrlApi');
+      this.apiCall.getHttp().subscribe((res: any) => {
         if (res.statusCode === "200") {
           this.spinner.hide();
           sessionStorage.setItem('loginDetails', JSON.stringify(res));
