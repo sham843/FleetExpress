@@ -1,6 +1,6 @@
 
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-create-geofence',
@@ -14,16 +14,16 @@ export class CreateGeofenceComponent implements OnInit {
   map: any;
   geofenceForm!:FormGroup;
 
-  constructor(private fb:FormBuilder) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.geofenceForm = this.fb.group({
+    /* this.geofenceForm = this.fb.group({
       geofenceType:[''],
       latitude:[''],
       longitude:[''],
       distance:[''],
       polygonText:['']
-    })
+    }) */
     
   }
 

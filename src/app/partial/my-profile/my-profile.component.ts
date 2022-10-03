@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ToastrService } from 'ngx-toastr';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -15,7 +14,7 @@ import { WebStorageService } from 'src/app/services/web-storage.service';
 })
 export class MyProfileComponent implements OnInit {
   myProfileForm!: FormGroup;
-  userDetails!: object;
+  userDetails!: object |any;
   totalVehicle!: number;
   profilePhotoupd: string = 'assets/images/Driver-profile.svg';
   @ViewChild('closeModel') closeModel: any;
@@ -23,7 +22,7 @@ export class MyProfileComponent implements OnInit {
   @ViewChild('aadharUpload') aadharUpload: any;
   @ViewChild('licenceUpload') licenceUpload: any;
   @ViewChild('profileUpload') profileUpload: any;
-  constructor(private tostrService: ToastrService,
+  constructor(
     public vs: ValidationService,
     private fb: FormBuilder,
     private sharedService: SharedService,
@@ -63,7 +62,7 @@ export class MyProfileComponent implements OnInit {
       })
     }
     else {
-      this.tostrService.error("please login")
+      // this.tostrService.error("please login")
     }
   }
   // ----------------------------------------------------edit and save Profile------------------------------------------------------------
@@ -133,7 +132,7 @@ export class MyProfileComponent implements OnInit {
       this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
           this.spinner.hide();
-          this.tostrService.success(response.responseData);
+          // this.tostrService.success(response.responseData);
         }
         else {
           this.spinner.hide();
