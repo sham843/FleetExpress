@@ -39,9 +39,9 @@ export class DashboardComponent implements OnInit {
   SIMRenewalReminderData= new Array();
   barChartDisplay: boolean = false;
   pieChartDisplay: boolean = false;
-  maxSpeedObj!:object;
-  avarageSpeedObj!:object;
-  fastestVehicleObj!:object;
+  maxSpeedObj!:object| any;
+  avarageSpeedObj!:object| any;
+  fastestVehicleObj!:object| any;
   gaugeType: string = "arch";
   gaugeValue:number = 28.3;
   gaugeLabel:string  = "Speed";
