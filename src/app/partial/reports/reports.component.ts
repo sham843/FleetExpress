@@ -129,10 +129,10 @@ export class ReportsComponent implements OnInit {
   }
 
   getVehicleData() {
-    this.comman.setHttp('get', 'vehicle/get-vehiclelists', true, false, false, 'vehicletrackingBaseUrlApi');
+    this.comman.setHttp('get', 'userdetail/get-vehicle-list?vehicleOwnerId='+ this.comman.getVehicleOwnerId(), true, false, false, 'vehicletrackingBaseUrlApi');
     this.comman.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200") {
-        this.VehicleDtArr = responseData.responseData.responseData1;
+        this.VehicleDtArr = responseData.responseData;
       }
       else if (responseData.statusCode === "409") {
 
