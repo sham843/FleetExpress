@@ -17,7 +17,7 @@
             <div class="text-center justify-content-center">
                 <img src="../../../assets/images/Geofence.svg" alt="">
                 <p class="my-3">No Geofence Created</p>
-                <button class="btn btn-main" data-bs-toggle="modal" data-bs-target="#CreateGeofenceModal">
+                <button class="btn btn-main" (click)="openCreateGeofenceDialog()">
                     New Geofence
                 </button>
             </div>
@@ -90,81 +90,5 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
-
-<!-- Modal -->
-<div class="modal fade" id="CreateGeofenceModal" tabindex="-1" aria-labelledby="CreateGeofenceModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <form [formGroup]="CreateGeoForm">
-            <div class="modal-content">
-                <div class="modal-header border-0 bg-light-gradient text-dark">
-                    <p class="modal-title mb-0" id="CreateGeofenceModalLabel">
-                        Create Geofence
-                    </p>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row mb-1">
-                        <div class="col-sm-5">
-                            <mat-form-field appearance="legacy" class="w-100">
-                                <mat-label>Select Vehicle</mat-label>
-                                <mat-select multiple formControlName="vhlNumbers">
-                                    <mat-option *ngFor="let vhlNumber of VehicleDtArr"
-                                        [value]="vhlNumber.vehicleRegistrationNo">{{vhlNumber.vehicleRegistrationNo}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                            <div class="d-flex">
-                                <span class="vehicle-chips" *ngFor="let vhldata of f['vhlNumbers'].value">
-                                    {{vhldata}}
-                                    <button type="button" class="btn-close" aria-label="Close"
-                                        (click)="unCheckCheckbox(vhldata)"></button>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col-sm-7">
-                            <mat-form-field class="w-100" appearance="legacy">
-                                <mat-label>Search Area</mat-label>
-                                <input matInput aria-label="Number" placeholder="Search Location" autocorrect="off"
-                                    autocapitalize="off" spellcheck="off" autocomplete="off" type="text" #search
-                                    formControlName="loaction" required
-                                    (keydown.enter)="$event.preventDefault()">
-                                <mat-icon matSuffix>search</mat-icon>
-                            </mat-form-field>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div id="map" class="mapouter gmap_canvas">
-                                <agm-map [latitude]="lat" [longitude]="lng" [zoomControl]="true" [scrollwheel]="true"
-                                (mapClick)="mapClicked($event)" [zoom]="zoom">
-                                <agm-circle [latitude]="lat" [longitude]="lng" [radius]="circleradius" [strokeWeight]="2" [strokeColor]="'#ff0000'"
-                                [fillColor]="'red'">
-                                    <!-- <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker> -->
-                                    </agm-circle>
-                                    <agm-polyline *ngFor="let point of locationDTArray;let i = index;"  [strokeColor]="point.Scolor">
-                                        <agm-polyline-point [latitude]="point.latitude" [longitude]="point.longitude">
-                                        </agm-polyline-point>
-                                      
-                                    </agm-polyline>
-                                  </agm-map>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer border-0">
-                    <div class="form-container w-100">
-                        <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-light-main" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-main" (click)="CreateGeofence()">Submit</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
     </div>
 </div>

@@ -5,10 +5,12 @@ import { GeofenceComponent } from './geofence.component';
 import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.module';
 import { AgmCoreModule } from '@agm/core';
 import {FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CreateGeofenceComponent } from './create-geofence/create-geofence.component';
 
 @NgModule({
   declarations: [
-    GeofenceComponent
+    GeofenceComponent,
+    CreateGeofenceComponent
   ],
   imports: [
     CommonModule,
