@@ -96,7 +96,6 @@ getCreatedDate() {
       "Z"
 }
   getHttp(): any {
-    let temp: any = undefined;
     !this.httpObj.options.body && (delete this.httpObj.options.body)
     !this.httpObj.options.params && (delete this.httpObj.options.params)
     return this.http.request(this.httpObj.type, this.httpObj.url, this.httpObj.options);

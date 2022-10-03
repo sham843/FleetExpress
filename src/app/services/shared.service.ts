@@ -1,10 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { NgxSpinner, Spinner } from 'ngx-spinner/lib/ngx-spinner.enum';
 import { ToastrService } from 'ngx-toastr';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { CommanService } from './comman.service';
 
 @Injectable({
@@ -16,7 +14,6 @@ export class SharedService {
   constructor(private comman: CommanService,
     private spinner: NgxSpinnerService,
     private tostrservice: ToastrService,
-    private http: HttpClient,
     private router:Router) {
   }
   ngOnInit() {
@@ -93,9 +90,6 @@ export class SharedService {
                   // this.commonService.checkDataType(res.statusMessage) == false ? this.error.handelError(res.statusCode) : this.toastrService.error(res.statusMessage);
                 }
               },
-              error: ((error: any) => {
-
-              })
             })
           }
           reader.readAsDataURL(file);
@@ -137,9 +131,6 @@ export class SharedService {
                   // this.commonService.checkDataType(res.statusMessage) == false ? this.error.handelError(res.statusCode) : this.toastrService.error(res.statusMessage);
                 }
               },
-              error: ((error: any) => {
-
-              })
             })
           }
           reader.readAsDataURL(file);

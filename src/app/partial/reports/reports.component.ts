@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+// import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { CommanService } from 'src/app/services/comman.service';
@@ -260,6 +260,7 @@ export class ReportsComponent implements OnInit {
 
 
   showTableData() {
+<<<<<<< HEAD
   //   let Title: string, dialogText: string;
   //   // event == true ? Title = 'User Block' : Title = 'User Unblock';
   //   // event == true ? dialogText = 'Do you want to User Block ?' : dialogText = 'Do you want to User Unblock ?';
@@ -273,4 +274,19 @@ export class ReportsComponent implements OnInit {
   //       // res == 'Yes' ?   this.checkBlock(element, event): element.isBlock = !event;   
   //   });
    }
+=======
+    // let Title: string, dialogText: string;
+    // event == true ? Title = 'User Block' : Title = 'User Unblock';
+    // event == true ? dialogText = 'Do you want to User Block ?' : dialogText = 'Do you want to User Unblock ?';
+    const dialogRef = this.dialog.open(ReportTableComponent, {
+      width: '1000px' ,
+      height:auto,
+      data: { p1: this.reportResponseData, p2: '',  successBtnText: 'Yes', dialogIcon: 'done_outline', cancelBtnText: 'No' },
+      disableClose: this.comman.disableCloseFlag,
+    });
+    dialogRef.afterClosed().subscribe((res: any) => {     
+        // res == 'Yes' ?   this.checkBlock(element, event): element.isBlock = !event;   
+    });
+  }
+>>>>>>> accfb094dd73c33a61720589d3b6c5aaab73a9f2
 }
