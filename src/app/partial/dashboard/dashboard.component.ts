@@ -26,27 +26,29 @@ export type ChartOptions = {
 })
 export class DashboardComponent implements OnInit {
   @ViewChild("chart") chart: ChartComponent | any;
+  
   public chartOptions: Partial<ChartOptions> | any;
   public chartOptions1: Partial<ChartOptions> | any;
   public chartOptions2: Partial<ChartOptions> | any;
   public chartOptions3: Partial<ChartOptions> | any;
-  vehicleAllData: any[] = [];
-  vehicleStatusData: any[] = [];
-  pOIAlertData: any[] = [];
-  overSpeedData: any[] = [];
-  SIMRenewalReminderData: any[] = [];
+
+  vehicleAllData= new Array();
+  vehicleStatusData= new Array();
+  pOIAlertData = new Array();
+  overSpeedData=new Array();
+  SIMRenewalReminderData= new Array();
   barChartDisplay: boolean = false;
   pieChartDisplay: boolean = false;
-  maxSpeedObj:any;
-  avarageSpeedObj:any;
-  fastestVehicleObj:any;
-  gaugeType: any = "arch";
-  gaugeValue = 28.3;
-  gaugeLabel = "Speed";
-  gaugeAppendText = "mph";
-  gaugeThick = 15;
-  guageCap:any ='round';
-  vehiclesMoving:any;
+  maxSpeedObj!:object;
+  avarageSpeedObj!:object;
+  fastestVehicleObj!:object;
+  gaugeType: string = "arch";
+  gaugeValue:number = 28.3;
+  gaugeLabel:string  = "Speed";
+  gaugeAppendText:string  = "mph";
+  gaugeThick:number = 15;
+  guageCap:string ='round';
+  vehiclesMoving = new Array();
   currentdate=new Date();
 
   constructor(private webStorage: WebStorageService, private apiCall:ApiCallService,
@@ -177,15 +179,12 @@ export class DashboardComponent implements OnInit {
         this.vehicleStatusData = responseData.responseData;
         this.getpieChartData(this.vehicleStatusData);
       }
-      else if (responseData.statusCode === "409") {
+      else {
         this.error.handelError(responseData.statusCode);
       }
-      else {
-        (error: any) => {
-          this.error.handelError(error.status);
-      }
-      }
-    })
+    },(error: any) => {
+      this.error.handelError(error.status);
+  })
   }
   getPOIAlertData() {
     this.pOIAlertData = [];

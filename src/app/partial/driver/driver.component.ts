@@ -3,10 +3,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { CommanService } from 'src/app/services/comman.service';
+import { ApiCallService } from 'src/app/services/api-call.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ValidationService } from 'src/app/services/validation.service';
+import { WebStorageService } from 'src/app/services/web-storage.service';
 
 @Component({
   selector: 'app-driver',
@@ -44,8 +45,9 @@ export class DriverComponent implements OnInit {
   constructor(private fb: FormBuilder,
     public vs: ValidationService,
     private tostrService: ToastrService,
-    private comman: CommanService,
+    private apiCall: ApiCallService,
     private datepipe: DatePipe,
+    private webStorage:WebStorageService,
     private sharedService: SharedService,
     private spinner: NgxSpinnerService,
     private error: ErrorsService) { }
@@ -79,8 +81,8 @@ export class DriverComponent implements OnInit {
   // -----------------------------------------------Driver Details----------------------------------------------------------
   getDriverDetails(flag?: any) {
     this.spinner.show();
-    this.comman.setHttp('get', 'get-driver?searchText=' + this.searchDriverForm.value.driverName + '&pageno=' + this.paginationNo + '&rowperPage=' + this.pageSize, true, false, false, 'driverBaseUrlApi');
-    this.comman.getHttp().subscribe((response: any) => {
+    this.apiCall.setHttp('get', 'get-driver?searchText=' + this.searchDriverForm.value.driverName + '&pageno=' + this.paginationNo + '&rowperPage=' + this.pageSize, true, false, false, 'driverBaseUrlApi');
+    this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.driverDetails = response.responseData.responseData1;
@@ -122,8 +124,8 @@ export class DriverComponent implements OnInit {
       "isBlock": event.target.checked ? 1 : 0
     }
     this.spinner.show();
-    this.comman.setHttp('put', 'Block-Unblock-Driver_1', true, param, false, 'driverBaseUrlApi');
-    this.comman.getHttp().subscribe((response: any) => {
+    this.apiCall.setHttp('put', 'Block-Unblock-Driver_1', true, param, false, 'driverBaseUrlApi');
+    this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.tostrService.success(response.responseData);
@@ -227,8 +229,8 @@ export class DriverComponent implements OnInit {
       }
     ]
     this.spinner.show();
-    this.comman.setHttp('delete', 'Delete-Driver', true, param, false, 'driverBaseUrlApi');
-    this.comman.getHttp().subscribe((response: any) => {
+    this.apiCall.setHttp('delete', 'Delete-Driver', true, param, false, 'driverBaseUrlApi');
+    this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.tostrService.success(response.responseData);
@@ -252,7 +254,7 @@ export class DriverComponent implements OnInit {
     formData.id = this.editId;
     formData.middleName = '';
     formData.dob = this.datepipe.transform(formData.dob, 'yyyy/MM/dd');
-    formData.createdBy = this.comman.getUserId();
+    formData.createdBy = this.webStorage.getUserId();
     formData.createdDate = this.date.toISOString();
     formData.modifiedBy = 0;
     formData.modifiedDate = this.date.toISOString();
@@ -270,8 +272,8 @@ export class DriverComponent implements OnInit {
     } else {
       this.closeModel.nativeElement.click();
       this.spinner.show();
-      this.comman.setHttp('post', 'save-update-deriver-details', true, formData, false, 'driverBaseUrlApi');
-      this.comman.getHttp().subscribe((response: any) => {
+      this.apiCall.setHttp('post', 'save-update-deriver-details', true, formData, false, 'driverBaseUrlApi');
+      this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
           this.spinner.hide();
           this.highLightRow = '';

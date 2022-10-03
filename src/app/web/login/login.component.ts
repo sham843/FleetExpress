@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, UntypedFormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -8,6 +8,7 @@ import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ValidationService } from 'src/app/services/validation.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -15,9 +16,12 @@ import { ValidationService } from 'src/app/services/validation.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  hide = true;
-  loginForm!:UntypedFormGroup | any;
-  loginData:any;
+  hide:boolean = true;
+  loginForm!:FormGroup | any;
+  loginData:object | any;
+  
+  subscription!: Subscription;
+  
   constructor(
     public config:ConfigService,
     private fb: FormBuilder,
@@ -41,6 +45,7 @@ export class LoginComponent implements OnInit {
       captcha: ['', [Validators.compose([Validators.required,Validators.minLength(5),Validators.maxLength(6)])]]
     })
   }
+
   reCaptcha(){
     this.loginForm.controls['captcha'].reset();
     this.sharedService.createCaptchaCarrerPage();
@@ -57,11 +62,11 @@ export class LoginComponent implements OnInit {
       this.spinner.show();
       this.loginData = this.loginForm.value;
       this.apiCall.setHttp('get', 'login/login-web?'+'UserName=' + this.loginData.username.trim() + '&Password=' + this.loginData.password.trim(), false, false, false, 'vehicletrackingBaseUrlApi');
-      this.apiCall.getHttp().subscribe((res: any) => {
+      this.subscription = this.apiCall.getHttp().subscribe((res: any) => {
         if (res.statusCode === "200") {
           this.spinner.hide();
           sessionStorage.setItem('loginDetails', JSON.stringify(res));
-          this.router.navigate(['../dashboard'], { relativeTo: this.route })
+          this.router.navigate(['../dashboard'], { relativeTo: this.route });
           this.toastrService.success(res.statusMessage)
         }
         else {
@@ -76,6 +81,10 @@ export class LoginComponent implements OnInit {
 }
 get f(){
   return this.loginForm.controls;
+}
+
+ngOnDestroy() {
+  this.subscription.unsubscribe();
 }
 
 }

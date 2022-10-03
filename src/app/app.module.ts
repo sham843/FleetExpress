@@ -18,7 +18,6 @@ import { PageNotFoundComponent } from './error/page-not-found/page-not-found.com
 import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { ToastrModule } from 'ngx-toastr';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReportTableComponent } from './dialogs/report-table/report-table.component';
 
@@ -49,12 +48,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ReactiveFormsModule,
     HttpClientModule,
     NgxSpinnerModule,
-    ToastrModule.forRoot({
-      timeOut: 2000,
-      closeButton: true,
-      progressBar:true,
-      preventDuplicates: true,
-    }),
     NgbModule
   ], 
   providers: [ {
