@@ -5,7 +5,6 @@ import { ForgetPasswordRoutingModule } from './forget-password-routing.module';
 import { ForgetPasswordComponent } from './forget-password.component';
 import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -18,7 +17,6 @@ import { ToastrModule } from 'ngx-toastr';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    ToastrModule
   ]
 })
 export class ForgetPasswordModule { }

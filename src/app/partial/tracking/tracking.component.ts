@@ -145,10 +145,8 @@ export class TrackingComponent implements OnInit {
           this.spinner.hide();
           if (res.statusCode === "200") {
             if (res.responseData.responseData1[0].isSuccess) {
-              // this.toastrService.success(res.responseData.statusMessage);
               this.getAllVehicleListData();
             } else {
-              // this.toastrService.error(res.responseData.statusMessage)
             }
 
           } else {
