@@ -8,12 +8,9 @@ import {
   ApexXAxis,
   ApexPlotOptions
 } from "ng-apexcharts";
-import { ToastrService } from 'ngx-toastr';
 import { CommanService } from 'src/app/services/comman.service';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { BlockUnblockComponent } from 'src/app/dialogs/block-unblock/block-unblock.component'
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import { ErrorsService } from 'src/app/services/errors.service';
-import { Router } from '@angular/router';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -53,8 +50,8 @@ export class DashboardComponent implements OnInit {
   currentdate=new Date()
   constructor(private cs: CommanService,
     public dialog: MatDialog,
-    private error:ErrorsService,
-    private router:Router) {
+    private error:ErrorsService
+   ) {
     this.chartOptions = {
       series: [],
       chart: {
@@ -131,7 +128,7 @@ export class DashboardComponent implements OnInit {
           x.deviceDatetime=new Date(x.deviceDatetime);
         })
         this.vehicleAllData.sort((a, b) => { return b.speed - a.speed; });
-        const items = this.vehicleAllData.slice(0, 10);
+        // const items = this.vehicleAllData.slice(0, 10);
         const maxSpeed=Math.max(...this.vehicleAllData.map(o => o.speed));
         this.maxSpeedObj=this.vehicleAllData.find(x=>x.speed=maxSpeed);
         this.fastestVehicleObj={
@@ -230,8 +227,8 @@ export class DashboardComponent implements OnInit {
   }
   getSIMRenewalReminderData() {
     this.SIMRenewalReminderData = [];
-    const Fromdate=moment.utc().startOf('day').toISOString();
-    const ToDate=moment.utc().toISOString();
+    // const Fromdate=moment.utc().startOf('day').toISOString();
+    // const ToDate=moment.utc().toISOString();
     this.cs.setHttp('get', 'dashboard/get-sim-due-and-over-due?UserId=' + this.cs.getUserId(), true, false, false, 'vehicletrackingBaseUrlApi');
     this.cs.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {

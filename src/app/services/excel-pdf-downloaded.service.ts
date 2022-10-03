@@ -57,7 +57,7 @@ export class ExcelPdfDownloadedService {
   }
   exportAsExcelFile(formData:any,pageName:any) {
     let key;
-    let headersArray
+    let headersArray;
    if(pageName=="Speed Range Report"){
      key = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
      headersArray = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
@@ -153,6 +153,7 @@ export class ExcelPdfDownloadedService {
 
 
 private numToAlpha(num: number) {
+  console.log(num);
   let alpha = '';
   return alpha;
 }
