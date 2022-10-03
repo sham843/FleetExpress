@@ -1,14 +1,15 @@
 import { Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, UntypedFormControl, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ToastrService } from 'ngx-toastr';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { BlockUnblockComponent } from 'src/app/dialogs/block-unblock/block-unblock.component';
-import { CommanService } from 'src/app/services/comman.service';
+import { ApiCallService } from 'src/app/services/api-call.service';
+import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { ValidationService } from 'src/app/services/validation.service';
+import { WebStorageService } from 'src/app/services/web-storage.service';
 
 @Component({
   selector: 'app-user-management-system',
@@ -16,44 +17,43 @@ import { ValidationService } from 'src/app/services/validation.service';
   styleUrls: ['./user-management-system.component.scss']
 })
 export class UserManagementSystemComponent implements OnInit {
-  toppings = new UntypedFormControl('');
-  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
-  VehicleDtArr:any[]=[];
-  showTab:any;
-  tableLables:any[]=[];
+  VehicleDtArr= new Array();
+  showTab !:string;
+  tableLables= new Array();
   userForm!:FormGroup;
   roleForm!:FormGroup;
   subscription!: Subscription;
-  userData:any[]=[];
-  roleDtArr:any[]=[];
+  userData= new Array();
+  roleDtArr= new Array();
   userformSubmitted:boolean=false;
-  userTableData:any[]=[];
-  roleTableData:any[]=[];
-  selectAll: any;
-  selectedTableData:any[]=[];
+  userTableData= new Array();
+  roleTableData= new Array();
+  selectAll!: boolean;
+  selectedTableData= new Array();
   editFlag:boolean=false
-  editData: any;
-  currentPage = 1;
-  itemsPerPage = 10;
-  pageSize: any;
+  editData !: object| any;
+  currentPage:number = 1;
+  itemsPerPage:number = 10;
+  pageSize !:number;
   pageNumber: number=1;
   totalUserTableData: number=0;
-  searchContent = new FormControl()
-  filterData:any
+  searchContent = new FormControl();
+  filterData = new  Array();
   get user() { return this.userForm.controls };
   get role() { return this.roleForm.controls };
-  constructor(private common:CommanService,
-    private toastrService:ToastrService,
+  constructor(private apiCall:ApiCallService,
     private fb:FormBuilder,
+    private commonMethods:CommonMethodsService,
     public validationService:ValidationService,
     private error:ErrorsService,
     private spinner:NgxSpinnerService,
     private modalService:NgbModal,
-    private dialog:MatDialog) { }
+    private dialog:MatDialog,
+    private webStorage:WebStorageService) { }
 
   ngOnInit(): void {
     this.getRegFormData();
-    this.userData.push(this.common.getUser());
+    this.userData.push(this.webStorage.getUser());
     this.getVehicleData();
     this.getRoleData();
     this.selectedTab('users');
@@ -84,8 +84,8 @@ export class UserManagementSystemComponent implements OnInit {
     this.getRoleTableData();
   }
   getVehicleData() {
-    this.common.setHttp('get', 'userdetail/get-vehicle-list?vehicleOwnerId='+this.common.getVehicleOwnerId(), true, false, false, 'vehicletrackingBaseUrlApi');
-    this.subscription = this.common.getHttp().subscribe({
+    this.apiCall.setHttp('get', 'get-vehicle-list?vehicleOwnerId='+this.webStorage.getVehicleOwnerId(), true, false, false, 'userDetailsBaseUrlApi');
+    this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
           this.VehicleDtArr = res.responseData;
@@ -94,13 +94,13 @@ export class UserManagementSystemComponent implements OnInit {
             this.error.handelError(res.statusCode)
           }
         }
-      },
-      error: ((error: any) => { this.error.handelError(error.status) })
-    });
+      }
+    },
+    (error: any) => { this.error.handelError(error.status) });
   }
   getRoleData() {
-    this.common.setHttp('get', 'userdetail/getallSubusertype_usertype?UserTypeId=1'+'&Subusertypeid='+this.userData[0]?.subUserTypeId, true, false, false, 'vehicletrackingBaseUrlApi');
-    this.subscription = this.common.getHttp().subscribe({
+    this.apiCall.setHttp('get', 'getallSubusertype_usertype?UserTypeId=1'+'&Subusertypeid='+this.userData[0]?.subUserTypeId, true, false, false, 'userDetailsBaseUrlApi');
+    this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
           this.roleDtArr = res.responseData;
@@ -109,13 +109,13 @@ export class UserManagementSystemComponent implements OnInit {
             this.error.handelError(res.statusCode)
           }
         }
-      },
-      error: ((error: any) => { this.error.handelError(error.status) })
-    });
+      }
+    },
+    (error: any) => { this.error.handelError(error.status) });
   }
   getUserTableData(){
-    this.common.setHttp('get', 'userdetail/get-user-list?vehicleOwnerId='+this.userData[0]?.vehicleOwnerId+'&Subusertypeid=&SearchText='+this.searchContent.value+'&District=0&TalukaId=0&NoPage='+ (!this.searchContent.value?this.pageNumber:0)+'&RowsPerPage='+(!this.searchContent.value?10:0), true, false, false, 'vehicletrackingBaseUrlApi');
-    this.subscription = this.common.getHttp().subscribe({
+    this.apiCall.setHttp('get', 'get-user-list?vehicleOwnerId='+this.userData[0]?.vehicleOwnerId+'&Subusertypeid=&SearchText='+this.searchContent.value+'&District=0&TalukaId=0&NoPage='+ (!this.searchContent.value?this.pageNumber:0)+'&RowsPerPage='+(!this.searchContent.value?10:0), true, false, false, 'userDetailsBaseUrlApi');
+    this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
           res.responseData.responseData1.map((x: any) => {
@@ -133,8 +133,8 @@ export class UserManagementSystemComponent implements OnInit {
     });
   }
   getRoleTableData(){
-    this.common.setHttp('get', 'userrights/getUserRights?UserTypeId=1&SubUserTypeId=10', true, false, false, 'vehicletrackingBaseUrlApi');
-    this.subscription = this.common.getHttp().subscribe({
+    this.apiCall.setHttp('get', 'userrights/getUserRights?UserTypeId=1&SubUserTypeId=10', true, false, false, 'vehicletrackingBaseUrlApi');
+    this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
           this.roleTableData = res.responseData;
@@ -144,8 +144,7 @@ export class UserManagementSystemComponent implements OnInit {
           }
         }
       },
-      error: ((error: any) => { this.error.handelError(error.status) })
-    });
+    },(error: any) => { this.error.handelError(error.status) });
   }
   selectedTab(tab:any){
     this.showTab=tab;
@@ -176,7 +175,6 @@ export class UserManagementSystemComponent implements OnInit {
         vehiclearray.push(this.VehicleDtArr.find(x=>x.vehicleRegistrationNo==userFormData?.assignedVehicle[i]));
       }
       if (this.editFlag) {
-        //const data = this.editData.vehicle;
         const filtervehicles = this.editData.vehicle.filter((x:any) => {
           return vehiclearray.some((f:any) => {
             return f.vehicleRegistrationNo == x.vehicleNumber ;
@@ -230,17 +228,17 @@ export class UserManagementSystemComponent implements OnInit {
       "vehicle": vehiclearray
     }
     this.spinner.show();
-    this.common.setHttp('post', 'userdetail/save-update-user-for-tracking', true, obj, false, 'vehicletrackingBaseUrlApi');
-    this.subscription = this.common.getHttp().subscribe({
+    this.apiCall.setHttp('post', 'save-update-user-for-tracking', true, obj, false, 'userDetailsBaseUrlApi');
+    this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         this.spinner.hide();
         if (res.statusCode === "200") {
           if (res.responseData.responseData1[0].isSuccess) {
             this.roleDtArr = res.responseData;
             this.getUserTableData();
-            this.toastrService.success(res.responseData.responseData1[0].msg);
+            this.commonMethods.snackBar(res.responseData.responseData1[0].msg,0);
           } else {
-            this.toastrService.error(res.responseData.responseData1[0].msg)
+            this.commonMethods.snackBar(res.responseData.responseData1[0].msg,0);
           }
 
         } else {
@@ -250,15 +248,13 @@ export class UserManagementSystemComponent implements OnInit {
         }
         this.modalClose();
         this.editFlag = false;
-      },
-      error: ((error: any) => { 
-        this.spinner.hide();
-        this.editFlag=false;
-        this.modalClose();
-        this.error.handelError(error.status)
-       } )
-      
-    });
+      }
+    },(error: any) => { 
+      this.spinner.hide();
+      this.editFlag=false;
+      this.modalClose();
+      this.error.handelError(error.status)
+     } );
   }
 
   }
@@ -284,7 +280,7 @@ export class UserManagementSystemComponent implements OnInit {
     this.editData=editvalues;
     this.getVehicleData();
     this.getRoleData();
-    var vehicleNumber:any[]=[];
+    var vehicleNumber= new Array();
     editvalues.vehicle.forEach((element:any) => {
       vehicleNumber.push(element.vehicleNumber)
     });
@@ -304,7 +300,7 @@ export class UserManagementSystemComponent implements OnInit {
     const dialogRef = this.dialog.open(BlockUnblockComponent, {
       width: '340px',
       data: { p1: dialogText, p2: '', cardTitle: Title, successBtnText: 'Yes', dialogIcon: 'done_outline', cancelBtnText: 'No' },
-      disableClose: this.common.disableCloseFlag,
+      disableClose: this.apiCall.disableCloseFlag,
     });
     dialogRef.afterClosed().subscribe((res: any) => {     
         res == 'Yes' ?   this.checkBlock(element, event): element.isBlock = !event;   
@@ -321,24 +317,23 @@ export class UserManagementSystemComponent implements OnInit {
       isBlock: value==false?0:1,
       remark: ""
     }
-    this.common.setHttp('post', 'userdetail/Block-Unblock-User_1?', true, obj, false, 'vehicletrackingBaseUrlApi');
-    this.subscription = this.common.getHttp().subscribe({
+    this.apiCall.setHttp('post', 'Block-Unblock-User_1?', true, obj, false, 'userDetailsBaseUrlApi');
+    this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         this.spinner.hide();
         if (res.statusCode === "200") {
           this.getUserTableData();
-          this.toastrService.success(res.responseData);
+          this.commonMethods.snackBar(res.responseData,0);
         } else {
           if (res.statusCode != "404") {
             this.error.handelError(res.responseData)
           }
         }
-      },
-      error: ((error: any) => { 
-        this.spinner.hide();
-        this.error.handelError(error.status) 
-       } )
-    });
+      }
+    }, (error: any) => {
+      this.spinner.hide();
+      this.error.handelError(error.status)
+    })
   }
 
   modalClose(){
@@ -350,7 +345,7 @@ export class UserManagementSystemComponent implements OnInit {
 
   DeleteUserData() {
     this.spinner.show();
-    let objDeleteData:any[]=[];
+    let objDeleteData= new Array();
     for(let i=0; i < this.selectedTableData.length; i++){
       const obj = {
         id: this.selectedTableData[i].id,
@@ -358,24 +353,22 @@ export class UserManagementSystemComponent implements OnInit {
       }
       objDeleteData.push(obj)
     }
-    this.common.setHttp('DELETE', 'userdetail/Delete-User', true, objDeleteData, false, 'vehicletrackingBaseUrlApi');
-    this.subscription = this.common.getHttp().subscribe({
+    this.apiCall.setHttp('DELETE', 'Delete-User', true, objDeleteData, false, 'userDetailsBaseUrlApi');
+    this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         this.spinner.hide();
         if (res.statusCode === "200") {
           this.getUserTableData();
-          this.toastrService.success(res.statusMessage);
+          this.commonMethods.snackBar(res.statusMessage,0);
         } else {
           if (res.statusCode != "404") {
             this.error.handelError(res.statusMessage)
           }
         }
-      },
-      error: ((error: any) => {
-        this.spinner.hide();
-       this.error.handelError(error.status) ;
-      })
-
+      }
+    },(error: any) => {
+      this.spinner.hide();
+     this.error.handelError(error.status) ;
     });
   }
   ngOnDestroy() {

@@ -198,12 +198,12 @@
                                 <div class="col-sm-4 form-container">
                                     <mat-form-field appearance="standard" class="w-100 form-group">
                                         <mat-label>Current password</mat-label>
-                                        <input matInput [type]="hide ? 'password' : 'text'" autocomplete="nope"
+                                        <input matInput [type]="CurrentPasswordHide ? 'password' : 'text'" autocomplete="nope"
                                             formControlName="currentPwd"
                                             [ngClass]="{ 'is-invalid':fpass['currentPwd'].errors }">
-                                        <button mat-icon-button matSuffix (click)="hide = !hide"
+                                        <button mat-icon-button matSuffix (click)="CurrentPasswordHide = !CurrentPasswordHide"
                                             [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                            <mat-icon>{{CurrentPasswordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
                                         </button>
                                         <mat-error>
                                             <span *ngIf="fpass['currentPwd'].errors?.['required']"
@@ -215,11 +215,11 @@
 
                                     <mat-form-field appearance="standard" class="w-100 form-group">
                                         <mat-label>New password</mat-label>
-                                        <input matInput [type]="hide1 ? 'password' : 'text'" formControlName="newPwd"
+                                        <input matInput [type]="newPasswordHide ? 'password' : 'text'" formControlName="newPwd"
                                             [ngClass]="{ 'is-invalid':fpass['newPwd'].errors }">
-                                        <button mat-icon-button matSuffix (click)="hide1 = !hide1"
+                                        <button mat-icon-button matSuffix (click)="newPasswordHide = !newPasswordHide"
                                             [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                                            <mat-icon>{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                            <mat-icon>{{newPasswordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
                                         </button>
                                         <mat-error>
                                             <span *ngIf="fpass['newPwd'].errors?.['required']" class="text-danger">New
@@ -231,11 +231,11 @@
 
                                     <mat-form-field appearance="standard" class="w-100 form-group">
                                         <mat-label>Retype password</mat-label>
-                                        <input matInput [type]="hide2 ? 'password' : 'text'" formControlName="reTypePwd"
+                                        <input matInput [type]="retypePasswordHide ? 'password' : 'text'" formControlName="reTypePwd"
                                             [ngClass]="{'is-invalid':fpass['reTypePwd'].errors}">
-                                        <button mat-icon-button matSuffix (click)="hide2 = !hide2"
+                                        <button mat-icon-button matSuffix (click)="retypePasswordHide = !retypePasswordHide"
                                             [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                                            <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                            <mat-icon>{{retypePasswordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
                                         </button>
                                         <mat-error>
                                             <span *ngIf="fpass['reTypePwd'].errors?.['required']"

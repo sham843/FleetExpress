@@ -3,8 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
+import { ApiCallService } from 'src/app/services/api-call.service';
 import { CommanService } from 'src/app/services/comman.service';
+import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ExcelPdfDownloadedService } from 'src/app/services/excel-pdf-downloaded.service';
+import { WebStorageService } from 'src/app/services/web-storage.service';
 
 interface timePeriodArray {
   value: string;
@@ -39,10 +42,11 @@ export class ReportsComponent implements OnInit {
   selectedIndex: any;
   get f() { return this.reportForm.controls };
   constructor(private fb: FormBuilder, 
-    private comman: CommanService,
+    private apiCall: ApiCallService,
     private excelService: ExcelPdfDownloadedService,
      private datepipe: DatePipe,
-     private toastrService:ToastrService
+     private webStorage:WebStorageService,
+     private commonMethods:CommonMethodsService
     ) { }
 
   ngOnInit(): void {
@@ -126,16 +130,13 @@ export class ReportsComponent implements OnInit {
   }
 
   getVehicleData() {
-    this.comman.setHttp('get', 'userdetail/get-vehicle-list?vehicleOwnerId='+ this.comman.getVehicleOwnerId(), true, false, false, 'vehicletrackingBaseUrlApi');
-    this.comman.getHttp().subscribe((responseData: any) => {
+    this.apiCall.setHttp('get', 'userdetail/get-vehicle-list?vehicleOwnerId='+ this.webStorage.getVehicleOwnerId(), true, false, false, 'vehicletrackingBaseUrlApi');
+    this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200") {
         this.VehicleDtArr = responseData.responseData;
       }
-      else if (responseData.statusCode === "409") {
-
-      }
       else {
-        this.toastrService.error(responseData.statusMessage);
+        this.commonMethods.snackBar(responseData.statusMessage,0);
       }
     })
   }
@@ -183,7 +184,6 @@ export class ReportsComponent implements OnInit {
         this.reportForm.controls['toDate'].patchValue('')
       }
     }
-    // this.reportForm.controls['toDate'].patchValue((new Date(reportData.toDate).toISOString()< new Date(reportData.fromDate).toISOString())?moment(reportData.toDate).toString():'')
   }
   getQueryString() {
    const reportData = this.reportForm.value
@@ -209,16 +209,13 @@ export class ReportsComponent implements OnInit {
         case "Speed Range Report": url = 'reports/get-overspeed-report-speedrange'; break;
       }
      
-      this.comman.setHttp('get', url + this.getQueryString() + '&UserId='+this.comman.getUserId()+'&VehicleOwnerId='+this.comman.getVehicleOwnerId(), true, false, false, 'vehicletrackingBaseUrlApi');
-      this.comman.getHttp().subscribe((responseData: any) => {
+      this.apiCall.setHttp('get', url + this.getQueryString() + '&UserId='+this.webStorage.getUserId()+'&VehicleOwnerId='+this.webStorage.getVehicleOwnerId(), true, false, false, 'vehicletrackingBaseUrlApi');
+      this.apiCall.getHttp().subscribe((responseData: any) => {
         if (responseData.statusCode === "200" || responseData.length > 0) {
           this.reportResponseData = responseData.responseData;
         }
-        else if (responseData.statusCode === "409") {
-
-        }
         else {
-          this.toastrService.error(responseData.statusMessage);
+        this.commonMethods.snackBar(responseData.statusMessage,0);
         }
       })
     }
