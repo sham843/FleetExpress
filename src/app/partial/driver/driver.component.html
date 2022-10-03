@@ -39,7 +39,7 @@
                                         <div class="input-group">
                                             <input type="search" class="form-control w-100"
                                                 placeholder="Driver Name/Mobile No." formControlName="driverName"
-                                                (keypress)="this.vs.alphabetsWithSpaces($event)" required
+                                                (keypress)="this.validation.alphabetsWithSpaces($event)" required
                                                 maxlength="15">
                                             <div class="input-group-text"
                                                 *ngIf="searchHideShow && this.searchDriverForm.value.driverName">
@@ -160,8 +160,8 @@
                                                                 <mat-form-field class="w-100" appearance="standard">
                                                                     <input matInput placeholder="Mobile Number" value=""
                                                                         formControlName="mobileNo"
-                                                                        (keypress)="this.vs.onlyDigits($event)"
-                                                                        (keyup)="this.vs.noSpaces($event)"
+                                                                        (keypress)="this.validation.onlyDigits($event)"
+                                                                        (keyup)="this.validation.noSpaces($event)"
                                                                         maxlength="10" format="number">
                                                                     <mat-error *ngIf="f['mobileNo'].errors">
                                                                         <span class="text-danger"
@@ -177,8 +177,8 @@
                                                                 <mat-form-field class="w-100" appearance="standard">
                                                                     <input matInput placeholder="First Name" value=""
                                                                         formControlName="firstName"
-                                                                        (keypress)="this.vs.onlyAlphabets($event)"
-                                                                        (keyup)="this.vs.noSpaces($event)"
+                                                                        (keypress)="this.validation.onlyAlphabets($event)"
+                                                                        (keyup)="this.validation.noSpaces($event)"
                                                                         maxlength="15">
                                                                     <mat-error *ngIf="f['firstName'].errors">
                                                                         <span class="text-danger"
@@ -194,8 +194,8 @@
                                                                 <mat-form-field class="w-100" appearance="standard">
                                                                     <input matInput placeholder="Last Name" value=""
                                                                         formControlName="lastName"
-                                                                        (keypress)="this.vs.onlyAlphabets($event)"
-                                                                        (keyup)="this.vs.noSpaces($event)"
+                                                                        (keypress)="this.validation.onlyAlphabets($event)"
+                                                                        (keyup)="this.validation.noSpaces($event)"
                                                                         maxlength="15">
                                                                     <mat-error *ngIf="f['lastName'].errors">
                                                                         <span class="text-danger"
@@ -279,7 +279,7 @@
                                                                                     <input type="file" #licenceUpload
                                                                                         name="myfile"
                                                                                         formControlName="licenceDoc"
-                                                                                        (change)="imageUpload($event,'licence')"
+                                                                                        (change)="documentUpload($event,'licence')"
                                                                                         required
                                                                                         matTooltip="Upload only PDF file"
                                                                                         accept=".pdf" />
@@ -319,7 +319,7 @@
                                                                                             formControlName="aadharNumber"
                                                                                             placeholder="Aadhaar Number"
                                                                                             maxlength="12"
-                                                                                            (keypress)="this.vs.onlyDigits($event)"
+                                                                                            (keypress)="this.validation.onlyDigits($event)"
                                                                                             minlength="12">
                                                                                         <mat-error
                                                                                             *ngIf="f['aadharNumber'].errors">
@@ -350,10 +350,10 @@
                                                                                     </button>
                                                                                     <input type="file" name="myfile"
                                                                                         #aadharUpload
-                                                                                        (keyup)="this.vs.noSpaces($event)"
-                                                                                        (keypress)="this.vs.onlyDigits($event)"
+                                                                                        (keyup)="this.validation.noSpaces($event)"
+                                                                                        (keypress)="this.validation.onlyDigits($event)"
                                                                                         formControlName="aadharCardDoc"
-                                                                                        (change)="imageUpload($event,'aadhar')"
+                                                                                        (change)="documentUpload($event,'aadhar')"
                                                                                         required
                                                                                         matTooltip="Upload only PDF file"
                                                                                         accept=".pdf" />
@@ -387,7 +387,7 @@
                                                                                             formControlName="panNumber"
                                                                                             placeholder="PAN Number"
                                                                                             maxlength="10"
-                                                                                            (keyup)="this.vs.noSpaces($event)"
+                                                                                            (keyup)="this.validation.noSpaces($event)"
                                                                                             [ngClass]="{'is-invalid':f['panNumber'].errors}">
                                                                                         <mat-error
                                                                                             *ngIf="f['panNumber'].errors">
@@ -419,7 +419,7 @@
                                                                                     <input type="file" name="myfile"
                                                                                         #panUpload
                                                                                         formControlName="panCardDoc"
-                                                                                        (change)="imageUpload($event,'pan')"
+                                                                                        (change)="documentUpload($event,'pan')"
                                                                                         required
                                                                                         matTooltip="Upload only PDF file"
                                                                                         accept=".pdf" />

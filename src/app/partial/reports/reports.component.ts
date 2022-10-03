@@ -2,9 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
-import { ToastrService } from 'ngx-toastr';
 import { ApiCallService } from 'src/app/services/api-call.service';
-import { CommanService } from 'src/app/services/comman.service';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ExcelPdfDownloadedService } from 'src/app/services/excel-pdf-downloaded.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
@@ -22,15 +20,13 @@ interface timePeriodArray {
 })
 export class ReportsComponent implements OnInit {
   reportForm!: FormGroup;
-  formData: any;
   maxEndDate: any = new Date();
-  EndDateFilter: any;
-  VehicleDtArr: any;
+  vehicleList=new Array();
   showTimePeriod: boolean = true;
-  selectedTablabel: any;
-  reportResponseData: any[] = [];
+  selectedTablabel!: string;
+  reportResponseData=new Array();
   currentDate = moment().toISOString();
-
+  VehicleDtArr=new Array();
   timePeriodArray: timePeriodArray[] = [
     { value: '1', viewValue: 'Today' },
     { value: '2', viewValue: '24hr' },
@@ -223,7 +219,7 @@ export class ReportsComponent implements OnInit {
   onDownloadPDF() {
     let vehicleName: any;
     let data;
-    this.VehicleDtArr.find((ele: any) => {
+    this.vehicleList.find((ele: any) => {
       if (this.reportForm.value.VehicleNumber == ele.vehicleNo) {
         vehicleName = ele.vehTypeName;
       }
@@ -243,7 +239,7 @@ export class ReportsComponent implements OnInit {
   }
   onDownloadExcel() {
     let vehicleName:any;
-    this.VehicleDtArr.find((ele: any) => {
+    this.vehicleList.find((ele: any) => {
       if (this.reportForm.value.VehicleNumber == ele.vehicleNo) {
         vehicleName = ele.vehTypeName;
       }
