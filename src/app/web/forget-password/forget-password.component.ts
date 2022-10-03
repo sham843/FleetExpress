@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { CommanService } from 'src/app/services/comman.service';
+import { ErrorsService } from 'src/app/services/errors.service';
 import { ValidationService } from 'src/app/services/validation.service';
 
 @Component({
@@ -23,21 +24,23 @@ export class ForgetPasswordComponent implements OnInit {
   passContainer: boolean = false;
   mobileNoSubmitted: boolean = false;
   passwordChenged: boolean = false;
-  otpFlag:boolean=false;
+  otpFlag: boolean = false;
   otpLoginUserId!: number;
   mobileNum: any;
-  checkOtp:any;
+  checkOtp: any;
   intervalId = 0;
   timer = '';
   timerFlag: boolean = true;
   timeLeft: any = 10;
-  interval:any;
+  interval: any;
   constructor(private fb: FormBuilder,
     public vs: ValidationService,
     private comman: CommanService,
     private router: Router,
     private spinner: NgxSpinnerService,
-    private toastrService: ToastrService) { }
+    private toastrService: ToastrService,
+    private error: ErrorsService
+  ) { }
 
   ngOnInit(): void {
     this.getformControlData();
@@ -55,8 +58,8 @@ export class ForgetPasswordComponent implements OnInit {
       otpE: ['', Validators.required],
     })
     this.changePassword = this.fb.group({
-      password: ['',[Validators.compose([Validators.required,Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$'),Validators.minLength(8),Validators.maxLength(20)])]],
-      confirmPassword: ['',[Validators.compose([Validators.required,Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$'),Validators.minLength(8),Validators.maxLength(20)])]]
+      password: ['', [Validators.compose([Validators.required, Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$'), Validators.minLength(8), Validators.maxLength(20)])]],
+      confirmPassword: ['', [Validators.compose([Validators.required, Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$'), Validators.minLength(8), Validators.maxLength(20)])]]
     })
   }
 
@@ -66,64 +69,71 @@ export class ForgetPasswordComponent implements OnInit {
     let mobileNom = this.sendOTPForm.value.mobileNo || this.mobileNum;
     if (this.sendOTPForm.invalid) {
       this.spinner.hide();
-    } 
-   else {
-    this.spinner.show();
-    this.comman.setHttp('get', 'get-user-otp?MobileNo=' + mobileNom, false, false, false, 'loginBaseUrlApi');
-    this.comman.getHttp().subscribe((res: any) => {
-      if (res.statusCode == "200") {
-        this.checkOtp=res.responseData[0].otp;
-        this.mobileNum = res.responseData[0].mobileNo;
-        this.spinner.hide();
-        this.toastrService.success(res.statusMessage);
-        this.generateOTPContain = false;
-        this.OTPContainer = true;
-        this.verifyOTPForm.reset();
-        this.sendOTPForm.reset();
-      }
-      else{
-        this.spinner.hide();
-        this.toastrService.error('Mobile Number Not Register');
-      }
-    })
+    }
+    else {
+      this.spinner.show();
+      this.comman.setHttp('get', 'get-user-otp?MobileNo=' + mobileNom, false, false, false, 'loginBaseUrlApi');
+      this.comman.getHttp().subscribe((res: any) => {
+        if (res.statusCode == "200") {
+          this.checkOtp = res.responseData[0].otp;
+          this.mobileNum = res.responseData[0].mobileNo;
+          this.spinner.hide();
+          this.toastrService.success(res.statusMessage);
+          this.generateOTPContain = false;
+          this.OTPContainer = true;
+          this.verifyOTPForm.reset();
+          this.sendOTPForm.reset();
+        }
+        else {
+          this.spinner.hide();
+          this.toastrService.error('Mobile Number Not Register');
+        }
+      },
+        (error: any) => {
+          this.error.handelError(error.status);
+        })
+      this.spinner.hide();
+
 
     }
   }
   // -----------------------------------------Timer------------------------------------------------------------------------
-countDown() {
+  countDown() {
     this.timeLeft = 60;
+    this.pauseTimer();
     this.timerFlag = true;
-      this.interval = setInterval(() => {
-        if(this.timeLeft > 0) {
-          this.timeLeft--;
-          this.timer=this.timeLeft;
-        } else {
-          this.pauseTimer();
-          this.timerFlag=false;
-        }
-      },1000)
+    this.interval = setInterval(() => {
+      if (this.timeLeft > 0) {
+        this.timeLeft--;
+        this.timer = this.timeLeft;
+      } else {
+        this.timeLeft = 60;
+        // this.pauseTimer();
+        this.timerFlag = false;
+      }
+    }, 1000)
   }
   pauseTimer() {
     clearInterval(this.interval);
   }
 
-// -----------------------------------------------------verify OTp------------------------------------------------------------
-onchangeOTP(){
-  this.otpFlag=true;
-}  
-verifyOTP() {
+  // -----------------------------------------------------verify OTp------------------------------------------------------------
+  onchangeOTP() {
+    this.otpFlag = true;
+  }
+  verifyOTP() {
     let otp = this.verifyOTPForm.value.otpA + this.verifyOTPForm.value.otpB + this.verifyOTPForm.value.otpC + this.verifyOTPForm.value.otpD + this.verifyOTPForm.value.otpE;
     if (this.verifyOTPForm.invalid) {
-      this.OTPContainer=true;
+      this.OTPContainer = true;
       return;
     }
-    else if(this.checkOtp!=otp){
-      this.OTPContainer=false;
+    else if (this.checkOtp != otp) {
+      this.OTPContainer = true;
       this.toastrService.error("Invalid OTP")
       return;
     }
     else {
-      this.OTPContainer=false;
+      this.OTPContainer = false;
       this.spinner.show();
       this.comman.setHttp('get', 'login-by-otp?MobileNo=' + this.mobileNum + '&OTP=' + otp, false, false, false, 'loginBaseUrlApi');
       this.comman.getHttp().subscribe((res: any) => {
@@ -131,12 +141,21 @@ verifyOTP() {
           this.spinner.hide();
           this.toastrService.success(res.statusMessage);
           this.otpLoginUserId = res.responseData[0].id;
-          this.otpFlag=false;
+          this.otpFlag = false;
           this.OTPContainer = false;
           this.passContainer = true;
 
         }
-      })
+        else {
+          this.spinner.hide();
+          this.error.handelError(res.statusCode);
+        }
+      },
+        (error: any) => {
+          this.error.handelError(error.status);
+        })
+      this.spinner.hide();
+
     }
   }
   // ---------------------------------------------------------------------submit---------------------------------------
@@ -162,8 +181,11 @@ verifyOTP() {
             this.spinner.hide();
             this.toastrService.error("error")
           }
+        },
+        (error: any) => {
+          this.error.handelError(error.status);
         })
-        this.spinner.hide();
+      this.spinner.hide();
       }
       else {
         this.spinner.hide();

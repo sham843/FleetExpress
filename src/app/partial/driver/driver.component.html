@@ -29,24 +29,7 @@
             <div class="card form-card">
                 <div class="card-header">
                     <div class="row justify-content-between">
-                        <!-- <div class="col-sm-4"> -->
                         <div class="row align-items-center">
-                            <!--  <form [formGroup]="searchDriverForm"
-                                    (ngSubmit)="paginationNo=1;getDriverDetails('search')">
-                                    <div class="col-sm-auto">
-                                        Driver Name
-                                    </div>
-                                   //<div class="col-sm-8"> 
-                                       <div class="input-group">
-                                            <input type="text" placeholder="Driver Name" formControlName="driverName"
-                                                (keypress)="this.vs.alphabetsWithSpaces($event)" required
-                                                maxlength="15">
-                                            <div class="input-group-text"
-                                                *ngIf="searchHideShow && this.searchDriverForm.value.driverName"><i
-                                                    class="fa-solid fa-magnifying-glass"></i></div>
-                                            <div class="input-group-text" *ngIf="clearHideShow"><i
-                                                    class="fa-solid fa-xmark" (click)="clearSearchData()"></i></div>
-                                        </div> -->
                             <div class="col-sm-8">
                                 <div class="d-flex align-items-center">
                                     <div class="me-3">
@@ -54,8 +37,8 @@
                                     </div>
                                     <form [formGroup]="searchDriverForm">
                                         <div class="input-group">
-                                            <input type="search" class="form-control w-100" placeholder="Driver Name/Mobile No."
-                                                formControlName="driverName"
+                                            <input type="search" class="form-control w-100"
+                                                placeholder="Driver Name/Mobile No." formControlName="driverName"
                                                 (keypress)="this.vs.alphabetsWithSpaces($event)" required
                                                 maxlength="15">
                                             <div class="input-group-text"
@@ -138,24 +121,10 @@
                                     (pageChange)="onPagintion($event)" class="text-end m-2">
                                 </pagination-controls>
                             </div>
-
-
-
-
-
                             <!-- Modal -->
                             <div class="modal fade" id="AddDriverModal" tabindex="-1"
                                 aria-labelledby="AddDriverModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-xl modal-dialog-centered">
-                                    <!--  <form [formGroup]="driverRegForm" #formDirective="ngForm"> 
-        <div class="modal-content">
-            <div class="modal-header bg-light-gradient text-dark">
-                <p class="modal-title mb-0" id="AddDriverModalLabel">Driver Registration</p>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModels(formDirective)"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row"> -->
-
                                     <form [formGroup]="driverRegForm" #formDirective="ngForm"
                                         (ngSubmit)="registerDriverSave(formDirective)">
                                         <div class="modal-content">
@@ -232,7 +201,7 @@
                                                                         <span class="text-danger"
                                                                             *ngIf="f['lastName'].hasError('required')">
                                                                             Last Name is required</span>
-                                                                            <span class="text-danger"
+                                                                        <span class="text-danger"
                                                                             *ngIf="f['lastName'].hasError('pattern')">
                                                                             Last Name is Invalid</span>
                                                                     </mat-error>
@@ -349,7 +318,8 @@
                                                                                             [ngClass]="{'is-invalid':f['aadharNumber'].errors}"
                                                                                             formControlName="aadharNumber"
                                                                                             placeholder="Aadhaar Number"
-                                                                                            maxlength="12"   (keypress)="this.vs.onlyDigits($event)"
+                                                                                            maxlength="12"
+                                                                                            (keypress)="this.vs.onlyDigits($event)"
                                                                                             minlength="12">
                                                                                         <mat-error
                                                                                             *ngIf="f['aadharNumber'].errors">
@@ -419,11 +389,12 @@
                                                                                             maxlength="10"
                                                                                             (keyup)="this.vs.noSpaces($event)"
                                                                                             [ngClass]="{'is-invalid':f['panNumber'].errors}">
-                                                                                        <mat-error   *ngIf="f['panNumber'].errors">
+                                                                                        <mat-error
+                                                                                            *ngIf="f['panNumber'].errors">
                                                                                             <span class="text-danger"
-                                                                                            *ngIf="f['panNumber'].hasError('required')">Aadhar
-                                                                                            number is
-                                                                                            required</span>
+                                                                                                *ngIf="f['panNumber'].hasError('required')">Aadhar
+                                                                                                number is
+                                                                                                required</span>
                                                                                             <span class="text-danger"
                                                                                                 *ngIf="f['panNumber'].hasError('pattern')">Enter
                                                                                                 valid pan card
@@ -511,12 +482,6 @@
                                         </div>
                                         <div class="modal-footer border-0">
                                             <div class="form-container w-100">
-                                                <!-- <div class="d-flex justify-content-between">
-                                <button type="button" class="btn btn-light-main" #closeModel data-bs-dismiss="modal"
-                                    (click)="closeModels(formDirective)">Cancel</button>
-                                <button type="submit" class="btn btn-main"
-                                    (click)="registerDriverSave(formDirective)">{{buttonFlag?'Save':'Update'}}</button>
-                     -->
                                                 <div class="modal-footer border-0">
                                                     <div class="form-container w-100">
                                                         <div class="d-flex justify-content-between">
