@@ -59,10 +59,10 @@ export class LoginComponent implements OnInit {
       this.loginData = this.loginForm.value;
       this.apiCall.setHttp('get', 'login/login-web?'+'UserName=' + this.loginData.username.trim() + '&Password=' + this.loginData.password.trim(), false, false, false, 'vehicletrackingBaseUrlApi');
       this.subscription = this.apiCall.getHttp().subscribe((res: any) => {
-        if (res.statusCode === "200") {
+        if (res.statusCode == "200") {
           this.spinner.hide();
           sessionStorage.setItem('loginDetails', JSON.stringify(res));
-          this.commonMethods.routerLinkRedirect('../dashboard')
+          this.commonMethods.routerLinkRedirect('../dashboard');
           this.commonMethods.snackBar(res.statusMessage, 1);
         }
         else {

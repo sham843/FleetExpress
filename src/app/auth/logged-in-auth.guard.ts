@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {CanActivate, Router} from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import {CanActivate} from '@angular/router';
+import { CommonMethodsService } from '../services/common-methods.service';
 import { AuthServiceService } from './auth-service.service';
 
 @Injectable({
@@ -8,12 +8,11 @@ import { AuthServiceService } from './auth-service.service';
 })
 export class LoggedInAuthGuard implements CanActivate {
   constructor(private authService: AuthServiceService,
-    private router: Router,
-    private toastrService: ToastrService) { }
+    private commonMethods:CommonMethodsService) { }
   canActivate(): any {
     if (this.authService.isLogged()) {
-      this.router.navigate(['./dashboard']);
-      this.toastrService.error("You are already logged in");
+      this.commonMethods.routerLinkRedirect('./dashboard');
+      this.commonMethods.snackBar("You are already logged in", 1);
     }
     else{
       return true;

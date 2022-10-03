@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import { ApiCallService } from 'src/app/services/api-call.service';
@@ -39,7 +38,6 @@ export class ForgetPasswordComponent implements OnInit {
     private commonMethods:CommonMethodsService,
     private apiCall:ApiCallService,
     public vs: ValidationService,
-    private router: Router,
     private spinner: NgxSpinnerService,
     private error: ErrorsService
   ) { }
@@ -172,7 +170,7 @@ export class ForgetPasswordComponent implements OnInit {
             this.spinner.hide();
             this.commonMethods.snackBar(res.statusMessage, 1)
             this.changePassword.reset();
-            this.router.navigate(['/login']);
+            this.commonMethods.routerLinkRedirect('/login');
             this.spinner.hide();
           }
         },

@@ -1,8 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ToastrService } from 'ngx-toastr';
+import { CommonMethodsService } from './common-methods.service';
 import { WebStorageService } from './web-storage.service';
 
 @Injectable({
@@ -25,10 +24,9 @@ export class ApiCallService {
   };
 
   constructor(private http: HttpClient,
-    private router: Router,
     private webStorage: WebStorageService,
     private spinner: NgxSpinnerService,
-    private toastrService: ToastrService) {
+    private commonMethods:CommonMethodsService) {
   }
 
   
@@ -78,9 +76,8 @@ export class ApiCallService {
         } else {
           this.spinner.hide();
           sessionStorage.clear();
-          // this.router.navigate(['/login']);
-          this.router.navigate(['login']);
-          this.toastrService.info('Your Session Has Expired. Please Re-Login Again.');
+          this.commonMethods.routerLinkRedirect('login');
+          this.commonMethods.snackBar("Your Session Has Expired. Please Re-Login Again.", 1);
           return;
         }
 
@@ -127,15 +124,15 @@ export class ApiCallService {
         this.tokanExpiredFlag = false;
       }
       else if (res.statusCode === "409") {
-        this.toastrService.error(res.statusMessage);
+        this.commonMethods.snackBar(res.statusMessage, 1);
         this.spinner.hide();
       }
       else {
         this.spinner.hide();
         sessionStorage.clear();
-        this.router.navigate(['login']);
-        this.toastrService.info('Your Session Has Expired. Please Re-Login Again.')
-      }
+        this.commonMethods.routerLinkRedirect('login');
+        this.commonMethods.snackBar("Your Session Has Expired. Please Re-Login Again.", 1);
+         }
     })
   }
 }

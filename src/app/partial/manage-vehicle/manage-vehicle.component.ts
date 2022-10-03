@@ -20,7 +20,7 @@ export class ManageVehicleComponent implements OnInit {
   assignDriverForm!: FormGroup;
   editVehicleForm!: FormGroup;
   vehicleData: object |any;
-  driverData!: object;
+  driverData: object |any;
   totalItem!: number;
   paginationNo: number = 1;
   pageSize: number = 10;
@@ -108,7 +108,7 @@ export class ManageVehicleComponent implements OnInit {
         });
         flag == 'search' ? (this.searchHideShow = false, this.clearHideShow = true) : '';
         this.totalItem = response.responseData.responseData2.totalRecords;
-        // this.commonMethods.success(response.statusMessage);
+        this.commonMethods.snackBar(response.statusMessage, 1)
       }
       else {
         this.spinner.hide();
@@ -251,12 +251,10 @@ export class ManageVehicleComponent implements OnInit {
   }
   // ---------------------------------------------------------------------Upload Photo And Document---------------------------
   profilePhotoUpd(event: any) {
-    this.spinner.show();
     let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'vehicleProfile', "png,jpg,jpeg");
     documentUrl.subscribe({
       next: (ele: any) => {
         if (ele.statusCode == "200") {
-          this.spinner.hide();
           this.profilePhotoImg = ele.responseData;
           this.profilePhoto = this.profilePhotoImg;
         }
@@ -264,16 +262,13 @@ export class ManageVehicleComponent implements OnInit {
     },(error: any) => {
       this.error.handelError(error.status);
     })
-    this.spinner.hide();
   }
 
   documentUpload(event: any, flag: any) {
-    this.spinner.show();
     let documentUrl: any = this.sharedService.uploadDocuments(event, "pdf");
     documentUrl.subscribe({
       next: (ele: any) => {
         if (ele.statusCode == "200") {
-          this.spinner.hide();
           flag == 'insurance' ? this.insuranceImg = ele.responseData : flag == 'register' ? this.registerImg = ele.responseData : flag == 'pollution' ? this.pollutionImg = ele.responseData : flag == 'fitness' ? this.fitnessImg = ele.responseData : this.nationalImg = ele.responseData;
           this.commonMethods.snackBar(ele.statusMessage, 1)
         }
@@ -281,8 +276,8 @@ export class ManageVehicleComponent implements OnInit {
     },(error: any) => {
       this.error.handelError(error.status);
     })
-    this.spinner.hide();
   }
+
   clearDocument(flag: any) {
     flag == 'uploadInsurance' ? (this.uploadInsurance.nativeElement.value = '', this.insuranceImg ='') :
       flag == 'uploadRegister' ? (this.uploadRegister.nativeElement.value = '',this.registerImg='') :
@@ -291,7 +286,7 @@ export class ManageVehicleComponent implements OnInit {
             (this.uploadPermit.nativeElement.value = '', this.nationalImg='');
   }
   viewDocument(flag:any){
-    flag=='insurance'?window.open(this.insuranceImg):flag=='register'?window.open(this.registerImg):flag=='pollution'?window.open(this.pollutionImg):flag=='fitness'?window.open(this.fitnessImg):window.open(this.nationalImg);
+    flag=='insurance'?this.commonMethods.redirectToNewTab(this.insuranceImg):flag=='register'?this.commonMethods.redirectToNewTab(this.registerImg):flag=='pollution'?this.commonMethods.redirectToNewTab(this.pollutionImg):flag=='fitness'?this.commonMethods.redirectToNewTab(this.fitnessImg):this.commonMethods.redirectToNewTab(this.nationalImg);
   }
   // --------------------------------------------save--------------------------------------------------------------
   saveVehicleDetails(formDirective: any) {
