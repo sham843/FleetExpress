@@ -13,27 +13,6 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <!-- <div class="card card-body border-0">
-        <div class="card form-card">
-            <div class="card-header">
-                 <div class="row justify-content-between">
-                    <div class="col-sm-4"> -->
-                        <!-- <div class="row align-items-center">
-                            <div class="col-sm-auto">
-                                Vehicle List
-                            </div>
-                            <div class="col-sm-3">
-                            <form [formGroup]="serchVehicle" (ngSubmit)="paginationNo=1;getVehicleData('search')"> -->
-                                <!-- <div class="col-sm-8 form-group"> -->
-                                    <!-- <div class="input-group">
-                                        <input type="text" placeholder="Vehicle Number"
-                                            formControlName="searchVhl" (keypress)="this.vs.alphaNumeric($event)">
-                                        <div *ngIf="searchHideShow && this.serchVehicle.value.searchVhl"
-                                            class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></div>
-                                        <div *ngIf="clearHideShow" class="input-group-text"><i class="fa-solid fa-xmark"
-                                                (click)="clearSearchData()"></i></div>
-                                    </div> --> 
-
   <div class="card card-body border-0">
             <div class="card form-card">
                 <div class="card-header">
@@ -48,7 +27,10 @@
                                     <input type="text" class="form-control" placeholder="Vehicle Number"
                                         formControlName="searchVhl" (keypress)="this.vs.alphaNumeric($event)">
                                     <div *ngIf="searchHideShow && this.serchVehicle.value.searchVhl"
-                                        class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></div>
+                                        class="input-group-text">
+                                    <button type="submit" class="border-0 bg-white">
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                    </button></div>
                                     <div *ngIf="clearHideShow" class="input-group-text"><i class="fa-solid fa-xmark"
                                             (click)="clearSearchData()"></i></div>
                                 </div>
@@ -90,7 +72,7 @@
                                         (click)="getAssignDriver(vehicle)">Assign
                                         driver</button>
                                     <button class="btn btn-outline-warning" *ngIf="vehicle.driverName?.length"
-                                        (click)="assignDriverToVehicle(vehicle)">
+                                        (click)="assignDriverToVehicle('unassign',vehicle)">
                                         Unassign driver </button>
                                 </td>
                                 <td>
@@ -111,37 +93,9 @@
                     </table>
                     <div *ngIf="!vehicleData">
                      <tr colspan="5">
-                            <!--    <td>
-                                <span>{{vehicle.vehicleNo || '-'}}</span>
-                            </td>
-                            <td>
-                                <span>{{vehicle.driverName || '-'}}</span>
-                            </td>
-                            <td>{{vehicle.mobileNo ||'-'}}</td>
-                            <td>
-                                <button class="btn btn-outline-primary text-primary" *ngIf="!vehicle.driverName?.length"
-                                    data-bs-toggle="modal" id="openmodal" data-bs-target="#AssignDriverModal"
-                                    (click)="getAssignDriver(vehicle)">Assign driver</button>
-                                <button class="btn btn-outline-warning text-warning" *ngIf="vehicle.driverName?.length"
-                                    (click)="assignDriverToVehicle(formDirective,vehicle)"> Unassign driver </button>
-                            </td>
-                            <td>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch"
-                                        id="flexSwitchCheckDefault" (change)="blockUnblockVhl(vehicle,$event)"
-                                        [checked]="vehicle.isBlockFlag">
-                                </div>
-                            </td>
-                            <td>
-                                <button class="btn btn-light-main btn-icon" data-bs-toggle="modal"
-                                    data-bs-target="#EditVehicleDetailsModal" (click)="editVehicleDetail(vehicle)">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button> -->
                                <td>
                                 <div class="alert alert-danger text-center errorMSG">Data is not available</div>
                                </td>
-                        
-                            <!-- </td> -->
                         </tr>
                     </div>
                     <pagination-controls *ngIf="vehicleData?.length != 0" previousLabel="" nextLabel=""
@@ -165,8 +119,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     (click)="closemodel(formDirective)"></button>
             </div>
+            <!-- formDirective -->
             <form [formGroup]="assignDriverForm" #formDirective="ngForm"
-                (ngSubmit)="assignDriverToVehicle(formDirective)">
+                (ngSubmit)="assignDriverToVehicle('assign')">
                 <div class="modal-body">
                     <div class="">
                         <h6>{{asgnVehicle}}</h6>
@@ -183,9 +138,9 @@
                 <div class="modal-footer">
                     <div class="form-container w-100">
                         <div class="d-flex justify-content-between">
-                            <button class="btn btn-light-main" #closeModel data-bs-dismiss="modal"
+                            <button type="button" class="btn btn-light-main" #closeModel data-bs-dismiss="modal"
                                 (click)="closeModels(formDirective)">Cancel</button>
-                            <button class="btn btn-main">Assign</button>
+                            <button type="submit" class="btn btn-main">Assign</button>
                         </div>
                     </div>
                 </div>
@@ -227,15 +182,16 @@
                                         <input matInput formControlName="vhlNumber" required
                                             [ngClass]="{'is-invalid':f['vhlNumber'].errors}"
                                             (keypress)="this.vs.alphaNumeric($event)" maxlength="15">
-                                        <mat-error class="text-danger">
-                                            <span *ngIf="f['vhlNumber'].errors">Vehicle Number required</span>
+                                        <mat-error *ngIf="f['vhlNumber'].errors">
+                                            <span *ngIf="f['vhlNumber'].hasError('required')" class="text-danger">Vehicle Number required</span>
+                                            <span *ngIf="f['vhlNumber'].hasError('pattern')" class="text-danger">Please enter valid Vehicle Numbers</span>
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-sm-4 form-group">
                                     <mat-form-field appearance="standard" class="w-100">
                                         <mat-label>Date Added</mat-label>
-                                        <input matInput [matDatepicker]="picker"
+                                        <input matInput [matDatepicker]="picker" [readonly]="true" 
                                             formControlName="date" required [ngClass]="{'is-invalid':f['date'].errors}">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
@@ -249,9 +205,10 @@
                                         <mat-label>Plate No</mat-label>
                                         <input matInput formControlName="plateNo" required
                                             [ngClass]="{'is-invalid':f['plateNo'].errors}"
-                                            (keypress)="this.vs.alphaNumeric($event)" maxlength="15">
-                                        <mat-error class="text-danger">
-                                            <span *ngIf="f['plateNo'].errors">Plate Number required</span>
+                                            (keypress)="this.vs.alphaNumeric($event)" maxlength="17">
+                                        <mat-error *ngIf="f['plateNo'].errors">
+                                            <span *ngIf="f['plateNo'].hasError('required')" class="text-danger">Plate Number required</span>
+                                            <span *ngIf="f['plateNo'].hasError('pattern')" class="text-danger">Please enter valid Plate Number</span>
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
@@ -260,9 +217,10 @@
                                         <mat-label>Chassis No.</mat-label>
                                         <input matInput formControlName="chassicNo" required
                                             [ngClass]="{'is-invalid':f['chassicNo'].errors}"
-                                            (keypress)="this.vs.onlyDigits($event)" maxlength="15">
-                                        <mat-error class="text-danger">
-                                            <span *ngIf="f['chassicNo'].errors">Chassis Number required</span>
+                                            (keypress)="this.vs.onlyDigits($event)" maxlength="18">
+                                        <mat-error *ngIf="f['chassicNo'].errors">
+                                            <span *ngIf="f['chassicNo'].hasError('required')" class="text-danger">Chassis Number required</span>
+                                            <span *ngIf="f['chassicNo'].hasError('pattern')" class="text-danger">Please enter valid Chassis Number</span>
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
@@ -272,8 +230,9 @@
                                         <input matInput formControlName="brand" required
                                             [ngClass]="{'is-invalid':f['brand'].errors}"
                                             (keypress)="this.vs.onlyAlphabets($event)" maxlength="15">
-                                        <mat-error class="text-danger">
-                                            <span *ngIf="f['brand'].errors">Brand required</span>
+                                        <mat-error *ngIf="f['brand'].errors">
+                                            <span *ngIf="f['brand'].hasError('required')" class="text-danger">Brand required</span>
+                                            <span *ngIf="f['brand'].hasError('pattern')">Please Enter Valid Brand</span>
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
@@ -283,8 +242,9 @@
                                         <input matInput formControlName="model" required
                                             [ngClass]="{'is-invalid':f['model'].errors}"
                                             (keypress)="this.vs.alphaNumeric($event)" maxlength="10">
-                                        <mat-error class="text-danger">
-                                            <span *ngIf="f['model'].errors">Model required</span>
+                                        <mat-error *ngIf="f['model'].errors">
+                                            <span *ngIf="f['model'].hasError('required')" class="text-danger">Model required</span>
+                                            <span *ngIf="f['model'].hasError('pattern')" class="text-danger">Please enter valid Model Number</span>
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
@@ -348,8 +308,14 @@
                                                     <div class="form-group">
                                                         <mat-form-field appearance="standard" class="w-100">
                                                             <input matInput
-                                                                formControlName="registerNo"
-                                                                placeholder="Document Number">
+                                                                formControlName="registerNo" 
+                                                                placeholder="Document Number" [ngClass]="{'is-invalid':f['registerNo'].errors}">
+                                                                <mat-error  *ngIf="f['registerNo'].errors">
+                                                                    <span *ngIf="f['registerNo'].hasError('required')"  class="text-danger">Registration number
+                                                                        is required</span>
+                                                                        <span *ngIf="f['registerNo'].hasError('pattern')"  class="text-danger">Please enter valid Registration number
+                                                                           </span>
+                                                                </mat-error>
                                                         </mat-form-field>
                                                     </div>
                                                 </td>
@@ -466,10 +432,11 @@
                                                             <input matInput 
                                                                 formControlName="permitNo" placeholder="Document Number"
                                                                 [ngClass]="{'is-invalid':f['permitNo'].errors}"
-                                                                (keypress)="this.vs.alphaNumeric($event)">
-                                                            <mat-error class="text-danger">
-                                                                <span *ngIf="f['permitNo'].errors">National Permit
+                                                                (keypress)="this.vs.alphaNumeric($event)" maxlength="(12)">
+                                                            <mat-error *ngIf="f['permitNo'].errors">
+                                                                <span *ngIf="f['permitNo'].hasError('required')" class="text-danger">National Permit is
                                                                     required</span>
+                                                                    <span *ngIf="f['permitNo'].hasError('pattern')" class="text-danger">Please enter valid National Permit</span>
                                                             </mat-error>
                                                         </mat-form-field>
                                                     </div>

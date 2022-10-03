@@ -76,27 +76,28 @@ export class ManageVehicleComponent implements OnInit {
       driverName: ['', Validators.required]
     })
     this.editVehicleForm = this.fb.group({
-      vhlNumber: ['', [Validators.compose([Validators.required, Validators.maxLength(15)])]],
+      vhlNumber: ['', [Validators.compose([Validators.required, Validators.maxLength(15),Validators.pattern('^[A-Z]{2}[0-9]{2}[A-Z]{2,3}[0-9]{4}')])]],
       profile: ['', Validators.required],
       date: ['', Validators.required],
-      plateNo: ['', [Validators.compose([Validators.required, Validators.maxLength(15)])]],
-      chassicNo: ['', [Validators.compose([Validators.required, Validators.maxLength(15)])]],
-      brand: ['', [Validators.compose([Validators.required, Validators.maxLength(15)])]],
-      model: ['', [Validators.compose([Validators.required, Validators.maxLength(10)])]],
+      plateNo: ['', [Validators.compose([Validators.required, Validators.maxLength(17),Validators.pattern('[a-zA-Z0-9_]{17}')])]],
+      chassicNo: ['', [Validators.compose([Validators.required, Validators.maxLength(18),Validators.pattern('[0-9]{18}')])]],
+      brand: ['', [Validators.compose([Validators.required, Validators.maxLength(15),Validators.pattern('[a-zA-Z][a-zA-Z ]{15}')])]],
+      model: ['', [Validators.compose([Validators.required, Validators.maxLength(10),Validators.pattern('[a-zA-Z0-9_]{10}')])]],
       insuranceExDate: ['', Validators.required],
       insuranceDoc: [''],
-      registerNo: [''],
+      registerNo: ['',[Validators.compose([Validators.required, Validators.maxLength(10),Validators.pattern('[a-zA-Z0-9_]{10}')])]],
       registerDoc: [''],
       pollutionExDate: ['', Validators.required],
       pollutionDoc: [''],
       fitnessExDate: [''],
       fitnessDoc: [''],
-      permitNo: ['', Validators.required],
+      permitNo: ['',[Validators.compose([Validators.required, Validators.maxLength(12),Validators.pattern('[a-zA-Z0-9_]{12}')])]],
       permitDoc: [''],
     })
   }
   // --------------------------------------------Vehicle data------------------------------------------------------------
   getVehicleData(flag?: any) {
+    console.log(this.serchVehicle.value.searchVhl)
     this.spinner.show();
     let searchText = this.serchVehicle.value.searchVhl || '';
     this.comman.setHttp('get', 'get-vehiclelists?searchtext=' + searchText + '&nopage=' + this.paginationNo, true, false, false, 'vehicleBaseUrlApi');
@@ -151,15 +152,15 @@ export class ManageVehicleComponent implements OnInit {
   }
   // --------------------------------------Assign Driver------------------------------------------------------------------
   getAssignDriver(vhlData: any) {
-    this.assignVehicle = vhlData;
+   this.assignVehicle = vhlData;
     this.asgnVehicle = vhlData.vehicleNo
     this.spinner.show();
     this.comman.setHttp('get', 'get-driver?searchText=' + '&pageno=1', true, false, false, 'driverBaseUrlApi');
     this.comman.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
+        console.log(response)
         this.spinner.hide();
         this.driverData = response.responseData.responseData1;
-        console.log(this.driverData)
         this.tostrservice.success(response.statusMessage);
       } else {
         this.spinner.hide();
@@ -168,13 +169,12 @@ export class ManageVehicleComponent implements OnInit {
     },
       (error: any) => {
         this.error.handelError(error.status);
-      })
+      }) 
   }
-  assignDriverToVehicle(formDirective: any, vehicleData?: any) {
-    console.log(vehicleData)
-    let param = {
+  assignDriverToVehicle(flag:any,vehicleData?: any) {
+   let param = {
       "id": 0,
-      "driverId": this.assignDriverForm.value.driverName ? this.assignDriverForm.value.driverName : vehicleData.driverId,
+      "driverId":flag=='unassign'?vehicleData.driverId:this.assignDriverForm.value.driverName,
       "vehicleId": this.assignVehicle?.vehicleId ? this.assignVehicle?.vehicleId : 0,
       "assignedby": this.comman.getUserId(),
       "assignedDate": this.date.toISOString(),
@@ -186,16 +186,15 @@ export class ManageVehicleComponent implements OnInit {
     this.comman.setHttp('put', 'assign-driver-to-vehicle', true, param, false, 'vehicleBaseUrlApi');
     this.comman.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
-        formDirective.resetForm()
         this.spinner.hide();
         this.getVehicleData();
+        this.closeModel.nativeElement.click();
         this.tostrservice.success(response.statusMessage);
         this.assignDriverForm.controls['driverName'].setValue('');
-        this.closeModel.nativeElement.click();
       } else {
         this.spinner.hide();
         this.error.handelError(response.statusCode);
-      }
+      } 
     },
       (error: any) => {
         this.error.handelError(error.status);
@@ -363,11 +362,11 @@ export class ManageVehicleComponent implements OnInit {
       "profilePhoto": this.profilePhotoImg
     }
     if (this.editVehicleForm.invalid) {
-      !this.editVehicleForm.value.insuranceDoc ? this.tostrservice.error("Please Upload insurance document") : '';
+      /* !this.editVehicleForm.value.insuranceDoc ? this.tostrservice.error("Please Upload insurance document") : '';
       !this.editVehicleForm.value.registerDoc ? this.tostrservice.error("Please Upload Register document") : '';
       !this.editVehicleForm.value.pollutionDoc ? this.tostrservice.error("Please Upload Pollution document") : '';
       !this.editVehicleForm.value.fitnessDoc ? this.tostrservice.error("Please Upload Fitness document") : '';
-      !this.editVehicleForm.value.permitDoc ? this.tostrservice.error("Please Upload permit document") : '';
+      !this.editVehicleForm.value.permitDoc ? this.tostrservice.error("Please Upload permit document") : ''; */
     }
     else {
       this.spinner.show();
