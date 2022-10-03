@@ -12,8 +12,6 @@ interface timePeriodArray {
   value: string;
   viewValue: string;
 }
-
-
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
@@ -217,6 +215,9 @@ export class ReportsComponent implements OnInit {
         else {
         this.commonMethods.snackBar(responseData.statusMessage,0);
         }
+      },
+      (error:any)=>{
+        this.error.handelError(error.status)
       })
     }
   }

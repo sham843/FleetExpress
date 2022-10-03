@@ -109,11 +109,14 @@ onChangePwd(){
     }else{
       this.spinner.show();
     this.apiCall.setHttp('get', 'change-password?UserId='+this.webStorage.getUserId()+'&NewPassword='+this.changePassForm.value.reTypePwd+'&OldPassword='+this.changePassForm.value.currentPwd, true, false, false, 'loginBaseUrlApi');
-      this.apiCall.getHttp().subscribe((response: any) => {
+      this.subscription=this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
           this.spinner.hide();
           this.commonMethods.snackBar(response.statusMessage,0);
         }
+      },
+      (error:any)=>{
+        this.error.handelError(error.status)
       })
     }
   }
@@ -162,9 +165,8 @@ getNotificatinsData() {
           this.error.handelError(res.statusCode)
         }
       }
-    },
-    error: ((error: any) => { this.error.handelError(error.status) })
-  });
+    }
+  },(error: any) => { this.error.handelError(error.status) });
 }
 getVehicleNotificatinsData() {
   this.vehicleNotificatinsData=[]
@@ -184,9 +186,8 @@ getVehicleNotificatinsData() {
             this.error.handelError(res.statusCode)
         }
       }
-    },
-    error: ((error: any) => { this.error.handelError(error.status) })
-  });
+    }
+  },(error: any) => { this.error.handelError(error.status) });
 }
 switchNotification(rowData:any){ 
   this.spinner.show();
@@ -202,12 +203,11 @@ switchNotification(rowData:any){
         }
       }
       this.getNotificatinsData();
-    }, 
-    error: ((error: any) => { 
-      this.spinner.hide();
-      this.error.handelError(error.status)
-     } )
-  });
+    }
+  },(error: any) => { 
+    this.spinner.hide();
+    this.error.handelError(error.status)
+   } );
 }
 ngOnDestroy() {
   this.subscription.unsubscribe();

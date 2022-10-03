@@ -105,9 +105,8 @@ export class TrackingComponent implements OnInit {
             this.error.handelError(res.statusCode)
           }
         }
-      },
-      error: ((error: any) => { this.error.handelError(error.status) })
-    });
+      }
+    },(error: any) => { this.error.handelError(error.status) });
   }
   // getaddressdata(allVehiclelData:any){
   // //   const promises =  allVehiclelData.map(async (myValue:any) => {
@@ -154,14 +153,11 @@ export class TrackingComponent implements OnInit {
               this.error.handelError(res.statusCode)
             }
           }
-        },
-        error: ((error: any) => {
-          this.spinner.hide();
-          this.error.handelError(error.status)
-        })
-
+        }
+      },(error: any) => {
+        this.spinner.hide();
+        this.error.handelError(error.status)
       });
-
     }
   }
 
