@@ -8,8 +8,8 @@
                     <div class="input-group">
                         <!-- <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
                         <input type="text" class="form-control" placeholder="Search"> -->
-                        <input type="text" class="form-control" placeholder="Search" [formControl]="searchContent">
-                        <div class="input-group-text" *ngIf="!searchContent.value">
+                        <input type="text" class="form-control" placeholder="Search" [formControl]="searchContent" [maxLength]="15">
+                        <div class="input-group-text" *ngIf="!searchContent.value" >
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </div>
                         <div class="input-group-text" *ngIf="searchContent.value"><i class="fa fa-times" (click)="searchContent.reset()"></i>

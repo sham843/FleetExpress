@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core'
+import { MapsAPILoader } from '@agm/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -39,13 +40,20 @@ export class TrackingComponent implements OnInit {
   maintananceForm!: FormGroup;
   currentDate = new Date();
   vehicleDetails: any;
+  latitude: any;
+  longitude: any;
+  pinCode: any;
+  geocoder: any;
+  @ViewChild('search') public searchElementRef!: ElementRef;
   get f() { return this.maintananceForm.controls };
   constructor(private sharedService: SharedService,
     private common: CommanService,
     private error: ErrorsService,
     private fb: FormBuilder,
     private spinner: NgxSpinnerService,
-    private toastrService:ToastrService) { }
+    private toastrService:ToastrService,
+    private mapsAPILoader: MapsAPILoader,
+    private ngZone: NgZone,) { }
 
   ngOnInit(): void {
     this.getMaintananceForm();
@@ -79,14 +87,19 @@ export class TrackingComponent implements OnInit {
     this.subscription = this.common.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
-          res.responseData.map((x: any) => {
+          let q:any;
+          res.responseData.map(async (x: any) => {
             x.deviceDatetime = new Date(x.deviceDatetime);
+            // this.findAddressByCoordinates(21.061078,78.962603)
+             x.address= await this.findAddressByCoordinates(parseFloat(x.latitude) , parseFloat(x.longitude));
           })
           this.allVehiclelData = res.responseData;
+          console.log(this.allVehiclelData)
           this.allRunningVehiclelData = res.responseData.filter((x: any) => x.gpsStatus == 'Running');
           this.allStoppedVehiclelData = res.responseData.filter((x: any) => x.gpsStatus == 'Stopped');
           this.allIdleVehiclelData = res.responseData.filter((x: any) => x.gpsStatus == 'Idle');
           this.allOfflineVehiclelData = res.responseData.filter((x: any) => x.gpsStatus == 'Offline');
+          console.log( this.getaddressdata(this.allVehiclelData))
         } else {
           if (res.statusCode != "404") {
             this.allVehiclelData = [];
@@ -99,6 +112,17 @@ export class TrackingComponent implements OnInit {
       },
       error: ((error: any) => { this.error.handelError(error.status) })
     });
+  }
+  getaddressdata(allVehiclelData:any){
+    const promises =  allVehiclelData.map(async (myValue:any) => {
+      return {
+          address: await this.findAddressByCoordinates(21.061078,78.962603)
+      }
+      return Promise.all(promises);
+  });
+
+  return Promise.all(promises);
+console.log();
   }
   mapClicked() {
 
@@ -148,5 +172,26 @@ export class TrackingComponent implements OnInit {
 
     }
   }
+
+
+
+  //address:any
+  findAddressByCoordinates(lat: any, lng: any) {
+    let g:any;
+    this.mapsAPILoader.load().then(() => {
+      this.geocoder = new google.maps.Geocoder();
+     g= this.geocoder.geocode(
+        { location: { lat: lat, lng: lng, } },
+        (results: any) => {
+          //console.log(results[0].formatted_address);
+          //results[0].formatted_address;
+          // addressresults[0].address_components.forEach((element: any) => {
+          // });
+        });
+        return g
+    });
+    
+  }
+
 
 }
