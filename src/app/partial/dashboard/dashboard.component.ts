@@ -9,7 +9,6 @@ import {
   ApexPlotOptions
 } from "ng-apexcharts";
 import { CommanService } from 'src/app/services/comman.service';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import { ErrorsService } from 'src/app/services/errors.service';
 
 export type ChartOptions = {
@@ -49,9 +48,7 @@ export class DashboardComponent implements OnInit {
   vehiclesMoving:any;
   currentdate=new Date()
   constructor(private cs: CommanService,
-    public dialog: MatDialog,
-    private error:ErrorsService
-   ) {
+    private error:ErrorsService) {
     this.chartOptions = {
       series: [],
       chart: {
@@ -128,7 +125,6 @@ export class DashboardComponent implements OnInit {
           x.deviceDatetime=new Date(x.deviceDatetime);
         })
         this.vehicleAllData.sort((a, b) => { return b.speed - a.speed; });
-        // const items = this.vehicleAllData.slice(0, 10);
         const maxSpeed=Math.max(...this.vehicleAllData.map(o => o.speed));
         this.maxSpeedObj=this.vehicleAllData.find(x=>x.speed=maxSpeed);
         this.fastestVehicleObj={
@@ -227,8 +223,6 @@ export class DashboardComponent implements OnInit {
   }
   getSIMRenewalReminderData() {
     this.SIMRenewalReminderData = [];
-    // const Fromdate=moment.utc().startOf('day').toISOString();
-    // const ToDate=moment.utc().toISOString();
     this.cs.setHttp('get', 'dashboard/get-sim-due-and-over-due?UserId=' + this.cs.getUserId(), true, false, false, 'vehicletrackingBaseUrlApi');
     this.cs.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
@@ -275,14 +269,5 @@ export class DashboardComponent implements OnInit {
     series[3] = items.offlineVehicles|0;
     this.chartOptions1.series = series;
     this.pieChartDisplay = true;
-  }
-}
-export class DialogOverviewExampleDialog {
-  constructor(
-    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>
- ) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
   }
 }

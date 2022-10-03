@@ -3,11 +3,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { CommanService } from 'src/app/services/comman.service';
-import { MatDialog } from '@angular/material/dialog';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { ErrorsService } from 'src/app/services/errors.service';
-import { BlockUnblockComponent } from 'src/app/dialogs/block-unblock/block-unblock.component';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 export interface PeriodicElement {
   name: string;
@@ -64,9 +61,7 @@ export class SettingsComponent implements OnInit {
     private tostrService:ToastrService,
     private comman:CommanService,
     private spinner:NgxSpinnerService,
-    private error:ErrorsService,
-    private modalService:NgbModal,
-    private dialog:MatDialog) { }
+    private error:ErrorsService,) { }
 
   ngOnInit(): void {
     this.getChangePwd();
@@ -75,7 +70,7 @@ export class SettingsComponent implements OnInit {
   }
   
   ngAfterViewInit(){
-    this.searchContent.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe((x:any)=>{
+    this.searchContent.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(()=>{
      this.getVehicleNotificatinsData();
     });
  }
@@ -201,7 +196,7 @@ getVehicleNotificatinsData() {
     error: ((error: any) => { this.error.handelError(error.status) })
   });
 }
-switchNotification(rowData:any, lable:any){ 
+switchNotification(rowData:any){ 
   this.spinner.show();
   this.comman.setHttp('PUT', 'notification/set-Visibity-Notification?alertype='+rowData.alertType+'&Isnotification='+ !rowData.isNotification , true, false, false, 'vehicletrackingBaseUrlApi');
   this.subscription = this.comman.getHttp().subscribe({
@@ -218,7 +213,7 @@ switchNotification(rowData:any, lable:any){
     }, 
     error: ((error: any) => { 
       this.spinner.hide();
-      error: ((error: any) => { this.error.handelError(error.status) })
+      this.error.handelError(error.status)
      } )
   });
 }

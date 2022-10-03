@@ -25,7 +25,7 @@
     ],
     // unused variable remove
    "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

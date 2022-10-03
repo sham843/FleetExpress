@@ -61,7 +61,7 @@ export class TrackingComponent implements OnInit {
     this.setIndex(0)
   }
   ngAfterViewInit() {
-    this.searchContent.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe((x: any) => {
+    this.searchContent.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
       this.getAllVehicleListData();
     });
   }
@@ -90,7 +90,6 @@ export class TrackingComponent implements OnInit {
           let q:any;
           res.responseData.map(async (x: any) => {
             x.deviceDatetime = new Date(x.deviceDatetime);
-            // this.findAddressByCoordinates(21.061078,78.962603)
              x.address= await this.findAddressByCoordinates(parseFloat(x.latitude) , parseFloat(x.longitude));
           })
           this.allVehiclelData = res.responseData;
@@ -99,7 +98,6 @@ export class TrackingComponent implements OnInit {
           this.allStoppedVehiclelData = res.responseData.filter((x: any) => x.gpsStatus == 'Stopped');
           this.allIdleVehiclelData = res.responseData.filter((x: any) => x.gpsStatus == 'Idle');
           this.allOfflineVehiclelData = res.responseData.filter((x: any) => x.gpsStatus == 'Offline');
-          console.log( this.getaddressdata(this.allVehiclelData))
         } else {
           if (res.statusCode != "404") {
             this.allVehiclelData = [];
@@ -113,17 +111,15 @@ export class TrackingComponent implements OnInit {
       error: ((error: any) => { this.error.handelError(error.status) })
     });
   }
-  getaddressdata(allVehiclelData:any){
-    const promises =  allVehiclelData.map(async (myValue:any) => {
-      return {
-          address: await this.findAddressByCoordinates(21.061078,78.962603)
-      }
-      return Promise.all(promises);
-  });
-
-  return Promise.all(promises);
-console.log();
-  }
+  // getaddressdata(allVehiclelData:any){
+  // //   const promises =  allVehiclelData.map(async (myValue:any) => {
+  // //     return {
+  // //         address: await this.findAddressByCoordinates(21.061078,78.962603)
+  // //     }
+  // //     return Promise.all(promises);
+  // // });
+  // // return Promise.all(promises);
+  // }
   mapClicked() {
 
   }
@@ -184,7 +180,7 @@ console.log();
         { location: { lat: lat, lng: lng, } },
         (results: any) => {
           //console.log(results[0].formatted_address);
-          //results[0].formatted_address;
+          results[0].formatted_address;
           // addressresults[0].address_components.forEach((element: any) => {
           // });
         });

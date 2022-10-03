@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, UntypedFormControl, Validators} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -61,7 +61,7 @@ export class UserManagementSystemComponent implements OnInit {
     this.getRoleTableData();
   }
   ngAfterViewInit(){
-    this.searchContent.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe((x:any)=>{
+    this.searchContent.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(()=>{
      this.getUserTableData();
     });
  }
@@ -176,7 +176,7 @@ export class UserManagementSystemComponent implements OnInit {
         vehiclearray.push(this.VehicleDtArr.find(x=>x.vehicleRegistrationNo==userFormData?.assignedVehicle[i]));
       }
       if (this.editFlag) {
-        const data = this.editData.vehicle;
+        //const data = this.editData.vehicle;
         const filtervehicles = this.editData.vehicle.filter((x:any) => {
           return vehiclearray.some((f:any) => {
             return f.vehicleRegistrationNo == x.vehicleNumber ;
@@ -336,7 +336,7 @@ export class UserManagementSystemComponent implements OnInit {
       },
       error: ((error: any) => { 
         this.spinner.hide();
-        error: ((error: any) => { this.error.handelError(error.status) })
+        this.error.handelError(error.status) 
        } )
     });
   }
@@ -373,7 +373,7 @@ export class UserManagementSystemComponent implements OnInit {
       },
       error: ((error: any) => {
         this.spinner.hide();
-        error: ((error: any) => { this.error.handelError(error.status) })
+       this.error.handelError(error.status) ;
       })
 
     });
