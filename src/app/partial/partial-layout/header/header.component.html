@@ -3,13 +3,17 @@
         <div class="d-flex align-content-end w-100" id="navbarSupportedContent">
             <div class="ms-auto d-flex align-items-center" role="search">
                 <a class="btn btn-light bg-transparent me-1" (click)="toggleSidebar()">
-                    <i class="fa-solid fa-bars"></i>   
+                    <!-- <i class="fa-solid fa-bars"></i>    -->
+                    <mat-icon>menu</mat-icon>
                 </a>
                 <a class="btn btn-light bg-transparent" routerLink="notifications">
-                    <i class="fa-solid fa-bell"></i>
+                    <!-- <i class="fa-solid fa-bell"></i> -->
+                    <mat-icon>notifications_active</mat-icon>
                 </a>
                 <a class="btn btn-light bg-transparent" (click)="toggleBackgroundImage()">
-                    <i class="fa-solid fa-circle-half-stroke"></i>
+                    <!-- <i class="fa-solid fa-circle-half-stroke"></i> -->
+                    <mat-icon>light_mode</mat-icon>
+                    <mat-icon>nightlight</mat-icon>
                 </a>
                 <div class="dropdown bg-transparent">
                     <button class="btn btn-light dropdown-toggle shadow-none bg-transparent" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
