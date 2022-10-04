@@ -33,6 +33,8 @@ export class ApiCallService {
   getBaseurl(url: string) {
     switch (url) {
       case 'vehicletrackingBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/'; break
+      case 'reportBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/reports/'; break
+      case 'dashboardBaseUrlApi' :return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/dashboard/';break
       case 'loginBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/login/'; break
       case 'vehicleBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/vehicle/'; break
       case 'driverBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/driver/'; break
@@ -42,8 +44,7 @@ export class ApiCallService {
       default: return ''; break;
     }
   }
- 
-
+  
   clearHttp() {
     this.httpObj.type = '';
     this.httpObj.url = '';

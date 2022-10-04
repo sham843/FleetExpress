@@ -4,7 +4,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
+import { ErrorsService } from 'src/app/services/errors.service';
 import { ExcelPdfDownloadedService } from 'src/app/services/excel-pdf-downloaded.service';
+import { MasterService } from 'src/app/services/master.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
 
 interface timePeriodArray {
@@ -26,7 +28,6 @@ export class ReportsComponent implements OnInit {
   selectedTablabel!: string;
   reportResponseData=new Array();
   currentDate = moment().toISOString();
-  VehicleDtArr=new Array();
   timePeriodArray: timePeriodArray[] = [
     { value: '1', viewValue: 'Today' },
     { value: '2', viewValue: '24hr' },
@@ -42,7 +43,9 @@ export class ReportsComponent implements OnInit {
     private excelService: ExcelPdfDownloadedService,
      private datepipe: DatePipe,
      private webStorage:WebStorageService,
-     private commonMethods:CommonMethodsService
+     private commonMethods:CommonMethodsService,
+     private master:MasterService,
+     private error:ErrorsService
     ) { }
 
   ngOnInit(): void {
@@ -126,15 +129,15 @@ export class ReportsComponent implements OnInit {
   }
 
   getVehicleData() {
-    this.apiCall.setHttp('get', 'userdetail/get-vehicle-list?vehicleOwnerId='+ this.webStorage.getVehicleOwnerId(), true, false, false, 'vehicletrackingBaseUrlApi');
-    this.apiCall.getHttp().subscribe((responseData: any) => {
-      if (responseData.statusCode === "200") {
-        this.VehicleDtArr = responseData.responseData;
+    let vhlData=this.master.getVehicleListData();
+    vhlData.subscribe({
+      next:(response: any) => {
+        this.vehicleList = response;
       }
-      else {
-        this.commonMethods.snackBar(responseData.statusMessage,0);
-      }
-    })
+    }),
+    (error: any) => {
+      this.error.handelError(error.status);
+    }
   }
   selectTimePeriod(value: any) {
     switch (value) {
@@ -198,14 +201,14 @@ export class ReportsComponent implements OnInit {
     } else {
       var url: any
       switch (this.selectedTablabel) {
-        case "Summary Report": url = 'reports/get-summary-report'; break;
-        case "Trip Report": url = 'reports/get-trip-report-web'; break;
-        case "Address Report": url = 'reports/get-tracking-address-mob'; break;
-        case "Overspeed Report": url = 'reports/get-vehicle-details-for-overspeed'; break;
-        case "Speed Range Report": url = 'reports/get-overspeed-report-speedrange'; break;
+        case "Summary Report": url = 'get-summary-report'; break;
+        case "Trip Report": url = 'get-trip-report-web'; break;
+        case "Address Report": url = 'get-tracking-address-mob'; break;
+        case "Overspeed Report": url = 'get-vehicle-details-for-overspeed'; break;
+        case "Speed Range Report": url = 'get-overspeed-report-speedrange'; break;
       }
      
-      this.apiCall.setHttp('get', url + this.getQueryString() + '&UserId='+this.webStorage.getUserId()+'&VehicleOwnerId='+this.webStorage.getVehicleOwnerId(), true, false, false, 'vehicletrackingBaseUrlApi');
+      this.apiCall.setHttp('get', url + this.getQueryString() + '&UserId='+this.webStorage.getUserId()+'&VehicleOwnerId='+this.webStorage.getVehicleOwnerId(), true, false, false, 'reportBaseUrlApi');
       this.apiCall.getHttp().subscribe((responseData: any) => {
         if (responseData.statusCode === "200" || responseData.length > 0) {
           this.reportResponseData = responseData.responseData;
