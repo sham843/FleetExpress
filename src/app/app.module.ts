@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule,  MAT_DATE_LOCALE } from '@angular/material/core';
 import { PartialLayoutComponent } from './partial/partial-layout/partial-layout.component';
 import { FooterComponent } from './partial/partial-layout/footer/footer.component';
@@ -20,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReportTableComponent } from './dialogs/report-table/report-table.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -44,8 +44,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     MatNativeDateModule,
     ReactiveFormsModule,
     PerfectScrollbarModule,
-    FormsModule,
-    ReactiveFormsModule,
     HttpClientModule,
     NgxSpinnerModule,
     NgbModule,
