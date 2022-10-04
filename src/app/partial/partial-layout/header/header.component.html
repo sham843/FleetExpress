@@ -12,8 +12,8 @@
                 </a>
                 <a class="btn btn-light bg-transparent" (click)="toggleBackgroundImage()">
                     <!-- <i class="fa-solid fa-circle-half-stroke"></i> -->
-                    <mat-icon>light_mode</mat-icon>
-                    <mat-icon>nightlight</mat-icon>
+                    <mat-icon *ngIf="sidebarservice?.hasBackgroundImage">light_mode</mat-icon>
+                    <mat-icon *ngIf="!sidebarservice?.hasBackgroundImage">nightlight</mat-icon>
                 </a>
                 <div class="dropdown bg-transparent">
                     <button class="btn btn-light dropdown-toggle shadow-none bg-transparent" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
