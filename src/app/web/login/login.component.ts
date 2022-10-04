@@ -80,7 +80,9 @@ get f(){
 }
 
 ngOnDestroy() {
-  this.subscription.unsubscribe();
+  if(this.subscription){
+    this.subscription.unsubscribe();
+  }
 }
 
 }

@@ -315,7 +315,7 @@ export class UserManagementSystemComponent implements OnInit {
       isBlock: value==false?0:1,
       remark: ""
     }
-    this.apiCall.setHttp('post', 'Block-Unblock-User_1?', true, obj, false, 'userDetailsBaseUrlApi');
+    this.apiCall.setHttp('put', 'Block-Unblock-User_1', true, obj, false, 'userDetailsBaseUrlApi');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         this.spinner.hide();

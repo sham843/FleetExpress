@@ -189,6 +189,8 @@ export class ForgetPasswordComponent implements OnInit {
   get verifyOtp() { return this.verifyOTPForm.controls };
   get passChange() { return this.changePassword.controls };
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if(this.subscription){
+      this.subscription.unsubscribe();
+    }
   }
 }
