@@ -13,8 +13,6 @@ interface timePeriodArray {
   value: string;
   viewValue: string;
 }
-
-
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
@@ -22,7 +20,7 @@ interface timePeriodArray {
 })
 export class ReportsComponent implements OnInit {
   reportForm!: FormGroup;
-  maxEndDate: any = new Date();
+  maxEndDate= new Date();
   vehicleList=new Array();
   showTimePeriod: boolean = true;
   selectedTablabel!: string;
@@ -34,9 +32,9 @@ export class ReportsComponent implements OnInit {
     { value: '3', viewValue: 'Weekly' },
     { value: '4', viewValue: 'Custom' },
   ];
-  maxTodayDate: any;
-  tabArrayData: any[] = [];
-  selectedIndex: any;
+  maxTodayDate !: Date |any;
+  tabArrayData=new Array() ;
+  selectedIndex !: number;
   get f() { return this.reportForm.controls };
   constructor(private fb: FormBuilder, 
     private apiCall: ApiCallService,
@@ -52,7 +50,6 @@ export class ReportsComponent implements OnInit {
     this.getStoppageData();
     this.selectedTab('stoppage');
     this.getVehicleData();
-    // this.setIndex(0,'Stopage Report');
   }
   getStoppageData() {
     this.reportForm = this.fb.group({
@@ -216,6 +213,9 @@ export class ReportsComponent implements OnInit {
         else {
         this.commonMethods.snackBar(responseData.statusMessage,0);
         }
+      },
+      (error:any)=>{
+        this.error.handelError(error.status)
       })
     }
   }
