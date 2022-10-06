@@ -63,12 +63,11 @@ export class LoginComponent implements OnInit {
           sessionStorage.setItem('loggedIn', 'true');
           localStorage.setItem('loggedInData', JSON.stringify(res));
           this.commonMethods.routerLinkRedirect('../dashboard');
-          console.log("if");
         }
         else {
-          console.log("else");
           this.spinner.hide();
             this.error.handelError(res.statusCode);
+            this.commonMethods.snackBar(res.statusMessage, 1)
         }
       },(error: any) => {
         this.error.handelError(error.status);
