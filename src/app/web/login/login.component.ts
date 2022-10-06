@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required,Validators.maxLength(20)]],
       password: ['', [Validators.compose([Validators.required,Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$'),Validators.minLength(8),Validators.maxLength(20)])]],
-      captcha: ['', [Validators.compose([Validators.required,Validators.minLength(5),Validators.maxLength(6)])]]
+      captcha: ['', [Validators.compose([Validators.required])]]
     })
   }
 
@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
     this.loginForm.controls['captcha'].reset();
     this.sharedService.createCaptchaCarrerPage();
   }
+  
   onLoginSubmit() {
     if (this.loginForm.invalid) {
       return;
@@ -62,7 +63,8 @@ export class LoginComponent implements OnInit {
       this.apiCall.getHttp().subscribe((res: any) => {
         if (res.statusCode == "200") {
           this.spinner.hide();
-          sessionStorage.setItem('loginDetails', JSON.stringify(res));
+          sessionStorage.setItem('loggedIn', 'true');
+          localStorage.setItem('loggedInData', JSON.stringify(res));
           this.commonMethods.routerLinkRedirect('../dashboard');
           this.commonMethods.snackBar(res.statusMessage, 1);
         }

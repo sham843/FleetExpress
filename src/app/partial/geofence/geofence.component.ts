@@ -10,10 +10,14 @@ import { CreateGeofenceComponent } from './create-geofence/create-geofence.compo
 export class GeofenceComponent implements OnInit {
   geofenceListArray = new Array();
   @ViewChild('search') searchElementRef!: ElementRef;
-  constructor(public dialog: MatDialog, private configService:ConfigService) { }
+  constructor(public dialog: MatDialog, private configService: ConfigService) { }
 
   ngOnInit(): void {
+    this.getAllGeofecneData();
+  }
 
+  getAllGeofecneData() {
+    // https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/Geofencne/get-All-POI?userId=23895&NoPage=1&RowsPerPage=10
   }
 
   openCreateGeofenceDialog() {
@@ -28,5 +32,4 @@ export class GeofenceComponent implements OnInit {
       }
     });
   }
-
 }
