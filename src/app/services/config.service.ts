@@ -17,9 +17,9 @@ export class ConfigService {
 
   //------------------------------------------ Maps Settings  starte heare -------------------------------------------//
 
-  lat =22.9868;
+  lat =19.7515;
 
-  long = 87.8550;
+  long = 75.7139;
 
   zoom: number = 12;
 

@@ -97,7 +97,7 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <table class="table dashboard-table">
+                                    <table class="table dashboard-table" *ngIf="userTableData.length!=0 || roleTableData.length!=0">
                                         <thead>
                                             <tr>
                                                 <th *ngFor="let element of tableLables"
@@ -109,25 +109,24 @@
 
                                             </tr>
                                         </thead>
-                                        <tbody *ngIf="showTab=='users'">
-                                            <tr *ngFor="let element of userTableData; let i=index">
+                                        <tbody *ngIf="showTab=='users'" >
+                                            <tr *ngFor="let element of userTableData; let i=index" (click)="clickedRow(i)" [ngClass]="{'highLightRow':i==highlightRow}">
                                                 <td>{{ this.itemsPerPage * (currentPage - 1) + (i+1) }}</td>
                                                 <td>{{element.name}}</td>
                                                 <td>{{element.mobileNo1}}</td>
                                                 <td>{{element.subUserTypeName}}</td>
-                                                <td>
-                                                    <mat-slide-toggle  [(ngModel)]="element.isBlock" (change)="userBlockUnBlockModal(element,element.isBlock)"></mat-slide-toggle>
-                                                    <!-- <input type="checkbox" [value]="item.isBlock" [(ngModel)]="item.isBlock" (change)="checkBlock(item, $event.target)">
-                                                    <span class="slider round"></span> -->
+                                                <td >
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" role="switch"
+                                                    id="flexSwitchCheckDefault"
+                                                    [(ngModel)]="element.isBlock" (change)="userBlockUnBlockModal(element,element.isBlock)">
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <div class="d-flex">
                                                         <button class="btn btn-light-main btn-icon me-2" (click)="onEdit(element,AddUserModal)">
                                                             <i class="fa-regular fa-pen-to-square"></i>
                                                         </button>
-                                                        <!-- <button class="btn bg-danger bg-opacity-10 text-danger">
-                                                        <i class="fa-solid fa-trash-can"></i>
-                                                    </button> -->
                                                     </div>
                                                 </td>
                                                 <td *ngIf="showTab=='users'">
@@ -137,7 +136,7 @@
                                             </tr>
                                         </tbody>
                                         <tbody *ngIf="showTab=='role'">
-                                            <tr *ngFor="let role of roleTableData; let i=index">
+                                            <tr *ngFor="let role of roleTableData; let i=index" >
                                                 <td>{{i+1}}</td>
                                                 <td>{{role.pageName }}Manager</td>
                                                 <td>{{role.name}}
@@ -160,12 +159,16 @@
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <div *ngIf="userTableData.length==0 || roleTableData.length==0">
+                                        <div class="alert alert-danger text-center py-2">
+                                            No data found
+                                        </div>
+                                    </div>
                                     <div *ngIf="showTab=='role'?userTableData.length:roleTableData.length" class="d-flex justify-content-end">
                                         <ngb-pagination [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true" 
                                         [collectionSize]="totalUserTableData" #numPages
                                             [pageSize]="itemsPerPage" [(page)]="currentPage" (pageChange)="onPageChange(currentPage)">
                                         </ngb-pagination>
-                                        
                                     </div>
                                 </div>
                             </div>

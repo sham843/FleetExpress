@@ -21,10 +21,8 @@ export class SharedService {
     //clear the contents of captcha div first
     let id: any = document.getElementById('captcha');
     id.innerHTML = "";
-    var charsArray =
-      // "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-      "0123456789";
-    var lengthOtp = 6;
+    var charsArray ="0123456789";
+    var lengthOtp = 4;
     var captcha = [];
     for (var i = 0; i < lengthOtp; i++) {
       var index = Math.floor(Math.random() * charsArray.length + 1);

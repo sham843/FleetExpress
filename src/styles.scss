@@ -1737,3 +1737,77 @@ input::-ms-clear {
 .pos-rel{
   position: relative !important;
 }
+
+.snack-warning { 
+  background: #ffffff !important;
+  color: black !important;
+  border-left: 7px solid #ffc107;
+  border-radius: 0!important;
+}
+
+.snack-danger {
+  background: #ffffff !important;
+    color: black !important;
+    border-left: 7px solid #ff4141;
+    border-radius: 0!important;
+}
+.snack-success {
+  background: #ffffff !important;
+  color: black !important;
+  border-left: 7px solid #198754;
+  border-radius: 0!important;
+}
+
+.mat-simple-snackbar-action{
+  color: rgb(39, 37, 37);
+}
+
+.mat-snack-bar-container {
+  font-family: "FontAwesome";
+  color: rgb(0, 0, 0)!important;
+  opacity:0.9;
+  padding-left: 40px!important;
+
+  .mat-simple-snackbar{
+    .mat-simple-snack-bar-content::before{
+      content: '\26A0';
+      padding-block: 5px;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+      text-align: center;
+      display: inline-block;
+      line-height: 11px;
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+  &.snack-danger .mat-simple-snackbar{
+    .mat-simple-snack-bar-content::before{
+      content: '\0021';
+      background: #ff4141;
+      color: #fff;
+    }
+  }
+  &.snack-success .mat-simple-snackbar{
+    .mat-simple-snack-bar-content::before{
+      content: '\2713';
+      background: #198754;
+      color: #fff;
+    }
+  }
+  &.snack-warning .mat-simple-snackbar{
+    .mat-simple-snack-bar-content::before{
+      content: '\26A0';
+      background: #ffc107;
+      color: #000;
+    }
+  }
+  .mat-button-wrapper::before{
+    content: '\2715 ';
+  }
+
+}

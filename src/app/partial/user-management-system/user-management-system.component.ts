@@ -40,6 +40,7 @@ export class UserManagementSystemComponent implements OnInit {
   totalUserTableData: number=0;
   searchContent = new FormControl();
   filterData = new  Array();
+  highlightRow !:number;
   get user() { return this.userForm.controls };
   get role() { return this.roleForm.controls };
   constructor(private apiCall:ApiCallService,
@@ -85,6 +86,9 @@ export class UserManagementSystemComponent implements OnInit {
     this.getUserTableData();
     this.getRoleTableData();
   }
+  clickedRow(index:any){
+    this.highlightRow=index;
+  }
   getVehicleData() {
     let vhlData=this.master.getVehicleListData();
     vhlData.subscribe({
@@ -124,12 +128,11 @@ export class UserManagementSystemComponent implements OnInit {
           this.userTableData = res.responseData.responseData1;
           this.totalUserTableData = res.responseData.responseData2.totalRecords;
         } else {
-          if (res.statusCode != "404") {
-            this.error.handelError(res.statusCode)
-          }
+            this.userTableData=[];
+            this.error.handelError(res.statusCode);
         }
       },
-      error: ((error: any) => { this.error.handelError(error.status) })
+      error: ((error: any) => { this.userTableData=[]; this.error.handelError(error.status) })
     });
   }
   getRoleTableData(){
@@ -154,6 +157,7 @@ export class UserManagementSystemComponent implements OnInit {
     }else{
       this.tableLables=[{id:1,label:'SR.NO'},{id:2,label:'ROLE NAME'},{id:3,label:'ASSIGN RESPONSIBILITIES'},{id:4,label:'ACTION'}]
     }
+    this.searchContent.reset();
   }
   removeSelectedValue(Vehicles:any){
     const index: number = this.userForm.value.assignedVehicle.indexOf(Vehicles);

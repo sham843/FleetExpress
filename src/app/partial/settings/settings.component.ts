@@ -45,6 +45,7 @@ export class SettingsComponent implements OnInit {
   expandedElement: any;
   vehicleNotificationFlag:boolean=false;
   totalVehicleNotificatinsData !:number;
+  highlightedRow!:number;
   getSliderTickInterval(): number | 'auto' {
     if (this.showTicks) {
       return this.autoTicks ? 'auto' : this.tickInterval;
@@ -99,6 +100,9 @@ public onPageChange(pageNum: number): void {
   this.pageSize = this.itemsPerPage * (pageNum - 1);
   this.getVehicleNotificatinsData();
 }
+clickedRow(index:any){
+  this.highlightedRow=index;
+}
 onChangePwd(){
   this.submitted=true;
   if(this.changePassForm.invalid){
@@ -137,7 +141,7 @@ showvehicleNotification(tabLabel:any){
   }
 }
 getNotificatinsData() {
-  this.apiCall.setHttp('get', 'notification/get-alert-types', true, false, false, 'vehicletrackingBaseUrlApi');
+  this.apiCall.setHttp('get', 'get-alert-types', true, false, false, 'notificationBaseUrlApi');
   // this.subscription = 
   this.apiCall.getHttp().subscribe({
     next: (res: any) => {
@@ -173,8 +177,7 @@ getNotificatinsData() {
 }
 getVehicleNotificatinsData() {
   this.vehicleNotificatinsData=[]
-  this.apiCall.setHttp('get', 'notification/get-Alert-linking?NoPage='+(this.searchContent.value?0:1)+'&RowsPerPage=10&SearchText='+this.searchContent.value, true, false, false, 'vehicletrackingBaseUrlApi');
-  // this.subscription = 
+  this.apiCall.setHttp('get', 'get-Alert-linking?NoPage='+(this.searchContent.value?0:1)+'&RowsPerPage=10&SearchText='+this.searchContent.value, true, false, false, 'notificationBaseUrlApi');
   this.apiCall.getHttp().subscribe({
     next: (res: any) => {
       if (res.statusCode === "200") {
@@ -195,7 +198,7 @@ getVehicleNotificatinsData() {
 }
 switchNotification(rowData:any){ 
   this.spinner.show();
-  this.apiCall.setHttp('PUT', 'notification/set-Visibity-Notification?alertype='+rowData.alertType+'&Isnotification='+ !rowData.isNotification , true, false, false, 'vehicletrackingBaseUrlApi');
+  this.apiCall.setHttp('PUT', 'set-Visibity-Notification?alertype='+rowData.alertType+'&Isnotification='+ !rowData.isNotification , true, false, false, 'notificationBaseUrlApi');
   // this.subscription = 
   this.apiCall.getHttp().subscribe({
     next: (res: any) => {
