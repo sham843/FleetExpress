@@ -42,6 +42,7 @@ export class ApiCallService {
       case 'uploadDocumentBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/upload/'; break
       case 'vehicleOwnerBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/vehicle-owner/'; break
       case 'notificationBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/notification/'; break
+      case 'geofencneBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/Geofencne/'; break
       default: return ''; break;
     }
   }

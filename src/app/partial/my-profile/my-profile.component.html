@@ -93,6 +93,7 @@
                         <div class="col-sm-2">
                             <div class="position-relative form-group">
                                 <div class="position-relative form-group">
+                                    <!-- || {{userDetails.profilePhoto}} -->
                                     <img src="{{profilePhotoupd}}" class="vehicle-image">
                                     <div class="vehicle-buttons d-flex flex-column upload-btn-wrapper">
                                         <button type="button" class="btn bg-light text-primary" (click)="profileUpload.click()">
@@ -400,8 +401,8 @@
                 <div class="modal-footer border-0">
                     <div class="form-container w-100">
                         <div class="d-flex justify-content-between">
-                            <button class="btn btn-light-main" #closeModel data-bs-dismiss="modal">Cancel</button>
-                            <button class="btn btn-main">Save</button>
+                            <button type="button" class="btn btn-light-main" #closeModel data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-main">Save</button>
                         </div>
                     </div>
                 </div>

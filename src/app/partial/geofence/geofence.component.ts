@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ConfigService } from 'src/app/services/config.service';
 import { CreateGeofenceComponent } from './create-geofence/create-geofence.component';
 @Component({
   selector: 'app-geofence',
@@ -7,9 +8,9 @@ import { CreateGeofenceComponent } from './create-geofence/create-geofence.compo
   styleUrls: ['./geofence.component.scss']
 })
 export class GeofenceComponent implements OnInit {
-
+  geofenceListArray = new Array();
   @ViewChild('search') searchElementRef!: ElementRef;
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private configService:ConfigService) { }
 
   ngOnInit(): void {
 
@@ -17,7 +18,7 @@ export class GeofenceComponent implements OnInit {
 
   openCreateGeofenceDialog() {
     const dialogRef = this.dialog.open(CreateGeofenceComponent, {
-      width: '250px',
+      width: this.configService.dialogBoxWidth[2],
       data: '',
     });
 

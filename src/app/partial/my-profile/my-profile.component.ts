@@ -69,7 +69,6 @@ export class MyProfileComponent implements OnInit {
   // ----------------------------------------------------edit and save Profile------------------------------------------------------------
   editProfile(profileData: any) {
     this.myProfileForm.patchValue({
-      profilePhoto: profileData.profilePhoto,
       name: profileData.name,
       mobileNo: profileData.mobileNo,
       panNo: profileData.panNo,
@@ -81,8 +80,9 @@ export class MyProfileComponent implements OnInit {
       adharNo: profileData.adharNo ||'',
       licenceNoDoc: profileData.licenceNoDoc || '',
       adharNoDoc: profileData.adharNoDoc || '',
-      panDoc: profileData.panDoc || ''
+      panDoc: profileData.panDoc || '' 
     })
+    this.profilePhotoupd=profileData.profilePhoto
   }
   // --------------------------------------------------------------image Upload--------------------------------------------------
   profileUploads(event: any) {
@@ -112,7 +112,7 @@ export class MyProfileComponent implements OnInit {
     }
     else {
       let formData = this.myProfileForm.value;
-      formData.id=this.webStorage.getUserId();
+      formData.id=256;
       formData.profilePhoto=this.profilePhotoupd,
       formData.ownerCompany='',
       formData.gstNo='',
