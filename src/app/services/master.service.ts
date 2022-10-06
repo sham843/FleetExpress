@@ -24,7 +24,7 @@ export class MasterService {
     return new Observable((obj) => {
       this.apiCall.setHttp('get', 'get-driver?searchText='+serchText+'&pageno='+pageNo+'&rowperPage='+rows, true, false, false, 'driverBaseUrlApi');
       this.apiCall.getHttp().subscribe({
-        next: (res: any) => { if (res.statusCode === "200") { this.driverDetails = res.responseData; obj.next(this.driverDetails); } else { obj.error(res); } },
+        next: (res: any) => { if (res.statusCode === "200") { this.driverDetails = res.responseData; obj.next(this.driverDetails); } else { this.driverDetails = [];obj.error(res); } },
         error: (e: any) => { obj.error(e) }
       });
     });

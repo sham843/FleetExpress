@@ -1,12 +1,12 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ErrorsService } from 'src/app/services/errors.service';
-import { MasterService } from 'src/app/services/master.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ValidationService } from 'src/app/services/validation.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
@@ -59,8 +59,8 @@ export class ManageVehicleComponent implements OnInit,OnDestroy {
     public sharedService: SharedService,
     private spinner: NgxSpinnerService,
     public vs: ValidationService,
-    private error: ErrorsService,
-    private master: MasterService) {
+    private error: ErrorsService
+   ) {
   }
 
   ngOnInit(): void {
@@ -100,7 +100,8 @@ export class ManageVehicleComponent implements OnInit,OnDestroy {
     this.spinner.show();
     let searchText = this.serchVehicle.value.searchVhl || '';
     this.apiCall.setHttp('get', 'get-vehiclelists?searchtext=' + searchText + '&nopage=' + this.paginationNo, true, false, false, 'vehicleBaseUrlApi');
-    this.subscription = this.apiCall.getHttp().subscribe((response: any) => {
+    // this.subscription = 
+    this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.vehicleData = response.responseData.responseData1;
@@ -134,7 +135,8 @@ export class ManageVehicleComponent implements OnInit,OnDestroy {
     }
     this.spinner.show();
     this.apiCall.setHttp('put', 'BlockUnblockVehicle', true, param, false, 'vehicleBaseUrlApi');
-    this.subscription = this.apiCall.getHttp().subscribe((response: any) => {
+    // this.subscription = 
+    this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.commonMethods.snackBar(response.statusMessage, 1)
@@ -150,26 +152,27 @@ export class ManageVehicleComponent implements OnInit,OnDestroy {
       })
   }
   // --------------------------------------Assign Driver------------------------------------------------------------------
-  getAssignDriver(vhlData?: any) {
+  getAssignDriver(vhlData?: any) { 
     this.asgVehicleData = vhlData;
     this.asgVehicleNo = vhlData.vehicleNo;
     this.spinner.show();
-    let driverDetails: any = this.master.getDriverListData('', 1, 10);
-    driverDetails.subscribe({
-      next: (response: any) => {
+    this.apiCall.setHttp('get', 'get-driver-details', true, false, false, 'driverBaseUrlApi');
+    this.apiCall.getHttp().subscribe((response: any) => {
+      if (response.statusCode == "200") {
         this.spinner.hide();
-        this.driverData = response.responseData1;
+        this.driverData = response.responseData;
+        console.log(this.driverData);
       }
     },
-    (error: any) => {
-      this.error.handelError(error.status);
-    })
+      (error: any) => {
+        this.error.handelError(error.status);
+      })
   }
   assignDriverToVehicle(flag: any, vehicleData?: any) {
     let param = {
       "id": 0,
       "driverId": flag == 'unassign' ? vehicleData.driverId : this.assignDriverForm.value.driverName,
-      "vehicleId": this.asgVehicleData?.vehicleId ? this.asgVehicleData?.vehicleId : 0,
+      "vehicleId": flag == 'unassign' ? 0: this.asgVehicleData?.vehicleId,
       "assignedby": this.webStorage.getUserId(),
       "assignedDate": this.date.toISOString(),
       "isDeleted": 0,
@@ -178,7 +181,8 @@ export class ManageVehicleComponent implements OnInit,OnDestroy {
     }
     this.spinner.show();
     this.apiCall.setHttp('put', 'assign-driver-to-vehicle', true, param, false, 'vehicleBaseUrlApi');
-    this.subscription = this.apiCall.getHttp().subscribe((response: any) => {
+    // this.subscription = 
+    this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.getVehicleData();
@@ -204,7 +208,8 @@ export class ManageVehicleComponent implements OnInit,OnDestroy {
   editVehicleDetail(vhl: any) {
     this.spinner.show();
     this.apiCall.setHttp('get', 'get-vehicles?vehicleId=' + vhl.vehicleId, true, false, false, 'userDetailsBaseUrlApi');
-    this.subscription = this.apiCall.getHttp().subscribe((response: any) => {
+    // this.subscription = 
+    this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.editVehicle = response.responseData[0];
@@ -221,6 +226,7 @@ export class ManageVehicleComponent implements OnInit,OnDestroy {
   }
 
   patchEditVhlData(data: any, vehicleName: any) {
+    console.log(data)
     this.highLightRow = data.vehicleId;
     this.vhlId = data.vehicleId;
     this.driverName = vehicleName.driverName;
@@ -352,7 +358,8 @@ export class ManageVehicleComponent implements OnInit,OnDestroy {
     else {
       this.spinner.show();
       this.apiCall.setHttp('post', 'save-update-vehicle-details', true, param, false, 'vehicleBaseUrlApi');
-      this.subscription = this.apiCall.getHttp().subscribe((response: any) => {
+      // this.subscription = 
+      this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
           this.spinner.hide();
           formDirective.resetForm();

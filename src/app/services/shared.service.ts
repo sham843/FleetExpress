@@ -64,7 +64,8 @@ export class SharedService {
             const formData = new FormData();
             formData.append(fileName, file);
             this.apiCall.setHttp('post', 'upload-document', true, formData, false, 'uploadDocumentBaseUrlApi');
-            this.subscription =this.apiCall.getHttp().subscribe({
+            // this.subscription =
+            this.apiCall.getHttp().subscribe({
               next: (res: any) => {
                 this.spinner.hide();
                 if (res.statusCode === "200") {
@@ -105,7 +106,8 @@ export class SharedService {
             formData.append('DirName', folderName)
             formData.append(fileName, file);
             this.apiCall.setHttp('post', 'upload-photo', true, formData, false, 'uploadDocumentBaseUrlApi');
-            this.subscription =this.apiCall.getHttp().subscribe({
+            // this.subscription =
+            this.apiCall.getHttp().subscribe({
               next: (res: any) => {
                 this.spinner.hide();
                 if (res.statusCode === "200") {

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component,OnDestroy,OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/internal/Subscription';
+
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ErrorsService } from 'src/app/services/errors.service';
@@ -12,7 +13,7 @@ import { ValidationService } from 'src/app/services/validation.service';
   templateUrl: './forget-password.component.html',
   styleUrls: ['./forget-password.component.scss']
 })
-export class ForgetPasswordComponent implements OnInit {
+export class ForgetPasswordComponent implements OnInit,OnDestroy{
   hide: boolean = false;
   hide1: boolean = true;
   hide2: boolean = true;
@@ -33,7 +34,7 @@ export class ForgetPasswordComponent implements OnInit {
   timerFlag: boolean = true;
   timeLeft:number= 10;
   interval: any;
-  subscription!: Subscription;
+  subscription:Subscription |any;
   constructor(private fb: FormBuilder,
     private commonMethods:CommonMethodsService,
     private apiCall:ApiCallService,
@@ -73,7 +74,8 @@ export class ForgetPasswordComponent implements OnInit {
     else {
       this.spinner.show();
       this.apiCall.setHttp('get', 'get-user-otp?MobileNo=' + mobileNom, false, false, false, 'loginBaseUrlApi');
-      this.subscription = this.apiCall.getHttp().subscribe((res: any) => {
+      // this.subscription = 
+      this.apiCall.getHttp().subscribe((res: any) => {
         if (res.statusCode == "200") {
           this.checkOtp = res.responseData[0].otp;
           this.mobileNum = res.responseData[0].mobileNo;
@@ -132,7 +134,8 @@ export class ForgetPasswordComponent implements OnInit {
       this.OTPContainer = false;
       this.spinner.show();
       this.apiCall.setHttp('get', 'login-by-otp?MobileNo=' + this.mobileNum + '&OTP=' + otp, false, false, false, 'loginBaseUrlApi');
-      this.subscription = this.apiCall.getHttp().subscribe((res: any) => {
+      // this.subscription = 
+      this.apiCall.getHttp().subscribe((res: any) => {
         if (res.statusCode == "200") {
           this.spinner.hide();
           this.commonMethods.snackBar(res.statusMessage, 1)
@@ -165,7 +168,8 @@ export class ForgetPasswordComponent implements OnInit {
       this.spinner.show();
       if (this.changePassword.value.password == this.changePassword.value.confirmPassword) {
         this.apiCall.setHttp('get', 'set-password?UserId=' + this.otpLoginUserId + '&NewPassword=' + this.changePassword.value.password, false, false, false, 'loginBaseUrlApi');
-        this.subscription = this.apiCall.getHttp().subscribe((res: any) => {
+        // this.subscription = 
+        this.apiCall.getHttp().subscribe((res: any) => {
           if (res.statusCode == "200") {
             this.spinner.hide();
             this.commonMethods.snackBar(res.statusMessage, 1)

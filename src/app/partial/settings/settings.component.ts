@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { NgxSpinnerService } from 'ngx-spinner';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { ErrorsService } from 'src/app/services/errors.service';
@@ -7,6 +7,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
@@ -109,7 +110,8 @@ onChangePwd(){
     }else{
       this.spinner.show();
     this.apiCall.setHttp('get', 'change-password?UserId='+this.webStorage.getUserId()+'&NewPassword='+this.changePassForm.value.reTypePwd+'&OldPassword='+this.changePassForm.value.currentPwd, true, false, false, 'loginBaseUrlApi');
-      this.subscription=this.apiCall.getHttp().subscribe((response: any) => {
+      // this.subscription=
+      this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
           this.spinner.hide();
           this.commonMethods.snackBar(response.statusMessage,0);
@@ -136,7 +138,8 @@ showvehicleNotification(tabLabel:any){
 }
 getNotificatinsData() {
   this.apiCall.setHttp('get', 'notification/get-alert-types', true, false, false, 'vehicletrackingBaseUrlApi');
-  this.subscription = this.apiCall.getHttp().subscribe({
+  // this.subscription = 
+  this.apiCall.getHttp().subscribe({
     next: (res: any) => {
       if (res.statusCode === "200") {
         this.notificatinsData = res.responseData;
@@ -171,7 +174,8 @@ getNotificatinsData() {
 getVehicleNotificatinsData() {
   this.vehicleNotificatinsData=[]
   this.apiCall.setHttp('get', 'notification/get-Alert-linking?NoPage='+(this.searchContent.value?0:1)+'&RowsPerPage=10&SearchText='+this.searchContent.value, true, false, false, 'vehicletrackingBaseUrlApi');
-  this.subscription = this.apiCall.getHttp().subscribe({
+  // this.subscription = 
+  this.apiCall.getHttp().subscribe({
     next: (res: any) => {
       if (res.statusCode === "200") {
         this.vehicleNotificatinsData = res.responseData.responseData1 ;
@@ -192,7 +196,8 @@ getVehicleNotificatinsData() {
 switchNotification(rowData:any){ 
   this.spinner.show();
   this.apiCall.setHttp('PUT', 'notification/set-Visibity-Notification?alertype='+rowData.alertType+'&Isnotification='+ !rowData.isNotification , true, false, false, 'vehicletrackingBaseUrlApi');
-  this.subscription = this.apiCall.getHttp().subscribe({
+  // this.subscription = 
+  this.apiCall.getHttp().subscribe({
     next: (res: any) => {
       this.spinner.hide();
       if (res.statusCode === "200") {
