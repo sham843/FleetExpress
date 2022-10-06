@@ -161,7 +161,6 @@ export class ManageVehicleComponent implements OnInit,OnDestroy {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.driverData = response.responseData;
-        console.log(this.driverData);
       }
     },
       (error: any) => {
@@ -213,7 +212,6 @@ export class ManageVehicleComponent implements OnInit,OnDestroy {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.editVehicle = response.responseData[0];
-        this.commonMethods.snackBar(response.statusMessage, 1)
         this.patchEditVhlData(this.editVehicle, vhl)
       } else {
         this.spinner.hide();

@@ -1,6 +1,6 @@
 import { MapsAPILoader } from '@agm/core';
 import { Component, ElementRef, OnInit, ViewChild, NgZone } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 
 
@@ -17,7 +17,7 @@ export class CreateGeofenceComponent implements OnInit {
   map: any;
   google:any;
   geofenceForm!:FormGroup;
-  constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone) { }
+  constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone,private fb:FormBuilder) { }
 
   ngOnInit(): void {
      this.geofenceForm = this.fb.group({
