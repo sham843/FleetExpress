@@ -206,7 +206,7 @@ export class ManageVehicleComponent implements OnInit,OnDestroy {
   // -----------------------------------Update---------------------------------------------------------------------------------
   editVehicleDetail(vhl: any) {
     this.spinner.show();
-    this.apiCall.setHttp('get', 'get-vehicles?vehicleId=' + vhl.vehicleId, true, false, false, 'userDetailsBaseUrlApi');
+    this.apiCall.setHttp('get', 'userdetail/get-vehicles?vehicleId=' + vhl.vehicleId, true, false, false, 'fleetExpressBaseUrl');
     // this.subscription = 
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
