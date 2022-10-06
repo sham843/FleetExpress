@@ -97,7 +97,7 @@ export class TrackingComponent implements OnInit {
 
   getAllVehicleListData() {
     this.allVehiclelData = []
-    this.apiCall.setHttp('get', 'tracking/get-vehicles-current-location?UserId=' + this.webStorage.getUserId() + '&VehicleNo=' + (!this.searchContent.value ? '' : this.searchContent.value) + '&GpsStatus=', true, false, false, 'vehicletrackingBaseUrlApi');
+    this.apiCall.setHttp('get', 'tracking/get-vehicles-current-location?UserId=' + this.webStorage.getUserId() + '&VehicleNo=' + (!this.searchContent.value ? '' : this.searchContent.value) + '&GpsStatus=', true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
@@ -150,7 +150,7 @@ export class TrackingComponent implements OnInit {
         "flag": "I",
       }
       this.spinner.show();
-      this.apiCall.setHttp('post', 'maintenance/save-update-maintenance', true, obj, false, 'vehicletrackingBaseUrlApi');
+      this.apiCall.setHttp('post', 'maintenance/save-update-maintenance', true, obj, false, 'fleetExpressBaseUrl');
       this.subscription = this.apiCall.getHttp().subscribe({
         next: (res: any) => {
           this.spinner.hide();
@@ -239,7 +239,7 @@ export class TrackingComponent implements OnInit {
   }
   getVehicleDetails(vehicleNo:any){
     this.vehicleDetailsData = []
-    this.apiCall.setHttp('get', 'search-vehicle?Search=' + vehicleNo, true, false, false, 'vehicleBaseUrlApi');
+    this.apiCall.setHttp('get', 'vehicle/search-vehicle?Search=' + vehicleNo, true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {

@@ -120,7 +120,7 @@ export class DashboardComponent implements OnInit {
   getvehicleAllData() {
     this.vehicleAllData = [];
     this.maxSpeedObj=[];
-    this.apiCall.setHttp('get', 'get-vehicle-current-location-list?VehicleNo=' + '&UserId=' + this.webStorage.getUserId() + '&GpsStatus=Running', true, false, false, 'dashboardBaseUrlApi');
+    this.apiCall.setHttp('get', 'dashboard/get-vehicle-current-location-list?VehicleNo=' + '&UserId=' + this.webStorage.getUserId() + '&GpsStatus=Running', true, false, false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
         this.vehicleAllData = responseData.responseData;
@@ -167,7 +167,7 @@ export class DashboardComponent implements OnInit {
   }
   getvehicleStatusData() {
     this.vehicleAllData = [];
-    this.apiCall.setHttp('get', 'get-vehicle-status-count?UserId=' + this.webStorage.getUserId(), true, false, false, 'dashboardBaseUrlApi');
+    this.apiCall.setHttp('get', 'dashboard/get-vehicle-status-count?UserId=' + this.webStorage.getUserId(), true, false, false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
         this.vehicleStatusData = responseData.responseData;
@@ -182,7 +182,7 @@ export class DashboardComponent implements OnInit {
   }
   getPOIAlertData() {
     this.pOIAlertData = [];
-    this.apiCall.setHttp('get', 'get-vehicles-count-dashboard?UserId=' + this.webStorage.getUserId(), true, false, false, 'dashboardBaseUrlApi');
+    this.apiCall.setHttp('get', 'dashboard/get-vehicles-count-dashboard?UserId=' + this.webStorage.getUserId(), true, false, false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
         this.pOIAlertData = responseData.responseData;
@@ -201,7 +201,7 @@ export class DashboardComponent implements OnInit {
     this.alertTypeArray.subscribe((x:any)=>{
       const Fromdate = moment.utc().startOf('day').toISOString();
       const ToDate = moment.utc().toISOString();
-      this.apiCall.setHttp('get', 'get-vehicle-alert-count-dashboard?UserId=' + this.webStorage.getUserId() + '&Fromdate=' + Fromdate + '&ToDate=' + ToDate+'&alertType='+x, true, false, false, 'dashboardBaseUrlApi');
+      this.apiCall.setHttp('get', 'dashboard/get-vehicle-alert-count-dashboard?UserId=' + this.webStorage.getUserId() + '&Fromdate=' + Fromdate + '&ToDate=' + ToDate+'&alertType='+x, true, false, false, 'fleetExpressBaseUrl');
       this.apiCall.getHttp().subscribe((responseData: any) => {
         if (responseData.statusCode === "200" || responseData.length > 0) {
           this.overSpeedData.push(responseData.responseData);
@@ -218,7 +218,7 @@ export class DashboardComponent implements OnInit {
   }
   getSIMRenewalReminderData() {
     this.SIMRenewalReminderData = [];
-    this.apiCall.setHttp('get', 'get-sim-due-and-over-due?UserId=' + this.webStorage.getUserId(), true, false, false, 'dashboardBaseUrlApi');
+    this.apiCall.setHttp('get', 'dashboard/get-sim-due-and-over-due?UserId=' + this.webStorage.getUserId(), true, false, false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
         this.SIMRenewalReminderData = responseData.responseData;
