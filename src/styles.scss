@@ -1722,3 +1722,18 @@ input::-ms-reveal,
 input::-ms-clear {
   display: none;
 }
+
+.btn-map-close{
+  position: absolute;
+  border: 0;
+  top: 5px;
+  left: 77px;
+  padding: 0px 7px;
+  background-color: #fff;
+  color: #777;
+  border-radius: 2px;
+}
+
+.pos-rel{
+  position: relative !important;
+}
