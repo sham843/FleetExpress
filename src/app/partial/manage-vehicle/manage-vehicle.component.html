@@ -67,11 +67,11 @@
                                 </td>
                                 <td>{{vehicle.mobileNo ||'-'}}</td>
                                 <td>
-                                    <button class="btn btn-outline-primary" *ngIf="!vehicle.driverName?.length"
+                                    <button type="button" class="btn btn-outline-primary" *ngIf="!vehicle.driverName?.length"
                                         data-bs-toggle="modal" id="openmodal" data-bs-target="#AssignDriverModal"
                                         (click)="getAssignDriver(vehicle)">Assign
                                         driver</button>
-                                    <button class="btn btn-outline-warning" *ngIf="vehicle.driverName?.length"
+                                    <button type="button" class="btn btn-outline-warning" *ngIf="vehicle.driverName?.length"
                                         (click)="assignDriverToVehicle('unassign',vehicle)">
                                         Unassign driver </button>
                                 </td>
@@ -83,7 +83,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <button class="btn btn-light-main btn-icon" data-bs-toggle="modal"
+                                    <button type="button" class="btn btn-light-main btn-icon" data-bs-toggle="modal"
                                         data-bs-target="#EditVehicleDetailsModal" (click)="editVehicleDetail(vehicle)">
                                         <i class="fa-regular fa-pen-to-square"></i>
                                     </button>
