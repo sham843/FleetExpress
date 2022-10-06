@@ -15,7 +15,7 @@
                         <div class="col-sm-3">
                             <mat-form-field appearance="standard" class="w-100">
                                 <mat-label>Select Vehicles</mat-label>
-                                <mat-select multiple formControlName="vehicleNumber">
+                                <mat-select  formControlName="vehicleNumber">
                                     <mat-option *ngFor="let vehicles of vehicleListData" [value]="vehicles.vehicleRegistrationNo">{{vehicles.vehicleRegistrationNo}}
                                     </mat-option>
                                 </mat-select>

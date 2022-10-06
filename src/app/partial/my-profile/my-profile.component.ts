@@ -16,6 +16,7 @@ export class MyProfileComponent implements OnInit {
   myProfileForm!: FormGroup;
   userDetails!: object |any;
   totalVehicle!: number;
+  date: any = new Date();
   profilePhotoupd: string = 'assets/images/Driver-profile.svg';
   @ViewChild('closeModel') closeModel: any;
   @ViewChild('panUpload') panUpload: any;
@@ -67,7 +68,6 @@ export class MyProfileComponent implements OnInit {
   }
   // ----------------------------------------------------edit and save Profile------------------------------------------------------------
   editProfile(profileData: any) {
-    console.log(profileData);
     this.myProfileForm.patchValue({
       profilePhoto: profileData.profilePhoto,
       name: profileData.name,
@@ -77,8 +77,8 @@ export class MyProfileComponent implements OnInit {
       address: profileData.address,
       emailId: profileData.emailId,
       webiste: profileData.webiste,
-      licenceNo: profileData.licenceNo,
-      adharNo: profileData.adharNo,
+      licenceNo: profileData.licenceNo ||'',
+      adharNo: profileData.adharNo ||'',
       licenceNoDoc: profileData.licenceNoDoc || '',
       adharNoDoc: profileData.adharNoDoc || '',
       panDoc: profileData.panDoc || ''
@@ -113,6 +113,7 @@ export class MyProfileComponent implements OnInit {
     else {
       let formData = this.myProfileForm.value;
       formData.id=this.webStorage.getUserId();
+      formData.profilePhoto=this.profilePhotoupd,
       formData.ownerCompany='',
       formData.gstNo='',
       formData.stateId=0,
@@ -122,17 +123,16 @@ export class MyProfileComponent implements OnInit {
       formData.longitude=0,
       formData.materialIds='',
       formData.createdBy=this.webStorage.getUserId(),
-      formData.createdDate='',
+      formData.createdDate=this.date.toISOString(),
       formData.isDeleted=true,
       formData.isSnapToRoadService= 0,
       formData.isAddressLocationService=0,
       formData.flag='u'
-     console.log(formData);
       this.apiCall.setHttp('post', 'save-update-vehicle-owner', true, formData, false, 'vehicleOwnerBaseUrlApi');
       this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
           this.spinner.hide();
-          // this.tostrService.success(response.responseData);
+          this.closeModel.nativeElement.click();
         }
         else {
           this.spinner.hide();

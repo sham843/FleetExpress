@@ -6,7 +6,6 @@ import { Subscription } from 'rxjs';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ErrorsService } from 'src/app/services/errors.service';
-import { MasterService } from 'src/app/services/master.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ValidationService } from 'src/app/services/validation.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
@@ -36,8 +35,10 @@ export class DriverComponent implements OnInit {
   date: any = new Date();
   maxDate = new Date();
   subscription!: Subscription;
+  checkArray = new Array();
+  flagArray = new Array();
   profilePhotoupd: string | any = 'assets/images/Driver-profile.svg';
-
+  deleteBtn: boolean = false;
   @ViewChild('closeModel') closeModel: any;
   @ViewChild('panUpload') panUpload: any;
   @ViewChild('aadharUpload') aadharUpload: any;
@@ -53,8 +54,8 @@ export class DriverComponent implements OnInit {
     private sharedService: SharedService,
     private spinner: NgxSpinnerService,
     private error: ErrorsService,
-    private commonMethods: CommonMethodsService,
-    private master: MasterService) { }
+    private commonMethods: CommonMethodsService
+  ) { }
 
   ngOnInit(): void {
     this.getRegFormData();
@@ -84,27 +85,31 @@ export class DriverComponent implements OnInit {
   }
   // -----------------------------------------------Driver Details----------------------------------------------------------
   getDriverDetails(flag?: any) {
-    this.spinner.show();
-    let documentUrl: any = this.master.getDriverListData(this.searchDriverForm.value.driverName, this.paginationNo,this.pageSize);
-    documentUrl.subscribe({
-      next:(response:any)=>{
-          this.spinner.hide();
-          this.driverDetails=response.responseData1
-          this.driverDetails.forEach((ele: any) => {
-            ele['isBlockFlag'] = false;
-            if (ele.isBlock) {
-              ele.isBlockFlag = true;
-            }
-          });
-          this.totalItem = response.responseData2.totalRecords;
-          if (flag == 'search') {
-            this.searchHideShow = false;
-            this.clearHideShow = true;
-          } 
-          flag
+    this.apiCall.setHttp('get', 'get-driver?searchText=' + this.searchDriverForm.value.driverName + '&pageno=' + this.paginationNo + '&rowperPage=' + this.pageSize, true, false, false, 'driverBaseUrlApi');
+    this.apiCall.getHttp().subscribe((res: any) => {
+      if (res.statusCode === "200") {
+        console.log(res);
+        this.driverDetails = res.responseData.responseData1;
+        this.driverDetails.forEach((ele: any) => {
+          ele['isBlockFlag'] = false;
+          ele['isChecked'] = false;
+          if (ele.isBlock) {
+            ele.isBlockFlag = true;
+          }
+        });
+        this.totalItem = res.responseData.responseData2.totalRecords;
+        if (flag == 'search') {
+          this.searchHideShow = false;
+          this.clearHideShow = true;
         }
-  })
-}
+      } else {
+        this.driverDetails = [];
+      }
+    },
+      (error: any) => {
+        this.error.handelError(error.status);
+      })
+  }
 
   clearSearchData() {
     this.searchDriverForm.controls['driverName'].setValue('');
@@ -123,7 +128,8 @@ export class DriverComponent implements OnInit {
     }
     this.spinner.show();
     this.apiCall.setHttp('put', 'Block-Unblock-Driver_1', true, param, false, 'driverBaseUrlApi');
-    this.subscription = this.apiCall.getHttp().subscribe((response: any) => {
+    // this.subscription = 
+    this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.commonMethods.snackBar(response.statusMessage, 1)
@@ -213,24 +219,57 @@ export class DriverComponent implements OnInit {
     this.licenceDoc = '';
   }
   // ----------------------------------------------Delete Record----------------------------------------------------------------
-  removeDriverData(data: any) {
-    let param = [
-      {
-        "driverId": data.driverId,
-        "isDeleted": 1
+
+  allSelected(event: any) {
+    if (event.checked) {
+      this.driverDetails.forEach((ele: any) => {
+        ele.isChecked = true;
+        this.checkArray.push(ele);
+      });
+    }
+    else {
+      this.driverDetails.forEach((ele: any) => {
+        ele.isChecked = false;
+        this.checkArray = [];
+      });
+    }
+  }
+
+  onSingleSelected(data: any, event: any) {
+    if (event.checked == true) {
+      data['isChecked'] = true;
+      this.checkArray.push(data);
+    } else {
+      data['isChecked'] = false;
+      this.checkArray = [];
+      this.driverDetails.forEach((ele: any) => {
+        if (ele.isChecked == true) {
+          this.checkArray.push(ele);
+        }
+      })
+    }
+  }
+
+  removeDriverData() {
+    this.deleteBtn = false;
+    let param = new Array();
+    for (let i = 0; i < this.driverDetails.length; i++) {
+      if (this.driverDetails[i].isChecked == true) {
+        let array = {
+          "driverId": this.driverDetails[i].driverId,
+          "isDeleted": 1
+        }
+        param.push(array);
       }
-    ]
+    }
     this.spinner.show();
     this.apiCall.setHttp('delete', 'Delete-Driver', true, param, false, 'driverBaseUrlApi');
-    this.subscription = this.apiCall.getHttp().subscribe((response: any) => {
+    // this.subscription = 
+    this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.commonMethods.snackBar(response.statusMessage, 1)
         this.getDriverDetails();
-      }
-      else {
-        this.spinner.hide();
-        this.error.handelError(response.statusCode);
       }
     },
       (error: any) => {
@@ -240,6 +279,7 @@ export class DriverComponent implements OnInit {
   }
   // --------------------------------------------Save--------------------------------------------------------------------------
   registerDriverSave(formDirective: any) {
+    console.log(this.driverRegForm.value)
     this.buttonFlag = false;
     this.highLightRow = '';
     let formData = this.driverRegForm.value;
@@ -257,17 +297,20 @@ export class DriverComponent implements OnInit {
     formData.profilePhoto = this.profilePhotoupd != 'assets/images/Driver-profile.svg' ? this.profilePhotoupd : '';
 
     if (this.driverRegForm.invalid) {
-      !this.driverRegForm.value.panCardDoc ? this.commonMethods.snackBar("Pancard upload is required", 1) : '';
-      !this.driverRegForm.value.aadharCardDoc ? this.commonMethods.snackBar("Aadhar card upload is required", 1) : '';
-      !this.driverRegForm.value.licenceDoc ? this.commonMethods.snackBar("Licence upload is required", 1) : '';
+      /*  !this.driverRegForm.value.panCardDoc ? this.commonMethods.snackBar("Pancard upload is required", 1) : '';
+       !this.driverRegForm.value.aadharCardDoc ? this.commonMethods.snackBar("Aadhar card upload is required", 1) : '';
+       !this.driverRegForm.value.licenceDoc ? this.commonMethods.snackBar("Licence upload is required", 1) : ''; */
+      console.log("invalid")
       return;
     } else {
-      this.closeModel.nativeElement.click();
+      console.log("valid")
+      debugger
       this.spinner.show();
       this.apiCall.setHttp('post', 'save-update-deriver-details', true, formData, false, 'driverBaseUrlApi');
-      this.subscription = this.apiCall.getHttp().subscribe((response: any) => {
+      this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
           this.spinner.hide();
+          this.closeModel.nativeElement.click();
           this.highLightRow = '';
           this.commonMethods.snackBar(response.statusMessage, 1)
           formDirective.resetForm();
@@ -291,6 +334,8 @@ export class DriverComponent implements OnInit {
   get f() { return this.driverRegForm.controls };
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if(this.subscription){
+      this.subscription.unsubscribe();
+    }
   }
 }

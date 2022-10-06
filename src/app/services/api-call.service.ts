@@ -45,7 +45,6 @@ export class ApiCallService {
       default: return ''; break;
     }
   }
-  
   clearHttp() {
     this.httpObj.type = '';
     this.httpObj.url = '';

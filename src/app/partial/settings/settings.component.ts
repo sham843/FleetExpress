@@ -110,7 +110,8 @@ onChangePwd(){
     }else{
       this.spinner.show();
     this.apiCall.setHttp('get', 'change-password?UserId='+this.webStorage.getUserId()+'&NewPassword='+this.changePassForm.value.reTypePwd+'&OldPassword='+this.changePassForm.value.currentPwd, true, false, false, 'loginBaseUrlApi');
-      this.subscription=this.apiCall.getHttp().subscribe((response: any) => {
+      // this.subscription=
+      this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
           this.spinner.hide();
           this.commonMethods.snackBar(response.statusMessage,0);
@@ -137,7 +138,8 @@ showvehicleNotification(tabLabel:any){
 }
 getNotificatinsData() {
   this.apiCall.setHttp('get', 'notification/get-alert-types', true, false, false, 'vehicletrackingBaseUrlApi');
-  this.subscription = this.apiCall.getHttp().subscribe({
+  // this.subscription = 
+  this.apiCall.getHttp().subscribe({
     next: (res: any) => {
       if (res.statusCode === "200") {
         this.notificatinsData = res.responseData;
@@ -172,7 +174,8 @@ getNotificatinsData() {
 getVehicleNotificatinsData() {
   this.vehicleNotificatinsData=[]
   this.apiCall.setHttp('get', 'notification/get-Alert-linking?NoPage='+(this.searchContent.value?0:1)+'&RowsPerPage=10&SearchText='+this.searchContent.value, true, false, false, 'vehicletrackingBaseUrlApi');
-  this.subscription = this.apiCall.getHttp().subscribe({
+  // this.subscription = 
+  this.apiCall.getHttp().subscribe({
     next: (res: any) => {
       if (res.statusCode === "200") {
         this.vehicleNotificatinsData = res.responseData.responseData1 ;
@@ -193,7 +196,8 @@ getVehicleNotificatinsData() {
 switchNotification(rowData:any){ 
   this.spinner.show();
   this.apiCall.setHttp('PUT', 'notification/set-Visibity-Notification?alertype='+rowData.alertType+'&Isnotification='+ !rowData.isNotification , true, false, false, 'vehicletrackingBaseUrlApi');
-  this.subscription = this.apiCall.getHttp().subscribe({
+  // this.subscription = 
+  this.apiCall.getHttp().subscribe({
     next: (res: any) => {
       this.spinner.hide();
       if (res.statusCode === "200") {
@@ -210,8 +214,10 @@ switchNotification(rowData:any){
     this.error.handelError(error.status)
    } );
 }
-ngOnDestroy() {
-  this.subscription.unsubscribe();
-}
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 }
 
