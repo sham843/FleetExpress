@@ -82,7 +82,7 @@ export class CreateGeofenceComponent implements OnInit {
   }
 
   get f(){
-    return this.geofenceForm.controls
+    return this.geofenceForm.controls;
   }
 
   getVehicleData() {
@@ -476,15 +476,14 @@ export class CreateGeofenceComponent implements OnInit {
       }
     })
     this.geofenceForm.value.vehicleOwnerId = vehicleOwnerId.vehicleOwnerId;
-
-
+    
     this.spinner.show();
     this.apiCall.setHttp('post', 'save-update-POI', true, this.geofenceForm.value, false, 'geofencneBaseUrlApi');
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
-        // formDirective.resetForm();
-        this.commonMethods.snackBar(response.statusMessage, 1)
+        this.commonMethods.snackBar(response.statusMessage, 1);
+        this.onNoClick();
       }
     }, (error: any) => {
       this.error.handelError(error.status);
@@ -503,5 +502,9 @@ export class CreateGeofenceComponent implements OnInit {
       this.geofenceForm.controls['latitude'].setValue('');
       this.geofenceForm.controls['longitude'].setValue('');
     }
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 }
