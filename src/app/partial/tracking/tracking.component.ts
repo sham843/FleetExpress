@@ -1,13 +1,13 @@
 import { MapsAPILoader } from '@agm/core';
 import { Component, ElementRef,OnInit, ViewChild } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import * as moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
-
-interface Food {
+interface timePeriodArray {
   value: string;
   viewValue: string;
 }
@@ -21,6 +21,7 @@ export class TrackingComponent implements OnInit {
   popContent: any = "Hello World";
   lat: number = 52.488328;
   lng: number = 8.717017;
+  foods:any[]=[];
   totalVehicle: any;
   allVehiclelData: any[] = [];
   subscription !: Subscription;
@@ -30,11 +31,13 @@ export class TrackingComponent implements OnInit {
   allOfflineVehiclelData: any[] = [];
   selectedIndex: any;
   selectedTab: any;
-  foods: Food[] = [
-    { value: 'steak-0', viewValue: 'Steak' },
-    { value: 'pizza-1', viewValue: 'Pizza' },
-    { value: 'tacos-2', viewValue: 'Tacos' },
+  timePeriodArray: timePeriodArray[] = [
+    { value: '1', viewValue: 'Today' },
+    { value: '2', viewValue: '24hr' },
+    { value: '3', viewValue: 'Weekly' },
+    { value: '4', viewValue: 'From-To' },
   ];
+  maxTodayDate !: Date |any;
   searchContent = new FormControl();
   maintananceForm!: FormGroup;
   currentDate = new Date();
@@ -43,8 +46,10 @@ export class TrackingComponent implements OnInit {
   longitude: any;
   pinCode: any;
   geocoder: any;
+  itineraryForm!:FormGroup;
   @ViewChild('search') public searchElementRef!: ElementRef;
   get f() { return this.maintananceForm.controls };
+  get itinerary() { return this.itineraryForm.controls };
   constructor(
     private apiCall: ApiCallService,
     private error: ErrorsService,
@@ -56,6 +61,7 @@ export class TrackingComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMaintananceForm();
+    this.getItineraryForm();
     this.getAllVehicleListData();
     this.setIndex(0)
   }
@@ -71,6 +77,14 @@ export class TrackingComponent implements OnInit {
       maintenanceType: ['', Validators.required],
       remark: []
     })
+  }
+  getItineraryForm() {
+    this.itineraryForm = this.fb.group({
+      timePeriod: ['1'],
+      fromDate: [],
+      toDate: [],
+    })
+
   }
   setIndex(index: number) {
     this.selectedIndex = index;
@@ -130,7 +144,7 @@ export class TrackingComponent implements OnInit {
       const userFormData = this.maintananceForm.value;
       const obj = {
         ... userFormData, 
-        // ...this.webStorage.createdByProps(),
+        //  ...this.webStorage.createdByProps(),
         "id": 0,
         "maintenanceType":parseInt(userFormData?.maintenanceType),
         "vehicleId": this.vehicleDetails?.vehicleId,
@@ -145,9 +159,7 @@ export class TrackingComponent implements OnInit {
           if (res.statusCode === "200") {
             if (res.responseData.responseData1[0].isSuccess) {
               this.getAllVehicleListData();
-            } else {
-            }
-
+            } 
           } else {
             if (res.statusCode != "404") {
               this.error.handelError(res.statusCode)
@@ -179,6 +191,53 @@ export class TrackingComponent implements OnInit {
         return g
     });
     
+  }
+
+  
+  selectTimePeriod(value: any) {
+    switch (value) {
+      case "1":
+        this.itineraryForm.patchValue({
+          fromDate: moment.utc().startOf('day').toISOString(),
+          toDate: moment.utc().toISOString(),
+        })
+        break;
+      case "2": var time = moment.duration("24:00:00");
+        var date = moment();
+        const oneDaySpan = date.subtract(time);
+        this.itineraryForm.patchValue({
+          fromDate: moment(oneDaySpan).toISOString(),
+          toDate: moment.utc().toISOString(),
+        })
+        break;
+      case "3":
+        const startweek = moment().subtract(7, 'days').calendar();
+        this.itineraryForm.patchValue({
+          fromDate: moment(startweek).toISOString(),
+          toDate: moment.utc().toISOString(),
+        })
+        break;
+      case "4":
+        this.itineraryForm.patchValue({
+          fromDate: '',
+          toDate: '',
+        })
+        break;
+    }
+  }
+  settodate(fromDate: any) {
+    const maxTodayDate = moment(fromDate).add(7, 'days').calendar();
+    this.maxTodayDate = moment(maxTodayDate).toISOString() < moment().toISOString() ? moment(maxTodayDate).toISOString() : moment().toISOString();
+  }
+  checkValidDate() {
+    const reportData = this.itineraryForm.value;
+    if (reportData.fromDate && reportData.toDate) {
+      if (new Date(reportData.fromDate).toISOString() < new Date(reportData.toDate).toISOString()) {
+        this.itineraryForm.controls['toDate'].patchValue(new Date(reportData.toDate).toISOString())
+      } else {
+        this.itineraryForm.controls['toDate'].patchValue('')
+      }
+    }
   }
 
 

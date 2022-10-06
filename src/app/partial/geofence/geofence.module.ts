@@ -6,8 +6,9 @@ import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.mo
 
 import { CreateGeofenceComponent } from './create-geofence/create-geofence.component';
 import { ConfigService } from 'src/app/services/config.service';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { AgmCoreModule } from '@agm/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [

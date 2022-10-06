@@ -1,5 +1,5 @@
 import { Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -319,9 +319,8 @@ export class UserManagementSystemComponent implements OnInit {
       isBlock: value==false?0:1,
       remark: ""
     }
-    this.apiCall.setHttp('post', 'Block-Unblock-User_1?', true, obj, false, 'userDetailsBaseUrlApi');
-    // this.subscription = 
-    this.apiCall.getHttp().subscribe({
+    this.apiCall.setHttp('put', 'Block-Unblock-User_1', true, obj, false, 'userDetailsBaseUrlApi');
+    this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         this.spinner.hide();
         if (res.statusCode === "200") {

@@ -8,13 +8,15 @@
                     <div class="input-group">
                         <!-- <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
                         <input type="text" class="form-control" placeholder="Search"> -->
-                        <input type="text" class="form-control" placeholder="Search" [formControl]="searchContent" [maxLength]="15">
-                        <div class="input-group-text" *ngIf="!searchContent.value" >
+                        <input type="text" class="form-control" placeholder="Search" [formControl]="searchContent"
+                            [maxLength]="15">
+                        <div class="input-group-text" *ngIf="!searchContent.value">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </div>
-                        <div class="input-group-text" *ngIf="searchContent.value"><i class="fa fa-times" (click)="searchContent.reset()"></i>
+                        <div class="input-group-text" *ngIf="searchContent.value"><i class="fa fa-times"
+                                (click)="searchContent.reset()"></i>
                         </div>
-                        </div>
+                    </div>
                 </div>
                 <div class="col-sm-2 border-end">
                     <div class="d-flex align-items-center justify-content-between">
@@ -46,114 +48,124 @@
 <div class="row">
     <div class="col-sm-4">
         <div class="card border-0 rounded">
-            <div class="card-body fixed-height p-0">
-                <div *ngFor="let item of (selectedTab=='Running'?allRunningVehiclelData:selectedTab=='Stopped'?allStoppedVehiclelData:selectedTab=='Idle'?allIdleVehiclelData:selectedTab=='Offline'?allOfflineVehiclelData:allVehiclelData); let i=index">
+            <div class="card-body fixed-height p-1">
+                <div
+                    *ngFor="let item of (selectedTab=='Running'?allRunningVehiclelData:selectedTab=='Stopped'?allStoppedVehiclelData:selectedTab=='Idle'?allIdleVehiclelData:selectedTab=='Offline'?allOfflineVehiclelData:allVehiclelData); let i=index">
                     <ng-container *ngIf="item?.gpsStatus=='Offline'; else templateA">
-                        <a class="d-flex vehicle p-3 bg-opacity-10 bg-danger" placement="top" routerLinkActive="active" [class.active]="selectedIndex === i"
-                         (click)="setIndex(i)">
-                        <div class="flex-shrink-0">
-                            <div class="bg-danger bg-opacity-25 text-danger rounded-circle vehicle-icon">
-                                <i class="fa-solid fa-car"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1 ms-2">
-                            <div class="d-flex justify-content-between align-items-center my-2" >
-                                <a class="text-danger"  [ngbPopover]="popContent" placement="end" >
-                                    <p class="vehicle-no">{{item?.vehicleNo}} </p>
-                                </a>
-                                <span class="text-dark" >({{' ticket raised '}})</span>
-                                 <span class="text-primary"  data-bs-toggle="modal" data-bs-target="#MaintenanceviewModal"> View Details</span>
-                                <span class="text-danger veh-status">
-                                    <i class="fa-solid fa-circle me-2"></i>{{item?.gpsStatus}}
-                                </span>
-                            </div>
-                            <div class="d-flex align-items-start">
-                                <img src="assets/images/Tracking/location-vehicle.svg" class="me-2 mt-1">
-                                <div class="vehicle-location">
-                                    <p>Yavatmal District Maharashtra</p>
-                                    <small> {{ item?.deviceDatetime  | date:'dd MMM yyyy hh:mm a'}}</small>
+                        <a class="d-flex vehicle p-3 bg-opacity-10 bg-danger mb-1 rounded" placement="top" routerLinkActive="active"
+                            [class.active]="selectedIndex === i" (click)="setIndex(i)">
+                            <div class="flex-shrink-0">
+                                <div class="bg-danger bg-opacity-25 text-danger rounded-circle vehicle-icon">
+                                    <i class="fa-solid fa-car"></i>
                                 </div>
                             </div>
-                            <div class="d-flex align-items-start mb-2">
-                                <img src="assets/images/Tracking/info-vehicle.svg" class="me-2 mt-1">
-                                <div class="vehicle-running">
-                                    35 kmph | Running since : 3 days : 5 hrs | 480 km today
+                            <div class="flex-grow-1 ms-2">
+                                <div class="d-flex justify-content-between align-items-center my-2">
+                                    <a class="text-danger" [ngbPopover]="popContent" placement="end">
+                                        <p class="vehicle-no">{{item?.vehicleNo}} </p>
+                                    </a>
+                                    <span class="text-dark veh-status">({{'ticket raised'}})</span>
+                                    <a class="text-primary veh-status" data-bs-toggle="modal"
+                                        data-bs-target="#MaintenanceviewModal"> View Details</a>
+                                    <span class="text-danger veh-status">
+                                        <i class="fa-solid fa-circle me-2"></i>{{item?.gpsStatus}}
+                                    </span>
                                 </div>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="vehicle-status">
-                                    <div class="d-flex">
-                                        <span><img src="assets/images/Tracking/battery.svg" class="me-1"> --</span>
-                                        <span class="mx-3"><img src="assets/images/Tracking/network.svg" class="me-1">
-                                            --</span>
-                                        <span><img src="assets/images/Tracking/ON-vehicle.svg" class="me-1"> --</span>
+                                <div class="d-flex align-items-start">
+                                    <img src="assets/images/Tracking/location-vehicle.svg" class="me-2 mt-1">
+                                    <div class="vehicle-location">
+                                        <p>Yavatmal District Maharashtra</p>
+                                        <small> {{ item?.deviceDatetime | date:'dd MMM yyyy hh:mm a'}}</small>
                                     </div>
                                 </div>
-                                <div class="share-call">
-                                    <a href="#" class="me-3" data-bs-toggle="modal"
-                                        data-bs-target="#ShareLocationModal"><img
-                                            src="assets/images/Tracking/share.svg"></a>
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#CallDriverModal"><img
-                                            src="assets/images/Tracking/call-vehicle.svg"></a>
+                                <div class="d-flex align-items-start mb-2">
+                                    <img src="assets/images/Tracking/info-vehicle.svg" class="me-2 mt-1">
+                                    <div class="vehicle-running">
+                                        35 kmph | Running since : 3 days : 5 hrs | 480 km today
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="vehicle-status">
+                                        <div class="d-flex">
+                                            <span><img src="assets/images/Tracking/battery.svg" class="me-1"> --</span>
+                                            <span class="mx-3"><img src="assets/images/Tracking/network.svg"
+                                                    class="me-1">
+                                                --</span>
+                                            <span><img src="assets/images/Tracking/ON-vehicle.svg" class="me-1">
+                                                --</span>
+                                        </div>
+                                    </div>
+                                    <div class="share-call">
+                                        <a href="#" class="me-3" data-bs-toggle="modal"
+                                            data-bs-target="#ShareLocationModal"><img
+                                                src="assets/images/Tracking/share.svg"></a>
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#CallDriverModal"><img
+                                                src="assets/images/Tracking/call-vehicle.svg"></a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
+                        </a>
                     </ng-container>
                     <ng-template #templateA>
-                        <a class="d-flex vehicle p-3 active" href="#" routerLinkActive="active" data-bs-toggle="offcanvas"
-                        data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom"  [class.active]="selectedIndex === i"
-                        (click)="setIndex(i)">
-                        <div class="flex-shrink-0">
-                            <div class="bg-opacity-25 rounded-circle vehicle-icon"  [ngClass]="{'text-success bg-success':item?.gpsStatus=='Running','text-warning bg-warning':item?.gpsStatus=='Stopped','text-primary bg-primary':item?.gpsStatus=='Idle'}">
-                                <i class="fa-solid fa-car"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1 ms-2">
-                            <div class="d-flex justify-content-between align-items-center my-2">
-                                <a routerLink="#" [ngClass]="{'text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
-                                    <p class="vehicle-no">{{item?.vehicleNo}}</p>
-                                </a>
-                                <span class="veh-status"  [ngClass]="{'text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
-                                    <i class="fa-solid fa-circle me-2"></i>{{item?.gpsStatus}}
-                                </span>
-                            </div>
-                            <div class="d-flex align-items-start">
-                                <img src="assets/images/Tracking/location-vehicle.svg" class="me-2 mt-1">
-                                <div class="vehicle-location">
-                                    <p>Yavatmal District Maharashtra</p>
-                                    <small>
-                                        <!-- 22 Jul 2022, 16:28  -->
-                                        {{ item?.deviceDatetime  | date:'dd MMM yyyy hh:mm a'}}</small>
+                        <a class="d-flex vehicle p-3 active" routerLinkActive="active" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom"
+                            [class.active]="selectedIndex === i" (click)="setIndex(i)">
+                            <div class="flex-shrink-0">
+                                <div class="bg-opacity-25 rounded-circle vehicle-icon"
+                                    [ngClass]="{'text-success bg-success':item?.gpsStatus=='Running','text-warning bg-warning':item?.gpsStatus=='Stopped','text-primary bg-primary':item?.gpsStatus=='Idle'}">
+                                    <i class="fa-solid fa-car"></i>
                                 </div>
                             </div>
-                            <div class="d-flex align-items-start mb-2">
-                                <img src="assets/images/Tracking/info-vehicle.svg" class="me-2 mt-1">
-                                <div class="vehicle-running">
-                                   {{item?.speed}} kmph | Running since : 3 days : 5 hrs | 480 km today
+                            <div class="flex-grow-1 ms-2">
+                                <div class="d-flex justify-content-between align-items-center my-2">
+                                    <a
+                                        [ngClass]="{'text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
+                                        <p class="vehicle-no">{{item?.vehicleNo}}</p>
+                                    </a>
+                                    <span class="veh-status"
+                                        [ngClass]="{'text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
+                                        <i class="fa-solid fa-circle me-2"></i>{{item?.gpsStatus}}
+                                    </span>
                                 </div>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="vehicle-status">
-                                    <div class="d-flex">
-                                        <span><img src="assets/images/Tracking/battery.svg" class="me-1"> 50%</span>
-                                        <span class="mx-3"><img src="assets/images/Tracking/network.svg" class="me-1">
-                                            100%</span>
-                                        <span><img src="assets/images/Tracking/ON-vehicle.svg" class="me-1"> ON</span>
+                                <div class="d-flex align-items-start">
+                                    <img src="assets/images/Tracking/location-vehicle.svg" class="me-2 mt-1">
+                                    <div class="vehicle-location">
+                                        <p>Yavatmal District Maharashtra</p>
+                                        <small>
+                                            <!-- 22 Jul 2022, 16:28  -->
+                                            {{ item?.deviceDatetime | date:'dd MMM yyyy hh:mm a'}}
+                                        </small>
                                     </div>
                                 </div>
-                                <div class="share-call">
-                                    <a href="#" class="me-3" data-bs-toggle="modal"
-                                        data-bs-target="#ShareLocationModal"><img
-                                            src="assets/images/Tracking/share.svg"></a>
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#CallDriverModal"><img
-                                            src="assets/images/Tracking/call-vehicle.svg"></a>
+                                <div class="d-flex align-items-start mb-2">
+                                    <img src="assets/images/Tracking/info-vehicle.svg" class="me-2 mt-1">
+                                    <div class="vehicle-running">
+                                        {{item?.speed}} kmph | Running since : 3 days : 5 hrs | 480 km today
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="vehicle-status">
+                                        <div class="d-flex">
+                                            <span><img src="assets/images/Tracking/battery.svg" class="me-1"> 50%</span>
+                                            <span class="mx-3"><img src="assets/images/Tracking/network.svg"
+                                                    class="me-1">
+                                                100%</span>
+                                            <span><img src="assets/images/Tracking/ON-vehicle.svg" class="me-1">
+                                                ON</span>
+                                        </div>
+                                    </div>
+                                    <div class="share-call">
+                                        <a href="#" class="me-3" data-bs-toggle="modal"
+                                            data-bs-target="#ShareLocationModal"><img
+                                                src="assets/images/Tracking/share.svg"></a>
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#CallDriverModal"><img
+                                                src="assets/images/Tracking/call-vehicle.svg"></a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
+                        </a>
                     </ng-template>
-                    <ng-template #popContent class="bg-danger" >
+                    <ng-template #popContent class="bg-danger">
                         <p>GPS Wire Cut. Is the vehicle in maintenance?</p>
                         <div class="d-flex justify-content-end">
                             <button class="btn btn-sm btn-outline-danger text-dark" data-bs-toggle="modal"
@@ -162,8 +174,8 @@
                                 data-bs-target="#MaintenanceModal" (click)="getVehicleNumber(item)">Yes</button>
                         </div>
                     </ng-template>
-    
-                    
+
+
                     <!-- <a class="d-flex vehicle p-3 active" href="#" routerLinkActive="active" data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
                         <div class="flex-shrink-0">
@@ -412,7 +424,7 @@
                     </a> -->
                 </div>
             </div>
-            
+
         </div>
     </div>
     <div class="col-sm-8">
@@ -495,8 +507,8 @@
                         <div class="tab-pane fade show active" id="Itinerary-tab-pane" role="tabpanel"
                             aria-labelledby="Itinerary-tab" tabindex="0">
                             <div class="container">
-                                <div class="row align-items-center mb-3">
-                                    <div class="col-sm-6">
+                                <div class="row align-items-center mb-3 justify-content-between">
+                                    <div class="col-sm-auto">
                                         <div class="d-flex">
                                             <div class="itinerary-details">
                                                 <p class="text-main">All</p>
@@ -514,49 +526,62 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="d-flex" id="itinerary-buttons">
-                                            <div class="input-group">
-                                                <label class="input-group-text" for="inputGroupSelect01">
-                                                    <i class="fa-solid fa-calendar-days"></i>
-                                                </label>
-                                                <select class="form-select" id="inputGroupSelect01">
-                                                    <option selected>Choose...</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
+                                    <div class="col-sm">
+                                        <form [formGroup]="itineraryForm">
+                                            <div class="d-flex justify-content-end align-items-center" id="itinerary-buttons">
+                                                <mat-form-field appearance="legacy" class="me-1" style="width:100px !important;">
+                                                    <mat-select formControlName="timePeriod"
+                                                        (selectionChange)="selectTimePeriod(itinerary['timePeriod'].value)"
+                                                        required>
+                                                        <mat-option *ngFor="let item of timePeriodArray"
+                                                            [value]="item.value">
+                                                            {{item.viewValue}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                                <mat-form-field appearance="legacy">
+                                                    <mat-label>Enter From Date-To Date</mat-label>
+                                                    <mat-date-range-input [rangePicker]="picker">
+                                                        <input matStartDate placeholder="From Date"
+                                                            formControlName="fromDate" autocomplete="off">
+                                                        <input matEndDate placeholder="To Date"
+                                                            formControlName="toDate" autocomplete="off">
+                                                    </mat-date-range-input>
+                                                    <mat-datepicker-toggle matSuffix [for]="picker">
+                                                    </mat-datepicker-toggle>
+                                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                                </mat-form-field>
+                                                <button class="btn" type="button">
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fa-solid fa-circle me-1"></i>
+                                                        <span>REC</span>
+                                                    </div>
+                                                </button>
+                                                <button class="btn" type="button"><i
+                                                        class="fa-solid fa-rotate"></i></button>
+                                                <button class="btn" type="button" data-bs-toggle="modal"
+                                                    data-bs-target="#PlayRouteModal"><i
+                                                        class="fa-solid fa-play"></i></button>
+                                                <button class="btn" type="button" [matMenuTriggerFor]="menu"><i
+                                                        class="fa-solid fa-download"></i></button>
+                                                <mat-menu #menu="matMenu">
+                                                    <button mat-menu-item>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <span>PDF</span>
+                                                            <span class="text-danger"><i
+                                                                    class="fa-solid fa-file-pdf"></i></span>
+                                                        </div>
+                                                    </button>
+                                                    <button mat-menu-item>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <span>Excel</span>
+                                                            <span class="text-success"><i
+                                                                    class="fa-solid fa-file-excel"></i></span>
+                                                        </div>
+                                                    </button>
+                                                </mat-menu>
                                             </div>
-                                            <button class="btn" type="button">
-                                                <div class="d-flex align-items-center">
-                                                    <i class="fa-solid fa-circle me-1"></i>
-                                                    <span>REC</span>
-                                                </div>
-                                            </button>
-                                            <button class="btn" type="button"><i
-                                                    class="fa-solid fa-rotate"></i></button>
-                                            <button class="btn" type="button" data-bs-toggle="modal"
-                                                data-bs-target="#PlayRouteModal"><i
-                                                    class="fa-solid fa-play"></i></button>
-                                            <button class="btn" type="button" [matMenuTriggerFor]="menu"><i
-                                                    class="fa-solid fa-download"></i></button>
-                                            <mat-menu #menu="matMenu">
-                                                <button mat-menu-item>
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <span>PDF</span>
-                                                        <span class="text-danger"><i
-                                                                class="fa-solid fa-file-pdf"></i></span>
-                                                    </div>
-                                                </button>
-                                                <button mat-menu-item>
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <span>Excel</span>
-                                                        <span class="text-success"><i
-                                                                class="fa-solid fa-file-excel"></i></span>
-                                                    </div>
-                                                </button>
-                                            </mat-menu>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="fixed-height-table">
@@ -564,7 +589,9 @@
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <span class="text-primary"><i class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs : 21 min</span>
+                                                    <span class="text-primary"><i
+                                                            class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs :
+                                                        21 min</span>
                                                 </td>
                                                 <td>
                                                     <span class="text-dark">Harjuna Post Office, Harjuna, Yavatmal,
@@ -583,7 +610,9 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <span class="text-danger"><i class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs : 21 min</span>
+                                                    <span class="text-danger"><i
+                                                            class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs :
+                                                        21 min</span>
                                                 </td>
                                                 <td>
                                                     <span class="text-dark">Harjuna Post Office, Harjuna, Yavatmal,
@@ -602,7 +631,9 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <span class="text-success"><i class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs : 21 min</span>
+                                                    <span class="text-success"><i
+                                                            class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs :
+                                                        21 min</span>
                                                 </td>
                                                 <td>
                                                     <span class="text-dark">Harjuna Post Office, Harjuna, Yavatmal,
@@ -621,7 +652,9 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <span class="text-warning"><i class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs : 21 min</span>
+                                                    <span class="text-warning"><i
+                                                            class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs :
+                                                        21 min</span>
                                                 </td>
                                                 <td>
                                                     <span class="text-dark">Harjuna Post Office, Harjuna, Yavatmal,
@@ -640,7 +673,9 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <span class="text-warning"><i class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs : 21 min</span>
+                                                    <span class="text-warning"><i
+                                                            class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs :
+                                                        21 min</span>
                                                 </td>
                                                 <td>
                                                     <span class="text-dark">Harjuna Post Office, Harjuna, Yavatmal,
@@ -1112,15 +1147,18 @@
                             </div> -->
                             <div class="d-flex align-items-center ps-3">
                                 <div class="form-check form-switch d-flex align-items-center me-4">
-                                    <input class="me-2" type="radio" value="1" id="flexRadioDefault1" formControlName="maintenanceType">
+                                    <input class="me-2" type="radio" value="1" id="flexRadioDefault1"
+                                        formControlName="maintenanceType">
                                     <label class="form-check-label" for="flexRadioDefault1">Scheduled</label>
                                 </div>
                                 <div class="form-check form-switch d-flex align-items-center me-4">
-                                    <input class="me-2" type="radio" value="2" id="flexRadioDefault2" formControlName="maintenanceType">
+                                    <input class="me-2" type="radio" value="2" id="flexRadioDefault2"
+                                        formControlName="maintenanceType">
                                     <label class="form-check-label" for="flexRadioDefault2">Repair</label>
                                 </div>
                                 <div class="form-check form-switch d-flex align-items-center">
-                                    <input class="me-2" type="radio" value="3"id="flexRadioDefault3"  formControlName="maintenanceType">
+                                    <input class="me-2" type="radio" value="3" id="flexRadioDefault3"
+                                        formControlName="maintenanceType">
                                     <label class="form-check-label" for="flexRadioDefault3">Accident</label>
                                 </div>
                             </div>
@@ -1137,7 +1175,8 @@
                                     </mat-form-field> -->
                                     <mat-form-field appearance="standard" class="w-100">
                                         <mat-label>From Date and time</mat-label>
-                                        <input matInput [ngxMatDatetimePicker]="fromDate" [max]="currentDate" formControlName="maintenanceFrom">
+                                        <input matInput [ngxMatDatetimePicker]="fromDate" [max]="currentDate"
+                                            formControlName="maintenanceFrom">
                                         <mat-datepicker-toggle matSuffix [for]="$any(fromDate)"></mat-datepicker-toggle>
                                         <ngx-mat-datetime-picker #fromDate>
                                         </ngx-mat-datetime-picker>
@@ -1146,7 +1185,8 @@
                                 <div class="col-sm-6">
                                     <mat-form-field appearance="standard" class="w-100">
                                         <mat-label>To Date and time</mat-label>
-                                        <input matInput [ngxMatDatetimePicker]="toDate" formControlName="maintenanceTo" [max]="currentDate">
+                                        <input matInput [ngxMatDatetimePicker]="toDate" formControlName="maintenanceTo"
+                                            [max]="currentDate">
                                         <mat-datepicker-toggle matSuffix [for]="$any(toDate)"></mat-datepicker-toggle>
                                         <ngx-mat-datetime-picker #toDate>
                                         </ngx-mat-datetime-picker>
@@ -1162,7 +1202,8 @@
                         </div>
                         <mat-form-field appearance="standard" class="w-100">
                             <mat-label>Add Remarks</mat-label>
-                            <textarea matInput placeholder="Type here..." formControlName="remark" [maxlength]="100"></textarea>
+                            <textarea matInput placeholder="Type here..." formControlName="remark"
+                                [maxlength]="100"></textarea>
                         </mat-form-field>
                     </div>
                 </div>
@@ -1170,12 +1211,12 @@
                     <div class="form-container w-100">
                         <div class="d-flex justify-content-between">
                             <button type="button" class="btn btn-light-main" data-bs-dismiss="modal">Cancel</button>
-                            <button  class="btn btn-main" data-bs-dismiss="modal">Mark Vehicle In Maintenance</button>
+                            <button class="btn btn-main" data-bs-dismiss="modal">Mark Vehicle In Maintenance</button>
                         </div>
                     </div>
                 </div>
             </form>
-           
+
         </div>
     </div>
 </div>

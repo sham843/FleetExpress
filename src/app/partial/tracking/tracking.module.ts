@@ -5,8 +5,8 @@ import { TrackingComponent } from './tracking.component';
 import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.module';
 import { AgmCoreModule } from '@agm/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({

@@ -7,6 +7,7 @@ import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.mo
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
+
 @NgModule({
   declarations: [
     MyProfileComponent
