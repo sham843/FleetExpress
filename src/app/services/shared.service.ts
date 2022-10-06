@@ -134,7 +134,9 @@ export class SharedService {
     this.commonMethods.routerLinkRedirect('login');
   }
   ngOnDestroy() {
-    // this.subscription.unsubscribe();
+    if(this.subscription){
+      this.subscription.unsubscribe();
+    }
   }
 }
 

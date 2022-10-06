@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 export const PartialLayoutRoutes: Routes = [
   { path: 'dashboard', loadChildren: () => import('../dashboard/dashboard.module').then(m => m.DashboardModule), data: { title: 'Dashboard' } },
   { path: 'tracking', loadChildren: () => import('../../partial/tracking/tracking.module').then(m => m.TrackingModule), data: { title: 'Tracking' } },
+  { path: 'register-vehicle', loadChildren: () => import('../../partial/register-vehicle/register-vehicle.module').then(m => m.RegisterVehicleModule), data: { title: 'Register Vehicle' } },
   { path: 'manage-vehicle', loadChildren: () => import('../../partial/manage-vehicle/manage-vehicle.module').then(m => m.ManageVehicleModule), data: { title: 'Manage Vehicle' } },
   { path: 'driver', loadChildren: () => import('../../partial/driver/driver.module').then(m => m.DriverModule), data: { title: 'Drivers' } },
   { path: 'geofence', loadChildren: () => import('../../partial/geofence/geofence.module').then(m => m.GeofenceModule), data: { title: 'Geofence' } },
