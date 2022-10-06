@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { NgxSpinnerService } from 'ngx-spinner';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { ErrorsService } from 'src/app/services/errors.service';
@@ -7,6 +7,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',

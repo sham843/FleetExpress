@@ -21,6 +21,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReportTableComponent } from './dialogs/report-table/report-table.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
 };
