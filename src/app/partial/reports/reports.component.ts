@@ -200,14 +200,14 @@ export class ReportsComponent implements OnInit {
     } else {
       var url: any
       switch (this.selectedTablabel) {
-        case "Summary Report": url = 'get-summary-report'; break;
-        case "Trip Report": url = 'get-trip-report-web'; break;
-        case "Address Report": url = 'get-tracking-address-mob'; break;
-        case "Overspeed Report": url = 'get-vehicle-details-for-overspeed'; break;
-        case "Speed Range Report": url = 'get-overspeed-report-speedrange'; break;
+        case "Summary Report": url = 'reports/get-summary-report'; break;
+        case "Trip Report": url = 'reports/get-trip-report-web'; break;
+        case "Address Report": url = 'reports/get-tracking-address-mob'; break;
+        case "Overspeed Report": url = 'reports/get-vehicle-details-for-overspeed'; break;
+        case "Speed Range Report": url = 'reports/get-overspeed-report-speedrange'; break;
       }
      
-      this.apiCall.setHttp('get', url + this.getQueryString() + '&UserId='+this.webStorage.getUserId()+'&VehicleOwnerId='+this.webStorage.getVehicleOwnerId(), true, false, false, 'reportBaseUrlApi');
+      this.apiCall.setHttp('get', url + this.getQueryString() + '&UserId='+this.webStorage.getUserId()+'&VehicleOwnerId='+this.webStorage.getVehicleOwnerId(), true, false, false, 'vehicletrackingBaseUrlApi');
       this.apiCall.getHttp().subscribe((responseData: any) => {
         if (responseData.statusCode === "200" || responseData.length > 0) {
           this.reportResponseData = responseData.responseData;

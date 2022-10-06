@@ -101,7 +101,7 @@ export class UserManagementSystemComponent implements OnInit {
     }
   }
   getRoleData() {
-    this.apiCall.setHttp('get', 'getallSubusertype_usertype?UserTypeId=1'+'&Subusertypeid='+this.userData[0]?.subUserTypeId, true, false, false, 'userDetailsBaseUrlApi');
+    this.apiCall.setHttp('get', 'userdetail/getallSubusertype_usertype?UserTypeId=1'+'&Subusertypeid='+this.userData[0]?.subUserTypeId, true, false, false, 'vehicletrackingBaseUrlApi');
     // this.subscription = 
     this.apiCall.getHttp().subscribe({
       next: (res: any) => {
@@ -117,7 +117,7 @@ export class UserManagementSystemComponent implements OnInit {
     (error: any) => { this.error.handelError(error.status) });
   }
   getUserTableData(){
-    this.apiCall.setHttp('get', 'get-user-list?vehicleOwnerId='+this.userData[0]?.vehicleOwnerId+'&Subusertypeid=&SearchText='+this.searchContent.value+'&District=0&TalukaId=0&NoPage='+ (!this.searchContent.value?this.pageNumber:0)+'&RowsPerPage='+(!this.searchContent.value?10:0), true, false, false, 'userDetailsBaseUrlApi');
+    this.apiCall.setHttp('get', 'userdetail/get-user-list?vehicleOwnerId='+this.userData[0]?.vehicleOwnerId+'&Subusertypeid=&SearchText='+this.searchContent.value+'&District=0&TalukaId=0&NoPage='+ (!this.searchContent.value?this.pageNumber:0)+'&RowsPerPage='+(!this.searchContent.value?10:0), true, false, false, 'vehicletrackingBaseUrlApi');
     // this.subscription = 
     this.apiCall.getHttp().subscribe({
       next: (res: any) => {
@@ -233,7 +233,7 @@ export class UserManagementSystemComponent implements OnInit {
       "vehicle": vehiclearray
     }
     this.spinner.show();
-    this.apiCall.setHttp('post', 'save-update-user-for-tracking', true, obj, false, 'userDetailsBaseUrlApi');
+    this.apiCall.setHttp('post', 'userdetail/save-update-user-for-tracking', true, obj, false, 'vehicletrackingBaseUrlApi');
     // this.subscription = 
     this.apiCall.getHttp().subscribe({
       next: (res: any) => {
@@ -323,7 +323,7 @@ export class UserManagementSystemComponent implements OnInit {
       isBlock: value==false?0:1,
       remark: ""
     }
-    this.apiCall.setHttp('put', 'Block-Unblock-User_1', true, obj, false, 'userDetailsBaseUrlApi');
+    this.apiCall.setHttp('put', 'userdetail/Block-Unblock-User_1', true, obj, false, 'vehicletrackingBaseUrlApi');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         this.spinner.hide();
@@ -359,7 +359,7 @@ export class UserManagementSystemComponent implements OnInit {
       }
       objDeleteData.push(obj)
     }
-    this.apiCall.setHttp('DELETE', 'Delete-User', true, objDeleteData, false, 'userDetailsBaseUrlApi');
+    this.apiCall.setHttp('DELETE', 'userdetail/Delete-User', true, objDeleteData, false, 'vehicletrackingBaseUrlApi');
     // this.subscription =
      this.apiCall.getHttp().subscribe({
       next: (res: any) => {

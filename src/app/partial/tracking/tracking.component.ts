@@ -239,7 +239,7 @@ export class TrackingComponent implements OnInit {
   }
   getVehicleDetails(vehicleNo:any){
     this.vehicleDetailsData = []
-    this.apiCall.setHttp('get', 'search-vehicle?Search=' + vehicleNo, true, false, false, 'vehicleBaseUrlApi');
+    this.apiCall.setHttp('get', 'vehicle/search-vehicle?Search=' + vehicleNo, true, false, false, 'vehicletrackingBaseUrlApi');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
