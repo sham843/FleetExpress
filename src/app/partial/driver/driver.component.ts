@@ -88,7 +88,7 @@ export class DriverComponent implements OnInit {
   }
   // -----------------------------------------------Driver Details----------------------------------------------------------
   getDriverDetails(flag?: any) {
-    this.apiCall.setHttp('get', 'get-driver?searchText=' + this.searchDriverForm.value.driverName + '&pageno=' + this.paginationNo + '&rowperPage=' + this.itemsPerPage, true, false, false, 'driverBaseUrlApi');
+    this.apiCall.setHttp('get', 'get-driver?searchText=' + this.searchDriverForm.value.driverName + '&pageno=' + this.paginationNo + '&rowperPage=' + this.itemsPerPage, true, false, false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe((res: any) => {
       if (res.statusCode === "200") {
         console.log(res);
@@ -130,7 +130,7 @@ export class DriverComponent implements OnInit {
       "isBlock": event.target.checked ? 1 : 0
     }
     this.spinner.show();
-    this.apiCall.setHttp('put', 'Block-Unblock-Driver_1', true, param, false, 'driverBaseUrlApi');
+    this.apiCall.setHttp('put', 'driver/Block-Unblock-Driver_1', true, param, false, 'fleetExpressBaseUrl');
     // this.subscription = 
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
@@ -266,7 +266,7 @@ export class DriverComponent implements OnInit {
       }
     }
     this.spinner.show();
-    this.apiCall.setHttp('delete', 'Delete-Driver', true, param, false, 'driverBaseUrlApi');
+    this.apiCall.setHttp('delete', 'driver/Delete-Driver', true, param, false, 'fleetExpressBaseUrl');
     // this.subscription = 
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
@@ -309,7 +309,7 @@ export class DriverComponent implements OnInit {
       console.log("valid")
       debugger
       this.spinner.show();
-      this.apiCall.setHttp('post', 'save-update-deriver-details', true, formData, false, 'driverBaseUrlApi');
+      this.apiCall.setHttp('post', 'driver/save-update-deriver-details', true, formData, false, 'fleetExpressBaseUrl');
       this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
           this.spinner.hide();

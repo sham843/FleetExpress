@@ -114,7 +114,7 @@ onChangePwd(){
       return
     }else{
       this.spinner.show();
-    this.apiCall.setHttp('get', 'notification/change-password?UserId='+this.webStorage.getUserId()+'&NewPassword='+this.changePassForm.value.reTypePwd+'&OldPassword='+this.changePassForm.value.currentPwd, true, false, false, 'loginBaseUrlApi');
+    this.apiCall.setHttp('get', 'login/change-password?UserId='+this.webStorage.getUserId()+'&NewPassword='+this.changePassForm.value.reTypePwd+'&OldPassword='+this.changePassForm.value.currentPwd, true, false, false, 'fleetExpressBaseUrl');
       // this.subscription=
       this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {

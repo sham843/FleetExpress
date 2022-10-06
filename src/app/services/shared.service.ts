@@ -17,7 +17,7 @@ export class SharedService {
     private spinner: NgxSpinnerService,
 ) {
   }
-  createCaptchaCarrerPage() {
+  /* createCaptchaCarrerPage() {
     //clear the contents of captcha div first
     let id: any = document.getElementById('captcha');
     id.innerHTML = "";
@@ -44,7 +44,7 @@ export class SharedService {
 
   checkvalidateCaptcha() {
     return this.codecareerPage;
-  }
+  } */
   uploadDocuments(event?: any, allowedDocTypes?: any) {
     return new Observable(obj => {
       let selResult = event != '' && event != undefined ? event.target.value.split('.') : '';
@@ -62,7 +62,7 @@ export class SharedService {
           reader.onload = () => {
             const formData = new FormData();
             formData.append(fileName, file);
-            this.apiCall.setHttp('post', 'upload-document', true, formData, false, 'uploadDocumentBaseUrlApi');
+            this.apiCall.setHttp('post', 'upload/upload-document', true, formData, false, 'fleetExpressBaseUrl');
             // this.subscription =
             this.apiCall.getHttp().subscribe({
               next: (res: any) => {
@@ -104,7 +104,7 @@ export class SharedService {
             const formData = new FormData();
             formData.append('DirName', folderName)
             formData.append(fileName, file);
-            this.apiCall.setHttp('post', 'upload-photo', true, formData, false, 'uploadDocumentBaseUrlApi');
+            this.apiCall.setHttp('post', 'upload/upload-photo', true, formData, false, 'fleetExpressBaseUrl');
             // this.subscription =
             this.apiCall.getHttp().subscribe({
               next: (res: any) => {
