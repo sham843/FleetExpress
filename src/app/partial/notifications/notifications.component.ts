@@ -63,7 +63,8 @@ export class NotificationsComponent implements OnInit {
       todate: todate.toISOString(),
     }
     console.log(obj);
-    // const url='&FromDate='+obj?.fromdate+'&ToDate='+obj?.todate
+     const url='&FromDate='+obj?.fromdate+'&ToDate='+obj?.todate+'&VehicleNumber='+formData.vehicle+'&AlertType='+formData.AlertType;
+     console.log(url);
     // this.spinner.show();
     // this.apiCall.setHttp('get', 'notification/vehicle-alert-report_v1?UserId=' + this.webStorage.getUserId() , true, false, false, 'vehicletrackingBaseUrlApi');
     // this.subscription = this.apiCall.getHttp().subscribe({

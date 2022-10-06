@@ -381,7 +381,9 @@ export class ManageVehicleComponent implements OnInit,OnDestroy {
   get f() {
     return this.editVehicleForm.controls;
   }
- ngOnDestroy() {
-  this.subscription.unsubscribe();
-  } 
+  ngOnDestroy() {
+    if (this.subscription){
+      this.subscription.unsubscribe();
+    }
+  }
 }

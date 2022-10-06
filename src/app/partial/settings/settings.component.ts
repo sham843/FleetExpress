@@ -209,8 +209,10 @@ switchNotification(rowData:any){
     this.error.handelError(error.status)
    } );
 }
-ngOnDestroy() {
-  this.subscription.unsubscribe();
-}
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 }
 

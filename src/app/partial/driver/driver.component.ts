@@ -291,6 +291,8 @@ export class DriverComponent implements OnInit {
   get f() { return this.driverRegForm.controls };
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if(this.subscription){
+      this.subscription.unsubscribe();
+    }
   }
 }
