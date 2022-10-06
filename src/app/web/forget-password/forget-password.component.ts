@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs/internal/Subscription';
 
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
+import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { ValidationService } from 'src/app/services/validation.service';
 
@@ -32,7 +33,7 @@ export class ForgetPasswordComponent implements OnInit,OnDestroy{
   intervalId:number = 0;
   timer:string|number = '';
   timerFlag: boolean = true;
-  timeLeft:number= 10;
+  timeLeft:number= 60;
   interval: any;
   subscription:Subscription |any;
   constructor(private fb: FormBuilder,
@@ -40,7 +41,8 @@ export class ForgetPasswordComponent implements OnInit,OnDestroy{
     private apiCall:ApiCallService,
     public vs: ValidationService,
     private spinner: NgxSpinnerService,
-    private error: ErrorsService
+    private error: ErrorsService,
+    public config:ConfigService,
   ) { }
 
   ngOnInit(): void {
@@ -74,13 +76,11 @@ export class ForgetPasswordComponent implements OnInit,OnDestroy{
     else {
       this.spinner.show();
       this.apiCall.setHttp('get', 'get-user-otp?MobileNo=' + mobileNom, false, false, false, 'loginBaseUrlApi');
-      // this.subscription = 
-      this.apiCall.getHttp().subscribe((res: any) => {
+      this.subscription = this.apiCall.getHttp().subscribe((res: any) => {
         if (res.statusCode == "200") {
           this.checkOtp = res.responseData[0].otp;
           this.mobileNum = res.responseData[0].mobileNo;
           this.spinner.hide();
-          this.commonMethods.snackBar(res.statusMessage, 1)
           this.generateOTPContain = false;
           this.OTPContainer = true;
           this.verifyOTPForm.reset();
@@ -91,8 +91,6 @@ export class ForgetPasswordComponent implements OnInit,OnDestroy{
           this.error.handelError(error.status);
         })
       this.spinner.hide();
-
-
     }
   }
   // -----------------------------------------Timer------------------------------------------------------------------------
@@ -122,6 +120,9 @@ export class ForgetPasswordComponent implements OnInit,OnDestroy{
   verifyOTP() {
     let otp = this.verifyOTPForm.value.otpA + this.verifyOTPForm.value.otpB + this.verifyOTPForm.value.otpC + this.verifyOTPForm.value.otpD + this.verifyOTPForm.value.otpE;
     if (this.verifyOTPForm.invalid) {
+      if(otp.length==0){
+        this.otpFlag = true;
+      }
       this.OTPContainer = true;
       return;
     }
@@ -138,23 +139,16 @@ export class ForgetPasswordComponent implements OnInit,OnDestroy{
       this.apiCall.getHttp().subscribe((res: any) => {
         if (res.statusCode == "200") {
           this.spinner.hide();
-          this.commonMethods.snackBar(res.statusMessage, 1)
           this.otpLoginUserId = res.responseData[0].id;
           this.otpFlag = false;
           this.OTPContainer = false;
           this.passContainer = true;
-
-        }
-        else {
-          this.spinner.hide();
-          this.error.handelError(res.statusCode);
         }
       },
         (error: any) => {
           this.error.handelError(error.status);
         })
       this.spinner.hide();
-
     }
   }
   // ---------------------------------------------------------------------submit---------------------------------------
@@ -168,11 +162,9 @@ export class ForgetPasswordComponent implements OnInit,OnDestroy{
       this.spinner.show();
       if (this.changePassword.value.password == this.changePassword.value.confirmPassword) {
         this.apiCall.setHttp('get', 'set-password?UserId=' + this.otpLoginUserId + '&NewPassword=' + this.changePassword.value.password, false, false, false, 'loginBaseUrlApi');
-        // this.subscription = 
-        this.apiCall.getHttp().subscribe((res: any) => {
+        this.subscription = this.apiCall.getHttp().subscribe((res: any) => {
           if (res.statusCode == "200") {
             this.spinner.hide();
-            this.commonMethods.snackBar(res.statusMessage, 1)
             this.changePassword.reset();
             this.commonMethods.routerLinkRedirect('/login');
             this.spinner.hide();

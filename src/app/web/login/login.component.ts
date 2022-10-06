@@ -66,12 +66,10 @@ export class LoginComponent implements OnInit {
           sessionStorage.setItem('loggedIn', 'true');
           localStorage.setItem('loggedInData', JSON.stringify(res));
           this.commonMethods.routerLinkRedirect('../dashboard');
-          this.commonMethods.snackBar(res.statusMessage, 1);
         }
         else {
           this.spinner.hide();
             this.error.handelError(res.statusCode);
-       
         }
       },(error: any) => {
         this.error.handelError(error.status);
@@ -87,5 +85,4 @@ ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 }
-
 }

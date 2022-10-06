@@ -47,6 +47,7 @@ export class TrackingComponent implements OnInit {
   pinCode: any;
   geocoder: any;
   itineraryForm!:FormGroup;
+  vehicleDetailsData=new Array();
   @ViewChild('search') public searchElementRef!: ElementRef;
   get f() { return this.maintananceForm.controls };
   get itinerary() { return this.itineraryForm.controls };
@@ -114,10 +115,7 @@ export class TrackingComponent implements OnInit {
           if (res.statusCode != "404") {
             this.allVehiclelData = [];
             this.error.handelError(res.statusCode)
-          } else if (res.statusCode == "404") {
-            this.allVehiclelData = [];
-            this.error.handelError(res.statusCode)
-          }
+          } 
         }
       }
     },(error: any) => { this.error.handelError(error.status) });
@@ -239,6 +237,30 @@ export class TrackingComponent implements OnInit {
       }
     }
   }
+  getVehicleDetails(vehicleNo:any){
+    this.vehicleDetailsData = []
+    this.apiCall.setHttp('get', 'search-vehicle?Search=' + vehicleNo, true, false, false, 'vehicleBaseUrlApi');
+    this.subscription = this.apiCall.getHttp().subscribe({
+      next: (res: any) => {
+        if (res.statusCode === "200") {
+          this.vehicleDetailsData = res.responseData;
+        } else {
+          if (res.statusCode != "404") {
+            this.vehicleDetailsData = [];
+            this.error.handelError(res.statusCode)
+          }
+        }
+      }
+    },(error: any) => { this.error.handelError(error.status) });
+  }
 
 
 }
+
+
+// regNo- VEHICLE Number,
+// OWNER NAME - ownerName
+// CHASSIS NUM- vehicleChassisNo,
+// ENGIN- vehicleEngineNo
+// FUEL TYPE-  ,
+// INSURANCE Number.-

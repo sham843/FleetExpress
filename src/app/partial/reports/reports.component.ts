@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
+import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { ExcelPdfDownloadedService } from 'src/app/services/excel-pdf-downloaded.service';
 import { MasterService } from 'src/app/services/master.service';
@@ -43,7 +44,8 @@ export class ReportsComponent implements OnInit {
      private webStorage:WebStorageService,
      private commonMethods:CommonMethodsService,
      private master:MasterService,
-     private error:ErrorsService
+     private error:ErrorsService,
+     public config:ConfigService,
     ) { }
 
   ngOnInit(): void {

@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
+import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ValidationService } from 'src/app/services/validation.service';
@@ -30,7 +31,8 @@ export class DriverComponent implements OnInit {
   aadharDoc: string | any;
   totalItem!: number;
   paginationNo: number = 1;
-  pageSize: number = 10;
+  itemsPerPage: number = 10;
+  pageSize:number=1;
   highLightRow!: string;
   date: any = new Date();
   maxDate = new Date();
@@ -54,7 +56,8 @@ export class DriverComponent implements OnInit {
     private sharedService: SharedService,
     private spinner: NgxSpinnerService,
     private error: ErrorsService,
-    private commonMethods: CommonMethodsService
+    private commonMethods: CommonMethodsService,
+    public config:ConfigService,
   ) { }
 
   ngOnInit(): void {
@@ -85,7 +88,7 @@ export class DriverComponent implements OnInit {
   }
   // -----------------------------------------------Driver Details----------------------------------------------------------
   getDriverDetails(flag?: any) {
-    this.apiCall.setHttp('get', 'get-driver?searchText=' + this.searchDriverForm.value.driverName + '&pageno=' + this.paginationNo + '&rowperPage=' + this.pageSize, true, false, false, 'driverBaseUrlApi');
+    this.apiCall.setHttp('get', 'get-driver?searchText=' + this.searchDriverForm.value.driverName + '&pageno=' + this.paginationNo + '&rowperPage=' + this.itemsPerPage, true, false, false, 'driverBaseUrlApi');
     this.apiCall.getHttp().subscribe((res: any) => {
       if (res.statusCode === "200") {
         console.log(res);
@@ -327,8 +330,11 @@ export class DriverComponent implements OnInit {
       this.spinner.hide();
     }
   }
+
   onPagintion(pageNo: any) {
     this.paginationNo = pageNo;
+    this.pageSize = this.itemsPerPage * (pageNo - 1);
+    // this.pageSize = this.itemsPerPage * (pageNo - 1);
     this.getDriverDetails();
   }
   get f() { return this.driverRegForm.controls };

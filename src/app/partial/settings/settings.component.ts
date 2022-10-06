@@ -8,6 +8,7 @@ import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { ConfigService } from 'src/app/services/config.service';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
@@ -44,6 +45,7 @@ export class SettingsComponent implements OnInit {
   expandedElement: any;
   vehicleNotificationFlag:boolean=false;
   totalVehicleNotificatinsData !:number;
+  highlightedRow!:number;
   getSliderTickInterval(): number | 'auto' {
     if (this.showTicks) {
       return this.autoTicks ? 'auto' : this.tickInterval;
@@ -56,7 +58,8 @@ export class SettingsComponent implements OnInit {
     private error:ErrorsService,
     private commonMethods:CommonMethodsService,
     private apiCall:ApiCallService,
-    private webStorage:WebStorageService) { }
+    private webStorage:WebStorageService,
+    public config:ConfigService,) { }
 
   ngOnInit(): void {
     this.getChangePwd();
@@ -97,10 +100,12 @@ public onPageChange(pageNum: number): void {
   this.pageSize = this.itemsPerPage * (pageNum - 1);
   this.getVehicleNotificatinsData();
 }
+clickedRow(index:any){
+  this.highlightedRow=index;
+}
 onChangePwd(){
   this.submitted=true;
   if(this.changePassForm.invalid){
-    this.commonMethods.snackBar("Please enter valid value",0);
     return;
   }
   else{
@@ -114,7 +119,6 @@ onChangePwd(){
       this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
           this.spinner.hide();
-          this.commonMethods.snackBar(response.statusMessage,0);
         }
       },
       (error:any)=>{
@@ -137,7 +141,7 @@ showvehicleNotification(tabLabel:any){
   }
 }
 getNotificatinsData() {
-  this.apiCall.setHttp('get', 'notification/get-alert-types', true, false, false, 'vehicletrackingBaseUrlApi');
+  this.apiCall.setHttp('get', 'get-alert-types', true, false, false, 'notificationBaseUrlApi');
   // this.subscription = 
   this.apiCall.getHttp().subscribe({
     next: (res: any) => {
@@ -173,8 +177,7 @@ getNotificatinsData() {
 }
 getVehicleNotificatinsData() {
   this.vehicleNotificatinsData=[]
-  this.apiCall.setHttp('get', 'notification/get-Alert-linking?NoPage='+(this.searchContent.value?0:1)+'&RowsPerPage=10&SearchText='+this.searchContent.value, true, false, false, 'vehicletrackingBaseUrlApi');
-  // this.subscription = 
+  this.apiCall.setHttp('get', 'get-Alert-linking?NoPage='+(this.searchContent.value?0:1)+'&RowsPerPage=10&SearchText='+this.searchContent.value, true, false, false, 'notificationBaseUrlApi');
   this.apiCall.getHttp().subscribe({
     next: (res: any) => {
       if (res.statusCode === "200") {
@@ -195,7 +198,7 @@ getVehicleNotificatinsData() {
 }
 switchNotification(rowData:any){ 
   this.spinner.show();
-  this.apiCall.setHttp('PUT', 'notification/set-Visibity-Notification?alertype='+rowData.alertType+'&Isnotification='+ !rowData.isNotification , true, false, false, 'vehicletrackingBaseUrlApi');
+  this.apiCall.setHttp('PUT', 'set-Visibity-Notification?alertype='+rowData.alertType+'&Isnotification='+ !rowData.isNotification , true, false, false, 'notificationBaseUrlApi');
   // this.subscription = 
   this.apiCall.getHttp().subscribe({
     next: (res: any) => {

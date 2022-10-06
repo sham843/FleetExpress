@@ -13,7 +13,7 @@
                 <div class="card-body py-0">
                     <div class="row align-items-center">
                         <div class="col-sm-3">
-                            <mat-form-field appearance="standard" class="w-100">
+                            <mat-form-field [appearance]="config.matFormField" class="w-100">
                                 <mat-label>Select Vehicles</mat-label>
                                 <mat-select  formControlName="vehicleNumber">
                                     <mat-option *ngFor="let vehicles of vehicleListData" [value]="vehicles.vehicleRegistrationNo">{{vehicles.vehicleRegistrationNo}}
@@ -23,7 +23,7 @@
                             </mat-form-field>
                         </div>
                         <div class="col-sm-3">
-                            <mat-form-field appearance="standard" class="w-100">
+                            <mat-form-field [appearance]="config.matFormField" class="w-100">
                                 <mat-label>Choose a date</mat-label>
                                 <input matInput [matDatepicker]="picker" formControlName="date" (dateChange)="getNotificationsData()">
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -43,7 +43,7 @@
                                     <div class="flex-grow-1">Ignition On</div>
                                     <div class="">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox"formControlName="ignitionOn" id="flexCheckDefault">
+                                            <input class="form-check-input" type="radio" formControlName="alertType" value="ignitionOn" id="flexCheckDefault">
                                         </div>
                                     </div>
                                 </div>
@@ -52,7 +52,7 @@
                                     <div class="flex-grow-1">Ignition Off</div>
                                     <div class="">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" formControlName="ignitionOff" id="flexCheckDefault">
+                                            <input class="form-check-input" type="radio" formControlName="alertType" value="ignitionOff" id="flexCheckDefault">
                                         </div>
                                     </div>
                                 </div>
@@ -61,7 +61,7 @@
                                     <div class="flex-grow-1">Geo-fence enter</div>
                                     <div class="">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" formControlName="geofenceEnter" id="flexCheckDefault">
+                                            <input class="form-check-input" type="radio" formControlName="alertType" value="geofenceEnter" id="flexCheckDefault">
                                         </div>
                                     </div>
                                 </div>
@@ -70,7 +70,7 @@
                                     <div class="flex-grow-1">Geo-fence exit</div>
                                     <div class="">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" formControlName="geofenceExit" id="flexCheckDefault">
+                                            <input class="form-check-input" type="radio" formControlName="alertType" value="geofenceExit" id="flexCheckDefault">
                                         </div>
                                     </div>
                                 </div>
@@ -79,7 +79,7 @@
                                     <div class="flex-grow-1">Over-Speed</div>
                                     <div class="">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" formControlName="overSpeed" id="flexCheckDefault">
+                                            <input class="form-check-input" type="radio" formControlName="alertType" value="overSpeed" id="flexCheckDefault">
                                         </div>
                                     </div>
                                 </div>
@@ -88,7 +88,7 @@
                                     <div class="flex-grow-1">Power Cut</div>
                                     <div class="">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" formControlName="powerCut" id="flexCheckDefault">
+                                            <input class="form-check-input" type="radio" formControlName="alertType" value="powerCut" id="flexCheckDefault">
                                         </div>
                                     </div>
                                 </div>
@@ -97,7 +97,7 @@
                                     <div class="flex-grow-1">Vibration</div>
                                     <div class="">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" formControlName="vibration" id="flexCheckDefault">
+                                            <input class="form-check-input" type="radio" formControlName="alertType" value="vibration" id="flexCheckDefault">
                                         </div>
                                     </div>
                                 </div>
@@ -106,7 +106,7 @@
                                     <div class="flex-grow-1">Low battery</div>
                                     <div class="">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" formControlName="lowbattery" id="flexCheckDefault">
+                                            <input class="form-check-input" type="radio" formControlName="alertType" value="lowbattery" id="flexCheckDefault">
                                         </div>
                                     </div>
                                 </div>
@@ -115,7 +115,7 @@
                                     <div class="flex-grow-1">Other</div>
                                     <div class="">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" formControlName="other" id="flexCheckDefault">
+                                            <input class="form-check-input" type="radio" formControlName="alertType" value="other" id="flexCheckDefault">
                                         </div>
                                     </div>
                                 </div>
