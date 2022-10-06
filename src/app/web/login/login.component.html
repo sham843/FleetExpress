@@ -55,7 +55,7 @@
                                     <mat-form-field appearance="outline" class="w-100">
                                         <mat-label>Enter Captcha</mat-label>
                                         <input matInput placeholder="Enter Captcha" formControlName="captcha" required
-                                        [ngClass]="{ 'is-invalid':f['captcha'].errors}">
+                                        [ngClass]="{ 'is-invalid':f['captcha'].errors}" >
                                         <mat-error>
                                             <span *ngIf="f['captcha'].errors?.required" class="text-danger">
                                                 Captcha is required</span>

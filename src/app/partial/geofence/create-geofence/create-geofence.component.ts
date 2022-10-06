@@ -476,13 +476,13 @@ export class CreateGeofenceComponent implements OnInit {
       }
     })
     this.geofenceForm.value.vehicleOwnerId = vehicleOwnerId.vehicleOwnerId;
-    
+
     this.spinner.show();
     this.apiCall.setHttp('post', 'Geofencne/save-update-POI', true, this.geofenceForm.value, false, 'vehicletrackingBaseUrlApi');
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
-        this.commonMethods.snackBar(response.statusMessage, 1);
+        this.commonMethods.snackBar(response.statusMessage, 0);
         this.onNoClick();
       }
     }, (error: any) => {
