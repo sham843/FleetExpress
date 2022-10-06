@@ -27,7 +27,7 @@ const routes: Routes = [
     ]
   },
   // { path: 'forget-password', loadChildren: () => import('./web/forget-password/forget-password.module').then(m => m.ForgetPasswordModule), data: { title: 'Forget Password' }, },
-  {path:'accessDenide',component:AccessDenideComponent},
+  {path:'accessDenide',component:AccessDenideComponent},  
   { path: '**', component:PageNotFoundComponent}
 ];
 
