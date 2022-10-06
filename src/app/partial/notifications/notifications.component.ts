@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup} from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MasterService } from 'src/app/services/master.service';
-// import { NgxSpinnerService } from 'ngx-spinner';
-// import { ApiCallService } from 'src/app/services/api-call.service';
-// import { ErrorsService } from 'src/app/services/errors.service';
-// import { WebStorageService } from 'src/app/services/web-storage.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ApiCallService } from 'src/app/services/api-call.service';
+import { ErrorsService } from 'src/app/services/errors.service';
+import { WebStorageService } from 'src/app/services/web-storage.service';
+import { CommonMethodsService } from 'src/app/services/common-methods.service';
 
 
 @Component({
@@ -18,17 +19,20 @@ export class NotificationsComponent implements OnInit {
   subscription !:Subscription;
   vehicleListData=new Array();
   NotificationsData=new Array();
+  currentDate: Date =new Date();
   constructor(
-    // private apiCall: ApiCallService,
+    private apiCall: ApiCallService,
     private masterService:MasterService,
-    // private error: ErrorsService,
+    private error: ErrorsService,
     private fb: FormBuilder,
-    // private spinner: NgxSpinnerService,
-    // private webStorage:WebStorageService
+    private spinner: NgxSpinnerService,
+    private webStorage:WebStorageService,
+    private commonMethod:CommonMethodsService
     ) { }
 
   ngOnInit(): void {
-    this.getNotificationForm()
+    this.getNotificationForm();
+    this.getNotificationsData();
     this.getVehicleListData();
   }
   getNotificationForm() {
@@ -36,15 +40,15 @@ export class NotificationsComponent implements OnInit {
       vehicleNumber: [],
       date: [],
       remark: [],
-      ignitionOn: [],
-      ignitionOff: [],
-      geofenceEnter: [],
-      geofenceExit: [],
-      overSpeed: [],
-      powerCut: [],
-      vibration: [],
-      lowbattery: [],
-      other: [],
+      alertType: [],
+      // ignitionOff: [],
+      // geofenceEnter: [],
+      // geofenceExit: [],
+      // overSpeed: [],
+      // powerCut: [],
+      // vibration: [],
+      // lowbattery: [],
+      // other: [],
     })
   }
   getVehicleListData(){
@@ -56,30 +60,27 @@ export class NotificationsComponent implements OnInit {
   }
   getNotificationsData(){
     const formData=this.notificationForm.value;
-    console.log(formData);
-    const fromdate = new Date(formData?.date);
+    const fromdate = formData?.date?new Date(formData?.date):new Date();
     const todate = new Date(fromdate.setDate(fromdate.getDate() + 1));
     const obj={
-      fromdate: formData?.date.toISOString(),
-      todate: todate.toISOString(),
+      fromdate: formData?.date?new Date(formData?.date).toISOString():null,
+      todate: formData?.date?todate.toISOString():null,
     }
-    console.log(obj);
-     const url='&FromDate='+obj?.fromdate+'&ToDate='+obj?.todate+'&VehicleNumber='+formData.vehicle+'&AlertType='+formData.AlertType;
-     console.log(url);
-    // this.spinner.show();
-    // this.apiCall.setHttp('get', 'notification/vehicle-alert-report_v1?UserId=' + this.webStorage.getUserId() , true, false, false, 'vehicletrackingBaseUrlApi');
-    // this.subscription = this.apiCall.getHttp().subscribe({
-    //   next: (res: any) => {
-    //     if (res.statusCode === "200") {
-    //       console.log(res)
-    //     } else {
-    //       if (res.statusCode != "404") {
-    //         this.NotificationsData = [];
-    //         this.error.handelError(res.statusCode)
-    //       } 
-    //     }
-    //   }
-    // },(error: any) => { this.error.handelError(error.status) });
+    const url='FromDate='+obj?.fromdate+'&ToDate='+obj?.todate+'&VehicleNumber='+formData.vehicleNumber+'&AlertType='+formData.alertType;
+    this.spinner.show();
+    this.apiCall.setHttp('get', 'notification/vehicle-alert-report_v1?'+ url+'&UserId=' + this.webStorage.getUserId()  , true, false, false, 'vehicletrackingBaseUrlApi');
+    this.subscription = this.apiCall.getHttp().subscribe({
+      next: (res: any) => {
+        if (res.statusCode === "200") {
+          this.commonMethod.snackBar(res.statusCode,0)
+        } else {
+          if (res.statusCode != "404") {
+            this.NotificationsData = [];
+            this.error.handelError(res.statusCode)
+          } 
+        }
+      }
+    },(error: any) => { this.error.handelError(error.status) });
   }
   
 }
