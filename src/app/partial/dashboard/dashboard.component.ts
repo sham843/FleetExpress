@@ -8,6 +8,7 @@ import {
   ApexXAxis,
   ApexPlotOptions
 } from "ng-apexcharts";
+import { of } from 'rxjs';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
@@ -47,7 +48,7 @@ export class DashboardComponent implements OnInit {
   guageCap:string ='round';
   vehiclesMoving = new Array();
   currentdate=new Date();
-
+  alertTypeArray:any;
   constructor(private webStorage: WebStorageService, private apiCall:ApiCallService,
     private error:ErrorsService) {
     this.VehiclesLastUpdatedbarChartOptions = {
@@ -108,6 +109,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.alertTypeArray=of('power-cut', 'overspeed');
     this.getvehicleStatusData();
     this.getvehicleAllData();
     this.getPOIAlertData();
@@ -196,21 +198,23 @@ export class DashboardComponent implements OnInit {
   }
   getOverSpeedData() {
     this.overSpeedData = [];
-    const Fromdate=moment.utc().startOf('day').toISOString();
-    const ToDate=moment.utc().toISOString();
-    this.apiCall.setHttp('get', 'get-vehicle-alert-count-dashboard?UserId=' + this.webStorage.getUserId()+'&Fromdate='+Fromdate+'&ToDate='+ToDate, true, false, false, 'dashboardBaseUrlApi');
-    this.apiCall.getHttp().subscribe((responseData: any) => {
-      if (responseData.statusCode === "200" || responseData.length > 0) {
-        this.overSpeedData = responseData.responseData;
-      }
-      else {
-        (error: any) => {
-          this.error.handelError(error.status);
-      }
-      }
-    },(error: any) => {
-      this.error.handelError(error.status);
-  })
+    this.alertTypeArray.subscribe((x:any)=>{
+      const Fromdate = moment.utc().startOf('day').toISOString();
+      const ToDate = moment.utc().toISOString();
+      this.apiCall.setHttp('get', 'get-vehicle-alert-count-dashboard?UserId=' + this.webStorage.getUserId() + '&Fromdate=' + Fromdate + '&ToDate=' + ToDate+'&alertType='+x, true, false, false, 'dashboardBaseUrlApi');
+      this.apiCall.getHttp().subscribe((responseData: any) => {
+        if (responseData.statusCode === "200" || responseData.length > 0) {
+          this.overSpeedData.push(responseData.responseData);
+        }
+        else {
+          (error: any) => {
+            this.error.handelError(error.status);
+          }
+        }
+      }, (error: any) => {
+        this.error.handelError(error.status);
+      })
+    })
   }
   getSIMRenewalReminderData() {
     this.SIMRenewalReminderData = [];

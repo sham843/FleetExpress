@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ErrorsService } from 'src/app/services/errors.service';
+import { MasterService } from 'src/app/services/master.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ValidationService } from 'src/app/services/validation.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
@@ -18,24 +19,24 @@ import { WebStorageService } from 'src/app/services/web-storage.service';
 export class DriverComponent implements OnInit {
   driverRegForm !: FormGroup;
   searchDriverForm!: FormGroup;
-  driverDetails: object |any;
+  driverDetails: object | any;
   editId: number = 0;
   searchHideShow: boolean = true;
   clearHideShow: boolean = false;
   buttonFlag: boolean = true;
-  dobDisabled:boolean=true;
-  buttonText:string= 'Save';
-  licenceDoc: string |any;
-  panDoc: string|any;
-  aadharDoc: string|any;
+  dobDisabled: boolean = true;
+  buttonText: string = 'Save';
+  licenceDoc: string | any;
+  panDoc: string | any;
+  aadharDoc: string | any;
   totalItem!: number;
   paginationNo: number = 1;
   pageSize: number = 10;
   highLightRow!: string;
   date: any = new Date();
-  maxDate=new Date();
+  maxDate = new Date();
   subscription!: Subscription;
-  profilePhotoupd: string |any= 'assets/images/Driver-profile.svg';
+  profilePhotoupd: string | any = 'assets/images/Driver-profile.svg';
 
   @ViewChild('closeModel') closeModel: any;
   @ViewChild('panUpload') panUpload: any;
@@ -48,11 +49,12 @@ export class DriverComponent implements OnInit {
     public validation: ValidationService,
     private apiCall: ApiCallService,
     private datepipe: DatePipe,
-    private webStorage:WebStorageService,
+    private webStorage: WebStorageService,
     private sharedService: SharedService,
     private spinner: NgxSpinnerService,
     private error: ErrorsService,
-    private commonMethods:CommonMethodsService) { }
+    private commonMethods: CommonMethodsService,
+    private master: MasterService) { }
 
   ngOnInit(): void {
     this.getRegFormData();
@@ -63,8 +65,8 @@ export class DriverComponent implements OnInit {
     this.driverRegForm = this.fb.group({
       profilePhoto: [''],
       mobileNo: ['', Validators.compose([Validators.required, Validators.pattern('^[6-9][0-9]{9}$'), Validators.maxLength(10)])],
-      firstName: ['', Validators.compose([Validators.required, Validators.maxLength(15),Validators.pattern('[a-zA-Z][a-zA-Z ]+')])],
-      lastName: ['', Validators.compose([Validators.required, Validators.maxLength(15),Validators.pattern('[a-zA-Z][a-zA-Z ]+')])],
+      firstName: ['', Validators.compose([Validators.required, Validators.maxLength(15), Validators.pattern('[a-zA-Z][a-zA-Z ]+')])],
+      lastName: ['', Validators.compose([Validators.required, Validators.maxLength(15), Validators.pattern('[a-zA-Z][a-zA-Z ]+')])],
       dob: ['', Validators.required],
       licenceNumber: ['', Validators.compose([Validators.required, Validators.pattern('^[A-Z]{2}[0-9]{13}$'), Validators.maxLength(20), Validators.minLength(15)])],
       licenceDoc: ['', Validators.required],
@@ -83,33 +85,27 @@ export class DriverComponent implements OnInit {
   // -----------------------------------------------Driver Details----------------------------------------------------------
   getDriverDetails(flag?: any) {
     this.spinner.show();
-    this.apiCall.setHttp('get', 'get-driver?searchText=' + this.searchDriverForm.value.driverName + '&pageno=' + this.paginationNo + '&rowperPage=' + this.pageSize, true, false, false, 'driverBaseUrlApi');
-    this.subscription=this.apiCall.getHttp().subscribe((response: any) => {
-      if (response.statusCode == "200") {
-        this.spinner.hide();
-        this.driverDetails = response.responseData.responseData1;
-        this.driverDetails.forEach((ele: any) => {
-          ele['isBlockFlag'] = false;
-          if (ele.isBlock) {
-            ele.isBlockFlag = true;
-          }
-        });
-        this.totalItem = response.responseData.responseData2.totalRecords;
-
-        if (flag == 'search') {
-          this.searchHideShow = false;
-          this.clearHideShow = true;
+    let documentUrl: any = this.master.getDriverListData(this.searchDriverForm.value.driverName, this.paginationNo,this.pageSize);
+    documentUrl.subscribe({
+      next:(response:any)=>{
+          this.spinner.hide();
+          this.driverDetails=response.responseData1
+          this.driverDetails.forEach((ele: any) => {
+            ele['isBlockFlag'] = false;
+            if (ele.isBlock) {
+              ele.isBlockFlag = true;
+            }
+          });
+          this.totalItem = response.responseData2.totalRecords;
+          if (flag == 'search') {
+            this.searchHideShow = false;
+            this.clearHideShow = true;
+          } 
+          flag
         }
-      }
-      else {
-        this.spinner.hide();
-        this.error.handelError(response.statusCode);
-      }
-    },
-      (error: any) => {
-        this.error.handelError(error.status);
-      })
-  }
+  })
+}
+
   clearSearchData() {
     this.searchDriverForm.controls['driverName'].setValue('');
     this.getDriverDetails();
@@ -127,7 +123,7 @@ export class DriverComponent implements OnInit {
     }
     this.spinner.show();
     this.apiCall.setHttp('put', 'Block-Unblock-Driver_1', true, param, false, 'driverBaseUrlApi');
-    this.subscription=this.apiCall.getHttp().subscribe((response: any) => {
+    this.subscription = this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.commonMethods.snackBar(response.statusMessage, 1)
@@ -158,7 +154,7 @@ export class DriverComponent implements OnInit {
     this.spinner.hide();
   }
 
-  
+
   documentUpload(event: any, flag: any) {
     let documentUrl: any = this.sharedService.uploadDocuments(event, "pdf");
     documentUrl.subscribe({
@@ -169,20 +165,20 @@ export class DriverComponent implements OnInit {
         }
       }
     },
-    (error: any) => {
-      this.error.handelError(error.status);
-    })
+      (error: any) => {
+        this.error.handelError(error.status);
+      })
   }
 
 
-  viewDocument(flag:any){
-   flag=='licence'?this.commonMethods.redirectToNewTab(this.licenceDoc):flag=='pan'?this.commonMethods.redirectToNewTab(this.panDoc):this.commonMethods.redirectToNewTab(this.aadharDoc); 
+  viewDocument(flag: any) {
+    flag == 'licence' ? this.commonMethods.redirectToNewTab(this.licenceDoc) : flag == 'pan' ? this.commonMethods.redirectToNewTab(this.panDoc) : this.commonMethods.redirectToNewTab(this.aadharDoc);
   }
 
   clearDoc(flag?: any) {
-    flag == 'pan' ? (this.panUpload.nativeElement.value = '',this.panDoc='') :
-      flag == 'aadhar' ? (this.aadharUpload.nativeElement.value = '',this.aadharDoc='') :
-        (this.licenceUpload.nativeElement.value = '',this.licenceDoc='');
+    flag == 'pan' ? (this.panUpload.nativeElement.value = '', this.panDoc = '') :
+      flag == 'aadhar' ? (this.aadharUpload.nativeElement.value = '', this.aadharDoc = '') :
+        (this.licenceUpload.nativeElement.value = '', this.licenceDoc = '');
   }
   // -------------------------------------------------------Update Driver Details------------------------------------------------------------
   editDriverData(driverData: any) {
@@ -211,10 +207,10 @@ export class DriverComponent implements OnInit {
     this.highLightRow = '';
     formDirective.resetForm();
     this.buttonFlag = true;
-    this.profilePhotoupd='assets/images/Driver-profile.svg';
-    this.panDoc='';
-    this.aadharDoc='';
-    this.licenceDoc='';
+    this.profilePhotoupd = 'assets/images/Driver-profile.svg';
+    this.panDoc = '';
+    this.aadharDoc = '';
+    this.licenceDoc = '';
   }
   // ----------------------------------------------Delete Record----------------------------------------------------------------
   removeDriverData(data: any) {
@@ -226,7 +222,7 @@ export class DriverComponent implements OnInit {
     ]
     this.spinner.show();
     this.apiCall.setHttp('delete', 'Delete-Driver', true, param, false, 'driverBaseUrlApi');
-    this.subscription=this.apiCall.getHttp().subscribe((response: any) => {
+    this.subscription = this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.commonMethods.snackBar(response.statusMessage, 1)
@@ -263,13 +259,13 @@ export class DriverComponent implements OnInit {
     if (this.driverRegForm.invalid) {
       !this.driverRegForm.value.panCardDoc ? this.commonMethods.snackBar("Pancard upload is required", 1) : '';
       !this.driverRegForm.value.aadharCardDoc ? this.commonMethods.snackBar("Aadhar card upload is required", 1) : '';
-      !this.driverRegForm.value.licenceDoc ? this.commonMethods.snackBar("Licence upload is required",1) : '';
+      !this.driverRegForm.value.licenceDoc ? this.commonMethods.snackBar("Licence upload is required", 1) : '';
       return;
     } else {
       this.closeModel.nativeElement.click();
       this.spinner.show();
       this.apiCall.setHttp('post', 'save-update-deriver-details', true, formData, false, 'driverBaseUrlApi');
-      this.apiCall.getHttp().subscribe((response: any) => {
+      this.subscription = this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
           this.spinner.hide();
           this.highLightRow = '';

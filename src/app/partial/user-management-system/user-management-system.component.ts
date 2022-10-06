@@ -8,6 +8,7 @@ import { BlockUnblockComponent } from 'src/app/dialogs/block-unblock/block-unblo
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ErrorsService } from 'src/app/services/errors.service';
+import { MasterService } from 'src/app/services/master.service';
 import { ValidationService } from 'src/app/services/validation.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
 
@@ -49,7 +50,8 @@ export class UserManagementSystemComponent implements OnInit {
     private spinner:NgxSpinnerService,
     private modalService:NgbModal,
     private dialog:MatDialog,
-    private webStorage:WebStorageService) { }
+    private webStorage:WebStorageService,
+    private master:MasterService) { }
 
   ngOnInit(): void {
     this.getRegFormData();
@@ -84,19 +86,15 @@ export class UserManagementSystemComponent implements OnInit {
     this.getRoleTableData();
   }
   getVehicleData() {
-    this.apiCall.setHttp('get', 'get-vehicle-list?vehicleOwnerId='+this.webStorage.getVehicleOwnerId(), true, false, false, 'userDetailsBaseUrlApi');
-    this.subscription = this.apiCall.getHttp().subscribe({
-      next: (res: any) => {
-        if (res.statusCode === "200") {
-          this.VehicleDtArr = res.responseData;
-        } else {
-          if (res.statusCode != "404") {
-            this.error.handelError(res.statusCode)
-          }
-        }
+    let vhlData=this.master.getVehicleListData();
+    vhlData.subscribe({
+      next:(response: any) => {
+        this.VehicleDtArr = response;
       }
-    },
-    (error: any) => { this.error.handelError(error.status) });
+    }),
+    (error: any) => {
+      this.error.handelError(error.status);
+    }
   }
   getRoleData() {
     this.apiCall.setHttp('get', 'getallSubusertype_usertype?UserTypeId=1'+'&Subusertypeid='+this.userData[0]?.subUserTypeId, true, false, false, 'userDetailsBaseUrlApi');
@@ -317,7 +315,7 @@ export class UserManagementSystemComponent implements OnInit {
       isBlock: value==false?0:1,
       remark: ""
     }
-    this.apiCall.setHttp('post', 'Block-Unblock-User_1?', true, obj, false, 'userDetailsBaseUrlApi');
+    this.apiCall.setHttp('put', 'Block-Unblock-User_1', true, obj, false, 'userDetailsBaseUrlApi');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         this.spinner.hide();
