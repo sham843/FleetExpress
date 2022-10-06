@@ -10,19 +10,23 @@ import { CreateGeofenceComponent } from './create-geofence/create-geofence.compo
 })
 export class GeofenceComponent implements OnInit {
   geofenceListArray = new Array();
+  paginationNo:number = 1;
   @ViewChild('search') searchElementRef!: ElementRef;
-  constructor(public dialog: MatDialog, private configService: ConfigService, private apiCall:ApiCallService) { }
+  
+  constructor(public dialog: MatDialog, private configService: ConfigService, private apiCall: ApiCallService) { }
 
   ngOnInit(): void {
     this.getAllGeofecneData();
   }
 
   getAllGeofecneData() {
-    this.apiCall.setHttp('get', 'Geofencne/get-All-POI?userId=23895&NoPage=1&RowsPerPage=10', true, false, false, 'fleetExpressBaseUrl');
+    this.apiCall.setHttp('get', 'Geofencne/get-All-POI?userId=23895&NoPage='+this.paginationNo+'&RowsPerPage='+this.configService.pageSize+'', true, false, false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode == "200") {
-          this.geofenceListArray = res.responseData;
+          this.geofenceListArray = res.responseData?.responseData1;
+        }else{
+          this.geofenceListArray = [];
         }
       },
       error: (e: any) => {
@@ -42,5 +46,9 @@ export class GeofenceComponent implements OnInit {
 
       }
     });
+  }
+
+  onPagintion(pageNo:any) {
+    this.paginationNo = pageNo;
   }
 }
