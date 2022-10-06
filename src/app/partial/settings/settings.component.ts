@@ -114,7 +114,7 @@ onChangePwd(){
       return
     }else{
       this.spinner.show();
-    this.apiCall.setHttp('get', 'login/change-password?UserId='+this.webStorage.getUserId()+'&NewPassword='+this.changePassForm.value.reTypePwd+'&OldPassword='+this.changePassForm.value.currentPwd, true, false, false, 'vehicletrackingBaseUrlApi');
+    this.apiCall.setHttp('get', 'login/change-password?UserId='+this.webStorage.getUserId()+'&NewPassword='+this.changePassForm.value.reTypePwd+'&OldPassword='+this.changePassForm.value.currentPwd, true, false, false, 'fleetExpressBaseUrl');
       // this.subscription=
       this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
@@ -141,7 +141,7 @@ showvehicleNotification(tabLabel:any){
   }
 }
 getNotificatinsData() {
-  this.apiCall.setHttp('get', 'notification/get-alert-types', true, false, false, 'vehicletrackingBaseUrlApi');
+  this.apiCall.setHttp('get', 'notification/get-alert-types', true, false, false, 'fleetExpressBaseUrl');
   // this.subscription = 
   this.apiCall.getHttp().subscribe({
     next: (res: any) => {
@@ -177,7 +177,7 @@ getNotificatinsData() {
 }
 getVehicleNotificatinsData() {
   this.vehicleNotificatinsData=[]
-  this.apiCall.setHttp('get', 'notification/get-Alert-linking?NoPage='+(this.searchContent.value?0:1)+'&RowsPerPage=10&SearchText='+this.searchContent.value, true, false, false, 'vehicletrackingBaseUrlApi');
+  this.apiCall.setHttp('get', 'notification/get-Alert-linking?NoPage='+(this.searchContent.value?0:1)+'&RowsPerPage=10&SearchText='+this.searchContent.value, true, false, false, 'fleetExpressBaseUrl');
   this.apiCall.getHttp().subscribe({
     next: (res: any) => {
       if (res.statusCode === "200") {
@@ -198,7 +198,7 @@ getVehicleNotificatinsData() {
 }
 switchNotification(rowData:any){ 
   this.spinner.show();
-  this.apiCall.setHttp('PUT', 'notification/set-Visibity-Notification?alertype='+rowData.alertType+'&Isnotification='+ !rowData.isNotification , true, false, false, 'vehicletrackingBaseUrlApi');
+  this.apiCall.setHttp('PUT', 'notification/set-Visibity-Notification?alertype='+rowData.alertType+'&Isnotification='+ !rowData.isNotification , true, false, false, 'fleetExpressBaseUrl');
   // this.subscription = 
   this.apiCall.getHttp().subscribe({
     next: (res: any) => {

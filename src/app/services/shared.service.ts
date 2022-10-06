@@ -62,7 +62,7 @@ export class SharedService {
           reader.onload = () => {
             const formData = new FormData();
             formData.append(fileName, file);
-            this.apiCall.setHttp('post', 'upload/upload-document', true, formData, false, 'vehicletrackingBaseUrlApi');
+            this.apiCall.setHttp('post', 'upload/upload-document', true, formData, false, 'fleetExpressBaseUrl');
             // this.subscription =
             this.apiCall.getHttp().subscribe({
               next: (res: any) => {
@@ -104,7 +104,7 @@ export class SharedService {
             const formData = new FormData();
             formData.append('DirName', folderName)
             formData.append(fileName, file);
-            this.apiCall.setHttp('post', 'upload/upload-photo', true, formData, false, 'vehicletrackingBaseUrlApi');
+            this.apiCall.setHttp('post', 'upload/upload-photo', true, formData, false, 'fleetExpressBaseUrl');
             // this.subscription =
             this.apiCall.getHttp().subscribe({
               next: (res: any) => {

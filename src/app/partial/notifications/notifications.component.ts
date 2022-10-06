@@ -71,7 +71,7 @@ export class NotificationsComponent implements OnInit {
     }
     const url='FromDate='+obj?.fromdate+'&ToDate='+obj?.todate+'&VehicleNumber='+formData.vehicleNumber+'&AlertType='+formData.alertType;
     this.spinner.show();
-    this.apiCall.setHttp('get', 'notification/vehicle-alert-report_v1?'+ url+'&UserId=' + this.webStorage.getUserId()  , true, false, false, 'vehicletrackingBaseUrlApi');
+    this.apiCall.setHttp('get', 'notification/vehicle-alert-report_v1?'+ url+'&UserId=' + this.webStorage.getUserId()  , true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {

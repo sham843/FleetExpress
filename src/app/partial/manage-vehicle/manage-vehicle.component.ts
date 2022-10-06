@@ -99,7 +99,7 @@ export class ManageVehicleComponent implements OnInit,OnDestroy {
   getVehicleData(flag?: any) {
     this.spinner.show();
     let searchText = this.serchVehicle.value.searchVhl || '';
-    this.apiCall.setHttp('get', 'vehicle/get-vehiclelists?searchtext=' + searchText + '&nopage=' + this.paginationNo, true, false, false, 'vehicletrackingBaseUrlApi');
+    this.apiCall.setHttp('get', 'vehicle/get-vehiclelists?searchtext=' + searchText + '&nopage=' + this.paginationNo, true, false, false, 'fleetExpressBaseUrl');
     // this.subscription = 
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
@@ -134,7 +134,7 @@ export class ManageVehicleComponent implements OnInit,OnDestroy {
       "remark": ""
     }
     this.spinner.show();
-    this.apiCall.setHttp('put', 'vehicle/BlockUnblockVehicle', true, param, false, 'vehicletrackingBaseUrlApi');
+    this.apiCall.setHttp('put', 'vehicle/BlockUnblockVehicle', true, param, false, 'fleetExpressBaseUrl');
     // this.subscription = 
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
@@ -156,7 +156,7 @@ export class ManageVehicleComponent implements OnInit,OnDestroy {
     this.asgVehicleData = vhlData;
     this.asgVehicleNo = vhlData.vehicleNo;
     this.spinner.show();
-    this.apiCall.setHttp('get', 'driver/get-driver-details', true, false, false, 'vehicletrackingBaseUrlApi');
+    this.apiCall.setHttp('get', 'driver/get-driver-details', true, false, false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
@@ -179,7 +179,7 @@ export class ManageVehicleComponent implements OnInit,OnDestroy {
       "userId": this.webStorage.getUserId()
     }
     this.spinner.show();
-    this.apiCall.setHttp('put', 'vehicle/assign-driver-to-vehicle', true, param, false, 'vehicletrackingBaseUrlApi');
+    this.apiCall.setHttp('put', 'vehicle/assign-driver-to-vehicle', true, param, false, 'fleetExpressBaseUrl');
     // this.subscription = 
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
@@ -206,7 +206,7 @@ export class ManageVehicleComponent implements OnInit,OnDestroy {
   // -----------------------------------Update---------------------------------------------------------------------------------
   editVehicleDetail(vhl: any) {
     this.spinner.show();
-    this.apiCall.setHttp('get', 'userdetail/get-vehicles?vehicleId=' + vhl.vehicleId, true, false, false, 'vehicletrackingBaseUrlApi');
+    this.apiCall.setHttp('get', 'userdetail/get-vehicles?vehicleId=' + vhl.vehicleId, true, false, false, 'fleetExpressBaseUrl');
     // this.subscription = 
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
@@ -355,7 +355,7 @@ export class ManageVehicleComponent implements OnInit,OnDestroy {
     }
     else {
       this.spinner.show();
-      this.apiCall.setHttp('post', 'vehicle/save-update-vehicle-details', true, param, false, 'vehicletrackingBaseUrlApi');
+      this.apiCall.setHttp('post', 'vehicle/save-update-vehicle-details', true, param, false, 'fleetExpressBaseUrl');
       // this.subscription = 
       this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {

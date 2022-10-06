@@ -75,7 +75,7 @@ export class ForgetPasswordComponent implements OnInit,OnDestroy{
     }
     else {
       this.spinner.show();
-      this.apiCall.setHttp('get', 'login/get-user-otp?MobileNo=' + mobileNom, false, false, false, 'vehicletrackingBaseUrlApi');
+      this.apiCall.setHttp('get', 'login/get-user-otp?MobileNo=' + mobileNom, false, false, false, 'fleetExpressBaseUrl');
       this.subscription = this.apiCall.getHttp().subscribe((res: any) => {
         if (res.statusCode == "200") {
           this.checkOtp = res.responseData[0].otp;
@@ -134,7 +134,7 @@ export class ForgetPasswordComponent implements OnInit,OnDestroy{
     else {
       this.OTPContainer = false;
       this.spinner.show();
-      this.apiCall.setHttp('get', 'login/login-by-otp?MobileNo=' + this.mobileNum + '&OTP=' + otp, false, false, false, 'vehicletrackingBaseUrlApi');
+      this.apiCall.setHttp('get', 'login/login-by-otp?MobileNo=' + this.mobileNum + '&OTP=' + otp, false, false, false, 'fleetExpressBaseUrl');
       // this.subscription = 
       this.apiCall.getHttp().subscribe((res: any) => {
         if (res.statusCode == "200") {
@@ -161,7 +161,7 @@ export class ForgetPasswordComponent implements OnInit,OnDestroy{
     else {
       this.spinner.show();
       if (this.changePassword.value.password == this.changePassword.value.confirmPassword) {
-        this.apiCall.setHttp('get', 'login/set-password?UserId=' + this.otpLoginUserId + '&NewPassword=' + this.changePassword.value.password, false, false, false, 'vehicletrackingBaseUrlApi');
+        this.apiCall.setHttp('get', 'login/set-password?UserId=' + this.otpLoginUserId + '&NewPassword=' + this.changePassword.value.password, false, false, false, 'fleetExpressBaseUrl');
         this.subscription = this.apiCall.getHttp().subscribe((res: any) => {
           if (res.statusCode == "200") {
             this.spinner.hide();

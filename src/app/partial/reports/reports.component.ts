@@ -207,7 +207,7 @@ export class ReportsComponent implements OnInit {
         case "Speed Range Report": url = 'reports/get-overspeed-report-speedrange'; break;
       }
      
-      this.apiCall.setHttp('get', url + this.getQueryString() + '&UserId='+this.webStorage.getUserId()+'&VehicleOwnerId='+this.webStorage.getVehicleOwnerId(), true, false, false, 'vehicletrackingBaseUrlApi');
+      this.apiCall.setHttp('get', url + this.getQueryString() + '&UserId='+this.webStorage.getUserId()+'&VehicleOwnerId='+this.webStorage.getVehicleOwnerId(), true, false, false, 'fleetExpressBaseUrl');
       this.apiCall.getHttp().subscribe((responseData: any) => {
         if (responseData.statusCode === "200" || responseData.length > 0) {
           this.reportResponseData = responseData.responseData;

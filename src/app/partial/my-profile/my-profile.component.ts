@@ -59,7 +59,7 @@ export class MyProfileComponent implements OnInit {
   // ----------------------------------------------------get user Details------------------------------------------------------
   getLoginUserDetails() {
     if (this.webStorage.getVehicleOwnerId()) {
-      this.apiCall.setHttp('get', 'vehicle-owner/get-vehicle-owner?VehicleOwnerId='+this.webStorage.getVehicleOwnerId()+'&nopage=1&rowperpage=10', true, false, false, 'vehicletrackingBaseUrlApi');
+      this.apiCall.setHttp('get', 'vehicle-owner/get-vehicle-owner?VehicleOwnerId='+this.webStorage.getVehicleOwnerId()+'&nopage=1&rowperpage=10', true, false, false, 'fleetExpressBaseUrl');
       this.apiCall.getHttp().subscribe((res: any) => {
         this.userDetails = res.responseData.responseData1[0];
       })
@@ -130,7 +130,7 @@ export class MyProfileComponent implements OnInit {
       formData.isSnapToRoadService= 0,
       formData.isAddressLocationService=0,
       formData.flag='u'
-      this.apiCall.setHttp('post', 'vehicle-owner/save-update-vehicle-owner', true, formData, false, 'vehicletrackingBaseUrlApi');
+      this.apiCall.setHttp('post', 'vehicle-owner/save-update-vehicle-owner', true, formData, false, 'fleetExpressBaseUrl');
       this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
           this.spinner.hide();
