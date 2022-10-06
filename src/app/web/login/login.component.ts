@@ -36,9 +36,9 @@ export class LoginComponent implements OnInit {
   }
   defaultLoginForm() {
     this.loginForm = this.fb.group({
-      username: ['', [Validators.required,Validators.maxLength(20)]],
-      password: ['', [Validators.compose([Validators.required,Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$'),Validators.minLength(8),Validators.maxLength(20)])]],
-      captcha: ['', [Validators.compose([Validators.required,Validators.minLength(5),Validators.maxLength(6)])]]
+      username: ['',[Validators.required,Validators.maxLength(20)]],
+      password: ['',[Validators.compose([Validators.required,Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$'),Validators.minLength(8),Validators.maxLength(20)])]],
+      captcha: ['',[Validators.compose([Validators.required,Validators.minLength(5),Validators.maxLength(6)])]]
     })
   }
 
@@ -64,12 +64,10 @@ export class LoginComponent implements OnInit {
           this.spinner.hide();
           sessionStorage.setItem('loginDetails', JSON.stringify(res));
           this.commonMethods.routerLinkRedirect('../dashboard');
-          this.commonMethods.snackBar(res.statusMessage, 1);
         }
         else {
           this.spinner.hide();
             this.error.handelError(res.statusCode);
-       
         }
       },(error: any) => {
         this.error.handelError(error.status);
@@ -85,5 +83,4 @@ ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 }
-
 }

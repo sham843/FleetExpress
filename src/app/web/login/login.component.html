@@ -15,7 +15,7 @@
                                     <input matInput placeholder="Enter Username" formControlName="username"
                                         autocomplete="off" required [ngClass]="{ 'is-invalid':f['username'].errors}"
                                         (keypress)="this.valService.noSpaces($event);this.valService.alphaNumeric($event)" maxlength="20">
-                                    <mat-error>
+                                    <mat-error *ngIf="f['username'].errors">
                                         <span *ngIf="f['username'].errors?.required" class="text-danger">
                                             Username is required</span>
                                     </mat-error>
@@ -28,11 +28,11 @@
                                 <input matInput [type]="hide ? 'password' : 'text'" formControlName="password"
                                     autocomplete="off" required [ngClass]="{ 'is-invalid':f['password'].errors}"
                                     (keypress)="this.valService.noSpaces($event)" minlength="8" maxlength="20">
-                                <button mat-icon-button matSuffix type="button" class="text-muted" (click)="hide = !hide"
+                                <button type="button" mat-icon-button matSuffix type="button" class="text-muted" (click)="hide = !hide"
                                     [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                                     <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                                 </button>
-                                <mat-error>
+                                <mat-error *ngIf="f['password'].errors">
                                     <span *ngIf="f['password'].errors?.required" class="text-danger">
                                         Password is required</span>
                                     <span *ngIf="f['password'].errors?.pattern" class="text-danger">Enter Valid
@@ -47,7 +47,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
-                                    <button class="mat-icon-button btn btn-light p-2 mb-3 bg-light" type="button" (click)="reCaptcha()">
+                                    <button type="button" class="mat-icon-button btn btn-light p-2 mb-3 bg-light" type="button" (click)="reCaptcha()">
                                         <mat-icon>cached</mat-icon>
                                     </button>
                                 </div>

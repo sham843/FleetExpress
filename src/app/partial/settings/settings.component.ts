@@ -8,6 +8,7 @@ import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { ConfigService } from 'src/app/services/config.service';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
@@ -56,7 +57,8 @@ export class SettingsComponent implements OnInit {
     private error:ErrorsService,
     private commonMethods:CommonMethodsService,
     private apiCall:ApiCallService,
-    private webStorage:WebStorageService) { }
+    private webStorage:WebStorageService,
+    public config:ConfigService,) { }
 
   ngOnInit(): void {
     this.getChangePwd();
@@ -100,7 +102,6 @@ public onPageChange(pageNum: number): void {
 onChangePwd(){
   this.submitted=true;
   if(this.changePassForm.invalid){
-    this.commonMethods.snackBar("Please enter valid value",0);
     return;
   }
   else{
@@ -114,7 +115,6 @@ onChangePwd(){
       this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
           this.spinner.hide();
-          this.commonMethods.snackBar(response.statusMessage,0);
         }
       },
       (error:any)=>{

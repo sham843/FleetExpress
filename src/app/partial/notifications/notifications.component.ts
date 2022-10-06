@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup} from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { ConfigService } from 'src/app/services/config.service';
 import { MasterService } from 'src/app/services/master.service';
 // import { NgxSpinnerService } from 'ngx-spinner';
 // import { ApiCallService } from 'src/app/services/api-call.service';
@@ -24,7 +25,7 @@ export class NotificationsComponent implements OnInit {
     // private error: ErrorsService,
     private fb: FormBuilder,
     // private spinner: NgxSpinnerService,
-    // private webStorage:WebStorageService
+    public config:ConfigService,
     ) { }
 
   ngOnInit(): void {

@@ -192,7 +192,7 @@
                                     <mat-form-field appearance="standard" class="w-100">
                                         <mat-label>Date Added</mat-label>
                                         <input matInput [matDatepicker]="picker" [readonly]="true" 
-                                            formControlName="date" required [ngClass]="{'is-invalid':f['date'].errors}">
+                                            formControlName="date" required [ngClass]="{'is-invalid':f['date'].errors}" (click)="picker.open()">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
                                         <mat-error class="text-danger">

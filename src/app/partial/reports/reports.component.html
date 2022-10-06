@@ -80,7 +80,7 @@
                                                 <mat-datepicker #dtpstoppagestartdate></mat-datepicker>
                                             </mat-form-field> -->
 
-                                            <mat-form-field appearance="standard" class="w-100">
+                                            <mat-form-field [appearance]="config.matFormField" class="w-100">
                                                 <input matInput [ngxMatDatetimePicker]="picker" [max]="currentDate" (dateChange)="settodate(f['fromDate'].value);checkValidDate()"
                                                     [readonly]="f['timePeriod'].value !='4'" formControlName="fromDate">
                                                 <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
@@ -96,14 +96,14 @@
                                     <div class="col-sm-6" >
                                         <label class="form-label">End Date</label>
                                         <div class="d-block" [ngClass]="{ 'isdisabled':(f['timePeriod'].value !='4' && f['timePeriod'].value !='')}">
-                                            <!-- <mat-form-field appearance="fill" class="w-100">
+                                            <!-- <mat-form-field [appearance]="config.matFormField" class="w-100">
                                                 <input matInput [matDatepicker]="dtpstoppageenddate" 
                                                     formControlName="toDate" [min]="f['fromDate'].value" [max]="maxTodayDate" required>
                                                 <mat-datepicker-toggle matSuffix [for]="dtpstoppageenddate">
                                                 </mat-datepicker-toggle>
                                                 <mat-datepicker #dtpstoppageenddate></mat-datepicker>
                                             </mat-form-field> -->
-                                            <mat-form-field appearance="standard" class="w-100">
+                                            <mat-form-field [appearance]="config.matFormField" class="w-100">
                                                 <input matInput [ngxMatDatetimePicker]="picker1" [min]="f['fromDate'].value " [max]="maxTodayDate || currentDate"
                                                     [readonly]="f['timePeriod'].value !='4' " formControlName="toDate"  (dateChange)="checkValidDate()">
                                                 <mat-datepicker-toggle matSuffix [for]="$any(picker1)"></mat-datepicker-toggle>
@@ -117,7 +117,7 @@
                                     <div class="col-sm-6">
                                         <label class="form-label">Vehicle Number</label>
                                         <div class="d-block">
-                                            <mat-form-field appearance="standard" class="w-100">
+                                            <mat-form-field [appearance]="config.matFormField" class="w-100">
                                                 <mat-select formControlName="VehicleNumber" required>
                                                     <mat-option *ngFor="let vehicle of vehicleList"
                                                         [value]="vehicle.vehicleRegistrationNo">
@@ -130,7 +130,7 @@
                                     <div class="col-sm-6" *ngIf="showTimePeriod">
                                         <label class="form-label">Time Period</label>
                                         <div class="d-block">
-                                            <mat-form-field appearance="standard" class="w-100">
+                                            <mat-form-field [appearance]="config.matFormField" class="w-100">
                                                 <mat-select formControlName="timePeriod" (selectionChange)="selectTimePeriod(f['timePeriod'].value)" required>
                                                     <mat-option *ngFor="let item of timePeriodArray"
                                                         [value]="item.value" >
@@ -214,7 +214,7 @@
                                         <div class="col-sm-6">
                                             <label class="form-label">Start Date</label>
                                             <div class="d-block">
-                                                <mat-form-field appearance="fill" class="w-100">
+                                                <mat-form-field [appearance]="config.matFormField" class="w-100">
                                                     <input matInput [matDatepicker]="dtpstoppagestartdate">
                                                     <mat-datepicker-toggle matSuffix [for]="dtpstoppagestartdate"></mat-datepicker-toggle>
                                                     <mat-datepicker #dtpstoppagestartdate></mat-datepicker>
@@ -224,7 +224,7 @@
                                         <div class="col-sm-6">
                                             <label class="form-label">End Date</label>
                                             <div class="d-block">
-                                                <mat-form-field appearance="fill" class="w-100">
+                                                <mat-form-field [appearance]="config.matFormField" class="w-100">
                                                     <input matInput [matDatepicker]="dtpstoppageenddate">
                                                     <mat-datepicker-toggle matSuffix [for]="dtpstoppageenddate"></mat-datepicker-toggle>
                                                     <mat-datepicker #dtpstoppageenddate></mat-datepicker>
@@ -236,7 +236,7 @@
                                         <div class="col-sm-6">
                                             <label class="form-label">Vehicle Number</label>
                                             <div class="d-block">
-                                                <mat-form-field appearance="fill" class="w-100">
+                                                <mat-form-field [appearance]="config.matFormField" class="w-100">
                                                     <mat-select>
                                                       <mat-option *ngFor="let food of foods" [value]="food.value">
                                                         {{food.viewValue}}
@@ -248,7 +248,7 @@
                                         <div class="col-sm-6">
                                             <label class="form-label">Time Period</label>
                                             <div class="d-block">
-                                                <mat-form-field appearance="fill" class="w-100">
+                                                <mat-form-field [appearance]="config.matFormField" class="w-100">
                                                     <mat-select>
                                                       <mat-option *ngFor="let food of foods" [value]="food.value">
                                                         {{food.viewValue}}
@@ -349,7 +349,7 @@
                                         <div class="col-sm-6">
                                             <label class="form-label">Start Date</label>
                                             <div class="d-block">
-                                                <mat-form-field appearance="fill" class="w-100">
+                                                <mat-form-field [appearance]="config.matFormField" class="w-100">
                                                     <input matInput [matDatepicker]="dtpdistancestartdate">
                                                     <mat-datepicker-toggle matSuffix [for]="dtpdistancestartdate"></mat-datepicker-toggle>
                                                     <mat-datepicker #dtpdistancestartdate></mat-datepicker>
@@ -359,7 +359,7 @@
                                         <div class="col-sm-6">
                                             <label class="form-label">End Date</label>
                                             <div class="d-block">
-                                                <mat-form-field appearance="fill" class="w-100">
+                                                <mat-form-field [appearance]="config.matFormField" class="w-100">
                                                     <input matInput [matDatepicker]="dtpdistanceenddate">
                                                     <mat-datepicker-toggle matSuffix [for]="dtpdistanceenddate"></mat-datepicker-toggle>
                                                     <mat-datepicker #dtpdistanceenddate></mat-datepicker>
@@ -371,7 +371,7 @@
                                         <div class="col-sm-6">
                                             <label class="form-label">Vehicle Number</label>
                                             <div class="d-block">
-                                                <mat-form-field appearance="fill" class="w-100">
+                                                <mat-form-field [appearance]="config.matFormField" class="w-100">
                                                     <mat-select>
                                                       <mat-option *ngFor="let food of foods" [value]="food.value">
                                                         {{food.viewValue}}
@@ -442,7 +442,7 @@
                                         <div class="col-sm-6">
                                             <label class="form-label">Start Date</label>
                                             <div class="d-block">
-                                                <mat-form-field appearance="fill" class="w-100">
+                                                <mat-form-field [appearance]="config.matFormField" class="w-100">
                                                     <input matInput [matDatepicker]="dtptoolsstartdate">
                                                     <mat-datepicker-toggle matSuffix [for]="dtptoolsstartdate"></mat-datepicker-toggle>
                                                     <mat-datepicker #dtptoolsstartdate></mat-datepicker>
@@ -452,7 +452,7 @@
                                         <div class="col-sm-6">
                                             <label class="form-label">End Date</label>
                                             <div class="d-block">
-                                                <mat-form-field appearance="fill" class="w-100">
+                                                <mat-form-field [appearance]="config.matFormField" class="w-100">
                                                     <input matInput [matDatepicker]="dtptoolsenddate">
                                                     <mat-datepicker-toggle matSuffix [for]="dtptoolsenddate"></mat-datepicker-toggle>
                                                     <mat-datepicker #dtptoolsenddate></mat-datepicker>
@@ -464,7 +464,7 @@
                                         <div class="col-sm-6">
                                             <label class="form-label">Vehicle Number</label>
                                             <div class="d-block">
-                                                <mat-form-field appearance="fill" class="w-100">
+                                                <mat-form-field [appearance]="config.matFormField" class="w-100">
                                                     <mat-select>
                                                       <mat-option *ngFor="let food of foods" [value]="food.value">
                                                         {{food.viewValue}}
@@ -476,7 +476,7 @@
                                         <div class="col-sm-6">
                                             <label class="form-label">Overspeed</label>
                                             <div class="d-block">
-                                                <mat-form-field appearance="fill" class="w-100">
+                                                <mat-form-field [appearance]="config.matFormField" class="w-100">
                                                     <mat-select>
                                                       <mat-option *ngFor="let food of foods" [value]="food.value">
                                                         {{food.viewValue}}

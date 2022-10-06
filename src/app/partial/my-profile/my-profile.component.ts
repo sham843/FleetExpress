@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ApiCallService } from 'src/app/services/api-call.service';
+import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ValidationService } from 'src/app/services/validation.service';
@@ -30,7 +31,8 @@ export class MyProfileComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private error: ErrorsService,
     private webStorage:WebStorageService,
-    private apiCall:ApiCallService) { }
+    private apiCall:ApiCallService,
+    public config:ConfigService,) { }
 
   ngOnInit(): void {
     this.getLoginUserDetails();
