@@ -1,8 +1,14 @@
 import { MapsAPILoader } from '@agm/core';
 import { Component, ElementRef, OnInit, ViewChild, NgZone, Inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ApiCallService } from 'src/app/services/api-call.service';
+import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ConfigService } from 'src/app/services/config.service';
+import { ErrorsService } from 'src/app/services/errors.service';
+import { MasterService } from 'src/app/services/master.service';
+import { WebStorageService } from 'src/app/services/web-storage.service';
 @Component({
   selector: 'app-create-geofence',
   templateUrl: './create-geofence.component.html',
@@ -14,13 +20,12 @@ export class CreateGeofenceComponent implements OnInit {
   centerMarkerLatLng: any;
   map: any;
   google: any;
-  geofenceForm!: FormGroup;
+  geofenceForm: FormGroup | any;
   newRecord: any = {
     dataObj: undefined,
     geofenceType: "",
     polygon: undefined,
     circle: undefined,
-    quarryPhotos: [],
     polygontext: '',
     radius: 0
   };
@@ -29,28 +34,70 @@ export class CreateGeofenceComponent implements OnInit {
     geofenceData: undefined,
     polygon: undefined,
     circle: undefined,
-    quarryPhotos: []
   };
   centerMarkerRadius: string = "";
   isShapeDrawn: boolean = false;
-  drawingManager:any;
+  drawingManager: any;
   isHide: boolean = false;
+  VehicleDtArr = new Array();
 
-  constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, 
-    private fb: FormBuilder, public configService: ConfigService,  
-    public dialogRef: MatDialogRef<CreateGeofenceComponent>, @Inject(MAT_DIALOG_DATA) public data: any,) { }
+
+  constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private error: ErrorsService, private apiCall: ApiCallService,
+    private fb: FormBuilder, public configService: ConfigService, private master: MasterService, private webStorage: WebStorageService,
+    public dialogRef: MatDialogRef<CreateGeofenceComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private spinner: NgxSpinnerService,
+    private commonMethods: CommonMethodsService
+  ) { }
 
   ngOnInit(): void {
+    this.getVehicleData();
+    this.defaultGeoFanceForm();
+    this.data = {
+      selectedRecord: {
+        latLng: '18.52131155 73.85655058',
+        polygonText:'18.52131155 73.85655058',
+        geofenceType:2,
+        distance: 132.71
+      },
+      isHide: true
+    }
+  }
+
+  defaultGeoFanceForm() {
     this.geofenceForm = this.fb.group({
-      geofenceType: [''],
+      id: [0],
+      vehicleOwnerId: [''],
+      title: [''],
       latitude: [''],
       longitude: [''],
       distance: [''],
-      polygonText: ['']
-    })
-
+      poiAddress: ['', [Validators.required]],
+      userId: [this.webStorage.getUserId()],
+      createdDate: [new Date()],
+      isDeleted: [true],
+      vehicleId: ['', [Validators.required]],
+      flag: ['i'],
+      geofenceType: [''],
+      polygonText: [''],
+    });
   }
-  
+
+  get f(){
+    return this.geofenceForm.controls
+  }
+
+  getVehicleData() {
+    let vhlData = this.master.getVehicleListData();
+    vhlData.subscribe({
+      next: (response: any) => {
+        this.VehicleDtArr = response;
+      }
+    }),
+      (error: any) => {
+        this.error.handelError(error.status);
+      }
+  }
+
+  //----------------------------------------- geoFance Fn Start Heare -----------------------------------------------------------------------//
   onMapReady(map: any) {
     this.isHide = this.data.isHide || false;
     this.map = map;
@@ -73,7 +120,6 @@ export class CreateGeofenceComponent implements OnInit {
         editable: true,
       },
       map: map
-      //drawingMode: google.maps.drawing.OverlayType.POLYGON
     });
 
     this.mapsAPILoader.load().then(() => {
@@ -93,16 +139,16 @@ export class CreateGeofenceComponent implements OnInit {
             })
             this.centerMarker.addListener('dragend', (evt: any) => {
               this.centerMarkerLatLng = "Long, Lat:" + evt.latLng.lng().toFixed(6) + ", " + evt.latLng.lat().toFixed(6);
+              this.setLatLong(evt.latLng.lat().toFixed(6), evt.latLng.lng().toFixed(6)) // set lat long
               this.centerMarker.panTo(evt.latLng);
             });
           }
           this.centerMarker.setPosition({ lat: place.geometry.location.lat(), lng: place.geometry.location.lng() });
           this.centerMarkerLatLng = "Long, Lat:" + place.geometry.location.lng().toFixed(6) + ", " + place.geometry.location.lat().toFixed(6);
+          this.setLatLong(place.geometry.location.lat().toFixed(6), place.geometry.location.lng().toFixed(6)) // set lat long
         });
       });
     })
-
-    //self.updatePointList(this.data.selectedRecord.polygonText);
 
     if (this.data.selectedRecord && this.data.selectedRecord.geofenceType == 1) {
       try {
@@ -162,8 +208,6 @@ export class CreateGeofenceComponent implements OnInit {
 
       } catch (e) { }
     }
-
-    //debugger
     if (this.data.newRecord?.geofenceType == 1) {
       var OBJ_fitBounds = new google.maps.LatLngBounds();
       const path = this.data.newRecord.polygonText.split(',').map((x: any) => { let obj = { lng: Number(x.split(' ')[0]), lat: Number(x.split(' ')[1]) }; OBJ_fitBounds.extend(obj); return obj });
@@ -313,6 +357,16 @@ export class CreateGeofenceComponent implements OnInit {
       this.map.panTo(ll);
     }
     catch (e) { }
+
+    this.newRecord.latLng = this.newRecord?.centerMarkerLatLng;
+    this.geofenceForm.patchValue({
+      latitude: +this.newRecord.latLng.split(",")[1],
+      longitude: +this.newRecord.latLng.split(",")[0],
+      polygonText: this.newRecord?.polygontext,
+      geofenceType: this.newRecord?.geofenceType == "circle" ? 2 : 1,
+      distance: this.newRecord?.geofenceType == "circle" ? this.newRecord?.radius : 0,
+      poiAddress: this.searchElementRef.nativeElement.value
+    })
   }
 
   clearSelection(isAllClear: any) {
@@ -380,6 +434,7 @@ export class CreateGeofenceComponent implements OnInit {
   removeShape() {
     this.isShapeDrawn = false;
     this.clearSelection(false);
+    this.resetLatLong();
   }
 
   setZoomLevel(radius: number) {
@@ -404,5 +459,49 @@ export class CreateGeofenceComponent implements OnInit {
     }
     console.log(zoom);
     this.map.setZoom(zoom)
+  }
+
+  //----------------------------------------- geoFance Fn End Heare -----------------------------------------------------------------------//
+
+  onSubmit() {
+    if (this.geofenceForm.invalid) {
+      return
+    }else if(!this.geofenceForm.value.geofenceType) {
+      this.commonMethods.snackBar('Geofence is required', 1)
+      return
+    }
+    let vehicleOwnerId = this.VehicleDtArr.find((ele: any) => { //get vehicleId from vehicle No.
+      if (ele.id == this.geofenceForm.value.vehicleId) {
+        return ele
+      }
+    })
+    this.geofenceForm.value.vehicleOwnerId = vehicleOwnerId.vehicleOwnerId;
+
+
+    this.spinner.show();
+    this.apiCall.setHttp('post', 'save-update-POI', true, this.geofenceForm.value, false, 'geofencneBaseUrlApi');
+    this.apiCall.getHttp().subscribe((response: any) => {
+      if (response.statusCode == "200") {
+        this.spinner.hide();
+        // formDirective.resetForm();
+        this.commonMethods.snackBar(response.statusMessage, 1)
+      }
+    }, (error: any) => {
+      this.error.handelError(error.status);
+      this.spinner.hide()
+    })
+  }
+
+
+  setLatLong(latitude: any, longitude: any) {
+    this.geofenceForm.controls['latitude'].setValue(latitude)
+    this.geofenceForm.controls['longitude'].setValue(longitude)
+  }
+
+  resetLatLong() {
+    if (!this.isHide) {
+      this.geofenceForm.controls['latitude'].setValue('');
+      this.geofenceForm.controls['longitude'].setValue('');
+    }
   }
 }
