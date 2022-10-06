@@ -8,7 +8,7 @@ import { CreateGeofenceComponent } from './create-geofence/create-geofence.compo
   styleUrls: ['./geofence.component.scss']
 })
 export class GeofenceComponent implements OnInit {
-
+  geofenceListArray = new Array();
   @ViewChild('search') searchElementRef!: ElementRef;
   constructor(public dialog: MatDialog, private configService:ConfigService) { }
 
