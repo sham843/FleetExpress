@@ -98,7 +98,8 @@ export class UserManagementSystemComponent implements OnInit {
   }
   getRoleData() {
     this.apiCall.setHttp('get', 'getallSubusertype_usertype?UserTypeId=1'+'&Subusertypeid='+this.userData[0]?.subUserTypeId, true, false, false, 'userDetailsBaseUrlApi');
-    this.subscription = this.apiCall.getHttp().subscribe({
+    // this.subscription = 
+    this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
           this.roleDtArr = res.responseData;
@@ -113,7 +114,8 @@ export class UserManagementSystemComponent implements OnInit {
   }
   getUserTableData(){
     this.apiCall.setHttp('get', 'get-user-list?vehicleOwnerId='+this.userData[0]?.vehicleOwnerId+'&Subusertypeid=&SearchText='+this.searchContent.value+'&District=0&TalukaId=0&NoPage='+ (!this.searchContent.value?this.pageNumber:0)+'&RowsPerPage='+(!this.searchContent.value?10:0), true, false, false, 'userDetailsBaseUrlApi');
-    this.subscription = this.apiCall.getHttp().subscribe({
+    // this.subscription = 
+    this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
           res.responseData.responseData1.map((x: any) => {
@@ -132,7 +134,8 @@ export class UserManagementSystemComponent implements OnInit {
   }
   getRoleTableData(){
     this.apiCall.setHttp('get', 'userrights/getUserRights?UserTypeId=1&SubUserTypeId=10', true, false, false, 'vehicletrackingBaseUrlApi');
-    this.subscription = this.apiCall.getHttp().subscribe({
+    // this.subscription = 
+    this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
           this.roleTableData = res.responseData;
@@ -227,7 +230,8 @@ export class UserManagementSystemComponent implements OnInit {
     }
     this.spinner.show();
     this.apiCall.setHttp('post', 'save-update-user-for-tracking', true, obj, false, 'userDetailsBaseUrlApi');
-    this.subscription = this.apiCall.getHttp().subscribe({
+    // this.subscription = 
+    this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         this.spinner.hide();
         if (res.statusCode === "200") {
@@ -316,7 +320,8 @@ export class UserManagementSystemComponent implements OnInit {
       remark: ""
     }
     this.apiCall.setHttp('post', 'Block-Unblock-User_1?', true, obj, false, 'userDetailsBaseUrlApi');
-    this.subscription = this.apiCall.getHttp().subscribe({
+    // this.subscription = 
+    this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         this.spinner.hide();
         if (res.statusCode === "200") {
@@ -352,7 +357,8 @@ export class UserManagementSystemComponent implements OnInit {
       objDeleteData.push(obj)
     }
     this.apiCall.setHttp('DELETE', 'Delete-User', true, objDeleteData, false, 'userDetailsBaseUrlApi');
-    this.subscription = this.apiCall.getHttp().subscribe({
+    // this.subscription =
+     this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         this.spinner.hide();
         if (res.statusCode === "200") {
@@ -370,6 +376,6 @@ export class UserManagementSystemComponent implements OnInit {
     });
   }
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    // this.subscription.unsubscribe();
   }
 } 

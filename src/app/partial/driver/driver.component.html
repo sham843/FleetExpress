@@ -44,7 +44,7 @@
                                             <div class="input-group-text"
                                                 *ngIf="searchHideShow && this.searchDriverForm.value.driverName">
                                                 <i class="fa-solid fa-magnifying-glass"
-                                                    (click)="getDriverDetails('search')"></i>
+                                                    (click)="paginationNo=1;getDriverDetails('search')"></i>
                                             </div>
                                             <div class="input-group-text" *ngIf="clearHideShow"><i
                                                     class="fa-solid fa-xmark" (click)="clearSearchData()"></i></div>
@@ -58,7 +58,6 @@
                                     <i class="fa-solid fa-plus"></i>
                                 </button>
                             </div>
-                            <!-- </div> -->
 
                             <div class="card-body p-0 mt-3">
                                 <table class="table dashboard-table">
@@ -69,7 +68,15 @@
                                             <th>NAME</th>
                                             <th>MOBILE NUMBER</th>
                                             <th>BLOCK/UNBLOCK</th>
-                                            <th>ACTION</th>
+                                            <th>ACTION</th> 
+                                            <th>
+                                                <mat-checkbox (change)="allSelected($event)" class="me-3" value=""></mat-checkbox>
+                                                    <button type="button" *ngIf="this.checkArray.length"
+                                                        class="border border-none text-primary"
+                                                        (click)="removeDriverData()">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </button>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -99,12 +106,10 @@
                                                         (click)="editDriverData(driver)">
                                                         <i class="fa-regular fa-pen-to-square"></i>
                                                     </button>
-                                                    <button type="button"
-                                                        class="btn bg-danger bg-opacity-10 text-danger"
-                                                        (click)="removeDriverData(driver)">
-                                                        <i class="fa-solid fa-trash-can"></i>
-                                                    </button>
                                                 </div>
+                                            </td>
+                                            <td>
+                                                <mat-checkbox (change)="onSingleSelected(driver,$event)" [checked]="driver.isChecked" value=""></mat-checkbox>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -149,7 +154,7 @@
                                                                 <input type="file" #profileUpload name="myfile"
                                                                     accept=".jpg,.jpeg,.png"
                                                                     formControlName="profilePhoto"
-                                                                    (change)="profilePhoto($event)" 
+                                                                    (change)="profilePhoto($event)"
                                                                     matTooltip="Upload only png,jpg,jpeg file" />
                                                             </div>
                                                         </div>
@@ -479,22 +484,25 @@
 
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="modal-footer border-0">
-                                            <div class="form-container w-100">
-                                                <div class="modal-footer border-0">
-                                                    <div class="form-container w-100">
-                                                        <div class="d-flex justify-content-between">
-                                                            <button type="button" class="btn btn-light-main" #closeModel
-                                                                data-bs-dismiss="modal"
-                                                                (click)="closeModels(formDirective)">Cancel</button>
-
-                                                            <button type="submit"
-                                                                class="btn btn-main">{{buttonFlag?'Save':'Update'}}</button>
+                                            <div class="modal-footer border-0">
+                                                <div class="form-container w-100">
+                                                    <div class="modal-footer border-0">
+                                                        <div class="form-container w-100">
+                                                            <div class="d-flex justify-content-between">
+                                                                <button type="button" class="btn btn-light-main" #closeModel
+                                                                    data-bs-dismiss="modal"
+                                                                    (click)="closeModels(formDirective)">Cancel</button>
+    
+                                                                <button type="submit"
+                                                                    class="btn btn-main">{{buttonFlag?'Save':'Update'}}</button>
+                                                            </div>
+    
                                                         </div>
-
                                                     </div>
                                                 </div>
+    
                                             </div>
-
                                         </div>
+                                    </form>
+                                </div>
+                            </div>
