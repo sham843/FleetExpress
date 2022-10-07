@@ -329,7 +329,9 @@ export class DriverComponent implements OnInit {
       this.spinner.hide();
     }
   }
-
+  addDriverModule(){
+    // this.commonMethods.routerLinkRedirect('/login');
+  }
   onPagintion(pageNo: any) {
     this.paginationNo = pageNo;
     this.getDriverDetails();

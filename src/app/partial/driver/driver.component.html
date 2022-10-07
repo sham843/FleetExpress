@@ -16,7 +16,7 @@
                 <div class="text-center justify-content-center">
                     <img src="../../../assets/images/No-Driver-Registration.svg" alt="">
                     <p class="my-3">No Driver Registration</p>
-                    <button type="button" class="btn btn-main" data-bs-toggle="modal" data-bs-target="#AddDriverModal">
+                    <button type="button" class="btn btn-main" data-bs-toggle="modal" (click)="addDriverModule()">
                         Add Driver
                     </button>
                 </div>
@@ -128,7 +128,7 @@
                             <!-- Modal -->
                            <div class="modal fade" id="AddDriverModal" tabindex="-1"
                                 aria-labelledby="AddDriverModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-xl modal-dialog-centered">
+                               <div class="modal-dialog modal-xl modal-dialog-centered">
                                     <form [formGroup]="driverRegForm" #formDirective="ngForm"
                                         (ngSubmit)="registerDriverSave(formDirective)">
                                         <div class="modal-content">
@@ -295,12 +295,12 @@
                                                                                     <mat-icon>visibility</mat-icon>
                                                                                 </button>
 
-                                                                                <!-- <button type="button" *ngIf="this.licenceDoc?.length"
+                                                                                  <!--   <button type="button" *ngIf="this.licenceDoc?.length"
                                                 class="btn upload-btn-wrapper btn-light-main btn-icon-view"
                                                 (click)="viewDocument('licence')">
                                                 <mat-icon>visibility</mat-icon>
                                             </button> -->
-                                                                            </td>
+                                                                        </td>
                                                                             <td>
                                                                                 <button type="button"
                                                                                     class="btn bg-danger bg-opacity-10 text-danger"
