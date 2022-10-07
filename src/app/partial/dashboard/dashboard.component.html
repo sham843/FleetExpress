@@ -89,7 +89,7 @@
             <div class="col-sm-6">
                 <div class="card mb-3 plain-card h-100">
                     <div class="card-header">Average Speed</div>
-                    <div class="card-body text-center" *ngIf="avarageSpeedObj">
+                    <div class="card-body text-center pb-0" *ngIf="avarageSpeedObj">
                         <ngx-gauge [thresholds]="thresholdConfig" [type]="avarageSpeedObj?.gaugeType" [size]="300" [value]="avarageSpeedObj?.gaugeValue"
                             [label]="avarageSpeedObj?.gaugeLabel" [append]="avarageSpeedObj?.gaugeAppendText"
                             [thick]="avarageSpeedObj?.gaugeThick" [animate]="true" [cap]="avarageSpeedObj?.guageCap" [markers]="markerConfig">
@@ -101,14 +101,14 @@
             <div class="col-sm-6">
                 <div class="card mb-3 plain-card h-100">
                     <div class="card-header">Fastest Vehicle</div>
-                    <div class="card-body text-center" *ngIf="fastestVehicleObj">
+                    <div class="card-body text-center pb-0" *ngIf="fastestVehicleObj">
                         <ngx-gauge [thresholds]="thresholdConfig" [type]="fastestVehicleObj?.gaugeType" [size]="300" [value]="fastestVehicleObj?.gaugeValue"
                             [label]="fastestVehicleObj?.gaugeLabel" [append]="fastestVehicleObj?.gaugeAppendText"
                             [thick]="fastestVehicleObj?.gaugeThick" [animate]="true" [cap]="fastestVehicleObj?.guageCap" [markers]="markerConfig">
                         </ngx-gauge>
 
                         <div class="fw-bold">{{'Vehicle No. : '+ maxSpeedObj?.vehicleNo}}</div>
-                        <div class="text-secondary fw-normal">{{'At : '+ maxSpeedObj?.deviceDatetime | date: 'dd-MM-yyyy hh:mm:ss a'}}
+                        <div class="fw-normal">{{'At : '+ maxSpeedObj?.deviceDatetime | date: 'dd-MM-yyyy hh:mm:ss a'}}
                         </div>
                     </div>
 
