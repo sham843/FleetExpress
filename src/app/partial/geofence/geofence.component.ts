@@ -106,7 +106,9 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     dialog.afterClosed().subscribe(res => {
       console.log(res);
+      this.getAllGeofecneData();
     })
   }
 
+  
 }
