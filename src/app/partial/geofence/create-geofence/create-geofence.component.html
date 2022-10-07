@@ -1,9 +1,9 @@
 <form [formGroup]="geofenceForm" (ngSubmit)="onSubmit()">
     <div class="row mb-1">
         <div class="col-sm-5">
-            <mat-form-field appearance="legacy" class="w-100">
+            <mat-form-field appearance="legacy"  class="w-100">
                 <mat-label>Select Vehicle</mat-label>
-                <mat-select formControlName="vehicleId">
+                <mat-select formControlName="vehicleId" multiple>
                     <mat-option *ngFor="let vhlNumber of VehicleDtArr" [value]="vhlNumber.id">
                         {{vhlNumber.vehicleRegistrationNo}}
                     </mat-option>
@@ -29,7 +29,7 @@
         </div>
     </div>
 
-    <div class="pos-rel">
+    <div class="position-relative">
         <agm-map [latitude]="configService.lat" [zoom]="6" [longitude]="configService.long"
             (mapReady)="onMapReady($event)">
         </agm-map>
