@@ -9,6 +9,7 @@ import { ConfigService } from 'src/app/services/config.service';
 
 import { AgmCoreModule } from '@agm/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxPaginationModule,
     AgmCoreModule.forRoot(ConfigService.googleApiObj),
   ]
 })

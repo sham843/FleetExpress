@@ -14,20 +14,21 @@ export class WebStorageService {
     else return false;
   }
   
-  getsessionStorageData() {
+
+  getlocalStorageData() {
     let loginObj: any = localStorage.getItem('loggedInData');
     let sessionData = JSON.parse(loginObj).responseData[0];
     return sessionData;
   }
   getUser() {
-    return this.getsessionStorageData();
+    return this.getlocalStorageData();
   }
   getUserId() {
-    let vehOwnerId = this.getsessionStorageData();
+    let vehOwnerId = this.getlocalStorageData();
     return vehOwnerId.id;
   }
   getVehicleOwnerId() {
-    let vehOwnerId = this.getsessionStorageData();
+    let vehOwnerId = this.getlocalStorageData();
     return vehOwnerId.vehicleOwnerId
   }
   tokenExpireRefreshString() {

@@ -63,10 +63,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>MH 12 YT 1234</td>
-                                <td>SATARA</td>
+                            <tr *ngFor="let geofenceList of geofenceListArray; let i = index">
+                                <!-- <td>{{geofenceList?.}}</td> -->
+                                <td>{{geofenceListArray.indexOf(geofenceList) + 1}}</td>
+                                <td>-</td>
+                                <td>{{geofenceList?.poiAddress}}</td>
                                 <td>
                                     <mat-slide-toggle></mat-slide-toggle>
                                 </td>
@@ -87,6 +88,15 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div *ngIf="geofenceListArray.length==0">
+                        <tr colspan="5">
+                                  <td>
+                                   <div class="alert alert-danger text-center errorMSG">Data is not available</div>
+                                  </td>
+                           </tr>
+                       </div>
+                       <pagination-controls  previousLabel="" nextLabel=""
+                        (pageChange)="onPagintion($event)" class="text-end m-2"></pagination-controls>
                 </div>
             </div>
         </div>

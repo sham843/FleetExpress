@@ -85,7 +85,7 @@ export class ApiCallService {
     if (isHeader) {
       let tempObj: any = {
         "UserId": this.webStorage.getUserId().toString(),
-        "Authorization": "Bearer " + this.userObjData.responseData3.accessToken // token set
+        "Authorization": "Bearer " + this.userObjData?.responseData3.accessToken // token set
       };
 
       this.httpObj.options.headers = new HttpHeaders(tempObj);
@@ -121,7 +121,7 @@ export class ApiCallService {
       }
       else {
         this.spinner.hide();
-        sessionStorage.clear();
+        localStorage.clear();
         this.commonMethods.routerLinkRedirect('login');
         this.commonMethods.snackBar("Your Session Has Expired. Please Re-Login Again.", 1);
          }
