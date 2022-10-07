@@ -90,7 +90,7 @@
                 <div class="card mb-3 plain-card h-100">
                     <div class="card-header">Average Speed</div>
                     <div class="card-body text-center pb-0" *ngIf="avarageSpeedObj">
-                        <ngx-gauge [thresholds]="thresholdConfig" [type]="avarageSpeedObj?.gaugeType" [size]="300" [value]="avarageSpeedObj?.gaugeValue"
+                        <ngx-gauge [thresholds]="thresholdConfig" [type]="avarageSpeedObj?.gaugeType" [size]="250" [value]="avarageSpeedObj?.gaugeValue"
                             [label]="avarageSpeedObj?.gaugeLabel" [append]="avarageSpeedObj?.gaugeAppendText"
                             [thick]="avarageSpeedObj?.gaugeThick" [animate]="true" [cap]="avarageSpeedObj?.guageCap" [markers]="markerConfig">
                         </ngx-gauge>
@@ -102,7 +102,7 @@
                 <div class="card mb-3 plain-card h-100">
                     <div class="card-header">Fastest Vehicle</div>
                     <div class="card-body text-center pb-0" *ngIf="fastestVehicleObj">
-                        <ngx-gauge [thresholds]="thresholdConfig" [type]="fastestVehicleObj?.gaugeType" [size]="300" [value]="fastestVehicleObj?.gaugeValue"
+                        <ngx-gauge [thresholds]="thresholdConfig" [type]="fastestVehicleObj?.gaugeType" [size]="250" [value]="fastestVehicleObj?.gaugeValue"
                             [label]="fastestVehicleObj?.gaugeLabel" [append]="fastestVehicleObj?.gaugeAppendText"
                             [thick]="fastestVehicleObj?.gaugeThick" [animate]="true" [cap]="fastestVehicleObj?.guageCap" [markers]="markerConfig">
                         </ngx-gauge>
