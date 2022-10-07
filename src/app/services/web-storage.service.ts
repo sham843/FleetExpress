@@ -53,4 +53,12 @@ export class WebStorageService {
       "." + (date.getMilliseconds() < 10 ? '00' : (date.getMilliseconds() < 100 ? '0' : '')) + date.getMilliseconds() +
       "Z"
   }
+
+  getAllPageName(){
+    if (this.checkUserIsLoggedIn() == true) {
+      let getAllPageName = this.getUser();
+      return getAllPageName?.responseData2;
+    }
+  }
+
 }
