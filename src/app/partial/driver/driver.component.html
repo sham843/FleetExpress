@@ -28,7 +28,7 @@
         <div class="card card-body border-0">
             <div class="card form-card">
                 <div class="card-header">
-                    <div class="row justify-content-between">
+                    <div class="row1 px-2 justify-content-between">
                         <div class="row align-items-center">
                             <div class="col-sm-8">
                                 <div class="d-flex align-items-center">
@@ -36,19 +36,22 @@
                                         Driver List
                                     </div>
                                     <form [formGroup]="searchDriverForm">
-                                        <div class="input-group">
-                                            <input type="search" class="form-control w-100"
+                                        <div class="input-group d-flex">
+                                            <span>
+                                                <input type="text" class="form-control w-100"
                                                 placeholder="Driver Name/Mobile No." formControlName="driverName"
                                                 (keypress)="this.validation.alphabetsWithSpaces($event)" required
                                                 maxlength="15">
-                                            <div class="input-group-text"
-                                                *ngIf="searchHideShow && this.searchDriverForm.value.driverName">
+                                            </span>
+                                            <span class="input-group-text" *ngIf="searchHideShow">
                                                 <i class="fa-solid fa-magnifying-glass"
                                                     (click)="paginationNo=1;getDriverDetails('search')"></i>
-                                            </div>
-                                            <div class="input-group-text" *ngIf="clearHideShow"><i
-                                                    class="fa-solid fa-xmark" (click)="clearSearchData()"></i></div>
+                                            </span>
+                                            <span class="input-group-text" *ngIf="clearHideShow">
+                                                <i class="fa-solid fa-xmark" (click)="clearSearchData()"></i></span>
                                         </div>
+
+                                        
                                     </form>
                                 </div>
                             </div>
@@ -80,7 +83,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let driver of driverDetails; let i=index"
+                                        <tr *ngFor="let driver of driverDetails | paginate: {itemsPerPage: pageSize, 
+                                            currentPage: paginationNo, totalItems:totalItem}; let i=index"
                                             [ngClass]="{'highLightRow':highLightRow==driver.driverId}">
                                             <td>{{((paginationNo + 1) * 10 + i + 1)-20}}</td>
                                             <td>
@@ -113,23 +117,15 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div *ngIf="!driverDetails">
-                                    <tr colspan="5">
-                                        <td>
-                                            <div class="alert alert-danger text-center errorMSG">Data is not available
-                                            </div>
-                                        </td>
-                                    </tr>
+                                <div *ngIf="!driverDetails?.length" class="w-100">
+                                    <div class="alert alert-danger text-center errorMSG w-100">Data is not available
+                                    </div>
                                 </div>
-                                <div *ngIf="driverDetails?.length != 0" class="d-flex justify-content-end">
-                                    <ngb-pagination [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true" 
-                                    [collectionSize]="driverDetails" #numPages
-                                        [pageSize]="itemsPerPage" [(page)]="paginationNo" (pageChange)="onPagintion(paginationNo)">
-                                    </ngb-pagination>
-                                </div>
-                               <!--  <pagination-controls *ngIf="driverDetails?.length != 0" previousLabel="" nextLabel=""
+                             <div *ngIf="driverDetails?.length != 0">
+                                <pagination-controls  previousLabel="" nextLabel=""
                                     (pageChange)="onPagintion($event)" class="text-end m-2">
-                                </pagination-controls> -->
+                                </pagination-controls>
+                             </div>
                             </div>
                             <!-- Modal -->
                             <div class="modal fade" id="AddDriverModal" tabindex="-1"
