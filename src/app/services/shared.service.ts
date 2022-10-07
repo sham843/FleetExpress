@@ -11,6 +11,76 @@ import { ErrorsService } from './errors.service';
 export class SharedService {
   codecareerPage!: string;
   subscription!: Subscription;
+  alertTypeArray=[
+    {
+      "alertType": "etp-missing-tracking",
+      "color":"pink"
+    },
+    {
+      "alertType": "tracking-not-found-etp",
+      "color":"light-red"
+    },
+    {
+      "alertType": "harsh-acceleration",
+      "color":"cyan"
+    },
+    {
+      "alertType": "etp-destination-not-reached",
+      "color":"blue-green"
+    },
+    {
+      "alertType": "tracking-not-consistent-etp",
+      "color":"olive"
+    },
+    {
+      "alertType": "power-connected",
+      "color":"dark-voilet"
+    },
+    {
+      "alertType": "boxopen-on",
+      "color":"maroon"
+    },
+    {
+      "alertType": "geo-in",
+      "color":"magenta"
+    },
+    {
+      "alertType": "ignition-on",
+      "color":"green"
+    },
+    {
+      "alertType": "ignition-off",
+      "color":"red"
+    },
+    {
+      "alertType": "overspeed",
+      "color":"yellow"
+    },
+    {
+      "alertType": "etp-double-trips",
+      "color":"sky-blue"
+    },
+    {
+      "alertType": "geo-out",
+      "color":"voilet"
+    },
+    {
+      "alertType": "boxopen-off",
+      "color":"dark-pink"
+    },
+    {
+      "alertType": "etp-validity-finish",
+      "color":"dark-cyan"
+    },
+    {
+      "alertType": "power-cut",
+      "color":"orange"
+    },
+    {
+      "alertType": "etp-destination-reached",
+      "color":"brinjal"
+    }
+  ];
   constructor(private commonMethods:CommonMethodsService,
     private error:ErrorsService,
     private apiCall:ApiCallService,
@@ -137,6 +207,8 @@ export class SharedService {
       this.subscription.unsubscribe();
     }
   }
+
+  
 }
 
 
