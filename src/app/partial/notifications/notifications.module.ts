@@ -5,6 +5,7 @@ import { NotificationsRoutingModule } from './notifications-routing.module';
 import { NotificationsComponent } from './notifications.component';
 import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
@@ -16,8 +17,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     NotificationsRoutingModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
-
+    ReactiveFormsModule,
+    NgxPaginationModule
   ]
 })
 export class NotificationsModule { }
