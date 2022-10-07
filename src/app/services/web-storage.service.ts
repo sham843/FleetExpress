@@ -14,6 +14,7 @@ export class WebStorageService {
     else return false;
   }
   
+
   getlocalStorageData() {
     let loginObj: any = localStorage.getItem('loggedInData');
     let sessionData = JSON.parse(loginObj).responseData[0];

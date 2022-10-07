@@ -31,8 +31,7 @@ export class DriverComponent implements OnInit {
   aadharDoc: string | any;
   totalItem!: number;
   paginationNo: number = 1;
-  itemsPerPage: number = 10;
-  pageSize:number=1;
+  pageSize: number = 10;
   highLightRow!: string;
   date: any = new Date();
   maxDate = new Date();
@@ -88,7 +87,11 @@ export class DriverComponent implements OnInit {
   }
   // -----------------------------------------------Driver Details----------------------------------------------------------
   getDriverDetails(flag?: any) {
-    this.apiCall.setHttp('get', 'get-driver?searchText=' + this.searchDriverForm.value.driverName + '&pageno=' + this.paginationNo + '&rowperPage=' + this.itemsPerPage, true, false, false, 'fleetExpressBaseUrl');
+    if (flag == 'search') {
+      this.searchHideShow = false;
+      this.clearHideShow = true;
+    }
+    this.apiCall.setHttp('get', 'driver/get-driver?searchText=' + this.searchDriverForm.value.driverName + '&pageno=' + this.paginationNo + '&rowperPage=' + this.pageSize, true, false, false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe((res: any) => {
       if (res.statusCode === "200") {
         console.log(res);
@@ -101,10 +104,6 @@ export class DriverComponent implements OnInit {
           }
         });
         this.totalItem = res.responseData.responseData2.totalRecords;
-        if (flag == 'search') {
-          this.searchHideShow = false;
-          this.clearHideShow = true;
-        }
       } else {
         this.driverDetails = [];
       }
@@ -333,8 +332,6 @@ export class DriverComponent implements OnInit {
 
   onPagintion(pageNo: any) {
     this.paginationNo = pageNo;
-    this.pageSize = this.itemsPerPage * (pageNo - 1);
-    // this.pageSize = this.itemsPerPage * (pageNo - 1);
     this.getDriverDetails();
   }
   get f() { return this.driverRegForm.controls };
