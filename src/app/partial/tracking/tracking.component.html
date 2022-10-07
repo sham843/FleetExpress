@@ -424,7 +424,7 @@
                     </a> -->
                 </div>
             </div>
-            <div *ngIf="!allVehiclelData.length" class="card-body fixed-height p-1">
+            <div *ngIf="selectedTab=='Running'? !allRunningVehiclelData.length:selectedTab=='Stopped'? !allStoppedVehiclelData.length:selectedTab=='Idle'?!allIdleVehiclelData.length:selectedTab=='Offline'?!allOfflineVehiclelData.length:!allVehiclelData.length " class="card-body fixed-height p-1">
                 <div class="alert alert-danger text-center py-2"> No data found</div>
             </div>
 
