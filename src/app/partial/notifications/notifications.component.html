@@ -37,7 +37,7 @@
                                 <span class="ms-2">Filter</span>
                             </button>
                             <div class="dropdown-menu">
-                                <h6 class="dropdown-header bg-light-gradient text-dark text-start">Dropdown header</h6>
+                                <h6 class="dropdown-header bg-light-gradient text-dark text-start">Alert Type</h6>
                                 <div class="d-flex align-items-center drop-item">
                                     <div class="icon green me-3"><i class="fa-solid fa-circle"></i></div>
                                     <div class="flex-grow-1">Ignition On</div>
@@ -133,16 +133,20 @@
 
         <div class="card border-0">
             <div class="card-body"  *ngIf="notificationData.length">
-                <ul class="list-group list-group-flush" id="notification" *ngFor="let item of notificationData | paginate: {itemsPerPage: pageSize, 
-                    currentPage: paginationNo, totalItems:notificationTotalCount}; let i=index">
-                    <li class="list-group-item d-flex justify-content-between align-items-end">
-                        <div class="ms-2 me-auto">
-                            <div class="vehicle-no orange" [ngClass]="{'green':item?.alertType=='ignition-on','red':item?.alertType=='ignition-off'
-                            ,'magenta':item?.alertType=='geo-in','voilet':item?.alertType=='geo-out'
-                            ,'yellow':item?.alertType=='overspeed','orange':item?.alertType=='power-cut'}">{{item?.alertType}}: {{item?.vehicleNumber }}</div>
-                            <div class="vehicle-location">{{item?.alertMessage }}</div>
+                <ul class="list-group list-group-flush" id="notification">
+                    <li class="list-group-item" *ngFor="let item of notificationData | paginate: {itemsPerPage: pageSize, 
+                        currentPage: paginationNo, totalItems:notificationTotalCount}; let i=index">
+                        <div class="row justify-content-between align-items-end">
+                            <div class="col-sm">
+                                <div class="vehicle-no" [ngClass]="item?.alertType=='ignition-on'?'green':item?.alertType=='ignition-off'?'red':
+                                    item?.alertType=='geo-in'?'magenta':item?.alertType=='geo-out'?'voilet':item?.alertType=='overspeed'?'yellow':
+                                    item?.alertType=='power-cut'?'orange':'light-orange'">{{item?.alertType}}: {{item?.vehicleNumber }}</div>
+                                    <div class="vehicle-location">{{item?.alertMessage }}</div>
+                            </div>
+                            <div class="col-sm-auto">
+                                <span class="last-update">Last Updated : {{item?.invalidDate | date: 'dd-MM-yyyy hh:mm:ss a' }}</span>
+                            </div>
                         </div>
-                        <span class="last-update">Last Updated : {{item?.invalidDate | date: 'dd-MM-yyyy hh:mm:ss a' }}</span>
                     </li>
                     <!-- <li class="list-group-item d-flex justify-content-between align-items-end">
                         <div class="ms-2 me-auto">
