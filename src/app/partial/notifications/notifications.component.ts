@@ -7,7 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
-import { CommonMethodsService } from 'src/app/services/common-methods.service';
+// import { CommonMethodsService } from 'src/app/services/common-methods.service';
 
 
 @Component({
@@ -21,16 +21,18 @@ export class NotificationsComponent implements OnInit {
   vehicleListData=new Array();
   NotificationsData=new Array();
   currentDate: Date =new Date();
+  notificationData=new Array();
+  notificationTotalCount!:string;
+  paginationNo: number = 1;
+  pageSize: number = 10;
   constructor(
     private apiCall: ApiCallService,
     private masterService:MasterService,
     private error: ErrorsService,
     private fb: FormBuilder,
-    // private spinner: NgxSpinnerService,
     public config:ConfigService,
     private spinner: NgxSpinnerService,
     private webStorage:WebStorageService,
-    private commonMethod:CommonMethodsService
     ) { }
 
   ngOnInit(): void {
@@ -44,46 +46,48 @@ export class NotificationsComponent implements OnInit {
       date: [],
       remark: [],
       alertType: [],
-      // ignitionOff: [],
-      // geofenceEnter: [],
-      // geofenceExit: [],
-      // overSpeed: [],
-      // powerCut: [],
-      // vibration: [],
-      // lowbattery: [],
-      // other: [],
     })
   }
+  onPagintion(pageNo: any) {
+    this.paginationNo = pageNo;
+    this.getNotificationsData();
+  }
   getVehicleListData(){
+    this.vehicleListData
     this.subscription=this.masterService.getVehicleListData().subscribe({
       next:(res:any)=>{
-        this.vehicleListData=res;
+        this.vehicleListData.push(...res);
       }
     })
   }
-  getNotificationsData(){
+ 
+  getNotificationsData(){ 
+    this.notificationData = [];
     const formData=this.notificationForm.value;
     const fromdate = formData?.date?new Date(formData?.date):new Date();
     const todate = new Date(fromdate.setDate(fromdate.getDate() + 1));
     const obj={
-      fromdate: formData?.date?new Date(formData?.date).toISOString():null,
-      todate: formData?.date?todate.toISOString():null,
+      fromdate: formData?.date?new Date(formData?.date).toISOString():'',
+      todate: formData?.date?todate.toISOString():'',
     }
-    const url='FromDate='+obj?.fromdate+'&ToDate='+obj?.todate+'&VehicleNumber='+formData.vehicleNumber+'&AlertType='+formData.alertType;
+    const url='FromDate='+obj?.fromdate+'&ToDate='+obj?.todate+'&VehicleNumber='+(formData.vehicleNumber?formData.vehicleNumber:"")+
+    '&AlertType='+(formData.alertType?formData.alertType:""+ '&pageno=' + this.paginationNo + '&pagesize=' + this.pageSize);
     this.spinner.show();
     this.apiCall.setHttp('get', 'notification/vehicle-alert-report_v1?'+ url+'&UserId=' + this.webStorage.getUserId()  , true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
+        this.spinner.hide();
         if (res.statusCode === "200") {
-          this.commonMethod.snackBar(res.statusCode,0)
+          this.notificationData=res.responseData.data;
+          this.notificationTotalCount=res.responseData.totalCount;
         } else {
-          if (res.statusCode != "404") {
-            this.NotificationsData = [];
-            this.error.handelError(res.statusCode)
+            this.notificationData = [];
+            // this.error.handelError(res.statusCode)
           } 
-        }
       }
-    },(error: any) => { this.error.handelError(error.status) });
+    },(error: any) => {
+      this.spinner.hide();
+      this.error.handelError(error.status) });
   }
   
 }

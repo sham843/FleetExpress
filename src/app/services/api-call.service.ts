@@ -33,17 +33,6 @@ export class ApiCallService {
   getBaseurl(url: string) {
     switch (url) {
       case 'fleetExpressBaseUrl': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/'; break
-    
-      case 'reportBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/reports/'; break
-      case 'dashboardBaseUrlApi' :return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/dashboard/';break
-      case 'loginBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/login/'; break
-      case 'vehicleBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/vehicle/'; break
-      case 'driverBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/driver/'; break
-      case 'userDetailsBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/userdetail/'; break
-      case 'uploadDocumentBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/upload/'; break
-      case 'vehicleOwnerBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/vehicle-owner/'; break
-      case 'notificationBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/notification/'; break
-      case 'geofencneBaseUrlApi': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/Geofencne/'; break
       default: return ''; break;
     }
   }

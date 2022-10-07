@@ -21,6 +21,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReportTableComponent } from './dialogs/report-table/report-table.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmationComponent } from './dialogs/confirmation/confirmation.component';
+import { AddDriverComponent } from './dialogs/add-driver/add-driver.component';
 
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -36,7 +37,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AccessDenideComponent,
     PageNotFoundComponent,
     ReportTableComponent,
-    ConfirmationComponent
+    ConfirmationComponent,
+    AddDriverComponent
   ],
   imports: [
     BrowserModule,

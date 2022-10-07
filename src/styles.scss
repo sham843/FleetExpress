@@ -1735,11 +1735,6 @@ input::-ms-clear {
   color: #777;
   border-radius: 2px;
 }
-
-.pos-rel{
-  position: relative !important;
-}
-
 .snack-warning { 
   background: #ffffff !important;
   color: black !important;
@@ -1812,4 +1807,12 @@ input::-ms-clear {
     content: '\2715 ';
   }
 
+}
+.reading-block{
+  font-size: 2.9rem !important;
+}
+.apexcharts-legend-text,
+.apexcharts-text tspan{
+  font-family: 'Poppins', sans-serif !important;
+  letter-spacing:0.5px;
 }
