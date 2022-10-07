@@ -302,7 +302,6 @@ mat-form-field{
   overflow: hidden;
   display: inline-block;
 }
-
 .upload-btn-wrapper input[type=file] {
   font-size: 0.85rem;
   position: absolute;
@@ -1820,7 +1819,7 @@ input::-ms-clear {
   letter-spacing:0.5px;
 }
 .btn-modal-close{
-  position: absolute;
+  position: absolute !important;
   right: -23px;
   top: -22px;
 }
