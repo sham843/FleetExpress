@@ -43,9 +43,11 @@
                             </div>
                         </div>
                         <div class="col-sm-4 text-end">
-                            <button [disabled]="!checkedGeoFenceArray.length" (click)="confirmationDialog(true, 'delete')">Delete</button>
-                            <button class="btn btn-add"  (click)="openCreateGeofenceDialog()">
+                            <button class="btn btn-add" (click)="openCreateGeofenceDialog()">
                                 <i class="fa-solid fa-plus"></i>
+                            </button>
+                            <button [disabled]="!checkedGeoFenceArray.length" class="btn btn-danger rounded-circle ms-3" (click)="confirmationDialog(true, 'delete')">
+                                <i class="fa-regular fa-trash-can"></i>
                             </button>
                         </div>
                     </div>
@@ -77,10 +79,10 @@
                                
                                 <td>
                                     <div class="d-flex">
-                                        <button class="btn btn-light-main btn-icon me-2" (click)="openCreateGeofenceDialog(geofenceList)">
+                                        <button class="btn btn-light-main btn-icon me-2 btn-sm" (click)="openCreateGeofenceDialog(geofenceList)">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                         </button>
-                                        <button class="btn bg-danger bg-opacity-10 text-danger" (click)="confirmationDialog(true, 'delete')">
+                                        <button class="btn bg-danger bg-opacity-10 text-danger btn-sm" (click)="confirmationDialog(true, 'delete')">
                                             <i class="fa-solid fa-trash-can"></i>
                                         </button>
                                     </div>
