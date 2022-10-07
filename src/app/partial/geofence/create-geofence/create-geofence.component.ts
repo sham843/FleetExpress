@@ -21,6 +21,7 @@ export class CreateGeofenceComponent implements OnInit {
   map: any;
   google: any;
   geofenceForm: FormGroup | any;
+  editFlag:boolean = false;
   newRecord: any = {
     dataObj: undefined,
     geofenceType: "",
@@ -49,17 +50,9 @@ export class CreateGeofenceComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.data ? this.editFlag = true : '';
     this.getVehicleData();
     this.defaultGeoFanceForm();
-    this.data = {
-      selectedRecord: {
-        latLng: '18.52131155 73.85655058',
-        polygonText:'18.52131155 73.85655058',
-        geofenceType:2,
-        distance: 132.71
-      },
-      isHide: true
-    }
   }
 
   defaultGeoFanceForm() {
@@ -99,7 +92,7 @@ export class CreateGeofenceComponent implements OnInit {
 
   //----------------------------------------- geoFance Fn Start Heare -----------------------------------------------------------------------//
   onMapReady(map: any) {
-    this.isHide = this.data.isHide || false;
+    this.isHide = this.data?.isHide || false;
     this.map = map;
     this.drawingManager = new google.maps.drawing.DrawingManager({
       drawingControl: true,
@@ -150,7 +143,7 @@ export class CreateGeofenceComponent implements OnInit {
       });
     })
 
-    if (this.data.selectedRecord && this.data.selectedRecord.geofenceType == 1) {
+    if (this.data?.selectedRecord && this.data.selectedRecord?.geofenceType == 1) {
       try {
         var OBJ_fitBounds = new google.maps.LatLngBounds();
         const path = this.data.selectedRecord.polygonText.split(',').map((x: any) => { let obj = { lng: Number(x.split(' ')[0]), lat: Number(x.split(' ')[1]) }; OBJ_fitBounds.extend(obj); return obj });
@@ -208,7 +201,7 @@ export class CreateGeofenceComponent implements OnInit {
 
       } catch (e) { }
     }
-    if (this.data.newRecord?.geofenceType == 1) {
+    if (this.data?.newRecord?.geofenceType == 1) {
       var OBJ_fitBounds = new google.maps.LatLngBounds();
       const path = this.data.newRecord.polygonText.split(',').map((x: any) => { let obj = { lng: Number(x.split(' ')[0]), lat: Number(x.split(' ')[1]) }; OBJ_fitBounds.extend(obj); return obj });
       const existingShape = new google.maps.Polygon({ paths: path, strokeColor: "#00FF00", strokeOpacity: 0.8, strokeWeight: 2, fillColor: "#00FF00", fillOpacity: 0.35, editable: true, draggable: true });
@@ -237,7 +230,7 @@ export class CreateGeofenceComponent implements OnInit {
         })
       })
     }
-    if (this.data.newRecord?.geofenceType == 2) {
+    if (this.data?.newRecord?.geofenceType == 2) {
       let latlng = new google.maps.LatLng(this.data.newRecord.latLng.split(",")[1], this.data.newRecord.latLng.split(",")[0]);
       let circle = new google.maps.Circle({
         strokeColor: '#00FF00',
@@ -271,7 +264,7 @@ export class CreateGeofenceComponent implements OnInit {
 
     }
 
-    if (this.data.alreadyExistMapAryObj?.length > 0) {
+    if (this.data?.alreadyExistMapAryObj?.length > 0) {
       var OBJ_fitBounds = new google.maps.LatLngBounds();
       this.data.alreadyExistMapAryObj.forEach((obj: any) => {
         let hc = "<table><tbody>";
@@ -475,7 +468,7 @@ export class CreateGeofenceComponent implements OnInit {
         return ele
       }
     })
-    this.geofenceForm.value.vehicleOwnerId = vehicleOwnerId.vehicleOwnerId;
+    this.geofenceForm.value.vehicleOwnerId = vehicleOwnerId?.vehicleOwnerId;
 
     this.spinner.show();
     this.apiCall.setHttp('post', 'Geofencne/save-update-POI', true, this.geofenceForm.value, false, 'fleetExpressBaseUrl');

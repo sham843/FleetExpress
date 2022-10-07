@@ -12,7 +12,7 @@
 </div>
 
 <div class="row">
-    <div class="col-sm-12" *ngIf="!geofenceListArray.length">
+    <!-- <div class="col-sm-12" *ngIf="!geofenceListArray.length && searchContent.value">
         <div class="card card-body plain-card card-fullheight">
             <div class="text-center justify-content-center">
                 <img src="../../../assets/images/Geofence.svg" alt="">
@@ -22,8 +22,8 @@
                 </button>
             </div>
         </div>
-    </div>
-    <div class="col-sm-12"  *ngIf="geofenceListArray.length">
+    </div> -->
+    <div class="col-sm-12"  >
         <div class="card card-body border-0">
             <div class="card form-card">
                 <div class="card-header">
@@ -35,14 +35,16 @@
                                 </div>
                                 <div class="col-sm-8">
                                     <div class="input-group">
-                                        <div class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></div>
-                                        <input type="text" class="form-control" placeholder="Search">
+                                        <input type="text" class="form-control" placeholder="Search" [formControl]="searchContent">
+                                        <div class="input-group-text" *ngIf="!searchContent.value"><i class="fa-solid fa-magnifying-glass"></i></div>
+                                        <div class="input-group-text" *ngIf="searchContent.value"><i class="fa fa-times" (click)="searchContent.reset()"></i></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-4 text-end">
-                            <button class="btn btn-add" data-bs-toggle="modal" data-bs-target="#CreateGeofenceModal">
+                            <button [disabled]="!checkedGeoFenceArray.length" (click)="confirmationDialog(true, 'delete')">Delete</button>
+                            <button class="btn btn-add"  (click)="openCreateGeofenceDialog()">
                                 <i class="fa-solid fa-plus"></i>
                             </button>
                         </div>
@@ -58,45 +60,46 @@
                                 <th>ACTIVE</th>
                                 <th>ACTION</th>
                                 <th>
-                                    <mat-checkbox class="example-margin"></mat-checkbox>
+                                   Select
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let geofenceList of geofenceListArray; let i = index">
+                            <tr *ngFor="let geofenceList of geofenceListArray | paginate: { itemsPerPage: 10, currentPage: paginationNo }; let i = index">
                                 <!-- <td>{{geofenceList?.}}</td> -->
-                                <td>{{geofenceListArray.indexOf(geofenceList) + 1}}</td>
-                                <td>-</td>
+                                <td>{{geofenceList?.rowNumber}}</td>
+                                <!-- <td>{{geofenceList?.indexOf(geofenceList) + 1}}</td> -->
+                                <td> {{geofenceList?.vehicleNo}}</td>
                                 <td>{{geofenceList?.poiAddress}}</td>
                                 <td>
-                                    <mat-slide-toggle></mat-slide-toggle>
+                                    <mat-slide-toggle (change)="confirmationDialog($event.checked,'status')"></mat-slide-toggle>
                                 </td>
+                               
                                 <td>
                                     <div class="d-flex">
-                                        <button class="btn btn-light-main btn-icon me-2" data-bs-toggle="modal"
-                                            data-bs-target="#CreateGeofenceModal">
+                                        <button class="btn btn-light-main btn-icon me-2" (click)="openCreateGeofenceDialog(geofenceList)">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                         </button>
-                                        <button class="btn bg-danger bg-opacity-10 text-danger">
+                                        <button class="btn bg-danger bg-opacity-10 text-danger" (click)="confirmationDialog(true, 'delete')">
                                             <i class="fa-solid fa-trash-can"></i>
                                         </button>
                                     </div>
                                 </td>
                                 <td>
-                                    <mat-checkbox class="example-margin"></mat-checkbox>
+                                    <mat-checkbox class="example-margin" (change)="selGeoFence($event, geofenceList?.rowNumber)"></mat-checkbox>
                                 </td>
                             </tr>
+                            <ng-container *ngIf="geofenceListArray.length==0">
+                                <tr>
+                                    <td colspan="6">
+                                        <div class="alert alert-danger text-center errorMSG">Data is not available</div>
+                                    </td>
+                                   </tr>
+                               </ng-container>
                         </tbody>
                     </table>
-                    <div *ngIf="geofenceListArray.length==0">
-                        <tr colspan="5">
-                                  <td>
-                                   <div class="alert alert-danger text-center errorMSG">Data is not available</div>
-                                  </td>
-                           </tr>
-                       </div>
-                       <pagination-controls  previousLabel="" nextLabel=""
-                        (pageChange)="onPagintion($event)" class="text-end m-2"></pagination-controls>
+                
+                       <pagination-controls  previousLabel="" nextLabel=""  *ngIf="geofenceListArray.length > 10" (pageChange)="onPagintion($event)" class="text-end m-2"></pagination-controls>
                 </div>
             </div>
         </div>

@@ -20,6 +20,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReportTableComponent } from './dialogs/report-table/report-table.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ConfirmationComponent } from './dialogs/confirmation/confirmation.component';
 
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -34,7 +35,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SidebarComponent,
     AccessDenideComponent,
     PageNotFoundComponent,
-    ReportTableComponent
+    ReportTableComponent,
+    ConfirmationComponent
   ],
   imports: [
     BrowserModule,
