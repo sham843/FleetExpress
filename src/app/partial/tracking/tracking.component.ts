@@ -1,4 +1,4 @@
-import { MapsAPILoader } from '@agm/core';
+//import { MapsAPILoader } from '@agm/core';
 import { Component, ElementRef,OnInit, ViewChild } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
@@ -56,7 +56,7 @@ export class TrackingComponent implements OnInit {
     private error: ErrorsService,
     private fb: FormBuilder,
     private spinner: NgxSpinnerService,
-    private mapsAPILoader: MapsAPILoader,
+   // private mapsAPILoader: MapsAPILoader,
     private webStorage:WebStorageService
     ) { }
 
@@ -103,10 +103,9 @@ export class TrackingComponent implements OnInit {
         if (res.statusCode === "200") {
           res.responseData.map(async (x: any) => {
             x.deviceDatetime = new Date(x.deviceDatetime);
-             x.address= await this.findAddressByCoordinates(parseFloat(x.latitude) , parseFloat(x.longitude));
+           //  x.address= await this.findAddressByCoordinates(parseFloat(x.latitude) , parseFloat(x.longitude));
           })
           this.allVehiclelData = res.responseData;
-          console.log(this.allVehiclelData)
           this.allRunningVehiclelData = res.responseData.filter((x: any) => x.gpsStatus == 'Running');
           this.allStoppedVehiclelData = res.responseData.filter((x: any) => x.gpsStatus == 'Stopped');
           this.allIdleVehiclelData = res.responseData.filter((x: any) => x.gpsStatus == 'Idle');
@@ -174,22 +173,22 @@ export class TrackingComponent implements OnInit {
 
 
   //address:any
-  findAddressByCoordinates(lat: any, lng: any) {
-    let g:any;
-    this.mapsAPILoader.load().then(() => {
-      this.geocoder = new google.maps.Geocoder();
-     g= this.geocoder.geocode(
-        { location: { lat: lat, lng: lng, } },
-        (results: any) => {
-          //console.log(results[0].formatted_address);
-          results[0].formatted_address;
-          // addressresults[0].address_components.forEach((element: any) => {
-          // });
-        });
-        return g
-    });
+  // findAddressByCoordinates(lat: any, lng: any) {
+  //   // let g:any;
+  //   // this.mapsAPILoader.load().then(() => {
+  //   //   this.geocoder = new google.maps.Geocoder();
+  //   //  g= this.geocoder.geocode(
+  //   //     { location: { lat: lat, lng: lng, } },
+  //   //     (results: any) => {
+  //   //      const a=results;
+  //   //      // results[0].formatted_address;
+  //   //       // addressresults[0].address_components.forEach((element: any) => {
+  //   //       // });
+  //   //     });
+  //   //     return g
+  //   // });
     
-  }
+  // }
 
   
   selectTimePeriod(value: any) {
@@ -243,7 +242,7 @@ export class TrackingComponent implements OnInit {
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
-          this.vehicleDetailsData = res.responseData;
+          this.vehicleDetailsData = res.responseData.responseData;
         } else {
           if (res.statusCode != "404") {
             this.vehicleDetailsData = [];
