@@ -78,7 +78,7 @@ export class SharedService {
     },
     {
       "alertType": "etp-destination-reached",
-      "color":"17"
+      "color":"brinjal"
     }
   ];
   constructor(private commonMethods:CommonMethodsService,
