@@ -7,6 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
+import { SharedService } from 'src/app/services/shared.service';
 // import { CommonMethodsService } from 'src/app/services/common-methods.service';
 
 
@@ -25,6 +26,7 @@ export class NotificationsComponent implements OnInit {
   notificationTotalCount!:string;
   paginationNo: number = 1;
   pageSize: number = 10;
+  alertTypeListData=new Array();
   constructor(
     private apiCall: ApiCallService,
     private masterService:MasterService,
@@ -33,12 +35,14 @@ export class NotificationsComponent implements OnInit {
     public config:ConfigService,
     private spinner: NgxSpinnerService,
     private webStorage:WebStorageService,
+    private shared:SharedService
     ) { }
 
   ngOnInit(): void {
     this.getNotificationForm();
     this.getNotificationsData();
     this.getVehicleListData();
+    this.getAlertListData();
   }
   getNotificationForm() {
     this.notificationForm = this.fb.group({
@@ -53,13 +57,27 @@ export class NotificationsComponent implements OnInit {
     this.getNotificationsData();
   }
   getVehicleListData(){
-    this.vehicleListData
+    this.vehicleListData=[];
     this.subscription=this.masterService.getVehicleListData().subscribe({
       next:(res:any)=>{
         this.vehicleListData.push(...res);
       }
     })
   }
+  
+  getAlertListData(){
+    this.alertTypeListData=[];
+    this.subscription=this.masterService.getAlertList().subscribe({
+      next:(res:any)=>{
+        res.map((x:any)=>{
+          x.color= this.shared.alertTypeArray.filter(xx=>(xx.alertType== x.alertType) )
+        })
+        console.log(res)
+        this.alertTypeListData.push(...res);
+      }
+    })
+  }
+  
  
   getNotificationsData(){ 
     this.notificationData = [];
@@ -78,7 +96,11 @@ export class NotificationsComponent implements OnInit {
       next: (res: any) => {
         this.spinner.hide();
         if (res.statusCode === "200") {
+          res.responseData.data.map((x:any)=>{
+            x.color= this.shared.alertTypeArray.filter(xx=>(xx.alertType== x.alertType) )
+          })
           this.notificationData=res.responseData.data;
+          console.log( this.notificationData);
           this.notificationTotalCount=res.responseData.totalCount;
         } else {
             this.notificationData = [];
