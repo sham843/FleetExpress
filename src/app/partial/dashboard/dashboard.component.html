@@ -1,9 +1,8 @@
 <div class="d-flex justify-content-between align-items-center">
     <p class="fw-bold small mb-2">Dashboard</p>
-    <p class="small mb-2">Date :
-        <!-- 26-08-2022 -->
+    <!-- <p class="small mb-2">Date :
         {{ currentdate | date: 'dd-MM-yyyy'}}
-    </p>
+    </p> -->
 </div>
 
 <div class="row">
@@ -120,7 +119,7 @@
         <div class="card plain-card mb-3">
             <div class="card-header pb-0">Vehicles - Last Updated</div>
             <div class="card-body pt-0" *ngIf="barChartDisplay">
-                <apx-chart [series]="VehiclesLastUpdatedbarChartOptions.series"
+                <apx-chart id="vehicle-chart" [series]="VehiclesLastUpdatedbarChartOptions.series"
                     [chart]="VehiclesLastUpdatedbarChartOptions.chart"
                     [dataLabels]="VehiclesLastUpdatedbarChartOptions.dataLabels"
                     [plotOptions]="VehiclesLastUpdatedbarChartOptions.plotOptions"

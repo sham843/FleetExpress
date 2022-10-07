@@ -1811,6 +1811,9 @@ input::-ms-clear {
 .reading-block{
   font-size: 2.5rem !important;
 }
+#vehicle-chart .apexcharts-legend{
+  display: none !important;
+}
 .apexcharts-legend-text,
 .apexcharts-text tspan{
   font-family: 'Poppins', sans-serif !important;
