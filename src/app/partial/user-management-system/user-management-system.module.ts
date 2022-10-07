@@ -5,7 +5,7 @@ import { UserManagementSystemRoutingModule } from './user-management-system-rout
 import { UserManagementSystemComponent } from './user-management-system.component';
 import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -16,7 +16,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     UserManagementSystemRoutingModule,
     MaterialModule,
     FormsModule,
-    NgbModule,
+    NgxPaginationModule,
     ReactiveFormsModule
 
   ]

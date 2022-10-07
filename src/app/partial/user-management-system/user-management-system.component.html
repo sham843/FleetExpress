@@ -83,7 +83,7 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-4 text-end">
-                                            <button *ngIf="selectedTableData.length" class="btn btn-add" (click)="DeleteUserData()">
+                                            <button *ngIf="selectedTableData.length" class="btn btn-add" (click)="confirmationDialog(true, 'delete')">
                                                 <i class="fa-solid fa-trash-can"></i>
                                             </button>
                                             <button *ngIf="showTab=='users'" class="btn btn-add" (click)="open(AddUserModal)">
@@ -110,8 +110,9 @@
                                             </tr>
                                         </thead>
                                         <tbody *ngIf="showTab=='users'" >
-                                            <tr *ngFor="let element of userTableData; let i=index" (click)="clickedRow(i)" [ngClass]="{'highLightRow':i==highlightRow}">
-                                                <td>{{ this.itemsPerPage * (currentPage - 1) + (i+1) }}</td>
+                                            <tr *ngFor="let element of userTableData| paginate: {itemsPerPage: pageSize, 
+                                                currentPage: pageNumber, totalItems:totalUserTableData};; let i=index " (click)="clickedRow(i)" [ngClass]="{'highLightRow':i==highlightRow}">
+                                                <td>{{((pageNumber + 1) * 10 + i + 1)-20}}</td>
                                                 <td>{{element.name}}</td>
                                                 <td>{{element.mobileNo1}}</td>
                                                 <td>{{element.subUserTypeName}}</td>
@@ -119,7 +120,7 @@
                                                     <div class="form-check form-switch">
                                                         <input class="form-check-input" type="checkbox" role="switch"
                                                     id="flexSwitchCheckDefault"
-                                                    [(ngModel)]="element.isBlock" (change)="userBlockUnBlockModal(element,element.isBlock)">
+                                                    [(ngModel)]="element.isBlock" (change)="confirmationDialog(element.isBlock,'status', element)">
                                                     </div>
                                                 </td>
                                                 <td>
@@ -164,12 +165,9 @@
                                             No data found
                                         </div>
                                     </div>
-                                    <div *ngIf="showTab=='role'?userTableData.length:roleTableData.length" class="d-flex justify-content-end">
-                                        <ngb-pagination [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true" 
-                                        [collectionSize]="totalUserTableData" #numPages
-                                            [pageSize]="itemsPerPage" [(page)]="currentPage" (pageChange)="onPageChange(currentPage)">
-                                        </ngb-pagination>
-                                    </div>
+                                    <pagination-controls  previousLabel="" nextLabel=""
+                                    (pageChange)="onPagintion($event)" class="text-end m-2">
+                                </pagination-controls>
                                 </div>
                             </div>
                         </div>

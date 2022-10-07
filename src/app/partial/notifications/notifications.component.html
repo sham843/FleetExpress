@@ -139,37 +139,15 @@
                         currentPage: paginationNo, totalItems:notificationTotalCount}; let i=index">
                         <div class="row justify-content-between align-items-end">
                             <div class="col-sm">
-                                <!-- <div class="vehicle-no" [ngClass]="item?.alertType=='ignition-on'?'green':item?.alertType=='ignition-off'?'red':
-                                    item?.alertType=='geo-in'?'magenta':item?.alertType=='geo-out'?'voilet':item?.alertType=='overspeed'?'yellow':
-                                    item?.alertType=='power-cut'?'orange':'light-orange'">{{item?.alertType}}: {{item?.vehicleNumber }}</div>
-                                    <div class="vehicle-location">{{item?.alertMessage }}</div> -->
-                                    <div class="vehicle-no {{item?.color[0]?.color}}"  >{{item?.alertType}}: {{item?.vehicleNumber }}</div>
-                                    <div class="vehicle-location">{{item?.alertMessage }}</div>
-                                    
+                                <div class="vehicle-no {{item?.color[0]?.color}}">{{item?.alertType}}: {{item?.vehicleNumber }}</div>
+                                <div class="vehicle-location">{{item?.alertMessage }}</div>
                             </div>
                             <div class="col-sm-auto">
                                 <span class="last-update">Last Updated : {{item?.invalidDate | date: 'dd-MM-yyyy hh:mm:ss a' }}</span>
                             </div>
                         </div>
                     </li>
-                    <!-- <li class="list-group-item d-flex justify-content-between align-items-end">
-                        <div class="ms-2 me-auto">
-                            <div class="vehicle-no text-success">Ignition off : MH12 AB 1234</div>
-                            <div class="vehicle-location">314 M From Harunja Post Office, Harjuna, Yavatmal,
-                                Maharashtra, 445002, India.</div>
-                        </div>
-                        <span class="last-update">Last Updated : 22 Jul 22, 10:10 AM</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-end">
-                        <div class="ms-2 me-auto">
-                            <div class="vehicle-no text-success">Ignition off : MH12 AB 1234</div>
-                            <div class="vehicle-location">314 M From Harunja Post Office, Harjuna, Yavatmal,
-                                Maharashtra, 445002, India.</div>
-                        </div>
-                        <span class="last-update">Last Updated : 22 Jul 22, 10:10 AM</span>
-                    </li> -->
                 </ul>
-                
             </div>
             <div *ngIf="notificationData.length ">
                 <pagination-controls  previousLabel="" nextLabel=""
