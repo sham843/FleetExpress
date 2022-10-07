@@ -108,7 +108,7 @@
                         </ngx-gauge>
 
                         <div class="fw-bold">{{'Vehicle No. : '+ maxSpeedObj?.vehicleNo}}</div>
-                        <div class="text-muted">{{'At : '+ maxSpeedObj?.deviceDatetime | date: 'dd-MM-yyyy hh:mm:ss a'}}
+                        <div class="text-secondary fw-normal">{{'At : '+ maxSpeedObj?.deviceDatetime | date: 'dd-MM-yyyy hh:mm:ss a'}}
                         </div>
                     </div>
 
@@ -118,8 +118,8 @@
     </div>
     <div class="col-sm-3">
         <div class="card plain-card mb-3">
-            <div class="card-header">Vehicles - Last Updated</div>
-            <div class="card-body" *ngIf="barChartDisplay">
+            <div class="card-header pb-0">Vehicles - Last Updated</div>
+            <div class="card-body pt-0" *ngIf="barChartDisplay">
                 <apx-chart [series]="VehiclesLastUpdatedbarChartOptions.series"
                     [chart]="VehiclesLastUpdatedbarChartOptions.chart"
                     [dataLabels]="VehiclesLastUpdatedbarChartOptions.dataLabels"
