@@ -40,7 +40,7 @@
                                             <span>
                                                 <input type="text" class="form-control w-100"
                                                 placeholder="Driver Name/Mobile No." formControlName="driverName"
-                                                (keypress)="this.validation.alphabetsWithSpaces($event)" required
+                                                (keypress)="this.validation.alphaNumeric($event)" required
                                                 maxlength="15">
                                             </span>
                                             <span class="input-group-text" *ngIf="searchHideShow">
@@ -50,8 +50,6 @@
                                             <span class="input-group-text" *ngIf="clearHideShow">
                                                 <i class="fa-solid fa-xmark" (click)="clearSearchData()"></i></span>
                                         </div>
-
-                                        
                                     </form>
                                 </div>
                             </div>
@@ -128,7 +126,7 @@
                              </div>
                             </div>
                             <!-- Modal -->
-                            <div class="modal fade" id="AddDriverModal" tabindex="-1"
+                           <div class="modal fade" id="AddDriverModal" tabindex="-1"
                                 aria-labelledby="AddDriverModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-xl modal-dialog-centered">
                                     <form [formGroup]="driverRegForm" #formDirective="ngForm"
