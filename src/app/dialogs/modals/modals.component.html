@@ -1,410 +1,109 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12 px-0">
-            <div class="dialog card border-0">
-                <div class="card-header border-bottom-0 bg-transparent p-0">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 mat-dialog-title class="mb-0"> {{dialogData?.cardTitle}}</h5>
-                        <div class=" text-end">
-                            <button type="button" class="btn-modal-close" mat-icon-button
-                                mat-dialog-close><i class="fas fa-times"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body text-center">
-                    <p class="mb-3 small" *ngIf="dialogData?.p1">{{dialogData?.p1}}</p>
-                    <p class="mb-3 small" *ngIf="dialogData?.p2">{{dialogData?.p2}}</p>
-                    <div *ngIf="data.inputType">
-                        <mat-form-field appearance="outline" class="w-100">
-                            <mat-label>Remark</mat-label>
-                            <textarea matInput [formControl]="remark" rows="4"> </textarea>
-                        </mat-form-field>
-                    </div>
+<div class="position-relative mb-3">
+    <h5 mat-dialog-title class="mb-0"> Add Driver</h5>
+<button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close><i class="fas fa-times"></i></button>
+</div>
 
-                    <div class="row">
-                        <div class="d-flex justify-content-between">
-                            <button type="button" class="me-2 btn-light-main btn" type="button" mat-dialog-close
-                                (click)="onNoClick('No')"
-                                *ngIf="dialogData?.cancelBtnText">{{dialogData?.cancelBtnText}}</button>
-                            <button cdkFocusInitial (click)="onNoClick('Yes')" class="btn-main btn" type="submit"
-                                *ngIf="dialogData?.successBtnText ">{{dialogData?.successBtnText}}</button>
-                        </div>
-                    </div>
-                </div>
+
+<div class="row">
+    <div class="col-sm-3">
+        <div class="position-relative">
+            <img src="assets/images/user.jpg" class="vehicle-image">
+            <div class="vehicle-buttons d-flex flex-column upload-btn-wrapper">
+                <button type="button" class="btn bg-light text-primary">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+                <input type="file" #profileUpload name="myfile" accept=".jpg,.jpeg,.png" formControlName="profilePhoto"
+                    matTooltip="Upload only png,jpg,jpeg file" />
             </div>
         </div>
     </div>
-</div>
-
-<div class="modal fade" id="AddDriverModal" tabindex="-1"
-aria-labelledby="AddDriverModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-xl modal-dialog-centered">
-    <form>
-        <div class="modal-content">
-            <div class="modal-header bg-light-gradient text-dark">
-                <p class="modal-title mb-0" id="AddDriverModalLabel">Driver Registration
-                </p>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
+    <div class="col-sm-9">
+        <div class="row align-items-end">
+            <div class="col-sm-6">
+                <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>First Name</mat-label>
+                    <input matInput placeholder="First Name" value="" formControlName="firstName">
+                </mat-form-field>
             </div>
-            <!-- <div class="modal-body">
-                <div class="row"> -->
-
-                    <!-- <div class="col-sm-2">
-                        <div class="position-relative form-group">
-                            <img src="{{profilePhotoupd}}" class="vehicle-image">
-                            <div
-                                class="vehicle-buttons d-flex flex-column upload-btn-wrapper">
-                                <button type="button" class="btn bg-light text-primary"
-                                    (click)="profileUpload.click()">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-                                <input type="file" #profileUpload name="myfile"
-                                    accept=".jpg,.jpeg,.png"
-                                    formControlName="profilePhoto"
-                                    (change)="profilePhoto($event)"
-                                    matTooltip="Upload only png,jpg,jpeg file" />
-                            </div>
-                        </div>
-                    </div> -->
-                   <!--  <div class="col-sm-10">
-                        <div class="row">
-                            <div class="col-sm-6 form-group">
-                                <mat-form-field class="w-100" [appearance]="config.matFormField">
-                                    <input matInput placeholder="Mobile Number" value=""
-                                        formControlName="mobileNo"
-                                        (keypress)="this.validation.onlyDigits($event)"
-                                        (keyup)="this.validation.noSpaces($event)"
-                                        maxlength="10" format="number">
-                                    <mat-error *ngIf="f['mobileNo'].errors">
-                                        <span class="text-danger"
-                                            *ngIf="f['mobileNo'].hasError('required')">
-                                            Mobile Number is required</span>
-                                        <span class="text-danger"
-                                            *ngIf="f['mobileNo'].hasError('pattern')">Enter
-                                            valid mobile Number</span>
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                            <div class="col-sm-6 form-group">
-                                <mat-form-field class="w-100" [appearance]="config.matFormField">
-                                    <input matInput placeholder="First Name" value=""
-                                        formControlName="firstName"
-                                        (keypress)="this.validation.onlyAlphabets($event)"
-                                        (keyup)="this.validation.noSpaces($event)"
-                                        maxlength="15">
-                                    <mat-error *ngIf="f['firstName'].errors">
-                                        <span class="text-danger"
-                                            *ngIf="f['firstName'].hasError('required')">
-                                            first Name is required</span>
-                                        <span class="text-danger"
-                                            *ngIf="f['firstName'].hasError('pattern')">
-                                            first Name is Invalid</span>
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                            <div class="col-sm-6 form-group">
-                                <mat-form-field class="w-100" [appearance]="config.matFormField">
-                                    <input matInput placeholder="Last Name" value=""
-                                        formControlName="lastName"
-                                        (keypress)="this.validation.onlyAlphabets($event)"
-                                        (keyup)="this.validation.noSpaces($event)"
-                                        maxlength="15">
-                                    <mat-error *ngIf="f['lastName'].errors">
-                                        <span class="text-danger"
-                                            *ngIf="f['lastName'].hasError('required')">
-                                            Last Name is required</span>
-                                        <span class="text-danger"
-                                            *ngIf="f['lastName'].hasError('pattern')">
-                                            Last Name is Invalid</span>
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                            <div class="col-sm-6 form-group">
-                                <mat-form-field class="w-100"[appearance]="config.matFormField">
-                                    <input matInput [matDatepicker]="picker"
-                                        [readonly]="true" formControlName="dob"
-                                        placeholder="Date of Birth" [max]="maxDate" (click)="picker.open()">
-                                    <mat-datepicker-toggle matSuffix [for]="picker">
-                                    </mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                                    <mat-error *ngIf="f['dob'].errors">
-                                        <span class="text-danger"
-                                            *ngIf="f['dob'].hasError('required')">
-                                            Date of birth is required</span>
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                            <div class="col-sm-12">
-                                <table
-                                    class="table dashboard-table mb-0 table-padding-0">
-                                    <thead>
-                                        <tr>
-                                            <th>Document Name</th>
-                                            <th>Document Number</th>
-                                            <th>Document</th>
-                                            <th>Upload</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Licence Number</td>
-                                            <td>
-                                                <div class="form-group">
-                                                    <mat-form-field
-                                                    [appearance]="config.matFormField"
-                                                        class="w-100">
-
-                                                        <input matInput
-                                                            formControlName="licenceNumber"
-                                                            [ngClass]="{'is-invalid':f['licenceNumber'].errors}"
-                                                            placeholder="Licence Number"
-                                                            maxlength="20"
-                                                            minlength="15">
-                                                        <mat-error
-                                                            *ngIf="f['licenceNumber'].errors">
-                                                            <span class="text-danger"
-                                                                *ngIf="f['licenceNumber'].hasError('pattern')">Enter
-                                                                valid licence
-                                                                number</span>
-                                                            <span class="text-danger"
-                                                                *ngIf="f['licenceNumber'].hasError('required')">licence
-                                                                number is
-                                                                required</span>
-                                                        </mat-error>
-                                                    </mat-form-field>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <img src="assets/images/Driver-profile.svg"
-                                                    class="vehicle-image">
-                                            </td>
-                                            <td>
-                                                <div
-                                                    class="upload-btn-wrapper form-group">
-                                                    <button type="button"
-                                                        *ngIf="!this.licenceDoc?.length"
-                                                        class="btn btn-light-main btn-icon">
-                                                        <i
-                                                            class="fa-solid fa-upload"></i>
-                                                    </button>
-                                                    <input type="file" #licenceUpload
-                                                        name="myfile"
-                                                        formControlName="licenceDoc"
-                                                        (change)="documentUpload($event,'licence')"
-                                                        required
-                                                        matTooltip="Upload only PDF file"
-                                                        accept=".pdf" />
-                                                </div>
-                                                <button type="button"
-                                                    *ngIf="this.licenceDoc?.length"
-                                                    class="btn upload-btn-wrapper btn-light-main btn-icon-view"
-                                                    (click)="viewDocument('licence')">
-                                                    <mat-icon>visibility</mat-icon>
-                                                </button>
-                                        </td>
-                                            <td>
-                                                <button type="button"
-                                                    class="btn bg-danger bg-opacity-10 text-danger"
-                                                    [disabled]="!this.licenceDoc?.length"
-                                                    (click)="clearDoc('licence')">
-                                                    <i
-                                                        class="fa-solid fa-trash-can"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Aadhaar Number</td>
-                                            <td>
-                                                <div class="form-group">
-                                                    <mat-form-field
-                                                    [appearance]="config.matFormField"
-                                                        class="w-100">
-                                                        <input matInput
-                                                            [ngClass]="{'is-invalid':f['aadharNumber'].errors}"
-                                                            formControlName="aadharNumber"
-                                                            placeholder="Aadhaar Number"
-                                                            maxlength="12"
-                                                            (keypress)="this.validation.onlyDigits($event)"
-                                                            minlength="12">
-                                                        <mat-error
-                                                            *ngIf="f['aadharNumber'].errors">
-                                                            <span class="text-danger"
-                                                                *ngIf="f['aadharNumber'].hasError('required')">Aadhar
-                                                                number is
-                                                                required</span>
-                                                            <span class="text-danger"
-                                                                *ngIf="f['aadharNumber'].hasError('pattern')">Enter
-                                                                Valid Aadhar card
-                                                                number</span>
-                                                        </mat-error>
-                                                    </mat-form-field>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <img src="assets/images/Driver-profile.svg"
-                                                    class="vehicle-image">
-                                            </td>
-                                            <td>
-                                                <div
-                                                    class="upload-btn-wrapper form-group">
-                                                    <button type="button"
-                                                        class="btn btn-light-main btn-icon"
-                                                        *ngIf="!this.aadharDoc?.length">
-                                                        <i
-                                                            class="fa-solid fa-upload"></i>
-                                                    </button>
-                                                    <input type="file" name="myfile"
-                                                        #aadharUpload
-                                                        (keyup)="this.validation.noSpaces($event)"
-                                                        (keypress)="this.validation.onlyDigits($event)"
-                                                        formControlName="aadharCardDoc"
-                                                        (change)="documentUpload($event,'aadhar')"
-                                                        required
-                                                        matTooltip="Upload only PDF file"
-                                                        accept=".pdf" />
-                                                </div>
-                                                <button type="button"
-                                                    *ngIf="this.aadharDoc?.length"
-                                                    class="btn btn-light-main btn-icon-view"
-                                                    (click)="viewDocument('aadhar')">
-                                                    <mat-icon>visibility</mat-icon>
-                                                </button>
-                                            </td>
-                                            <td>
-                                                <button type="button"
-                                                    class="btn bg-danger bg-opacity-10 text-danger"
-                                                    [disabled]="!this.aadharDoc?.length"
-                                                    (click)="clearDoc('aadhar')">
-                                                    <i
-                                                        class="fa-solid fa-trash-can"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                        <tr>
-                                            <td>PAN Number</td>
-                                            <td>
-                                                <div class="form-group">
-                                                    <mat-form-field
-                                                    [appearance]="config.matFormField"
-                                                        class="w-100">
-                                                        <input matInput
-                                                            formControlName="panNumber"
-                                                            placeholder="PAN Number"
-                                                            maxlength="10"
-                                                            (keyup)="this.validation.noSpaces($event)"
-                                                            [ngClass]="{'is-invalid':f['panNumber'].errors}">
-                                                        <mat-error
-                                                            *ngIf="f['panNumber'].errors">
-                                                            <span class="text-danger"
-                                                                *ngIf="f['panNumber'].hasError('required')">Aadhar
-                                                                number is
-                                                                required</span>
-                                                            <span class="text-danger"
-                                                                *ngIf="f['panNumber'].hasError('pattern')">Enter
-                                                                valid pan card
-                                                                number</span>
-                                                        </mat-error>
-                                                    </mat-form-field>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <img src="assets/images/Driver-profile.svg"
-                                                    class="vehicle-image">
-                                            </td>
-                                            <td>
-                                                <div
-                                                    class="upload-btn-wrapper form-group">
-                                                    <button type="button"
-                                                        class="btn btn-light-main btn-icon"
-                                                        *ngIf="!this.panDoc?.length">
-                                                        <i
-                                                            class="fa-solid fa-upload"></i>
-                                                    </button>
-                                                    <input type="file" name="myfile"
-                                                        #panUpload
-                                                        formControlName="panCardDoc"
-                                                        (change)="documentUpload($event,'pan')"
-                                                        required
-                                                        matTooltip="Upload only PDF file"
-                                                        accept=".pdf" />
-                                                </div>
-                                                <button type="button"
-                                                    *ngIf="this.panDoc?.length"
-                                                    class="btn btn-light-main btn-icon-view"
-                                                    (click)="viewDocument('pan')">
-                                                    <mat-icon>visibility</mat-icon>
-                                                </button>
-                                            </td>
-                                            <td>
-                                                <button type="button"
-                                                    class="btn bg-danger bg-opacity-10 text-danger"
-                                                    [disabled]="!this.panDoc?.length"
-                                                    (click)="clearDoc('pan')">
-                                                    <i
-                                                        class="fa-solid fa-trash-can"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-sm-6 form-group">
-                                <mat-form-field [appearance]="config.matFormField" class="w-100">
-                                    <textarea matInput formControlName="presentAddress"
-                                        placeholder="Present Address"
-                                        maxlength="150"></textarea>
-                                    <mat-error *ngIf="f['presentAddress'].errors">
-                                        <span class="text-danger"
-                                            *ngIf="f['presentAddress'].hasError('required')">Present
-                                            Address is
-                                            required</span>
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                            <div class="col-sm-6 form-group">
-                                <mat-form-field [appearance]="config.matFormField" class="w-100">
-                                    <textarea matInput
-                                        formControlName="permanentAddress"
-                                        placeholder="Permanent Address"
-                                        maxlength="150"></textarea>
-                                    <mat-error *ngIf="f['permanentAddress'].errors">
-                                        <span class="text-danger"
-                                            *ngIf="f['permanentAddress'].hasError('required')">Permanent
-                                            Address is
-                                            required</span>
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                            <ng-container class="form-group">
-                                <input matInput class="d-none" formControlName="flag">
-                            </ng-container>
-                        </div>
-                    </div> -->
-
-                <!-- </div>
+            <div class="col-sm-6">
+                <mat-form-field class="w-100" appearance="legacy">
+                    <mat-label>Last Name</mat-label>
+                    <input matInput placeholder="Last Name" value="" formControlName="lastName">
+                </mat-form-field>
             </div>
-            <div class="modal-footer border-0">
-                <div class="form-container w-100">
-                    <div class="modal-footer border-0">
-                        <div class="form-container w-100">
-                            <div class="d-flex justify-content-between">
-                                <button type="button" class="btn btn-light-main" #closeModel
-                                    data-bs-dismiss="modal"
-                                    (click)="closeModels(formDirective)">Cancel</button>
-
-                                <button type="submit"
-                                    class="btn btn-main">{{buttonFlag?'Save':'Update'}}</button>
-                            </div>
-
-                        </div>
-                    </div>
+            <div class="col-sm-6">
+                <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Mobile Number</mat-label>
+                    <input matInput placeholder="Mobile Number" value="" formControlName="mobileNo">
+                </mat-form-field>
+            </div>
+            <div class="col-sm-6">
+                <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Date of Birth</mat-label>
+                    <input matInput [matDatepicker]="picker">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-6">
+                <div class="d-flex align-items-center">
+                    <mat-form-field appearance="legacy" class="w-100">
+                        <mat-label>Licence Number</mat-label>
+                        <input matInput placeholder="Licence Number">
+                    </mat-form-field>
+                    <button mat-icon-button>
+                        <mat-icon>file_upload</mat-icon>
+                    </button>
                 </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="d-flex align-items-center">
+                    <mat-form-field appearance="legacy" class="w-100">
+                        <mat-label>Aadhaar Number</mat-label>
+                        <input matInput placeholder="Aadhaar Number">
+                    </mat-form-field>
+                    <button mat-icon-button>
+                        <mat-icon>file_upload</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="d-flex align-items-center">
+                    <mat-form-field appearance="legacy" class="w-100">
+                        <mat-label>PAN Number</mat-label>
+                        <input matInput placeholder="PAN Number">
+                    </mat-form-field>
+                    <button mat-icon-button>
+                        <mat-icon>file_upload</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <mat-form-field appearance="legacy" class="w-100">
+                    <textarea matInput formControlName="presentAddress" placeholder="Present Address"
+                        maxlength="150"></textarea>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-12">
+                <mat-form-field appearance="legacy" class="w-100">
+                    <textarea matInput formControlName="permanentAddress" placeholder="Permanent Address"
+                        maxlength="150"></textarea>
+                </mat-form-field>
+                <mat-checkbox class="small">Same as Present Address</mat-checkbox>
+            </div>
+            <ng-container class="form-group">
+                <input matInput class="d-none" formControlName="flag">
+            </ng-container>
+        </div>
+    </div>
 
-            </div>-->
-        </div> 
-    </form>
 </div>
+
+<div class="form-container w-100">
+    <div class="d-flex justify-content-between">
+        <button type="button" class="btn btn-light-main" #closeModel data-bs-dismiss="modal">Cancel</button>
+
+        <button type="submit" class="btn btn-main">Save</button>
+    </div>
+
 </div>

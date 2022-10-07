@@ -379,7 +379,7 @@ export class DriverComponent implements OnInit {
   }
   confirmationDialog1(flag: boolean, label: string, event?: any, drData?: any) {
     let obj: any = ConfigService.dialogObj;
-
+    
     if (label == 'status') {
       obj['p1'] = flag ? 'Are you sure you want to approve?' : 'Are you sure you want to reject ?';
       obj['cardTitle'] = flag ? 'Driver Registration' : 'Application  Reject';
@@ -393,7 +393,8 @@ export class DriverComponent implements OnInit {
     }
 
     const dialog = this.dialog.open(ModalsComponent, {
-      width: this.config.dialogBoxWidth[0],
+      // width: this.config.dialogBoxWidth[0],
+      width: '900px',
       data: obj,
       disableClose: this.config.disableCloseBtnFlag,
     })
