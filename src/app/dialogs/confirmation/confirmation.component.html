@@ -4,16 +4,16 @@
             <div class="dialog card border-0">
                 <div class="card-header border-bottom-0 bg-transparent p-0">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5 mat-dialog-title> {{dialogData?.cardTitle}}</h5>
+                        <h5 mat-dialog-title class="mb-0"> {{dialogData?.cardTitle}}</h5>
                         <div class=" text-end">
-                            <button type="button" class="dlg-close mnw-auto lh-sm btn-modal-close" mat-mini-fab
+                            <button type="button" class="btn-modal-close" mat-icon-button
                                 mat-dialog-close><i class="fas fa-times"></i></button>
                         </div>
                     </div>
                 </div>
-                <div class="card-body text-center p-0">
-                    <p class="mb-2 small" *ngIf="dialogData?.p1">{{dialogData?.p1}}</p>
-                    <p class="mb-2 small" *ngIf="dialogData?.p2">{{dialogData?.p2}}</p>
+                <div class="card-body text-center">
+                    <p class="mb-3 small" *ngIf="dialogData?.p1">{{dialogData?.p1}}</p>
+                    <p class="mb-3 small" *ngIf="dialogData?.p2">{{dialogData?.p2}}</p>
                     <div *ngIf="data.inputType">
                         <mat-form-field appearance="outline" class="w-100">
                             <mat-label>Remark</mat-label>
@@ -23,7 +23,7 @@
 
                     <div class="row">
                         <div class="d-flex justify-content-between">
-                            <button type="button" class="me-2 btn-outline-danger btn" type="button" mat-dialog-close
+                            <button type="button" class="me-2 btn-light-main btn" type="button" mat-dialog-close
                                 (click)="onNoClick('No')"
                                 *ngIf="dialogData?.cancelBtnText">{{dialogData?.cancelBtnText}}</button>
                             <button cdkFocusInitial (click)="onNoClick('Yes')" class="btn-main btn" type="submit"
