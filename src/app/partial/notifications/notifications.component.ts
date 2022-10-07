@@ -23,23 +23,16 @@ export class NotificationsComponent implements OnInit {
   currentDate: Date =new Date();
   notificationData=new Array();
   notificationTotalCount!:string;
-//   selectVehicle:object={
-//     "id": 0,
-//     "vehicleRegistrationNo": "Select Vehicle",
-//     "isAssigned": 0,
-//     "userId": 0,
-//     "vehicleOwnerId": 0
-// }
+  paginationNo: number = 1;
+  pageSize: number = 10;
   constructor(
     private apiCall: ApiCallService,
     private masterService:MasterService,
     private error: ErrorsService,
     private fb: FormBuilder,
-    // private spinner: NgxSpinnerService,
     public config:ConfigService,
     private spinner: NgxSpinnerService,
     private webStorage:WebStorageService,
-    // private commonMethod:CommonMethodsService
     ) { }
 
   ngOnInit(): void {
@@ -53,15 +46,11 @@ export class NotificationsComponent implements OnInit {
       date: [],
       remark: [],
       alertType: [],
-      // ignitionOff: [],
-      // geofenceEnter: [],
-      // geofenceExit: [],
-      // overSpeed: [],
-      // powerCut: [],
-      // vibration: [],
-      // lowbattery: [],
-      // other: [],
     })
+  }
+  onPagintion(pageNo: any) {
+    this.paginationNo = pageNo;
+    this.getNotificationsData();
   }
   getVehicleListData(){
     this.vehicleListData
@@ -81,7 +70,8 @@ export class NotificationsComponent implements OnInit {
       fromdate: formData?.date?new Date(formData?.date).toISOString():'',
       todate: formData?.date?todate.toISOString():'',
     }
-    const url='FromDate='+obj?.fromdate+'&ToDate='+obj?.todate+'&VehicleNumber='+(formData.vehicleNumber?formData.vehicleNumber:"")+'&AlertType='+(formData.alertType?formData.alertType:"");
+    const url='FromDate='+obj?.fromdate+'&ToDate='+obj?.todate+'&VehicleNumber='+(formData.vehicleNumber?formData.vehicleNumber:"")+
+    '&AlertType='+(formData.alertType?formData.alertType:""+ '&pageno=' + this.paginationNo + '&pagesize=' + this.pageSize);
     this.spinner.show();
     this.apiCall.setHttp('get', 'notification/vehicle-alert-report_v1?'+ url+'&UserId=' + this.webStorage.getUserId()  , true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
@@ -89,8 +79,7 @@ export class NotificationsComponent implements OnInit {
         this.spinner.hide();
         if (res.statusCode === "200") {
           this.notificationData=res.responseData.data;
-          this.notificationTotalCount=res.responseData.totalCount
-          console.log(this.notificationData);
+          this.notificationTotalCount=res.responseData.totalCount;
         } else {
             this.notificationData = [];
             // this.error.handelError(res.statusCode)
