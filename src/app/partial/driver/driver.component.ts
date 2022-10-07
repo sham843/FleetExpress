@@ -88,7 +88,7 @@ export class DriverComponent implements OnInit {
   }
   // -----------------------------------------------Driver Details----------------------------------------------------------
   getDriverDetails(flag?: any) {
-    this.apiCall.setHttp('get', 'get-driver?searchText=' + this.searchDriverForm.value.driverName + '&pageno=' + this.paginationNo + '&rowperPage=' + this.itemsPerPage, true, false, false, 'fleetExpressBaseUrl');
+    this.apiCall.setHttp('get', 'driver/get-driver?searchText=' + this.searchDriverForm.value.driverName + '&pageno=' + this.paginationNo + '&rowperPage=' + this.itemsPerPage, true, false, false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe((res: any) => {
       if (res.statusCode === "200") {
         console.log(res);

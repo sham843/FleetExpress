@@ -15,7 +15,7 @@ export class WebStorageService {
   }
   
   getsessionStorageData() {
-    let loginObj: any = sessionStorage.getItem('loginDetails');
+    let loginObj: any = localStorage.getItem('loggedInData');
     let sessionData = JSON.parse(loginObj).responseData[0];
     return sessionData;
   }
@@ -31,12 +31,12 @@ export class WebStorageService {
     return vehOwnerId.vehicleOwnerId
   }
   tokenExpireRefreshString() {
-    let loginObj: any = sessionStorage.getItem('loginDetails');
+    let loginObj: any = localStorage.getItem('loggedInData');
     let sessionData = JSON.parse(loginObj).responseData3;
     return sessionData.refreshToken.tokenString;
   }
   tokenExpireDateTime() {
-    let loginObj: any = sessionStorage.getItem('loginDetails');
+    let loginObj: any = localStorage.getItem('loggedInData');
     let sessionData = JSON.parse(loginObj).responseData3;
     return sessionData.expireAccessToken;
   }
