@@ -484,7 +484,6 @@ export class CreateGeofenceComponent implements OnInit {
     })
   }
 
-
   setLatLong(latitude: any, longitude: any) {
     this.geofenceForm.controls['latitude'].setValue(latitude)
     this.geofenceForm.controls['longitude'].setValue(longitude)

@@ -20,6 +20,8 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
   subscription!: Subscription;
   checkedGeoFenceArray = new Array();
 
+  
+
   constructor(public dialog: MatDialog, private configService: ConfigService,
     private apiCall: ApiCallService, private error: ErrorsService, private commonMethods: CommonMethodsService) { }
 
