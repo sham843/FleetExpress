@@ -11,9 +11,9 @@ export class ExpenseGuard implements CanActivate {
   constructor(private webStorage: WebStorageService, private router: Router) { }
   
   canActivate( route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    console.log(this.router)
-    console.log(route.routeConfig)
-    console.log(this.webStorage)
+    this.router;
+    route.routeConfig;
+    this.webStorage;
     // let urlSplit: any = route.routeConfig?.path?.split('/');
     // if (this.webStorage?.getAllPageName().find((x: any) => x.pageURL.includes(urlSplit[0]))) {
     //   return true
