@@ -83,6 +83,8 @@ export class UserManagementSystemComponent implements OnInit {
   public onPageChange(pageNum: number): void {
     this.pageNumber=pageNum;
     this.pageSize = this.itemsPerPage * (pageNum - 1);
+    this.selectedTableData=[];
+    this.selectAll=false;
     this.getUserTableData();
     this.getRoleTableData();
   }
@@ -134,6 +136,7 @@ export class UserManagementSystemComponent implements OnInit {
       },
       error: ((error: any) => { this.userTableData=[]; this.error.handelError(error.status) })
     });
+    
   }
   getRoleTableData(){
     this.apiCall.setHttp('get', 'userrights/getUserRights?UserTypeId=1&SubUserTypeId=10', true, false, false, 'fleetExpressBaseUrl');
