@@ -116,11 +116,28 @@ export class DashboardComponent implements OnInit {
     this.getOverSpeedData();
     this.getSIMRenewalReminderData();
   }
+  thresholdConfig = {
+    '0': {color: 'green'},
+    '60': {color: 'orange'},
+    '80': {color: 'red'}
+  };
+  markerConfig = {
+    "0": { color: '#555', size: 8, label: '0', type: 'line'},
+    "15": { color: '#555', size: 4, type: 'line'},
+    "30": { color: '#555', size: 8, label: '30', type: 'line'},
+    "40": { color: '#555', size: 4, type: 'line'},
+    "50": { color: '#555', size: 8, label: '50', type: 'line'},
+    "60": { color: '#555', size: 4, type: 'line'},
+    "70": { color: '#555', size: 8, label: '70', type: 'line'},
+    "85": { color: '#555', size: 4, type: 'line'},
+    "100": { color: '#555', size: 8, label: '100', type: 'line'},
+    "120": { color: '#555', size: 4, type: 'line'},
+}
 
   getvehicleAllData() {
     this.vehicleAllData = [];
     this.maxSpeedObj=[];
-    this.apiCall.setHttp('get', 'dashboard/get-vehicle-current-location-list?VehicleNo=' + '&UserId=' + this.webStorage.getUserId() + '&GpsStatus=Running', true, false, false, 'fleetExpressBaseUrl');
+    this.apiCall.setHttp('get', 'dashboard/get-vehicle-current-location-list?VehicleNo=' + '&UserId=' + this.webStorage.getUserId() + '&GpsStatus=', true, false, false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
         this.vehicleAllData = responseData.responseData;
@@ -134,7 +151,7 @@ export class DashboardComponent implements OnInit {
           'gaugeType': "arch",
           'gaugeValue' :maxSpeed,
           'gaugeLabel' : "Speed",
-          'gaugeAppendText' : "mph",
+          'gaugeAppendText' : "km/hr",
           'gaugeThick' : 15,
           'guageCap':  'round'
         }
@@ -150,7 +167,7 @@ export class DashboardComponent implements OnInit {
           'gaugeType': "arch",
           'gaugeValue' :avg,
           'gaugeLabel' : "Speed",
-          'gaugeAppendText' : "mph",
+          'gaugeAppendText' : "km/hr",
           'gaugeThick' : 15,
           'guageCap':  'round'
         }
