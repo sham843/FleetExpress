@@ -93,12 +93,13 @@
                                             </td>
                                             <td>{{driver.mobileNo}}</td>
                                             <td>
-                                                <div class="form-check form-switch">
+                                                <mat-slide-toggle (change)="confirmationDialog($event.checked,'status',$event,driver)"></mat-slide-toggle>
+                                               <!--  <div class="form-check form-switch">
                                                     <input class="form-check-input" type="checkbox" role="switch"
                                                         id="flexSwitchCheckDefault"
                                                         (change)="blobkUnblockDriver($event,driver)"
                                                         [checked]="driver.isBlockFlag">
-                                                </div>
+                                                </div> -->
                                             </td>
                                             <td>
                                                 <div class="d-flex">

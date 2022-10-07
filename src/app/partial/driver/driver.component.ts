@@ -1,8 +1,10 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
+import { ConfirmationComponent } from 'src/app/dialogs/confirmation/confirmation.component';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ConfigService } from 'src/app/services/config.service';
@@ -57,6 +59,7 @@ export class DriverComponent implements OnInit {
     private error: ErrorsService,
     private commonMethods: CommonMethodsService,
     public config:ConfigService,
+    private dialog:MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -119,6 +122,35 @@ export class DriverComponent implements OnInit {
     this.searchHideShow = true;
     this.clearHideShow = false;
   }
+
+  // -----------------------------------------------comfirmation module----------------------------------------------------------
+  confirmationDialog(flag: boolean,label:string,event?: any, drData?: any) {
+    let obj: any = ConfigService.dialogObj;
+
+    if(label == 'status'){
+      obj['p1'] = flag ? 'Are you sure you want to approve?' : 'Are you sure you want to reject ?';
+      obj['cardTitle'] = flag ? 'Application  Approve' : 'Application  Reject';
+      obj['successBtnText'] = flag ? 'Approve' : 'Reject';
+      obj['cancelBtnText'] = 'Cancel';
+    }else if(label == 'delete'){
+      obj['p1'] = 'Are you sure you want to delete this record';
+      obj['cardTitle'] = 'Delete';
+      obj['successBtnText'] = 'Delete';
+      obj['cancelBtnText'] = 'Cancel';
+    }
+    
+    const dialog = this.dialog.open(ConfirmationComponent, {
+      width: this.config.dialogBoxWidth[0],
+      data: obj,
+      disableClose: this.config.disableCloseBtnFlag,
+    })
+
+    dialog.afterClosed().subscribe(res => {
+    if(res=='yes'){
+      this.blobkUnblockDriver(event,drData);
+    }
+    })
+  }
   // -----------------------------------------Block/Unblock Driver--------------------------------------------------------------
   blobkUnblockDriver(event: any, drData: any) {
     let param = {
@@ -134,7 +166,6 @@ export class DriverComponent implements OnInit {
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
-        this.commonMethods.snackBar(response.statusMessage, 1)
       }
       else {
         this.spinner.hide();
