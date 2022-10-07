@@ -753,30 +753,32 @@
                                     <div class="col-sm-10">
                                         <div class="d-flex mb-4">
                                             <div class="driver-name">
-                                                <p>MH29T0444</p>
-                                                <small>Tata 207 EX Pickup</small>
+                                                <p>{{vehicleDetailsData[0]?.regNo}}</p>
+                                                <small>{{vehicleDetailsData[0]?.vehicleMake}} {{vehicleDetailsData[0]?.vehicleMake}}
+                                                    <!-- Tata 207 EX Pickup -->
+                                                </small>
                                             </div>
                                         </div>
                                         <div class="row driver-info">
                                             <div class="col-sm">
                                                 <small>Owner Name</small>
-                                                <p>Dilip Kumar</p>
+                                                <p>{{vehicleDetailsData[0]?.ownerName}}</p>
                                             </div>
                                             <div class="col-sm">
                                                 <small>Chassis No.</small>
-                                                <p>ME4JF50AFKW078650</p>
+                                                <p>{{vehicleDetailsData[0]?.vehicleChassisNo}}</p>
                                             </div>
                                             <div class="col-sm">
                                                 <small>Engine No.</small>
-                                                <p>HF50Ew0054371</p>
+                                                <p>{{vehicleDetailsData[0]?.vehicleEngineNo}}</p>
                                             </div>
                                             <div class="col-sm">
                                                 <small>Fuel Type</small>
-                                                <p>Petrol</p>
+                                                <p>{{vehicleDetailsData[0]?.fuelType }}</p>
                                             </div>
                                             <div class="col-sm">
                                                 <small>Insurance Date</small>
-                                                <p>30-Jun-2024</p>
+                                                <p>{{vehicleDetailsData[0]?.insuranceExpiryDate}}</p>
                                             </div>
                                         </div>
                                     </div>
