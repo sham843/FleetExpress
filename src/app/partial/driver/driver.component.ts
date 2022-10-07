@@ -3,8 +3,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, Subscription } from 'rxjs';
 import { ConfirmationComponent } from 'src/app/dialogs/confirmation/confirmation.component';
+import { ModalsComponent } from 'src/app/dialogs/modals/modals.component';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ConfigService } from 'src/app/services/config.service';
@@ -58,13 +59,27 @@ export class DriverComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private error: ErrorsService,
     private commonMethods: CommonMethodsService,
-    public config:ConfigService,
-    private dialog:MatDialog
+    public config: ConfigService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
     this.getRegFormData();
     this.getDriverDetails();
+  }
+
+  ngAfterViewInit() {
+    let formValue = this.searchDriverForm.valueChanges;
+    formValue.pipe(
+      filter(() => this.searchDriverForm.valid),
+      debounceTime(1000),
+      distinctUntilChanged())
+      .subscribe(() => {
+        this.paginationNo = 1;
+        this.getDriverDetails();
+        this.searchHideShow = false;
+      this.clearHideShow = true;
+      })
   }
   //--------------------------------------------------------form Controls----------------------------------------------------
   getRegFormData() {
@@ -97,7 +112,6 @@ export class DriverComponent implements OnInit {
     this.apiCall.setHttp('get', 'driver/get-driver?searchText=' + this.searchDriverForm.value.driverName + '&pageno=' + this.paginationNo + '&rowperPage=' + this.pageSize, true, false, false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe((res: any) => {
       if (res.statusCode === "200") {
-        console.log(res);
         this.driverDetails = res.responseData.responseData1;
         this.driverDetails.forEach((ele: any) => {
           ele['isBlockFlag'] = false;
@@ -124,21 +138,21 @@ export class DriverComponent implements OnInit {
   }
 
   // -----------------------------------------------comfirmation module----------------------------------------------------------
-  confirmationDialog(flag: boolean,label:string,event?: any, drData?: any) {
+  confirmationDialog(flag: boolean, label: string, event?: any, drData?: any) {
     let obj: any = ConfigService.dialogObj;
 
-    if(label == 'status'){
+    if (label == 'status') {
       obj['p1'] = flag ? 'Are you sure you want to approve?' : 'Are you sure you want to reject ?';
       obj['cardTitle'] = flag ? 'Application  Approve' : 'Application  Reject';
       obj['successBtnText'] = flag ? 'Approve' : 'Reject';
       obj['cancelBtnText'] = 'Cancel';
-    }else if(label == 'delete'){
+    } else if (label == 'delete') {
       obj['p1'] = 'Are you sure you want to delete this record';
       obj['cardTitle'] = 'Delete';
       obj['successBtnText'] = 'Delete';
       obj['cancelBtnText'] = 'Cancel';
     }
-    
+
     const dialog = this.dialog.open(ConfirmationComponent, {
       width: this.config.dialogBoxWidth[0],
       data: obj,
@@ -146,19 +160,27 @@ export class DriverComponent implements OnInit {
     })
 
     dialog.afterClosed().subscribe(res => {
-    if(res=='yes'){
-      this.blobkUnblockDriver(event,drData);
+      console.log(res)
+      if (res == 'Yes' && label == 'status') {
+        console.log('toggle')
+        this.blobkUnblockDriver(event, drData);
+      } else if (res == 'Yes' && label == 'delete') {
+        console.log('delete');
+        this.removeDriverData();
+      }
     }
-    })
+    )
   }
   // -----------------------------------------Block/Unblock Driver--------------------------------------------------------------
   blobkUnblockDriver(event: any, drData: any) {
+    console.log(event.checked);
+    console.log(drData)
     let param = {
       "id": 0,
       "driverId": drData.driverId,
       "blockedDate": this.date.toISOString(),
       "blockBy": 0,
-      "isBlock": event.target.checked ? 1 : 0
+      "isBlock": event.checked ? 1 : 0
     }
     this.spinner.show();
     this.apiCall.setHttp('put', 'driver/Block-Unblock-Driver_1', true, param, false, 'fleetExpressBaseUrl');
@@ -253,21 +275,6 @@ export class DriverComponent implements OnInit {
   }
   // ----------------------------------------------Delete Record----------------------------------------------------------------
 
-  allSelected(event: any) {
-    if (event.checked) {
-      this.driverDetails.forEach((ele: any) => {
-        ele.isChecked = true;
-        this.checkArray.push(ele);
-      });
-    }
-    else {
-      this.driverDetails.forEach((ele: any) => {
-        ele.isChecked = false;
-        this.checkArray = [];
-      });
-    }
-  }
-
   onSingleSelected(data: any, event: any) {
     if (event.checked == true) {
       data['isChecked'] = true;
@@ -279,9 +286,9 @@ export class DriverComponent implements OnInit {
         if (ele.isChecked == true) {
           this.checkArray.push(ele);
         }
-      })
+      }) 
     }
-  }
+  } 
 
   removeDriverData() {
     this.deleteBtn = false;
@@ -301,7 +308,6 @@ export class DriverComponent implements OnInit {
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
-        this.commonMethods.snackBar(response.statusMessage, 1)
         this.getDriverDetails();
       }
     },
@@ -333,7 +339,6 @@ export class DriverComponent implements OnInit {
       /*  !this.driverRegForm.value.panCardDoc ? this.commonMethods.snackBar("Pancard upload is required", 1) : '';
        !this.driverRegForm.value.aadharCardDoc ? this.commonMethods.snackBar("Aadhar card upload is required", 1) : '';
        !this.driverRegForm.value.licenceDoc ? this.commonMethods.snackBar("Licence upload is required", 1) : ''; */
-      console.log("invalid")
       return;
     } else {
       console.log("valid")
@@ -360,9 +365,7 @@ export class DriverComponent implements OnInit {
       this.spinner.hide();
     }
   }
-  addDriverModule(){
-    // this.commonMethods.routerLinkRedirect('/login');
-  }
+  
   onPagintion(pageNo: any) {
     this.paginationNo = pageNo;
     this.getDriverDetails();
@@ -370,8 +373,41 @@ export class DriverComponent implements OnInit {
   get f() { return this.driverRegForm.controls };
 
   ngOnDestroy() {
-    if(this.subscription){
+    if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+  confirmationDialog1(flag: boolean, label: string, event?: any, drData?: any) {
+    let obj: any = ConfigService.dialogObj;
+
+    if (label == 'status') {
+      obj['p1'] = flag ? 'Are you sure you want to approve?' : 'Are you sure you want to reject ?';
+      obj['cardTitle'] = flag ? 'Driver Registration' : 'Application  Reject';
+      obj['successBtnText'] = flag ? 'Approve' : 'Reject';
+      obj['cancelBtnText'] = 'Cancel';
+    } else if (label == 'delete') {
+      obj['p1'] = 'Are you sure you want to delete this record';
+      obj['cardTitle'] = 'Delete';
+      obj['successBtnText'] = 'Delete';
+      obj['cancelBtnText'] = 'Cancel';
+    }
+
+    const dialog = this.dialog.open(ModalsComponent, {
+      width: this.config.dialogBoxWidth[0],
+      data: obj,
+      disableClose: this.config.disableCloseBtnFlag,
+    })
+
+    dialog.afterClosed().subscribe(res => {
+      console.log(res)
+      if (res == 'Yes' && label == 'status') {
+        console.log('toggle')
+        this.blobkUnblockDriver(event, drData);
+      } else if (res == 'Yes' && label == 'delete') {
+        console.log('delete');
+        this.removeDriverData();
+      }
+    }
+    )
   }
 }

@@ -10,7 +10,7 @@
     </div>
 </div>
 <div class="row">
-    <div *ngIf="!driverDetails">
+   <!--  <div *ngIf="!driverDetails">
         <div class="col-sm-12">
             <div class="card card-body plain-card card-fullheight">
                 <div class="text-center justify-content-center">
@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <div class="col-sm-12">
         <div class="card card-body border-0">
@@ -58,8 +58,10 @@
                                     data-bs-target="#AddDriverModal">
                                     <i class="fa-solid fa-plus"></i>
                                 </button>
+                                <button [disabled]="!checkArray.length" class="btn btn-danger rounded-circle ms-3" (click)="confirmationDialog(true, 'delete')">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
                             </div>
-
                             <div class="card-body p-0 mt-3">
                                 <table class="table dashboard-table">
                                     <thead>
@@ -70,14 +72,7 @@
                                             <th>MOBILE NUMBER</th>
                                             <th>BLOCK/UNBLOCK</th>
                                             <th>ACTION</th> 
-                                            <th>
-                                                <mat-checkbox (change)="allSelected($event)" class="me-3" value=""></mat-checkbox>
-                                                    <button type="button" *ngIf="this.checkArray.length"
-                                                        class="border border-none text-primary"
-                                                        (click)="removeDriverData()">
-                                                        <i class="fa-solid fa-trash-can"></i>
-                                                    </button>
-                                            </th>
+                                            <th>Select</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -93,13 +88,7 @@
                                             </td>
                                             <td>{{driver.mobileNo}}</td>
                                             <td>
-                                                <mat-slide-toggle (change)="confirmationDialog($event.checked,'status',$event,driver)"></mat-slide-toggle>
-                                               <!--  <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch"
-                                                        id="flexSwitchCheckDefault"
-                                                        (change)="blobkUnblockDriver($event,driver)"
-                                                        [checked]="driver.isBlockFlag">
-                                                </div> -->
+                                                <mat-slide-toggle [checked]="driver.isBlockFlag"  (change)="confirmationDialog($event.checked,'status',$event,driver)"></mat-slide-toggle>
                                             </td>
                                             <td>
                                                 <div class="d-flex">
@@ -126,6 +115,8 @@
                                 </pagination-controls>
                              </div>
                             </div>
+
+                            <button class="btn btn-bg-primary" (click)="confirmationDialog1(true,'status')">modals</button>
                             <!-- Modal -->
                            <div class="modal fade" id="AddDriverModal" tabindex="-1"
                                 aria-labelledby="AddDriverModalLabel" aria-hidden="true">
