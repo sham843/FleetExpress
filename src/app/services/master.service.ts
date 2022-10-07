@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 export class MasterService {
   vehicleLists = new Array();
   driverDetails = new Array();
+  AlertList= new Array();
   constructor(private apiCall: ApiCallService, private webStorage: WebStorageService) { }
 
   getVehicleListData() { // get all Vechile list 
@@ -16,6 +17,15 @@ export class MasterService {
       this.apiCall.setHttp('get', 'userdetail/get-vehicle-list?vehicleOwnerId=' + this.webStorage.getVehicleOwnerId(), true, false, false, 'fleetExpressBaseUrl');
       this.apiCall.getHttp().subscribe({
         next: (res: any) => { if (res.statusCode === "200") { this.vehicleLists = res.responseData; obj.next(this.vehicleLists); } else { obj.error(res); } },
+        error: (e: any) => { obj.error(e) }
+      });
+    });
+  }
+  getAlertList(){// get all Alert list 
+    return new Observable((obj) => {
+      this.apiCall.setHttp('get', 'notification/get-alert-types', true, false, false, 'fleetExpressBaseUrl');
+      this.apiCall.getHttp().subscribe({
+        next: (res: any) => { if (res.statusCode === "200") { this.AlertList = res.responseData; obj.next(this.AlertList); } else { obj.error(res); } },
         error: (e: any) => { obj.error(e) }
       });
     });
