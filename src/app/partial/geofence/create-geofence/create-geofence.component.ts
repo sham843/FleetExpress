@@ -23,6 +23,7 @@ export class CreateGeofenceComponent implements OnInit {
   google: any;
   geofenceForm: FormGroup | any;
   editFlag:boolean = false;
+  
   newRecord: any = {
     dataObj: undefined,
     geofenceType: "",
@@ -496,7 +497,7 @@ export class CreateGeofenceComponent implements OnInit {
     delete this.geofenceForm.value.vehicleId;
     this.geofenceForm.value.transmodel = transmodel;
     this.geofenceForm.value.vehicleOwnerId = this.webStorage.getVehicleOwnerId();
-    this.geofenceForm.value.geofenceType = this.geofenceForm.value.geofenceType == 2 || this.geofenceForm.value.geofenceType == 1 ? this.geofenceForm.value.geofenceType : 0;
+    this.geofenceForm.value.distance = this.geofenceForm.value.geofenceType == 2 ? this.geofenceForm.value.distance : 0;
     this.spinner.show();
     this.apiCall.setHttp('post', 'Geofencne/save-update-POI', true, [this.geofenceForm.value], false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe((response: any) => {
