@@ -69,7 +69,8 @@ export class ModalsComponent implements OnInit {
       panCardDoc: ['', Validators.required],
       presentAddress: [this.dialogData ? this.dialogData?.presentAddress : '', Validators.compose([Validators.required, Validators.maxLength(150)])],
       permanentAddress: [this.dialogData ? this.dialogData?.permanentAddress : '', Validators.compose([Validators.required, Validators.maxLength(150)])],
-      flag: [this.dialogData ? 'u' : 'i']
+      flag: [this.dialogData ? 'u' : 'i'],
+      licenceExpiryDate:[this.dialogData ?new Date(this.dialogData.licenceExpiryDate): '',Validators.required]
     })
     if (this.dialogData) {
       this.buttonFlag = false;
@@ -171,7 +172,6 @@ export class ModalsComponent implements OnInit {
     formData.aadharCardDoc = this.aadharDoc || '';
     formData.licenceDoc = this.licenceDoc || '';
     formData.profilePhoto = this.profilePhotoupd != 'assets/images/Driver-profile.svg' ? this.profilePhotoupd : '';
-
     if (this.driverRegForm.invalid) {
       return;
     } else {
