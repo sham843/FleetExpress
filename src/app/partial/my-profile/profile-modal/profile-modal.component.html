@@ -1,0 +1,112 @@
+<div class="position-relative mb-3">
+    <h5 mat-dialog-title class="mb-0"></h5>
+    <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick(formDirective)"><i class="fas fa-times"></i></button>
+</div>
+
+
+<div>
+    <form [formGroup]="myProfileForm" #formDirective="ngForm" (ngSubmit)="profileSave()">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="position-relative">
+                    <img src="{{profilePhotoupd}}" class="vehicle-image">
+                    <div class="vehicle-buttons d-flex flex-column upload-btn-wrapper">
+                        <button type="button" class="btn bg-light text-primary" (click)="profileUpload.click()">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                        <input type="file" #profileUpload name="myfile" accept=".jpg,.jpeg,.png"
+                            formControlName="profilePhoto" matTooltip="Upload only png,jpg,jpeg file"
+                            (change)="profileUploads($event)" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-9">
+                <div class="row align-items-end">
+                    <div class="col-sm-6">
+                        <mat-form-field class="w-100" [appearance]="config.matFormField">
+                            <mat-label>Name</mat-label>
+                            <input matInput placeholder="Enter Name"
+                                formControlName="name"
+                                (keypress)="this.vs.onlyAlphabets($event)">
+                            <mat-error *ngIf="f['name'].errors">
+                                <span class="text-danger"
+                                    *ngIf="f['name'].hasError('required')">
+                                    first Name is required</span>
+                                <span class="text-danger"
+                                    *ngIf="f['name'].hasError('pattern')">
+                                    first Name is Invalid</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-6">
+                        <mat-form-field class="w-100" [appearance]="config.matFormField">
+                            <mat-label>Designation</mat-label>
+                            <input matInput placeholder="Enter Designation"
+                                (keyup)="this.vs.noSpaces($event)" formControlName="designation">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-6">
+                        <mat-form-field class="w-100" [appearance]="config.matFormField">
+                            <mat-label>Address</mat-label>
+                            <input matInput placeholder="Enter Address" (keyup)="this.vs.noSpaces($event)"
+                                formControlName="address">
+                                <mat-error *ngIf="f['address'].errors">
+                                </mat-error>
+                        </mat-form-field>
+                    </div>
+                    
+                     <div class="col-sm-6">
+                        <mat-form-field class="w-100" [appearance]="config.matFormField">
+                            <mat-label>Contact</mat-label>
+                            <input matInput placeholder="Enter Contact" (keyup)="this.vs.noSpaces($event)"
+                                formControlName="mobileNo" (keypress)="this.vs.onlyDigits($event)"
+                                (keyup)="this.vs.noSpaces($event)"
+                                maxlength="10" format="number">
+                            <mat-error *ngIf="f['mobileNo'].errors">
+                                <span class="text-danger"
+                                    *ngIf="f['mobileNo'].hasError('required')">
+                                    Contact is required</span>
+                                <span class="text-danger"
+                                    *ngIf="f['mobileNo'].hasError('pattern')">Enter
+                                    valid Contact No</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-6">
+                        <mat-form-field [appearance]="config.matFormField" class="w-100">
+                            <mat-label>Email</mat-label>
+                            <input matInput placeholder="Enter Email" (keyup)="this.vs.noSpaces($event)"
+                                formControlName="emailId">
+                                <mat-error *ngIf="f['emailId'].errors">
+                                    <span class="text-danger"
+                                        *ngIf="f['emailId'].hasError('pattern')">Enter
+                                        valid Email Id</span>
+                                </mat-error>
+                        </mat-form-field>
+                    </div>
+                   <div class="col-sm-6">
+                    <mat-form-field [appearance]="config.matFormField" class="w-100">
+                        <mat-label>Website</mat-label>
+                        <input matInput placeholder="Enter Website" (keyup)="this.vs.noSpaces($event)"
+                            formControlName="webiste">
+                            <mat-error *ngIf="f['webiste'].errors">
+                                <span class="text-danger"
+                                    *ngIf="f['webiste'].hasError('pattern')">Enter
+                                    valid Email Id</span>
+                            </mat-error>
+                    </mat-form-field>
+                   </div>
+                </div>
+            </div>
+            <div class="form-container w-100">
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-light-main" #closeModel data-bs-dismiss="modal" (click)="onNoClick(formDirective)">Cancel</button>
+
+                    <button type="submit" class="btn btn-main">Update</button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
