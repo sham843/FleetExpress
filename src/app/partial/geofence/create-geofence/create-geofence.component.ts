@@ -51,7 +51,6 @@ export class CreateGeofenceComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data);
     if(this.data){
       this.editFlag = true;
       this.getVehicleData();
@@ -67,25 +66,25 @@ export class CreateGeofenceComponent implements OnInit {
       this.getVehicleData()
     }
 
-    this.defaultGeoFanceForm();
+    this.defaultGeoFanceForm(this.data);
   }
 
-  defaultGeoFanceForm() {
+  defaultGeoFanceForm(data:any) {
     this.geofenceForm = this.fb.group({
-      id: [this.editFlag ?  this.data?.poiId : 0],
+      id: [data?.poiId || 0],
       vehicleOwnerId: [''],
       title: [''],
-      latitude: [''],
-      longitude: [''],
-      distance: [this.data ? this.data?.distance :''],
-      poiAddress: [this.data ? this.data?.poiAddress : ''],
+      latitude: [data?.latitude || ''],
+      longitude: [data?.longitude || ''],
+      distance: [data?.distance ||''],
+      poiAddress: [data?.poiAddress || ''],
       userId: [this.webStorage.getUserId()],
       createdDate: [new Date()],
       isDeleted: [true],
-      vehicleId: ['', [Validators.required]],
+      vehicleId: [data?.vehicleId || '', [Validators.required]],
       flag: [this.editFlag ? 'u' :'i'],
-      geofenceType: [''],
-      polygonText: [''],
+      geofenceType: [data?.geofenceType ||''],
+      polygonText: [data?.polygonText || ''],
     });
   }
 
@@ -475,35 +474,29 @@ export class CreateGeofenceComponent implements OnInit {
   onSubmit() {
     if (this.geofenceForm.invalid) {
       return
-    }else if(!this.geofenceForm.value.geofenceType) {
-      this.commonMethods.snackBar('Geofence is required', 1)
-      return
     }
-    let vehicleOwnerId = this.VehicleDtArr.find((ele: any) => { //get vehicleId from vehicle No.
-      if (ele.id == this.geofenceForm.value.vehicleId) {
-        return ele
-      }
-    })
-    this.geofenceForm.value.vehicleOwnerId = vehicleOwnerId?.vehicleOwnerId;
-    this.geofenceForm.value.vehicleOwnerId = vehicleOwnerId?.vehicleOwnerId;
-
+    // else if(!this.geofenceForm.value.geofenceType) {
+    //   this.commonMethods.snackBar('Geofence is required', 1)
+    //   return
+    // }
     let transmodel = new Array();
+
     this.geofenceForm.value.vehicleId.find((ele:any)=>{
 
       let obj = {
-        "id": 0,
-        "poiId": 0,
+        "id": this.geofenceForm.value.id,
+        "poiId":  this.geofenceForm.value.id,
         "vehicleId": ele,
         "userId": this.webStorage.getUserId(),
         "createdDate":  new Date(),
         "isDeleted": true
       }
-
       transmodel.push(obj);
     })
+    delete this.geofenceForm.value.vehicleId;
     this.geofenceForm.value.transmodel = transmodel;
     this.geofenceForm.value.vehicleOwnerId = this.webStorage.getVehicleOwnerId();
-    this.geofenceForm.value.geofenceType = this.geofenceForm.value.geofenceType == 2 ? this.geofenceForm.value.geofenceType : 0;
+    this.geofenceForm.value.geofenceType = this.geofenceForm.value.geofenceType == 2 || this.geofenceForm.value.geofenceType == 1 ? this.geofenceForm.value.geofenceType : 0;
     this.spinner.show();
     this.apiCall.setHttp('post', 'Geofencne/save-update-POI', true, [this.geofenceForm.value], false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe((response: any) => {

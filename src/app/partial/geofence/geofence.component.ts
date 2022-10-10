@@ -21,6 +21,8 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
   checkedGeoFenceArray = new Array();
   totalRecords!: number;
   totalPages!: number;
+  highlightRow!: string;
+  selectAll!: boolean;
 
   constructor(public dialog: MatDialog, private configService: ConfigService,
     private apiCall: ApiCallService, private error: ErrorsService, private commonMethods: CommonMethodsService) { }
@@ -42,6 +44,7 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getAllGeofecneData() {
+    this.checkedGeoFenceArray = []; // clear prev checked data
     this.apiCall.setHttp('get', 'Geofencne/get-All-POI?userId=23895&NoPage=' + this.paginationNo + '&RowsPerPage=' + this.configService.pageSize + '&searchText=' + this.searchContent.value, true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
@@ -58,6 +61,7 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   openCreateGeofenceDialog(data?: any) {
+    this.highlightRow = data?.poiId;
     const dialogRef = this.dialog.open(CreateGeofenceComponent, {
       width: this.configService.dialogBoxWidth[2],
       data: data,
@@ -67,21 +71,18 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
       if (result == 'Yes') {
         this.getAllGeofecneData();
       }
+      this.highlightRow = '';
     });
   }
 
   onPagintion(pageNo: any) {
+    this.selectAll = false;
     this.paginationNo = pageNo;
     this.getAllGeofecneData();
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
-
-  confirmationDialog(flag: boolean, label: string) {
+  confirmationDialog(flag: boolean, label: string, poiId?: any) {
     let obj: any = ConfigService.dialogObj;
-
     if (label == 'status') {
       obj['p1'] = flag ? 'Are you sure you want to approve?' : 'Are you sure you want to reject ?';
       obj['cardTitle'] = flag ? 'Application  Approve' : 'Application  Reject';
@@ -102,37 +103,69 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     dialog.afterClosed().subscribe(res => {
       if (res == 'Yes') {
-        this.deleteGeoFence();
-      }else{
+        label == 'status' ? this.blockUnBlockGeofence(flag, poiId) : this.deleteGeoFence();
+      } else {
         this.getAllGeofecneData();
       }
     })
   }
 
-
-  selGeoFence(event: any, element: any) {
-    if (event?.checked) {
-      let obj = {
-          "id": element,
-          "isDeleted": true
-        }
-      
-      this.checkedGeoFenceArray.push(obj);
-    } else {
-      let findIndex = this.commonMethods.findIndexOfArrayValue(this.checkedGeoFenceArray, element);
-      this.checkedGeoFenceArray.splice(findIndex, 1);
+  blockUnBlockGeofence(flag: any, poiId: number) {
+    let obj = {
+      "poiId": poiId,
+      "isActive": flag
     }
-  }
-
-  deleteGeoFence() {
-    this.apiCall.setHttp('DELETE', 'Geofencne/Delete-POI', true, this.checkedGeoFenceArray, false, 'fleetExpressBaseUrl');
+    this.apiCall.setHttp('PUT', 'Geofencne/Block-Unblock-POI_1', true, obj, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode == "200") {
+          this.commonMethods.snackBar(res.statusMessage, 0);
           this.getAllGeofecneData();
         }
       },
       error: ((error: any) => { this.geofenceListArray = []; this.error.handelError(error.status) })
     });
+  }
+
+  selAllGeofence(event: any, id: any) {
+    for (var i = 0; i < this.geofenceListArray.length; i++) {
+      if (id != 0) {
+        this.selectAll = false;
+        if (this.geofenceListArray[i].id == id) {
+          this.geofenceListArray[i].checked = event.checked;
+        }
+      } else {
+        this.geofenceListArray[i].checked = event.checked;
+      }
+    }
+    this.checkedGeoFenceArray = [];
+    this.checkedGeoFenceArray = this.geofenceListArray.filter((x: any) => x.checked == true);
+    this.selectAll = this.geofenceListArray.length == this.checkedGeoFenceArray.length ? true : false;
+  }
+
+  deleteGeoFence() {
+    let checkedArray = new Array();
+    this.checkedGeoFenceArray.find((ele: any) => {
+      let obj = {
+        "id": ele.poiId,
+        "isDeleted": true
+      }
+      checkedArray.push(obj);
+    });
+
+    this.apiCall.setHttp('DELETE', 'Geofencne/Delete-POI', true, checkedArray, false, 'fleetExpressBaseUrl');
+    this.subscription = this.apiCall.getHttp().subscribe({
+      next: (res: any) => {
+        if (res.statusCode == "200") {
+          this.commonMethods.snackBar(res.statusMessage, 0);
+          this.getAllGeofecneData();
+        }
+      },
+      error: ((error: any) => { this.geofenceListArray = []; this.error.handelError(error.status) })
+    });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }
