@@ -117,11 +117,12 @@
                                                 <td>{{element.mobileNo1}}</td>
                                                 <td>{{element.subUserTypeName}}</td>
                                                 <td >
-                                                    <div class="form-check form-switch">
+                                                    <mat-slide-toggle (change)="confirmationDialog(element.isBlock,'status', element)"  [(ngModel)]="element.isBlock"></mat-slide-toggle>
+                                                    <!-- <div class="form-check form-switch">
                                                         <input class="form-check-input" type="checkbox" role="switch"
                                                     id="flexSwitchCheckDefault"
                                                     [(ngModel)]="element.isBlock" (change)="confirmationDialog(element.isBlock,'status', element)">
-                                                    </div>
+                                                    </div> -->
                                                 </td>
                                                 <td>
                                                     <div class="d-flex">
