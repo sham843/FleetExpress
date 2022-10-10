@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, Subscription } from 'rxjs';
+import { ConfirmationComponent } from 'src/app/dialogs/confirmation/confirmation.component';
 import { ApiCallService } from 'src/app/services/api-call.service';
+import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { ValidationService } from 'src/app/services/validation.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
@@ -28,12 +31,25 @@ export class RegisterVehicleComponent implements OnInit {
     private apiCall:ApiCallService,
     private spinner:NgxSpinnerService,
     private error:ErrorsService,
-    private webStorage:WebStorageService
+    private webStorage:WebStorageService,
+   private dialog:MatDialog,
+   private config:ConfigService
     ) { }
 
   ngOnInit(): void {
     this.getFormControl();
     this.getVehiclesData();
+  }
+  ngAfterViewInit() {
+    let formValue = this.searchVehicleForm.valueChanges;
+    formValue.pipe(
+      filter(() => this.searchVehicleForm.valid),
+      debounceTime(1000),
+      distinctUntilChanged())
+      .subscribe(() => {
+        this.paginationNo = 1;
+        this.getVehiclesData();
+      })
   }
   // ----------------------------------------------------------------form-controls----------------------------------------------------------
   getFormControl() {
@@ -50,6 +66,7 @@ export class RegisterVehicleComponent implements OnInit {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.vehicleData = response.responseData.responseData1;
+        console.log(this.vehicleData)
        this.vehicleData.forEach((ele: any) => {
           ele.isBlock == 1 ? ele['isBlockFlag'] = true : ele['isBlockFlag'] = false;
         });
@@ -66,10 +83,38 @@ export class RegisterVehicleComponent implements OnInit {
       })
     this.spinner.hide();
   }
+  // ---------------------------------------------------------Comfirmation dialog------------------------------------------------------
+  confirmationDialog(flag: boolean, label: string, event?: any, vhlData?: any) {
+    let obj: any = ConfigService.dialogObj;
+    if (label == 'status') {
+      obj['p1'] = flag ? 'Are you sure you want to approve?' : 'Are you sure you want to reject ?';
+      obj['cardTitle'] = flag ? 'Application  Approve' : 'Application  Reject';
+      obj['successBtnText'] = flag ? 'Approve' : 'Reject';
+      obj['cancelBtnText'] = 'Cancel';
+    } else if (label == 'delete') {
+      obj['p1'] = 'Are you sure you want to delete this record';
+      obj['cardTitle'] = 'Delete';
+      obj['successBtnText'] = 'Delete';
+      obj['cancelBtnText'] = 'Cancel';
+    }
+
+    const dialog = this.dialog.open(ConfirmationComponent, {
+      width: this.config.dialogBoxWidth[0],
+      data: obj,
+      disableClose: this.config.disableCloseBtnFlag,
+    })
+
+    dialog.afterClosed().subscribe(res => {
+      if (res == 'Yes' && label == 'status') {
+        this.blockUnblockVhl(vhlData,event);
+      } 
+    }
+    )
+  }
  // --------------------------------------------------------Block/Unblock Vehicle-------------------------------------------
  blockUnblockVhl(vhlData: any, event: any) {
   let isBlock: any;
-  event.target.checked == true ? isBlock = 1 : isBlock = 0;
+  event.checked == true ? isBlock = 1 : isBlock = 0;
   let param = {
     "vehicleId": vhlData.vehicleId,
     "blockedDate": this.date.toISOString(),
@@ -77,6 +122,7 @@ export class RegisterVehicleComponent implements OnInit {
     "isBlock": isBlock,
     "remark": ""
   }
+  console.log(param)
   this.spinner.show();
   this.apiCall.setHttp('put', 'vehicle/BlockUnblockVehicle', true, param, false, 'fleetExpressBaseUrl');
   // this.subscription = 

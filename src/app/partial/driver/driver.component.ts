@@ -34,7 +34,7 @@ export class DriverComponent implements OnInit {
   checkArray = new Array();
   flagArray = new Array();
   deleteBtn: boolean = false;
-
+  selectAll!: boolean;
   constructor(private fb: FormBuilder,
     public validation: ValidationService,
     public config: ConfigService,
@@ -70,6 +70,7 @@ export class DriverComponent implements OnInit {
   }
   // -----------------------------------------------Driver Details----------------------------------------------------------
   getDriverDetails(flag?: any) {
+    this.checkArray=[];
     if (flag == 'search') {
       this.searchHideShow = false;
       this.clearHideShow = true;
@@ -164,19 +165,20 @@ export class DriverComponent implements OnInit {
   
   // ----------------------------------------------Delete Record----------------------------------------------------------------
 
-  onSingleSelected(data: any, event: any) {
-    if (event.checked == true) {
-      data['isChecked'] = true;
-      this.checkArray.push(data);
-    } else {
-      data['isChecked'] = false;
-      this.checkArray = [];
-      this.driverDetails.forEach((ele: any) => {
-        if (ele.isChecked == true) {
-          this.checkArray.push(ele);
+  removeDriver(event: any,driverId:number) {
+   for (var i = 0; i < this.driverDetails.length; i++) {
+      if (driverId != 0) {
+        this.selectAll = false;
+        if (this.driverDetails[i].driverId == driverId) {
+          this.driverDetails[i].checked = event.checked;
         }
-      }) 
+      } else {
+        this.driverDetails[i].checked = event.checked;
+      }
     }
+    this.checkArray = [];
+    this.checkArray = this.driverDetails.filter((x: any) => x.checked == true);
+    this.selectAll = this.driverDetails.length == this.checkArray.length ? true : false;
   } 
 
   removeDriverData() {
@@ -208,6 +210,7 @@ export class DriverComponent implements OnInit {
   }
 
   onPagintion(pageNo: any) {
+    this.selectAll=false;
     this.paginationNo = pageNo;
     this.getDriverDetails();
   }
@@ -220,7 +223,7 @@ export class DriverComponent implements OnInit {
   }
   commonModule(label: string,driverData?:any) {
     let obj;
-   label=='edit'?obj=driverData:obj='';
+   label=='edit'?(obj=driverData,this.highLightRow=driverData?.driverId):obj='';
     const dialog = this.dialog.open(ModalsComponent, {
       width: '900px',
       data: obj,
@@ -228,6 +231,7 @@ export class DriverComponent implements OnInit {
     })
 
     dialog.afterClosed().subscribe(res => {
+      this.highLightRow='';
       console.log(res)
       if(res=='add'){
         this.getDriverDetails();

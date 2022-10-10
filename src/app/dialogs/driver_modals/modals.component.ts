@@ -137,19 +137,7 @@ export class ModalsComponent implements OnInit {
       }
     }
   }
-  onNoClick(flag: any): void {
-    this.buttonFlag = true;
-    if (this.data.inputType && flag == 'Yes') {
-      if (this.CommonMethod.checkDataType(this.remark.value) == false) {
-        this.CommonMethod.snackBar('Please Enter Remark', 1);
-        return;
-      }
-      let obj = { remark: this.remark.value, flag: 'Yes' }
-      this.dialogRef.close(obj);
-    } else {
-      this.dialogRef.close(flag);
-    }
-  }
+  
   // ----------------------------------------------address same or not--------------------------------------------------
   checkArress(event: any) {
     if (event.checked) {
@@ -161,6 +149,7 @@ export class ModalsComponent implements OnInit {
   }
   //  ------------------------------------------------------add driver-----------------------------------------------------------------
   onSubmit(formDirective: any) {
+    console.log(this.driverRegForm.value)
     let formData = this.driverRegForm.value;
     formData.id = this.dialogData ? this.dialogData?.driverId : this.editId;
     formData.middleName = '';
@@ -199,4 +188,17 @@ export class ModalsComponent implements OnInit {
     }
   }
 
+  onNoClick(flag: any): void {
+    this.buttonFlag = true;
+    if (this.data.inputType && flag == 'Yes') {
+      if (this.CommonMethod.checkDataType(this.remark.value) == false) {
+        this.CommonMethod.snackBar('Please Enter Remark', 1);
+        return;
+      }
+      let obj = { remark: this.remark.value, flag: 'Yes' }
+      this.dialogRef.close(obj);
+    } else {
+      this.dialogRef.close(flag);
+    }
+  }
 }

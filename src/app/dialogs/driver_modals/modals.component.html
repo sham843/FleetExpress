@@ -28,6 +28,7 @@
                         <mat-form-field [appearance]="config.matFormField" class="w-100">
                             <mat-label>First Name</mat-label>
                             <input matInput placeholder="First Name" value="" formControlName="firstName"
+                            [value]="driverRegForm.get('firstName')?.value | titlecase"
                                 (keypress)="this.validation.onlyAlphabets($event)"
                                 (keyup)="this.validation.noSpaces($event)" maxlength="15">
                             <mat-error *ngIf="f['firstName'].errors">
@@ -42,6 +43,7 @@
                         <mat-form-field class="w-100" [appearance]="config.matFormField">
                             <mat-label>Last Name</mat-label>
                             <input matInput placeholder="Last Name" value="" formControlName="lastName"
+                            [value]="driverRegForm.get('lastName')?.value | titlecase"
                                 (keypress)="this.validation.onlyAlphabets($event)"
                                 (keyup)="this.validation.noSpaces($event)" maxlength="15">
                             <mat-error *ngIf="f['lastName'].errors">
