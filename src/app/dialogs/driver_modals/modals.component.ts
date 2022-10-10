@@ -27,8 +27,11 @@ export class ModalsComponent implements OnInit {
   aadharDoc!: string;
   editId: number = 0;
   date = new Date();
-  uploadFlag:boolean=false;
+  panUpdFlag: boolean = false;
+  aadharUpdFlag: boolean = false;
+  licenceUpdFlag: boolean = false;
   buttonFlag: boolean = true;
+  addressFlag:boolean=false;
   @ViewChild('closeModel') closeModel: any;
   @ViewChild('panUpload') panUpload: any;
   @ViewChild('aadharUpload') aadharUpload: any;
@@ -70,7 +73,7 @@ export class ModalsComponent implements OnInit {
       presentAddress: [this.dialogData ? this.dialogData?.presentAddress : '', Validators.compose([Validators.required, Validators.maxLength(150)])],
       permanentAddress: [this.dialogData ? this.dialogData?.permanentAddress : '', Validators.compose([Validators.required, Validators.maxLength(150)])],
       flag: [this.dialogData ? 'u' : 'i'],
-      licenceExpiryDate:[this.dialogData ?new Date(this.dialogData.licenceExpiryDate): '',Validators.required]
+      licenceExpiryDate: [this.dialogData ? new Date(this.dialogData.licenceExpiryDate) : '', Validators.required]
     })
     if (this.dialogData) {
       this.buttonFlag = false;
@@ -78,7 +81,9 @@ export class ModalsComponent implements OnInit {
       this.panDoc = this.dialogData?.panCardDoc;
       this.aadharDoc = this.dialogData?.aadharCardDoc;
       this.profilePhotoupd = this.dialogData?.profilePhoto;
+    this.dialogData.presentAddress == this.dialogData.permanentAddress?this.addressFlag=true:this.addressFlag=false;
     }
+    
   }
 
   //  --------------------------------------------------uploads-----------------------------------------------------------------
@@ -114,24 +119,21 @@ export class ModalsComponent implements OnInit {
       flag == 'aadhar' ? (this.aadharUpload.nativeElement.value = '', this.aadharDoc = '') :
         (this.licenceUpload.nativeElement.value = '', this.licenceDoc = '');
   }
- 
+
   checkDocumentUpd(flag: any) {
     if (flag == 'licence') {
       if (this.driverRegForm.value.licenceDoc == '') {
         this.commonMethods.snackBar("Please upload licence", 1);
-        this.driverRegForm.controls['licenceNumber'].setValue('');
       }
     }
     else if (flag == 'aadhar') {
       if (this.driverRegForm.value.aadharCardDoc == '') {
         this.commonMethods.snackBar("Please upload Aadhar card", 1);
-        this.driverRegForm.controls['aadharNumber'].setValue('');
       }
     }
-    else if(flag == 'pan'){
+    else if (flag == 'pan') {
       if (this.driverRegForm.value.panCardDoc == '') {
         this.commonMethods.snackBar("Please upload Pan card", 1);
-        this.driverRegForm.controls['panNumber'].setValue('');
       }
     }
   }
