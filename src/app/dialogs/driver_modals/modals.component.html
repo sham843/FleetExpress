@@ -1,6 +1,7 @@
 <div class="position-relative mb-3">
     <h5 mat-dialog-title class="mb-0"> Add Driver</h5>
-    <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick(formDirective)"><i class="fas fa-times"></i></button>
+    <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick(formDirective)"><i
+            class="fas fa-times"></i></button>
 </div>
 
 
@@ -83,7 +84,8 @@
                             <mat-form-field [appearance]="config.matFormField" class="w-100">
                                 <mat-label>Licence Number</mat-label>
                                 <input matInput placeholder="Licence Number" formControlName="licenceNumber"
-                                    [ngClass]="{'is-invalid':f['licenceNumber'].errors}" maxlength="20" minlength="15" (blur)="checkDocumentUpd('licence')">
+                                    [ngClass]="{'is-invalid':f['licenceNumber'].errors}" maxlength="20" minlength="15"
+                                    (blur)="checkDocumentUpd('licence')">
                                 <mat-error *ngIf="f['licenceNumber'].errors">
                                     <span class="text-danger" *ngIf="f['licenceNumber'].hasError('pattern')">Enter valid
                                         licence
@@ -95,15 +97,16 @@
                                 </mat-error>
                             </mat-form-field>
                             <input type="file" name="myfile" #licenceUpload formControlName="licenceDoc"
-                            style="display: none;" (change)="documentUpload($event,'licence')" accept=".pdf"/>
-                        <button type="button" *ngIf="!this.licenceDoc?.length" mat-icon-button (click)="licenceUpload.click()"
-                            matTooltip="Upload only PDF file" accept=".pdf" required>
-                            <mat-icon>file_upload</mat-icon>
-                        </button>
-                        <button type="button" class="border border-0 bg-white"
-                            *ngIf="this.licenceDoc?.length" (click)="clearDoc('licence')">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
+                                style="display: none;" (change)="documentUpload($event,'licence')" accept=".pdf" />
+                            <button type="button" *ngIf="!this.licenceDoc?.length" mat-icon-button
+                                (click)="licenceUpload.click()" matTooltip="Upload only PDF file" accept=".pdf"
+                                required>
+                                <mat-icon>file_upload</mat-icon>
+                            </button>
+                            <button type="button" class="border border-0 bg-white" *ngIf="this.licenceDoc?.length"
+                                (click)="clearDoc('licence')">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
                         </div>
                     </div>
                     <div class="col-sm-6">
@@ -112,7 +115,8 @@
                                 <mat-label>Aadhaar Number</mat-label>
                                 <input matInput placeholder="Aadhaar Number" formControlName="aadharNumber"
                                     [ngClass]="{'is-invalid':f['aadharNumber'].errors}" maxlength="12"
-                                    (keypress)="this.validation.onlyDigits($event)" minlength="12" (blur)="checkDocumentUpd('aadhar')">
+                                    (keypress)="this.validation.onlyDigits($event)" minlength="12"
+                                    (blur)="checkDocumentUpd('aadhar')">
                                 <mat-error *ngIf="f['aadharNumber'].errors">
                                     <span class="text-danger" *ngIf="f['aadharNumber'].hasError('required')">Aadhar
                                         numberis required</span>
@@ -122,13 +126,14 @@
                             </mat-form-field>
                             <div>
                                 <input type="file" name="myfile" #aadharUpload formControlName="aadharCardDoc"
-                                    style="display: none;" (change)="documentUpload($event,'aadhar')" accept=".pdf"/>
-                                <button type="button" *ngIf="!this.aadharDoc?.length" mat-icon-button (click)="aadharUpload.click()"
-                                    matTooltip="Upload only PDF file" accept=".pdf" required>
+                                    style="display: none;" (change)="documentUpload($event,'aadhar')" accept=".pdf" />
+                                <button type="button" *ngIf="!this.aadharDoc?.length" mat-icon-button
+                                    (click)="aadharUpload.click()" matTooltip="Upload only PDF file" accept=".pdf"
+                                    required>
                                     <mat-icon>file_upload</mat-icon>
                                 </button>
-                                <button type="button" class="border border-0 bg-white"
-                                    *ngIf="this.aadharDoc?.length" (click)="clearDoc('aadhar')">
+                                <button type="button" class="border border-0 bg-white" *ngIf="this.aadharDoc?.length"
+                                    (click)="clearDoc('aadhar')">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </button>
                             </div>
@@ -150,13 +155,14 @@
                             </mat-form-field>
                             <div>
                                 <input type="file" name="myfile" #panUpload formControlName="panCardDoc"
-                                    style="display: none;" (change)="documentUpload($event,'pan')" accept=".pdf"/>
-                                <button type="button" *ngIf="!this.panDoc?.length" mat-icon-button (click)="panUpload.click()"
-                                    matTooltip="Upload only PDF file" accept=".pdf" required>
+                                    style="display: none;" (change)="documentUpload($event,'pan')" accept=".pdf" />
+                                <button type="button" *ngIf="!this.panDoc?.length" mat-icon-button
+                                    (click)="panUpload.click()" matTooltip="Upload only PDF file" accept=".pdf"
+                                    required>
                                     <mat-icon>file_upload</mat-icon>
                                 </button>
-                                <button type="button" class="border border-0 bg-white"
-                                    *ngIf="this.panDoc?.length" (click)="clearDoc('pan')">
+                                <button type="button" class="border border-0 bg-white" *ngIf="this.panDoc?.length"
+                                    (click)="clearDoc('pan')">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </button>
                             </div>
@@ -164,12 +170,13 @@
                     </div>
                     <div class="col-sm-6">
                         <mat-form-field [appearance]="config.matFormField" class="w-100">
-                            <input matInput [matDatepicker]="picker" formControlName="licenceExpiryDate" [readonly]="true"
-                                placeholder="Licence Expiry Date" [max]="maxDate" (click)="picker.open()">
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker #picker></mat-datepicker>
+                            <input matInput [matDatepicker]="picker1" formControlName="licenceExpiryDate"
+                                [readonly]="true" placeholder="Licence Expiry Date" (click)="picker1.open()">
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
                             <mat-error *ngIf="f['licenceExpiryDate'].errors">
-                                <span class="text-danger" *ngIf="f['licenceExpiryDate'].hasError('required')">Licence expiry date required</span>
+                                <span class="text-danger" *ngIf="f['licenceExpiryDate'].hasError('required')">Licence
+                                    expiry date required</span>
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -195,8 +202,11 @@
                                     required</span>
                             </mat-error>
                         </mat-form-field>
-                        <mat-checkbox class="small" (change)="checkArress($event)" [checked]="driverRegForm.value.presentAddress==driverRegForm.value.permanentAddress">Same as Present Address</mat-checkbox>
                     </div>
+                    <mat-checkbox class="small" (change)="checkArress($event)"
+                        [checked]="(driverRegForm.value.presentAddress.length > 0) && (driverRegForm.value.presentAddress == driverRegForm.value.permanentAddress)">
+                        Same as Present Address</mat-checkbox>
+
                     <ng-container class="form-group">
                         <input matInput class="d-none" formControlName="flag">
                     </ng-container>
@@ -204,7 +214,8 @@
             </div>
             <div class="form-container w-100">
                 <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-light-main" #closeModel data-bs-dismiss="modal" (click)="onNoClick(formDirective)">Cancel</button>
+                    <button type="button" class="btn btn-light-main" #closeModel data-bs-dismiss="modal"
+                        (click)="onNoClick(formDirective)">Cancel</button>
 
                     <button type="submit" class="btn btn-main">{{buttonFlag?'Save':'Update'}}</button>
                 </div>

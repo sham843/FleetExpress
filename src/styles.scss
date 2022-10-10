@@ -56,15 +56,12 @@ body { margin: 0; font-family: 'Poppins', "Helvetica Neue", sans-serif;backgroun
     background:var(--main-gradient);
     color: #fff;
   }
-  .btn-light-main{
+  .btn-light-main,
+  .btn-light-main:focus,
+  .btn-light-main:hover{
     background-color:transparent;
     border: solid 1px var(--main-color);
     color: var(--main-color);
-  }
-  .btn-light-main:focus,
-  .btn-light-main:hover{
-    background:var(--main-color);
-    color: #fff;
   }
   .bg-main-light{
     background-color:var(--main-light-color);

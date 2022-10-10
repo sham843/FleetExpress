@@ -1,5 +1,5 @@
 <div class="position-relative mb-3">
-    <h5 mat-dialog-title class="mb-0"></h5>
+    <h5 mat-dialog-title class="mb-0">Edit Profile</h5>
     <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick(formDirective)"><i class="fas fa-times"></i></button>
 </div>
 
@@ -22,7 +22,7 @@
             </div>
 
             <div class="col-sm-9">
-                <div class="row align-items-end">
+                <div class="row align-items-end gy-3">
                     <div class="col-sm-6">
                         <mat-form-field class="w-100" [appearance]="config.matFormField">
                             <mat-label>Name</mat-label>
@@ -100,7 +100,7 @@
                 </div>
             </div>
             <div class="form-container w-100">
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between mt-4">
                     <button type="button" class="btn btn-light-main" #closeModel data-bs-dismiss="modal" (click)="onNoClick(formDirective)">Cancel</button>
 
                     <button type="submit" class="btn btn-main">Update</button>
