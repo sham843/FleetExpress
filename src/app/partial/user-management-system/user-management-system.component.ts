@@ -37,7 +37,7 @@ export class UserManagementSystemComponent implements OnInit {
   totalUserTableData: number=0;
   searchContent = new FormControl();
   filterData = new  Array();
-  highlightRow !:number;
+  highlightRowindex !:number;
   pageNumber: number = 1;
   pageSize: number = 10;
   get user() { return this.userForm.controls };
@@ -88,7 +88,7 @@ export class UserManagementSystemComponent implements OnInit {
     this.getRoleTableData();
   }
   clickedRow(index:any){
-    this.highlightRow=index;
+    this.highlightRowindex=index;
   }
   getVehicleData() {
     let vhlData=this.master.getVehicleListData();
@@ -359,7 +359,7 @@ export class UserManagementSystemComponent implements OnInit {
     dialog.afterClosed().subscribe(res => {
       console.log(res); 
       res == 'Yes' && label=='delete' ?  this.DeleteUserData():'';
-       res == 'Yes' && label=='status' ?   this.checkBlock(selectedRowObj, flag): selectedRowObj.isBlock = !flag;   
+       res == 'Yes' && label=='status' ?   this.checkBlock(selectedRowObj, flag): selectedRowObj.isBlock = !flag; ;   
     })
   }
   DeleteUserData() {
