@@ -1,6 +1,10 @@
 <div class="bg-light-gradient text-dark p-2 pb-0">
     <p>Driver Registration </p>
 </div>
+<mat-radio-group aria-label="Select an option" (change)="selMapType($event)">
+    <mat-radio-button value="1" [checked]="true"><small>Roadmap</small></mat-radio-button>
+    <mat-radio-button value="2" class="ms-2"><small>Satellite Map</small></mat-radio-button>
+  </mat-radio-group>
 
 <form [formGroup]="geofenceForm" (ngSubmit)="onSubmit()">
     <div class="row mb-1">
@@ -25,7 +29,9 @@
                 <input matInput aria-label="Number" placeholder="Search Location" autocorrect="off" autocapitalize="off"
                     spellcheck="off" autocomplete="off" type="text" #search formControlName="poiAddress"
                     (keydown.enter)="removeShape();$event.preventDefault()">
-                <mat-icon matSuffix>search</mat-icon>
+                <mat-icon matSuffix *ngIf="!geofenceForm.value.poiAddress">search</mat-icon>
+                <mat-icon matSuffix *ngIf="geofenceForm.value.poiAddress" (click)="clearAddress()">closed</mat-icon>
+                
                 <!-- <mat-error>
                     <span *ngIf="f['poiAddress'].errors?.required" class="text-danger">
                         Area is required</span>
@@ -35,7 +41,7 @@
     </div>
 
     <div class="position-relative">
-        <agm-map [latitude]="configService.lat" [zoom]="6" [longitude]="configService.long"
+        <agm-map [latitude]="configService.lat" [zoom]="6" [longitude]="configService.long" [mapTypeId]="mapViewType"
             (mapReady)="onMapReady($event)">
         </agm-map>
         <button class="btn-map-close" (click)="removeShape()" *ngIf="isShapeDrawn" aria-label="Remove Shape"><i

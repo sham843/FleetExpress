@@ -18,6 +18,7 @@ export class CreateGeofenceComponent implements OnInit {
   @ViewChild('search') public searchElementRef!: ElementRef;
   centerMarker: any;
   centerMarkerLatLng: any;
+  mapViewType: any = 'roadmap'; // roadmap,terrain,hybrid,satellite
   map: any;
   google: any;
   geofenceForm: FormGroup | any;
@@ -529,4 +530,14 @@ export class CreateGeofenceComponent implements OnInit {
   onNoClick(flag:string): void {
     this.dialogRef.close(flag);
   }
+
+  clearAddress(){
+    this.geofenceForm.controls['poiAddress'].setValue('');
+  }
+  // roadmap,terrain,hybrid,satellite
+  selMapType(event:any){
+    event.value == 1 ? this.mapViewType = 'roadmap' : this.mapViewType = 'hybrid';
+  }
+
+
 }
