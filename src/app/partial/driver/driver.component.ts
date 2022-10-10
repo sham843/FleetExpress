@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { debounceTime, distinctUntilChanged, filter, Subscription } from 'rxjs';
 import { ConfirmationComponent } from 'src/app/dialogs/confirmation/confirmation.component';
-import { ModalsComponent } from 'src/app/dialogs/modals/modals.component';
+import { ModalsComponent } from 'src/app/dialogs/driver_modals/modals.component';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';

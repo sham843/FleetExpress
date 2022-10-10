@@ -21,7 +21,7 @@
                                {{userDetails?.address}}
                             </p>
                             <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
-                                id="openmodal" data-bs-target="#profileEditModal" (click)="editProfile(userDetails)">Edit</button>
+                                id="openmodal"  (click)="profileModule(userDetails)">Edit</button>
                         </div>
                         <p class="text-main fw-bold mb-1">Basic Details</p>
                         <div class="card mb-3">
@@ -80,7 +80,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="profileEditModal" tabindex="-1" aria-labelledby="profileEditModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="profileEditModal" tabindex="-1" aria-labelledby="profileEditModalLabel" aria-hidden="true">
     <form [formGroup]="myProfileForm" (ngSubmit)="profileSave()">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
@@ -93,8 +93,8 @@
                         <div class="col-sm-2">
                             <div class="position-relative form-group">
                                 <div class="position-relative form-group">
-                                    <!-- || {{userDetails.profilePhoto}} -->
-                                    <img src="{{profilePhotoupd}}" class="vehicle-image">
+                                    || {{userDetails.profilePhoto}} -->
+                                   <!-- <img src="{{profilePhotoupd}}" class="vehicle-image">
                                     <div class="vehicle-buttons d-flex flex-column upload-btn-wrapper">
                                         <button type="button" class="btn bg-light text-primary" (click)="profileUpload.click()">
                                              <i class="fa-solid fa-plus"></i>
@@ -139,12 +139,7 @@
                                         <input matInput placeholder="Enter Address" (keyup)="this.vs.noSpaces($event)"
                                             formControlName="address">
                                             <mat-error *ngIf="f['address'].errors">
-                                               <!--  <span class="text-danger"
-                                                    *ngIf="f['address'].hasError('required')">
-                                                    Address is required</span> -->
-                                                <!-- <span class="text-danger"
-                                                    *ngIf="f['address'].hasError('pattern')">
-                                                Address is Invalid</span> -->
+                                              
                                             </mat-error>
                                     </mat-form-field>
                                 </div>
@@ -206,4 +201,4 @@
             </div>
         </div>
     </form>
-</div>
+</div> -->
