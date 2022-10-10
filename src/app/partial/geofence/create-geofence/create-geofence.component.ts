@@ -38,7 +38,7 @@ export class CreateGeofenceComponent implements OnInit {
   };
   centerMarkerRadius: string = "";
   isShapeDrawn: boolean = false;
-  drawingManager: any;
+  drawingManager!: any;
   isHide: boolean = false;
   VehicleDtArr = new Array();
 
@@ -51,6 +51,7 @@ export class CreateGeofenceComponent implements OnInit {
 
   ngOnInit(): void {
     this.data ? this.editFlag = true : '';
+    console.log(this.data);
     this.getVehicleData();
     this.defaultGeoFanceForm();
   }
@@ -470,13 +471,30 @@ export class CreateGeofenceComponent implements OnInit {
     })
     this.geofenceForm.value.vehicleOwnerId = vehicleOwnerId?.vehicleOwnerId;
 
+    let transmodel = new Array();
+    this.geofenceForm.value.vehicleId.find((ele:any)=>{
+
+      let obj = {
+        "id": 0,
+        "poiId": 0,
+        "vehicleId": ele,
+        "userId": this.webStorage.getUserId(),
+        "createdDate":  new Date(),
+        "isDeleted": true
+      }
+
+      transmodel.push(obj);
+    })
+    this.geofenceForm.value.transmodel = transmodel;
+    this.geofenceForm.value.vehicleOwnerId = this.webStorage.getVehicleOwnerId();
+    delete this.geofenceForm.value.vehicleId;
     this.spinner.show();
-    this.apiCall.setHttp('post', 'Geofencne/save-update-POI', true, this.geofenceForm.value, false, 'fleetExpressBaseUrl');
+    this.apiCall.setHttp('post', 'Geofencne/save-update-POI', true, [this.geofenceForm.value], false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.commonMethods.snackBar(response.statusMessage, 0);
-        this.onNoClick();
+        this.onNoClick('Yes');
       }
     }, (error: any) => {
       this.error.handelError(error.status);
@@ -496,7 +514,7 @@ export class CreateGeofenceComponent implements OnInit {
     }
   }
 
-  onNoClick(): void {
-    this.dialogRef.close();
+  onNoClick(flag:string): void {
+    this.dialogRef.close(flag);
   }
 }
