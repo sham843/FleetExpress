@@ -184,7 +184,7 @@
                                     required</span>
                             </mat-error>
                         </mat-form-field>
-                        <mat-checkbox class="small" (change)="checkArress($event)">Same as Present Address</mat-checkbox>
+                        <mat-checkbox class="small" (change)="checkArress($event)" [checked]="driverRegForm.value.presentAddress==driverRegForm.value.permanentAddress">Same as Present Address</mat-checkbox>
                     </div>
                     <ng-container class="form-group">
                         <input matInput class="d-none" formControlName="flag">
