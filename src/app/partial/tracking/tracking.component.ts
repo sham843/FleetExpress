@@ -48,6 +48,7 @@ export class TrackingComponent implements OnInit {
   geocoder: any;
   itineraryForm!:FormGroup;
   vehicleDetailsData=new Array();
+  driverDetailsData=new Array();
   @ViewChild('search') public searchElementRef!: ElementRef;
   get f() { return this.maintananceForm.controls };
   get itinerary() { return this.itineraryForm.controls };
@@ -94,6 +95,7 @@ export class TrackingComponent implements OnInit {
     this.selectedTab = lable;
     this.selectedIndex=0;
   }
+  
 
   getAllVehicleListData() {
     this.allVehiclelData = []
@@ -104,6 +106,7 @@ export class TrackingComponent implements OnInit {
           res.responseData.map(async (x: any) => {
             x.deviceDatetime = new Date(x.deviceDatetime);
            //  x.address= await this.findAddressByCoordinates(parseFloat(x.latitude) , parseFloat(x.longitude));
+           x.gpsStatus='Running'
           })
           this.allVehiclelData = res.responseData;
           this.allRunningVehiclelData = res.responseData.filter((x: any) => x.gpsStatus == 'Running');
@@ -236,6 +239,10 @@ export class TrackingComponent implements OnInit {
       }
     }
   }
+  getVehicleAllDetails(vehicleNo:any){
+    this.getVehicleDetails(vehicleNo);
+    this.getDriverDetails(vehicleNo);
+  }
   getVehicleDetails(vehicleNo:any){
     this.vehicleDetailsData = []
     this.apiCall.setHttp('get', 'vehicle/search-vehicle?Search=' + vehicleNo, true, false, false, 'fleetExpressBaseUrl');
@@ -246,6 +253,23 @@ export class TrackingComponent implements OnInit {
         } else {
           if (res.statusCode != "404") {
             this.vehicleDetailsData = [];
+            this.error.handelError(res.statusCode)
+          }
+        }
+      }
+    },(error: any) => { this.error.handelError(error.status) });
+  }
+  getDriverDetails(vehicleNo:any){
+   console.log(vehicleNo) 
+    this.driverDetailsData = []
+    this.apiCall.setHttp('get', 'vehicle/get-driver-List?VehicleNo=MH12MK2246', true, false, false, 'fleetExpressBaseUrl');
+    this.subscription = this.apiCall.getHttp().subscribe({
+      next: (res: any) => {
+        if (res.statusCode === "200") {
+          this.driverDetailsData = res.responseData;
+        } else {
+          if (res.statusCode != "404") {
+            this.driverDetailsData = [];
             this.error.handelError(res.statusCode)
           }
         }

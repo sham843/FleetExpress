@@ -117,7 +117,7 @@
                             </div>
                             <div class="flex-grow-1 ms-2">
                                 <div class="d-flex justify-content-between align-items-center my-2">
-                                    <a (click)="getVehicleDetails(item?.vehicleNo)" data-bs-toggle="offcanvas"
+                                    <a (click)="getVehicleAllDetails(item?.vehicleNo)" data-bs-toggle="offcanvas"
                                     data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom"
                                         [ngClass]="{'text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
                                         <p class="vehicle-no">{{item?.vehicleNo}}</p>
@@ -710,32 +710,32 @@
                                     <div class="col-sm-10">
                                         <div class="d-flex mb-4 align-items-center">
                                             <div class="driver-name me-3">
-                                                <p>Nilesh Rajashi</p>
-                                                <small>+91 9768564567</small>
+                                                <p>{{driverDetailsData[0]?.name }}</p>
+                                                <small>{{driverDetailsData[0]?.mobileNo }}</small>
                                             </div>
-                                            <a class="call-driver bg-success" href="#">
+                                            <a class="call-driver bg-success" [href]="'tel:'+ driverDetailsData[0]?.mobileNo">
                                                 <i class="fa-solid fa-phone"></i>
                                             </a>
                                         </div>
                                         <div class="row driver-info">
                                             <div class="col-sm">
                                                 <small>Aadhar Card No.</small>
-                                                <p>876543218976</p>
-                                                <i class="fa-solid fa-file-pdf"></i>
+                                                <p>{{driverDetailsData[0]?.aadharNumber }}</p>
+                                                <a *ngIf="driverDetailsData[0]?.aadharCardDoc" [href]="driverDetailsData[0]?.aadharCardDoc" target="_blank"><i class="fa-solid fa-file-pdf"></i></a> 
                                             </div>
                                             <div class="col-sm">
                                                 <small>PAN Card No.</small>
-                                                <p>ALWPG5809L</p>
-                                                <i class="fa-solid fa-file-pdf"></i>
+                                                <p>{{driverDetailsData[0]?.panNumber }}</p>
+                                                <a *ngIf="driverDetailsData[0]?.panCardDoc" [href]="driverDetailsData[0]?.panCardDoc" target="_blank"><i class="fa-solid fa-file-pdf"></i></a> 
                                             </div>
                                             <div class="col-sm">
                                                 <small>License No.</small>
-                                                <p>RJ-13/DLC/12/ 123456</p>
-                                                <i class="fa-solid fa-file-pdf"></i>
+                                                <p>{{driverDetailsData[0]?.licenceNumber }}</p>
+                                                <a *ngIf="driverDetailsData[0]?.licenceDoc" [href]="driverDetailsData[0]?.licenceDoc" target="_blank"><i class="fa-solid fa-file-pdf"></i></a> 
                                             </div>
                                             <div class="col-sm">
                                                 <small>License Expiry</small>
-                                                <p>06-09-2027</p>
+                                                <p>{{driverDetailsData[0]?.licenceExpiryDate | date:'dd-MM-yyyy' }}</p>
                                             </div>
                                         </div>
                                     </div>
