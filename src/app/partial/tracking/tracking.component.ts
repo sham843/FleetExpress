@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
-import { SharedComponent } from 'src/app/dialogs/shared/shared.component';
+import { SharedTrackingComponent } from 'src/app/dialogs/shared-tracking/shared-tracking.component';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
@@ -110,6 +110,7 @@ export class TrackingComponent implements OnInit {
         if (res.statusCode === "200") {
           res.responseData.map(async (x: any) => {
             x.deviceDatetime = new Date(x.deviceDatetime);
+            // x.gpsStatus = 'Running'
           })
           this.allVehiclelData = res.responseData;
           this.allRunningVehiclelData = res.responseData.filter((x: any) => x.gpsStatus == 'Running');
@@ -293,7 +294,7 @@ export class TrackingComponent implements OnInit {
     //   obj['cancelBtnText'] = 'Cancel';
     // }
 
-    const dialog = this.dialog.open(SharedComponent, {
+    const dialog = this.dialog.open(SharedTrackingComponent, {
       width: this.configService.dialogBoxWidth[0],
       data: obj,
       disableClose: this.configService.disableCloseBtnFlag,

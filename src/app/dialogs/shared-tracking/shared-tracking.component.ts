@@ -1,19 +1,21 @@
+
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
 
 @Component({
-  selector: 'app-shared',
-  templateUrl: './shared.component.html',
-  styleUrls: ['./shared.component.scss']
+  selector: 'app-shared-tracking',
+  templateUrl: './shared-tracking.component.html',
+  styleUrls: ['./shared-tracking.component.scss']
 })
-export class SharedComponent implements OnInit {
+export class SharedTrackingComponent implements OnInit {
+
 
   dialogData= new Array();
   timePeriod = new FormControl('');
 
-  constructor(public dialogRef: MatDialogRef<SharedComponent>,
+  constructor(public dialogRef: MatDialogRef<SharedTrackingComponent>,
     public CommonMethod: CommonMethodsService,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 

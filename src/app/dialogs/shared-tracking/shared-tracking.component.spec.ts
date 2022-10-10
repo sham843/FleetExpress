@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SharedComponent } from './shared.component';
+import { SharedTrackingComponent } from './shared-tracking.component';
 
-describe('SharedComponent', () => {
-  let component: SharedComponent;
-  let fixture: ComponentFixture<SharedComponent>;
+describe('SharedTrackingComponent', () => {
+  let component: SharedTrackingComponent;
+  let fixture: ComponentFixture<SharedTrackingComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SharedComponent ]
+      declarations: [ SharedTrackingComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SharedComponent);
+    fixture = TestBed.createComponent(SharedTrackingComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
