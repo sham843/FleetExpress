@@ -110,7 +110,7 @@ export class NotificationsComponent implements OnInit {
           this.notificationTotalCount=res.responseData.totalCount;
         } else {
             this.notificationData = [];
-            // this.error.handelError(res.statusCode)
+            this.notificationTotalCount='0';
           } 
       }
     },(error: any) => {
