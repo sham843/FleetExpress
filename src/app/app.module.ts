@@ -22,6 +22,7 @@ import { ReportTableComponent } from './dialogs/report-table/report-table.compon
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmationComponent } from './dialogs/confirmation/confirmation.component';
 import { ModalsComponent } from './dialogs/driver_modals/modals.component';
+import { SharedTrackingComponent } from './dialogs/shared-tracking/shared-tracking.component';
 
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -38,7 +39,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PageNotFoundComponent,
     ReportTableComponent,
     ConfirmationComponent,
-    ModalsComponent
+    ModalsComponent,
+    SharedTrackingComponent
   ],
   imports: [
     BrowserModule,

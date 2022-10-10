@@ -43,7 +43,7 @@
                             </div>
                         </div>
                         <div class="col-sm-4 text-end">
-                            <button [disabled]="!checkedGeoFenceArray.length" class="btn btn-danger rounded-circle me-3" (click)="confirmationDialog(true, 'delete')">
+                            <button [disabled]="!checkedGeoFenceArray.length" *ngIf="geofenceListArray.length" class="btn btn-danger rounded-circle me-3" (click)="confirmationDialog(true, 'delete')">
                                 <i class="fa-regular fa-trash-can"></i>
                             </button>
                             <button class="btn btn-add" (click)="openCreateGeofenceDialog()">
@@ -62,8 +62,8 @@
                                 <th>ACTIVE</th>
                                 <th>ACTION</th>
                                 <th>
-                                    <mat-checkbox (change)='selAllGeofence($event,0)' value=""  [(ngModel)]="selectAll"
-                                    [(ngModel)]="selectAll"></mat-checkbox>
+                                    <mat-checkbox (change)='selAllGeofence($event,0)' value=""  [(ngModel)]="selectAll" [disabled]="!geofenceListArray.length"
+                                  ></mat-checkbox>
                                 </th>
                             </tr>
                         </thead>
@@ -101,8 +101,7 @@
                                </ng-container>
                         </tbody>
                     </table>
-                    <!-- *ngIf="geofenceListArray.length > 10" -->
-                       <pagination-controls  previousLabel="" nextLabel=""   (pageChange)="onPagintion($event)" class="text-end m-2"></pagination-controls>
+                       <pagination-controls  previousLabel="" nextLabel="" *ngIf="geofenceListArray.length > 10"    (pageChange)="onPagintion($event)" class="text-end m-2"></pagination-controls>
                 </div>
             </div>
         </div>

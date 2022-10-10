@@ -23,6 +23,7 @@ export class CreateGeofenceComponent implements OnInit {
   google: any;
   geofenceForm: FormGroup | any;
   editFlag:boolean = false;
+
   newRecord: any = {
     dataObj: undefined,
     geofenceType: "",
@@ -169,9 +170,9 @@ export class CreateGeofenceComponent implements OnInit {
         const existingMarker = new google.maps.Marker({ map: map, draggable: false, position: latLng });
 
         let hc = "<table><tbody>";
-        hc += '<tr><td colspan="2"><h4>Vechile Details</h4></td></tr>';
-        hc += '<tr><td>Vehicle No</td><td>: ' + (this.data?.selectedRecord?.vehicleNo || "-") + '</td></tr>';
-        hc += '<tr><td>Address</td><td>: ' + (this.data?.selectedRecord?.poiAddress || "-") + '</td></tr>';
+        hc += '<tr><td colspan="2"><p class="fw-bold mb-2">Vehicle Details</p></td></tr>';
+        hc += '<tr><td style="width: 75px;">Vehicle No. :</td><td>' + (this.data?.selectedRecord?.vehicleNo || "-") + '</td></tr>';
+        hc += '<tr><td>Address :</td><td>' + (this.data?.selectedRecord?.poiAddress || "-") + '</td></tr>';
         hc += "</tbody></table>";
 
         const info = new google.maps.InfoWindow({
@@ -201,9 +202,9 @@ export class CreateGeofenceComponent implements OnInit {
         this.setZoomLevel(this.data?.selectedRecord?.distance);
 
         let hc = "<table><tbody>";
-        hc += '<tr><td colspan="2"><h4>Vechile Details</h4></td></tr>';
-        hc += '<tr><td>Vehicle No</td><td>: ' + (this.data?.selectedRecord?.vehicleNo || "-") + '</td></tr>';
-        hc += '<tr><td>Address</td><td>: ' + (this.data?.selectedRecord?.poiAddress || "-") + '</td></tr>';
+        hc += '<tr><td colspan="2"><p class="fw-bold mb-2">Vehicle Details</p></td></tr>';
+        hc += '<tr><td style="width: 75px;">Vehicle No. :</td><td>' + (this.data?.selectedRecord?.vehicleNo || "-") + '</td></tr>';
+        hc += '<tr><td>Address :</td><td>' + (this.data?.selectedRecord?.poiAddress || "-") + '</td></tr>';
         hc += "</tbody></table>";
 
         const info = new google.maps.InfoWindow({
@@ -475,10 +476,10 @@ export class CreateGeofenceComponent implements OnInit {
     if (this.geofenceForm.invalid) {
       return
     }
-    // else if(!this.geofenceForm.value.geofenceType) {
-    //   this.commonMethods.snackBar('Geofence is required', 1)
-    //   return
-    // }
+    else if(!this.geofenceForm.value.geofenceType) {
+      this.commonMethods.snackBar('Geofence is required', 1)
+      return
+    }
     let transmodel = new Array();
 
     this.geofenceForm.value.vehicleId.find((ele:any)=>{
@@ -496,7 +497,7 @@ export class CreateGeofenceComponent implements OnInit {
     delete this.geofenceForm.value.vehicleId;
     this.geofenceForm.value.transmodel = transmodel;
     this.geofenceForm.value.vehicleOwnerId = this.webStorage.getVehicleOwnerId();
-    this.geofenceForm.value.geofenceType = this.geofenceForm.value.geofenceType == 2 || this.geofenceForm.value.geofenceType == 1 ? this.geofenceForm.value.geofenceType : 0;
+    this.geofenceForm.value.distance = this.geofenceForm.value.geofenceType == 2 ? this.geofenceForm.value.distance : 0;
     this.spinner.show();
     this.apiCall.setHttp('post', 'Geofencne/save-update-POI', true, [this.geofenceForm.value], false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe((response: any) => {

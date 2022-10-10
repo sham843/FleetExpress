@@ -44,6 +44,7 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getAllGeofecneData() {
+    this.selectAll = false;
     this.checkedGeoFenceArray = []; // clear prev checked data
     this.apiCall.setHttp('get', 'Geofencne/get-All-POI?userId=23895&NoPage=' + this.paginationNo + '&RowsPerPage=' + this.configService.pageSize + '&searchText=' + this.searchContent.value, true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({

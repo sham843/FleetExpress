@@ -1,10 +1,13 @@
 //import { MapsAPILoader } from '@agm/core';
 import { Component, ElementRef,OnInit, ViewChild } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
+import { SharedTrackingComponent } from 'src/app/dialogs/shared-tracking/shared-tracking.component';
 import { ApiCallService } from 'src/app/services/api-call.service';
+import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
 interface timePeriodArray {
@@ -48,6 +51,7 @@ export class TrackingComponent implements OnInit {
   geocoder: any;
   itineraryForm!:FormGroup;
   vehicleDetailsData=new Array();
+  driverDetailsData=new Array();
   @ViewChild('search') public searchElementRef!: ElementRef;
   get f() { return this.maintananceForm.controls };
   get itinerary() { return this.itineraryForm.controls };
@@ -57,7 +61,9 @@ export class TrackingComponent implements OnInit {
     private fb: FormBuilder,
     private spinner: NgxSpinnerService,
    // private mapsAPILoader: MapsAPILoader,
-    private webStorage:WebStorageService
+    private webStorage:WebStorageService,
+    private configService:ConfigService,
+    public dialog: MatDialog,
     ) { }
 
   ngOnInit(): void {
@@ -94,6 +100,7 @@ export class TrackingComponent implements OnInit {
     this.selectedTab = lable;
     this.selectedIndex=0;
   }
+  
 
   getAllVehicleListData() {
     this.allVehiclelData = []
@@ -103,7 +110,7 @@ export class TrackingComponent implements OnInit {
         if (res.statusCode === "200") {
           res.responseData.map(async (x: any) => {
             x.deviceDatetime = new Date(x.deviceDatetime);
-           //  x.address= await this.findAddressByCoordinates(parseFloat(x.latitude) , parseFloat(x.longitude));
+            // x.gpsStatus = 'Running'
           })
           this.allVehiclelData = res.responseData;
           this.allRunningVehiclelData = res.responseData.filter((x: any) => x.gpsStatus == 'Running');
@@ -236,6 +243,10 @@ export class TrackingComponent implements OnInit {
       }
     }
   }
+  getVehicleAllDetails(vehicleNo:any){
+    this.getVehicleDetails(vehicleNo);
+    this.getDriverDetails(vehicleNo);
+  }
   getVehicleDetails(vehicleNo:any){
     this.vehicleDetailsData = []
     this.apiCall.setHttp('get', 'vehicle/search-vehicle?Search=' + vehicleNo, true, false, false, 'fleetExpressBaseUrl');
@@ -252,14 +263,47 @@ export class TrackingComponent implements OnInit {
       }
     },(error: any) => { this.error.handelError(error.status) });
   }
+  getDriverDetails(vehicleNo:any){
+   console.log(vehicleNo) 
+    this.driverDetailsData = []
+    this.apiCall.setHttp('get', 'vehicle/get-driver-List?VehicleNo=MH12MK2246', true, false, false, 'fleetExpressBaseUrl');
+    this.subscription = this.apiCall.getHttp().subscribe({
+      next: (res: any) => {
+        if (res.statusCode === "200") {
+          this.driverDetailsData = res.responseData;
+        } else {
+          if (res.statusCode != "404") {
+            this.driverDetailsData = [];
+            this.error.handelError(res.statusCode)
+          }
+        }
+      }
+    },(error: any) => { this.error.handelError(error.status) });
+  }
+  shareingDialog() {
+    let obj: any = ConfigService.dialogObj;
+    // if (label == 'status') {
+    //   obj['p1'] = flag ? 'Are you sure you want to Active?' : 'Are you sure you want to InActive?';
+    //   obj['cardTitle'] = flag ? 'Geofence Active' : 'Geofence InActive';
+    //   obj['successBtnText'] = flag ? 'Active' : 'InActive';
+    //   obj['cancelBtnText'] = 'Cancel';
+    // } else if (label == 'delete') {
+    //   obj['p1'] = 'Are you sure you want to delete this record';
+    //   obj['cardTitle'] = 'Delete';
+    //   obj['successBtnText'] = 'Delete';
+    //   obj['cancelBtnText'] = 'Cancel';
+    // }
+
+    const dialog = this.dialog.open(SharedTrackingComponent, {
+      width: this.configService.dialogBoxWidth[0],
+      data: obj,
+      disableClose: this.configService.disableCloseBtnFlag,
+    })
+
+    dialog.afterClosed().subscribe(res => {
+      console.log(res)
+    })
+  }
 
 
 }
-
-
-// regNo- VEHICLE Number,
-// OWNER NAME - ownerName
-// CHASSIS NUM- vehicleChassisNo,
-// ENGIN- vehicleEngineNo
-// FUEL TYPE-  ,
-// INSURANCE Number.-
