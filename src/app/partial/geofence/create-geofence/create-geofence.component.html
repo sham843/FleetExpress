@@ -24,7 +24,7 @@
         <div class="col-sm-2">
             <mat-form-field appearance="legacy" class="w-100">
                 <mat-label>Radius</mat-label>
-                <input matInput placeholder="Radius">
+                <input matInput placeholder="Radius" [readonly]="true" formControlName="distance">
               </mat-form-field>
         </div>
         <div class="col-sm-6">
@@ -41,13 +41,11 @@
 
     <div class="position-relative">
         <button mat-icon-button [matMenuTriggerFor]="menu" class="btn-view">
-            <mat-icon>visibility</mat-icon>
+           Map
         </button>
         <mat-menu #menu="matMenu" xPosition="before">
-            <mat-radio-group (change)="selMapType($event)">
-                <mat-radio-button value="1" [checked]="true" class="mb-2"><small>Roadmap</small></mat-radio-button>
-                <mat-radio-button value="2"><small>Satellite Map</small></mat-radio-button>
-            </mat-radio-group>
+                <button mat-menu-item (click)="selMapType('roadmap')" routerLinkActive="active">Roadmap</button>
+                <button mat-menu-item (click)="selMapType('hybrid')" routerLinkActive="active">Satellite Map</button>
         </mat-menu>
         <agm-map [latitude]="configService.lat" [zoom]="6" [longitude]="configService.long" [mapTypeId]="mapViewType"
             (mapReady)="onMapReady($event)">

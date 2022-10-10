@@ -75,20 +75,11 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getAllGeofecneData();
   }
 
-  selGeoFence(event: any, element: any) {
-    if (event?.checked) {
-      this.checkedGeoFenceArray.push(element);
-    } else {
-      let findIndex = this.commonMethods.findIndexOfArrayValue(this.checkedGeoFenceArray, element);
-      this.checkedGeoFenceArray.splice(findIndex, 1);
-    }
-  }
-
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
-  confirmationDialog(flag: boolean, label: string, id?: any) {
+  confirmationDialog(flag: boolean, label: string) {
     let obj: any = ConfigService.dialogObj;
 
     if (label == 'status') {
@@ -111,21 +102,30 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     dialog.afterClosed().subscribe(res => {
       if (res == 'Yes') {
-        this.deleteGeoFence(id);
+        this.deleteGeoFence();
+      }else{
+        this.getAllGeofecneData();
       }
-      // this.getAllGeofecneData();
     })
   }
 
 
-  deleteGeoFence(id: any) {
-    let delGeoFenceList = [
-      {
-        "id": id,
-        "isDeleted": true
-      }
-    ]
-    this.apiCall.setHttp('DELETE', 'Geofencne/Delete-POI', true, delGeoFenceList, false, 'fleetExpressBaseUrl');
+  selGeoFence(event: any, element: any) {
+    if (event?.checked) {
+      let obj = {
+          "id": element,
+          "isDeleted": true
+        }
+      
+      this.checkedGeoFenceArray.push(obj);
+    } else {
+      let findIndex = this.commonMethods.findIndexOfArrayValue(this.checkedGeoFenceArray, element);
+      this.checkedGeoFenceArray.splice(findIndex, 1);
+    }
+  }
+
+  deleteGeoFence() {
+    this.apiCall.setHttp('DELETE', 'Geofencne/Delete-POI', true, this.checkedGeoFenceArray, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode == "200") {

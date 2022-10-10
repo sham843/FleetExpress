@@ -51,6 +51,7 @@ export class CreateGeofenceComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log(this.data);
     if(this.data){
       this.editFlag = true;
       this.getVehicleData();
@@ -71,18 +72,18 @@ export class CreateGeofenceComponent implements OnInit {
 
   defaultGeoFanceForm() {
     this.geofenceForm = this.fb.group({
-      id: [0],
+      id: [this.editFlag ?  this.data?.poiId : 0],
       vehicleOwnerId: [''],
       title: [''],
       latitude: [''],
       longitude: [''],
-      distance: [''],
+      distance: [this.data ? this.data?.distance :''],
       poiAddress: [this.data ? this.data?.poiAddress : ''],
       userId: [this.webStorage.getUserId()],
       createdDate: [new Date()],
       isDeleted: [true],
       vehicleId: ['', [Validators.required]],
-      flag: ['i'],
+      flag: [this.editFlag ? 'u' :'i'],
       geofenceType: [''],
       polygonText: [''],
     });
@@ -97,8 +98,7 @@ export class CreateGeofenceComponent implements OnInit {
     vhlData.subscribe({
       next: (response: any) => {
         this.VehicleDtArr = response;
-        // this.VehicleDtArr.push({ 'id': 0, 'vehicleRegistrationNo': 'Select Vechile' }, ...response);
-        this.editFlag ? this.geofenceForm.controls['vehicleId'].setValue([Number(this.data?.vehicleId)]) : ''
+        this.editFlag ? this.geofenceForm.controls['vehicleId'].setValue(this.data?.vehicleId.split(',').map(Number)) : ''
       }
     }),
       (error: any) => {
@@ -118,8 +118,9 @@ export class CreateGeofenceComponent implements OnInit {
       circleOptions: {
         fillColor: "#00FF00",
         strokeColor: "#00FF00",
-        clickable: false,
+        clickable: true,
         editable: true,
+        draggable: true,
         zIndex: 1,
       },
       polygonOptions: {
@@ -270,6 +271,7 @@ export class CreateGeofenceComponent implements OnInit {
           this.setSelection(circle, "circle");
         })
       });
+
       google.maps.event.addListener(circle, 'center_changed', () => {
         this.ngZone.run(() => {
           this.setSelection(circle, "circle");
@@ -483,6 +485,7 @@ export class CreateGeofenceComponent implements OnInit {
       }
     })
     this.geofenceForm.value.vehicleOwnerId = vehicleOwnerId?.vehicleOwnerId;
+    this.geofenceForm.value.vehicleOwnerId = vehicleOwnerId?.vehicleOwnerId;
 
     let transmodel = new Array();
     this.geofenceForm.value.vehicleId.find((ele:any)=>{
@@ -500,7 +503,7 @@ export class CreateGeofenceComponent implements OnInit {
     })
     this.geofenceForm.value.transmodel = transmodel;
     this.geofenceForm.value.vehicleOwnerId = this.webStorage.getVehicleOwnerId();
-    delete this.geofenceForm.value.vehicleId;
+    this.geofenceForm.value.geofenceType = this.geofenceForm.value.geofenceType == 2 ? this.geofenceForm.value.geofenceType : 0;
     this.spinner.show();
     this.apiCall.setHttp('post', 'Geofencne/save-update-POI', true, [this.geofenceForm.value], false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe((response: any) => {
@@ -535,9 +538,7 @@ export class CreateGeofenceComponent implements OnInit {
     this.geofenceForm.controls['poiAddress'].setValue('');
   }
   // roadmap,terrain,hybrid,satellite
-  selMapType(event:any){
-    event.value == 1 ? this.mapViewType = 'roadmap' : this.mapViewType = 'hybrid';
+  selMapType(flag:string){
+    flag == 'roadmap' ? this.mapViewType = 'roadmap' : this.mapViewType = 'hybrid';
   }
-
-
 }
