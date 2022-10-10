@@ -84,9 +84,9 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
   confirmationDialog(flag: boolean, label: string, poiId?: any) {
     let obj: any = ConfigService.dialogObj;
     if (label == 'status') {
-      obj['p1'] = flag ? 'Are you sure you want to approve?' : 'Are you sure you want to reject ?';
-      obj['cardTitle'] = flag ? 'Application  Approve' : 'Application  Reject';
-      obj['successBtnText'] = flag ? 'Approve' : 'Reject';
+      obj['p1'] = flag ? 'Are you sure you want to Active?' : 'Are you sure you want to InActive?';
+      obj['cardTitle'] = flag ? 'Geofence Active' : 'Geofence InActive';
+      obj['successBtnText'] = flag ? 'Active' : 'InActive';
       obj['cancelBtnText'] = 'Cancel';
     } else if (label == 'delete') {
       obj['p1'] = 'Are you sure you want to delete this record';
