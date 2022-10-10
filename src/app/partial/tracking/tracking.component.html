@@ -424,7 +424,7 @@
                     </a> -->
                 </div>
             </div>
-            <div *ngIf="selectedTab=='Running'? !allRunningVehiclelData.length:selectedTab=='Stopped'? !allStoppedVehiclelData.length:selectedTab=='Idle'?!allIdleVehiclelData.length:selectedTab=='Offline'?!allOfflineVehiclelData.length:!allVehiclelData.length " class="card-body fixed-height p-1">
+            <div *ngIf="(selectedTab=='Running'? !allRunningVehiclelData.length:selectedTab=='Stopped'? !allStoppedVehiclelData.length:selectedTab=='Idle'?!allIdleVehiclelData.length:selectedTab=='Offline'?!allOfflineVehiclelData.length:!allVehiclelData.length)|| !allVehiclelData.length " class="card-body fixed-height p-1">
                 <div class="alert alert-danger text-center py-2"> No data found</div>
             </div>
 
@@ -542,13 +542,13 @@
                                                         </mat-option>
                                                     </mat-select>
                                                 </mat-form-field>
-                                                <mat-form-field appearance="legacy">
+                                                <mat-form-field appearance="legacy" *ngIf="itinerary['timePeriod']?.value=='4'"> 
                                                     <mat-label>Enter From Date-To Date</mat-label>
-                                                    <mat-date-range-input [rangePicker]="picker">
-                                                        <input matStartDate placeholder="From Date"
-                                                            formControlName="fromDate" autocomplete="off">
+                                                    <mat-date-range-input [rangePicker]="picker" [max]="currentDate">
+                                                        <input matStartDate placeholder="From Date"  (dateChange)="settodate(f['fromDate'].value);checkValidDate()"
+                                                            formControlName="fromDate" autocomplete="off" [max]="currentDate">
                                                         <input matEndDate placeholder="To Date"
-                                                            formControlName="toDate" autocomplete="off">
+                                                            formControlName="toDate" autocomplete="off" [min]="itinerary['fromDate'].value " [max]="maxTodayDate || currentDate">
                                                     </mat-date-range-input>
                                                     <mat-datepicker-toggle matSuffix [for]="picker">
                                                     </mat-datepicker-toggle>

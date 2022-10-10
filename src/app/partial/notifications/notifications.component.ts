@@ -27,6 +27,7 @@ export class NotificationsComponent implements OnInit {
   paginationNo: number = 1;
   pageSize: number = 10;
   alertTypeListData=new Array();
+  get f() { return this.notificationForm.controls };
   constructor(
     private apiCall: ApiCallService,
     private masterService:MasterService,
@@ -77,11 +78,16 @@ export class NotificationsComponent implements OnInit {
       }
     })
   }
+  closeAlertSelect(){
+    this.notificationForm.controls['alertType'].patchValue(null);
+    this.getNotificationsData();
+  }
   
  
   getNotificationsData(){ 
     this.notificationData = [];
     const formData=this.notificationForm.value;
+    console.log(formData);
     const fromdate = formData?.date?new Date(formData?.date):new Date();
     const todate = new Date(fromdate.setDate(fromdate.getDate() + 1));
     const obj={
@@ -104,7 +110,7 @@ export class NotificationsComponent implements OnInit {
           this.notificationTotalCount=res.responseData.totalCount;
         } else {
             this.notificationData = [];
-            // this.error.handelError(res.statusCode)
+            this.notificationTotalCount='0';
           } 
       }
     },(error: any) => {

@@ -49,13 +49,14 @@ export class DashboardComponent implements OnInit {
   vehiclesMoving = new Array();
   currentdate=new Date();
   alertTypeArray:any;
+  powerCutData=new Array();
   constructor(private webStorage: WebStorageService, private apiCall:ApiCallService,
     private error:ErrorsService) {
     this.VehiclesLastUpdatedbarChartOptions = {
       series: [],
       chart: {
         type: "bar",
-        height: 220,
+        height: 250,
         toolbar: {
           show: false
         },
@@ -113,7 +114,7 @@ export class DashboardComponent implements OnInit {
     this.getvehicleStatusData();
     this.getvehicleAllData();
     this.getPOIAlertData();
-    this.getOverSpeedData();
+    this.getOverSpeedPowerCutData();
     this.getSIMRenewalReminderData();
   }
   thresholdConfig = {
@@ -137,7 +138,7 @@ export class DashboardComponent implements OnInit {
   getvehicleAllData() {
     this.vehicleAllData = [];
     this.maxSpeedObj=[];
-    this.apiCall.setHttp('get', 'dashboard/get-vehicle-current-location-list?VehicleNo=' + '&UserId=' + this.webStorage.getUserId() + '&GpsStatus=', true, false, false, 'fleetExpressBaseUrl');
+    this.apiCall.setHttp('get', 'dashboard/get-vehicle-current-location-list?VehicleNo=' + '&UserId=' + this.webStorage.getUserId() + '&GpsStatus=Running', true, false, false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
         this.vehicleAllData = responseData.responseData;
@@ -213,15 +214,18 @@ export class DashboardComponent implements OnInit {
       this.error.handelError(error.status);
   })
   }
-  getOverSpeedData() {
+  getOverSpeedPowerCutData() {
     this.overSpeedData = [];
+    this.powerCutData= [];
     this.alertTypeArray.subscribe((x:any)=>{
       const Fromdate = moment.utc().startOf('day').toISOString();
       const ToDate = moment.utc().toISOString();
       this.apiCall.setHttp('get', 'dashboard/get-vehicle-alert-count-dashboard?UserId=' + this.webStorage.getUserId() + '&Fromdate=' + Fromdate + '&ToDate=' + ToDate+'&alertType='+x, true, false, false, 'fleetExpressBaseUrl');
       this.apiCall.getHttp().subscribe((responseData: any) => {
         if (responseData.statusCode === "200" || responseData.length > 0) {
-          this.overSpeedData.push(responseData.responseData);
+          this.powerCutData=responseData.responseData.filter((x:any)=> x.alertType=='power-cut');
+          this.overSpeedData=responseData.responseData.filter((x:any)=> x.alertType=='overspeed');
+          console.log(this.powerCutData,this.overSpeedData)
         }
         else {
           (error: any) => {

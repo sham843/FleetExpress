@@ -19,8 +19,8 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
   searchContent = new FormControl('');
   subscription!: Subscription;
   checkedGeoFenceArray = new Array();
-
-  
+  totalRecords!: number;
+  totalPages!: number;
 
   constructor(public dialog: MatDialog, private configService: ConfigService,
     private apiCall: ApiCallService, private error: ErrorsService, private commonMethods: CommonMethodsService) { }
@@ -47,6 +47,8 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
       next: (res: any) => {
         if (res.statusCode == "200") {
           this.geofenceListArray = res.responseData?.responseData1;
+          this.totalRecords = res?.responseData?.responseData2?.totalRecords;
+          this.totalPages = res?.responseData?.responseData2?.totalRecords;
         } else {
           this.geofenceListArray = [];
         }
@@ -62,14 +64,15 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-
+      if (result == 'Yes') {
+        this.getAllGeofecneData();
       }
     });
   }
 
   onPagintion(pageNo: any) {
     this.paginationNo = pageNo;
+    this.getAllGeofecneData();
   }
 
   selGeoFence(event: any, element: any) {
@@ -85,21 +88,21 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  confirmationDialog(flag: boolean,label:string) {
+  confirmationDialog(flag: boolean, label: string, id?: any) {
     let obj: any = ConfigService.dialogObj;
 
-    if(label == 'status'){
+    if (label == 'status') {
       obj['p1'] = flag ? 'Are you sure you want to approve?' : 'Are you sure you want to reject ?';
       obj['cardTitle'] = flag ? 'Application  Approve' : 'Application  Reject';
       obj['successBtnText'] = flag ? 'Approve' : 'Reject';
       obj['cancelBtnText'] = 'Cancel';
-    }else if(label == 'delete'){
+    } else if (label == 'delete') {
       obj['p1'] = 'Are you sure you want to delete this record';
       obj['cardTitle'] = 'Delete';
       obj['successBtnText'] = 'Delete';
       obj['cancelBtnText'] = 'Cancel';
     }
-    
+
     const dialog = this.dialog.open(ConfirmationComponent, {
       width: this.configService.dialogBoxWidth[0],
       data: obj,
@@ -107,10 +110,29 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
     })
 
     dialog.afterClosed().subscribe(res => {
-      console.log(res);
-      this.getAllGeofecneData();
+      if (res == 'Yes') {
+        this.deleteGeoFence(id);
+      }
+      // this.getAllGeofecneData();
     })
   }
 
-  
+
+  deleteGeoFence(id: any) {
+    let delGeoFenceList = [
+      {
+        "id": id,
+        "isDeleted": true
+      }
+    ]
+    this.apiCall.setHttp('DELETE', 'Geofencne/Delete-POI', true, delGeoFenceList, false, 'fleetExpressBaseUrl');
+    this.subscription = this.apiCall.getHttp().subscribe({
+      next: (res: any) => {
+        if (res.statusCode == "200") {
+          this.getAllGeofecneData();
+        }
+      },
+      error: ((error: any) => { this.geofenceListArray = []; this.error.handelError(error.status) })
+    });
+  }
 }

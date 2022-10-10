@@ -1823,3 +1823,27 @@ input::-ms-clear {
   right: -23px;
   top: -22px;
 }
+
+.ngx-pagination .current {
+  padding: 0.1875rem 0.625rem;
+  background: #32bbbb;
+}
+
+.ngx-pagination li {
+  border: solid 1px #dbdbdb;
+}
+
+
+.filter-option>.mat-pseudo-checkbox {
+  display: none !important;
+}
+.mat-menu-panel{
+  font-family: 'Poppins', sans-serif !important;
+  padding: 0.5rem 0.5rem 0 0.5rem !important;
+  font-size: 0.85rem;
+  overflow-y: none !important;
+  min-height: 70px !important;
+}
+.mat-menu-panel mat-radio-button{
+  font-family: 'Poppins', sans-serif !important;
+}

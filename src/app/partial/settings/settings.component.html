@@ -35,7 +35,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item d-flex justify-content-between align-items-center"
+                                        <!-- <li class="list-group-item d-flex justify-content-between align-items-center"
                                             *ngIf="!notificatinsData[0]?.isVisibleToOfficer">
                                             <span class="noti-title">Boxopen-Off</span>
                                             <div class="form-check form-switch">
@@ -44,7 +44,7 @@
                                                     (change)="switchNotification(notificatinsData[0])"
                                                     id="BoxopenOff">
                                             </div>
-                                        </li>
+                                        </li> -->
                                         <li class="list-group-item d-flex justify-content-between align-items-center"
                                             *ngIf="!notificatinsData[4]?.isVisibleToOfficer">
                                             <span class="noti-title">Geofence-In</span>
@@ -65,7 +65,7 @@
                                                     id="IgnitionOff">
                                             </div>
                                         </li>
-                                        <li class="list-group-item d-flex justify-content-between align-items-center"
+                                        <!-- <li class="list-group-item d-flex justify-content-between align-items-center"
                                             *ngIf="!notificatinsData[11]?.isVisibleToOfficer">
                                             <span class="noti-title">Power-Cut</span>
                                             <div class="form-check form-switch">
@@ -74,19 +74,22 @@
                                                     (change)="switchNotification(notificatinsData[11])"
                                                     id="PowerCut">
                                             </div>
-                                        </li>
+                                        </li> -->
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <span class="noti-title">Low-battery-removed</span>
+                                            <span class="noti-title">Connect-back-to-main-Battery</span>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
-                                                    formControlName="Lowbatteryremoved" id="Lowbatteryremoved">
+                                                    formControlName="ConnectbacktomainBattery"
+                                                    id="ConnectbacktomainBattery"
+                                                    (change)="switchNotification(notificatinsData[9])">
                                             </div>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <span class="noti-title">Disconnect-Battery</span>
+                                            <span class="noti-title">Low-battery</span>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
-                                                    formControlName="DisconnectBattery" id="DisconnectBattery">
+                                                    formControlName="Lowbattery" id="Lowbattery"
+                                                    (change)="switchNotification(notificatinsData[9])">
                                             </div>
                                         </li>
                                         <li class="list-group-item">
@@ -113,7 +116,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item d-flex justify-content-between align-items-center"
+                                        <!-- <li class="list-group-item d-flex justify-content-between align-items-center"
                                             *ngIf="!notificatinsData[1]?.isVisibleToOfficer">
                                             <span class="noti-title">Boxopen-On</span>
                                             <div class="form-check form-switch">
@@ -121,7 +124,7 @@
                                                     formControlName="BoxopenOn" id="BoxopenOn" 
                                                     (change)="switchNotification(notificatinsData[1])">
                                             </div>
-                                        </li>
+                                        </li> -->
                                         <li class="list-group-item d-flex justify-content-between align-items-center"
                                             *ngIf="!notificatinsData[5]?.isVisibleToOfficer">
                                             <span class="noti-title">Geofence-Out</span>
@@ -140,7 +143,7 @@
                                                     (change)="switchNotification(notificatinsData[8])">
                                             </div>
                                         </li>
-                                        <li class="list-group-item d-flex justify-content-between align-items-center"
+                                        <!-- <li class="list-group-item d-flex justify-content-between align-items-center"
                                             *ngIf="!notificatinsData[10]?.isVisibleToOfficer">
                                             <span class="noti-title">Power-Connected</span>
                                             <div class="form-check form-switch">
@@ -148,22 +151,20 @@
                                                     formControlName="PowerConnected" id="PowerConnected" 
                                                     (change)="switchNotification(notificatinsData[10])">
                                             </div>
-                                        </li>
+                                        </li> -->
+                                       
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <span class="noti-title">Connect-back-to-main-Battery</span>
+                                            <span class="noti-title">Disconnect-Battery</span>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
-                                                    formControlName="ConnectbacktomainBattery"
-                                                    id="ConnectbacktomainBattery"
-                                                    (change)="switchNotification(notificatinsData[9])">
+                                                    formControlName="DisconnectBattery" id="DisconnectBattery">
                                             </div>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <span class="noti-title">Low-battery</span>
+                                            <span class="noti-title">Low-battery-removed</span>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
-                                                    formControlName="Lowbattery" id="Lowbattery"
-                                                    (change)="switchNotification(notificatinsData[9])">
+                                                    formControlName="Lowbatteryremoved" id="Lowbatteryremoved">
                                             </div>
                                         </li>
                                         <li class="list-group-item">
@@ -325,13 +326,13 @@
                                                         <div class="row">
                                                             <div class="col-sm-6">
                                                                 <ul class="list-group list-group-flush">
-                                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                    <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
                                                                         <span class="noti-title">Boxopen-Off</span>
                                                                         <div class="form-check form-switch">
                                                                             <input class="form-check-input" type="checkbox" role="switch"
                                                                                 id="flexSwitchCheckDefault">
                                                                         </div>
-                                                                    </li>
+                                                                    </li> -->
                                                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                                                         <span class="noti-title">Geofence-In</span>
                                                                         <div class="form-check form-switch">
@@ -346,27 +347,28 @@
                                                                                 id="flexSwitchCheckDefault">
                                                                         </div>
                                                                     </li>
-                                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                    <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
                                                                         <span class="noti-title">Power-Cut</span>
                                                                         <div class="form-check form-switch">
                                                                             <input class="form-check-input" type="checkbox" role="switch"
                                                                                 id="flexSwitchCheckDefault">
                                                                         </div>
-                                                                    </li>
+                                                                    </li> -->
                                                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                                        <span class="noti-title">Low-battery-removed</span>
+                                                                        <span class="noti-title">Connect-back-to-main-Battery</span>
                                                                         <div class="form-check form-switch">
                                                                             <input class="form-check-input" type="checkbox" role="switch"
                                                                                 id="flexSwitchCheckDefault">
                                                                         </div>
                                                                     </li>
                                                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                                        <span class="noti-title">Disconnect-Battery</span>
+                                                                        <span class="noti-title">Low-battery</span>
                                                                         <div class="form-check form-switch">
                                                                             <input class="form-check-input" type="checkbox" role="switch"
                                                                                 id="flexSwitchCheckDefault">
                                                                         </div>
                                                                     </li>
+                                                                   
                                                                     <li class="list-group-item">
                                                                         <div class="d-flex justify-content-between align-items-center">
                                                                             <span class="noti-title">Over Speed</span>
@@ -385,13 +387,13 @@
                                                             </div>
                                                             <div class="col-sm-6">
                                                                 <ul class="list-group list-group-flush">
-                                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                    <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
                                                                         <span class="noti-title">Boxopen-On</span>
                                                                         <div class="form-check form-switch">
                                                                             <input class="form-check-input" type="checkbox" role="switch"
                                                                                 id="flexSwitchCheckDefault">
                                                                         </div>
-                                                                    </li>
+                                                                    </li> -->
                                                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                                                         <span class="noti-title">Geofence-Out</span>
                                                                         <div class="form-check form-switch">
@@ -406,22 +408,22 @@
                                                                                 id="flexSwitchCheckDefault">
                                                                         </div>
                                                                     </li>
-                                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                    <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
                                                                         <span class="noti-title">Power-Connected</span>
                                                                         <div class="form-check form-switch">
                                                                             <input class="form-check-input" type="checkbox" role="switch"
                                                                                 id="flexSwitchCheckDefault">
                                                                         </div>
-                                                                    </li>
+                                                                    </li> -->
                                                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                                        <span class="noti-title">Connect-back-to-main-Battery</span>
+                                                                        <span class="noti-title">Disconnect-Battery</span>
                                                                         <div class="form-check form-switch">
                                                                             <input class="form-check-input" type="checkbox" role="switch"
                                                                                 id="flexSwitchCheckDefault">
                                                                         </div>
                                                                     </li>
                                                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                                        <span class="noti-title">Low-battery</span>
+                                                                        <span class="noti-title">Low-battery-removed</span>
                                                                         <div class="form-check form-switch">
                                                                             <input class="form-check-input" type="checkbox" role="switch"
                                                                                 id="flexSwitchCheckDefault">
