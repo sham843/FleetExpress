@@ -170,9 +170,9 @@ export class CreateGeofenceComponent implements OnInit {
         const existingMarker = new google.maps.Marker({ map: map, draggable: false, position: latLng });
 
         let hc = "<table><tbody>";
-        hc += '<tr><td colspan="2"><h4>Vechile Details</h4></td></tr>';
-        hc += '<tr><td>Vehicle No</td><td>: ' + (this.data?.selectedRecord?.vehicleNo || "-") + '</td></tr>';
-        hc += '<tr><td>Address</td><td>: ' + (this.data?.selectedRecord?.poiAddress || "-") + '</td></tr>';
+        hc += '<tr><td colspan="2"><p class="fw-bold mb-2">Vehicle Details</p></td></tr>';
+        hc += '<tr><td style="width: 75px;">Vehicle No. :</td><td>' + (this.data?.selectedRecord?.vehicleNo || "-") + '</td></tr>';
+        hc += '<tr><td>Address :</td><td>' + (this.data?.selectedRecord?.poiAddress || "-") + '</td></tr>';
         hc += "</tbody></table>";
 
         const info = new google.maps.InfoWindow({
@@ -202,9 +202,9 @@ export class CreateGeofenceComponent implements OnInit {
         this.setZoomLevel(this.data?.selectedRecord?.distance);
 
         let hc = "<table><tbody>";
-        hc += '<tr><td colspan="2"><h4>Vechile Details</h4></td></tr>';
-        hc += '<tr><td>Vehicle No</td><td>: ' + (this.data?.selectedRecord?.vehicleNo || "-") + '</td></tr>';
-        hc += '<tr><td>Address</td><td>: ' + (this.data?.selectedRecord?.poiAddress || "-") + '</td></tr>';
+        hc += '<tr><td colspan="2"><p class="fw-bold mb-2">Vehicle Details</p></td></tr>';
+        hc += '<tr><td style="width: 75px;">Vehicle No. :</td><td>' + (this.data?.selectedRecord?.vehicleNo || "-") + '</td></tr>';
+        hc += '<tr><td>Address :</td><td>' + (this.data?.selectedRecord?.poiAddress || "-") + '</td></tr>';
         hc += "</tbody></table>";
 
         const info = new google.maps.InfoWindow({
