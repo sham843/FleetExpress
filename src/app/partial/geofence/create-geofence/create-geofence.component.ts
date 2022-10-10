@@ -23,7 +23,7 @@ export class CreateGeofenceComponent implements OnInit {
   google: any;
   geofenceForm: FormGroup | any;
   editFlag:boolean = false;
-  
+
   newRecord: any = {
     dataObj: undefined,
     geofenceType: "",
@@ -476,10 +476,10 @@ export class CreateGeofenceComponent implements OnInit {
     if (this.geofenceForm.invalid) {
       return
     }
-    // else if(!this.geofenceForm.value.geofenceType) {
-    //   this.commonMethods.snackBar('Geofence is required', 1)
-    //   return
-    // }
+    else if(!this.geofenceForm.value.geofenceType) {
+      this.commonMethods.snackBar('Geofence is required', 1)
+      return
+    }
     let transmodel = new Array();
 
     this.geofenceForm.value.vehicleId.find((ele:any)=>{
