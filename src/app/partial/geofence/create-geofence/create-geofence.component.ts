@@ -18,6 +18,7 @@ export class CreateGeofenceComponent implements OnInit {
   @ViewChild('search') public searchElementRef!: ElementRef;
   centerMarker: any;
   centerMarkerLatLng: any;
+  mapViewType: any = 'roadmap'; // roadmap,terrain,hybrid,satellite
   map: any;
   google: any;
   geofenceForm: FormGroup | any;
@@ -50,9 +51,21 @@ export class CreateGeofenceComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.data ? this.editFlag = true : '';
-    console.log(this.data);
-    this.getVehicleData();
+    if(this.data){
+      this.editFlag = true;
+      this.getVehicleData();
+      this.data.selectedRecord = {
+        geofenceType : this.data.geofenceType,
+        polygonText : this.data.polygonText,
+        latLng: this.data.latitude + ',' + this.data.longitude,
+        distance: this.data.distance,
+        vehicleNo: this.data.vehicleNo,
+        poiAddress:this.data?.poiAddress
+      }
+    }else{
+      this.getVehicleData()
+    }
+
     this.defaultGeoFanceForm();
   }
 
@@ -64,7 +77,7 @@ export class CreateGeofenceComponent implements OnInit {
       latitude: [''],
       longitude: [''],
       distance: [''],
-      poiAddress: ['', [Validators.required]],
+      poiAddress: [this.data ? this.data?.poiAddress : ''],
       userId: [this.webStorage.getUserId()],
       createdDate: [new Date()],
       isDeleted: [true],
@@ -84,6 +97,8 @@ export class CreateGeofenceComponent implements OnInit {
     vhlData.subscribe({
       next: (response: any) => {
         this.VehicleDtArr = response;
+        // this.VehicleDtArr.push({ 'id': 0, 'vehicleRegistrationNo': 'Select Vechile' }, ...response);
+        this.editFlag ? this.geofenceForm.controls['vehicleId'].setValue([Number(this.data?.vehicleId)]) : ''
       }
     }),
       (error: any) => {
@@ -143,7 +158,7 @@ export class CreateGeofenceComponent implements OnInit {
         });
       });
     })
-
+ 
     if (this.data?.selectedRecord && this.data.selectedRecord?.geofenceType == 1) {
       try {
         var OBJ_fitBounds = new google.maps.LatLngBounds();
@@ -154,10 +169,9 @@ export class CreateGeofenceComponent implements OnInit {
         const existingMarker = new google.maps.Marker({ map: map, draggable: false, position: latLng });
 
         let hc = "<table><tbody>";
-        hc += '<tr><td colspan="2"><h4>Selected Thana details</h4></td></tr>';
-        hc += '<tr><td>Thana Name</td><td>: ' + (this.data.selectedRecord.thanaName || "-") + '</td></tr>';
-        hc += '<tr><td>Zone Name</td><td>: ' + (this.data.selectedRecord.zoneName || "-") + '</td></tr>';
-        hc += '<tr><td>Division</td><td>: ' + (this.data.selectedRecord.division || "-") + '</td></tr>';
+        hc += '<tr><td colspan="2"><h4>Vechile Details</h4></td></tr>';
+        hc += '<tr><td>Vehicle No</td><td>: ' + (this.data?.selectedRecord?.vehicleNo || "-") + '</td></tr>';
+        hc += '<tr><td>Address</td><td>: ' + (this.data?.selectedRecord?.poiAddress || "-") + '</td></tr>';
         hc += "</tbody></table>";
 
         const info = new google.maps.InfoWindow({
@@ -171,7 +185,7 @@ export class CreateGeofenceComponent implements OnInit {
     }
     if (this.data?.selectedRecord && this.data.selectedRecord?.geofenceType == 2) {
       try {
-        let latlng = new google.maps.LatLng(this.data.selectedRecord.polygonText.split(" ")[0], this.data.selectedRecord.polygonText.split(" ")[1]);
+        let latlng = new google.maps.LatLng(this.data.selectedRecord.polygonText.split(" ")[1], this.data.selectedRecord.polygonText.split(" ")[0]);
         const existingMarker = new google.maps.Marker({ map: map, draggable: false, position: latlng });
         new google.maps.Circle({
           strokeColor: '#FF0000',
@@ -187,10 +201,9 @@ export class CreateGeofenceComponent implements OnInit {
         this.setZoomLevel(this.data?.selectedRecord?.distance);
 
         let hc = "<table><tbody>";
-        hc += '<tr><td colspan="2"><h4>Selected Thana details</h4></td></tr>';
-        hc += '<tr><td>Thana Name</td><td>: ' + (this.data?.selectedRecord?.thanaName || "-") + '</td></tr>';
-        hc += '<tr><td>Zone Name</td><td>: ' + (this.data?.selectedRecord?.zoneName || "-") + '</td></tr>';
-        hc += '<tr><td>Division</td><td>: ' + (this.data?.selectedRecord?.division || "-") + '</td></tr>';
+        hc += '<tr><td colspan="2"><h4>Vechile Details</h4></td></tr>';
+        hc += '<tr><td>Vehicle No</td><td>: ' + (this.data?.selectedRecord?.vehicleNo || "-") + '</td></tr>';
+        hc += '<tr><td>Address</td><td>: ' + (this.data?.selectedRecord?.poiAddress || "-") + '</td></tr>';
         hc += "</tbody></table>";
 
         const info = new google.maps.InfoWindow({
@@ -517,4 +530,14 @@ export class CreateGeofenceComponent implements OnInit {
   onNoClick(flag:string): void {
     this.dialogRef.close(flag);
   }
+
+  clearAddress(){
+    this.geofenceForm.controls['poiAddress'].setValue('');
+  }
+  // roadmap,terrain,hybrid,satellite
+  selMapType(event:any){
+    event.value == 1 ? this.mapViewType = 'roadmap' : this.mapViewType = 'hybrid';
+  }
+
+
 }

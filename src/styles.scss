@@ -1832,3 +1832,8 @@ input::-ms-clear {
 .ngx-pagination li {
   border: solid 1px #dbdbdb;
 }
+
+
+.filter-option>.mat-pseudo-checkbox {
+  display: none !important;
+}
