@@ -1,14 +1,12 @@
-<div class="bg-light-gradient text-dark p-2 pb-0">
-    <p>Driver Registration </p>
+<div class="position-relative mb-3">
+    <h5 mat-dialog-title class="mb-0"> Add Geofence</h5>
+    <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close><i class="fas fa-times"></i></button>
 </div>
-<mat-radio-group aria-label="Select an option" (change)="selMapType($event)">
-    <mat-radio-button value="1" [checked]="true"><small>Roadmap</small></mat-radio-button>
-    <mat-radio-button value="2" class="ms-2"><small>Satellite Map</small></mat-radio-button>
-  </mat-radio-group>
+
 
 <form [formGroup]="geofenceForm" (ngSubmit)="onSubmit()">
     <div class="row mb-1">
-        <div class="col-sm-5">
+        <div class="col-sm-4">
             <mat-form-field appearance="legacy" class="w-100">
                 <mat-label>Select Vehicle</mat-label>
                 <mat-select formControlName="vehicleId" multiple>
@@ -23,7 +21,13 @@
                 </mat-error>
             </mat-form-field>
         </div>
-        <div class="col-sm-7">
+        <div class="col-sm-2">
+            <mat-form-field appearance="legacy" class="w-100">
+                <mat-label>Radius</mat-label>
+                <input matInput placeholder="Radius">
+              </mat-form-field>
+        </div>
+        <div class="col-sm-6">
             <mat-form-field class="w-100" appearance="legacy">
                 <mat-label>Search Area</mat-label>
                 <input matInput aria-label="Number" placeholder="Search Location" autocorrect="off" autocapitalize="off"
@@ -31,16 +35,20 @@
                     (keydown.enter)="removeShape();$event.preventDefault()">
                 <mat-icon matSuffix *ngIf="!geofenceForm.value.poiAddress">search</mat-icon>
                 <mat-icon matSuffix *ngIf="geofenceForm.value.poiAddress" (click)="clearAddress()">closed</mat-icon>
-                
-                <!-- <mat-error>
-                    <span *ngIf="f['poiAddress'].errors?.required" class="text-danger">
-                        Area is required</span>
-                </mat-error> -->
             </mat-form-field>
         </div>
     </div>
 
     <div class="position-relative">
+        <button mat-icon-button [matMenuTriggerFor]="menu" class="btn-view">
+            <mat-icon>visibility</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu" xPosition="before">
+            <mat-radio-group (change)="selMapType($event)">
+                <mat-radio-button value="1" [checked]="true" class="mb-2"><small>Roadmap</small></mat-radio-button>
+                <mat-radio-button value="2"><small>Satellite Map</small></mat-radio-button>
+            </mat-radio-group>
+        </mat-menu>
         <agm-map [latitude]="configService.lat" [zoom]="6" [longitude]="configService.long" [mapTypeId]="mapViewType"
             (mapReady)="onMapReady($event)">
         </agm-map>

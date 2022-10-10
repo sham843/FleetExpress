@@ -2,3 +2,15 @@ agm-map {
     height: 400px;
     width: 650px;
 }
+mat-radio-group {
+    display: flex;
+    flex-direction: column;
+}
+.btn-view{
+    position: absolute;
+    right:0;
+    top: 0 !important;
+    z-index: 9 !important;
+    font-size: 0.85rem !important;
+    background-color:#fefefe;
+}
