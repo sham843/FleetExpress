@@ -96,8 +96,7 @@
                                         </div>
                                     </div>
                                     <div class="share-call">
-                                        <a href="#" class="me-3" data-bs-toggle="modal"
-                                            data-bs-target="#ShareLocationModal"><img
+                                        <a  class="me-3" (click)="shareingDialog()"><img
                                                 src="assets/images/Tracking/share.svg"></a>
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#CallDriverModal"><img
                                                 src="assets/images/Tracking/call-vehicle.svg"></a>
@@ -1133,23 +1132,6 @@
                     <div class="form-container">
                         <div class="mb-3">
                             <div class="form-label">Select Maintenance Type</div>
-                            <!-- <div class="d-flex align-items-center ps-3">
-                                <div class="form-check form-switch d-flex align-items-center me-4">
-                                    <input class="form-check-input me-2" type="checkbox" role="switch"
-                                        id="flexSwitchCheckDefault1">
-                                    <label class="form-check-label" for="flexSwitchCheckDefault1">Scheduled</label>
-                                </div>
-                                <div class="form-check form-switch d-flex align-items-center me-4">
-                                    <input class="form-check-input me-2" type="checkbox" role="switch"
-                                        id="flexSwitchCheckDefault2">
-                                    <label class="form-check-label" for="flexSwitchCheckDefault2">Repair</label>
-                                </div>
-                                <div class="form-check form-switch d-flex align-items-center">
-                                    <input class="form-check-input me-2" type="checkbox" role="switch"
-                                        id="flexSwitchCheckDefault3">
-                                    <label class="form-check-label" for="flexSwitchCheckDefault3">Accident</label>
-                                </div>
-                            </div> -->
                             <div class="d-flex align-items-center ps-3">
                                 <div class="form-check form-switch d-flex align-items-center me-4">
                                     <input class="me-2" type="radio" value="1" id="flexRadioDefault1"
@@ -1172,12 +1154,6 @@
                             <div class="form-label">Since when the vehicle is in Maintenance?</div>
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <!-- <mat-form-field appearance="standard" class="w-100">
-                                        <mat-label>From Date and time</mat-label>
-                                        <input matInput [matDatepicker]="fromDate">
-                                        <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
-                                        <mat-datepicker #fromDate></mat-datepicker>
-                                    </mat-form-field> -->
                                     <mat-form-field appearance="standard" class="w-100">
                                         <mat-label>From Date and time</mat-label>
                                         <input matInput [ngxMatDatetimePicker]="fromDate" [max]="currentDate"
@@ -1196,12 +1172,6 @@
                                         <ngx-mat-datetime-picker #toDate>
                                         </ngx-mat-datetime-picker>
                                     </mat-form-field>
-                                    <!-- <mat-form-field appearance="standard" class="w-100">
-                                        <mat-label>To Date and time</mat-label>
-                                        <input matInput [matDatepicker]="toDate">
-                                        <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
-                                        <mat-datepicker #toDate></mat-datepicker>
-                                    </mat-form-field> -->
                                 </div>
                             </div>
                         </div>
@@ -1225,70 +1195,3 @@
         </div>
     </div>
 </div>
-
-<!-- Modal for raise maintenance View -->
-<!-- <div class="modal fade" id="MaintenanceviewModal" tabindex="-1" aria-labelledby="MaintenanceModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-                <div class="modal-header bg-light-gradient text-dark">
-                    <p class="modal-title mb-0" id="MaintenanceModalLabel"><span
-                            class="fw-bold text-main">{{vehicleDetails?.vehicleNo}}</span> Ticket   </p>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-container">
-                        <div class="mb-3">
-                            <div class="form-label">Select Maintenance Type</div>
-                            
-                            <div class="d-flex align-items-center ps-3">
-                                <div class="form-check form-switch d-flex align-items-center me-4">
-                                    <input class="me-2" type="radio" value="Scheduled" id="flexRadioDefault1" formControlName="maintenanceType">
-                                    <label class="form-check-label" for="flexRadioDefault1">Scheduled</label>
-                                </div>
-                                <div class="form-check form-switch d-flex align-items-center me-4">
-                                    <input class="me-2" type="radio" value="Repair" id="flexRadioDefault2" formControlName="maintenanceType">
-                                    <label class="form-check-label" for="flexRadioDefault2">Repair</label>
-                                </div>
-                                <div class="form-check form-switch d-flex align-items-center">
-                                    <input class="me-2" type="radio" value="Accident"id="flexRadioDefault3"  formControlName="maintenanceType">
-                                    <label class="form-check-label" for="flexRadioDefault3">Accident</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-0">
-                            <div class="form-label">Since when the vehicle is in Maintenance?</div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    
-                                    <mat-form-field appearance="standard" class="w-100">
-                                        <mat-label>From Date and time</mat-label>
-                                        <input matInput [ngxMatDatetimePicker]="fromDate" [max]="currentDate" formControlName="maintenanceFrom">
-                                        <mat-datepicker-toggle matSuffix [for]="$any(fromDate)"></mat-datepicker-toggle>
-                                        <ngx-mat-datetime-picker #fromDate>
-                                        </ngx-mat-datetime-picker>
-                                    </mat-form-field>
-                                </div>
-                                <div class="col-sm-6">
-                                    <mat-form-field appearance="standard" class="w-100">
-                                        <mat-label>To Date and time</mat-label>
-                                        <input matInput [ngxMatDatetimePicker]="toDate" formControlName="maintenanceTo" [max]="currentDate">
-                                        <mat-datepicker-toggle matSuffix [for]="$any(toDate)"></mat-datepicker-toggle>
-                                        <ngx-mat-datetime-picker #toDate>
-                                        </ngx-mat-datetime-picker>
-                                    </mat-form-field>
-                                  
-                                </div>
-                            </div>
-                        </div>
-                        <mat-form-field appearance="standard" class="w-100">
-                            <mat-label>Add Remarks</mat-label>
-                            <textarea matInput placeholder="Type here..." formControlName="remark" [maxlength]="100"></textarea>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    
-                </div>
-        </div>
-    </div>
-</div> -->
