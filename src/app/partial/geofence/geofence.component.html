@@ -43,11 +43,11 @@
                             </div>
                         </div>
                         <div class="col-sm-4 text-end">
+                            <button [disabled]="!checkedGeoFenceArray.length" class="btn btn-danger rounded-circle me-3" (click)="confirmationDialog(true, 'delete')">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </button>
                             <button class="btn btn-add" (click)="openCreateGeofenceDialog()">
                                 <i class="fa-solid fa-plus"></i>
-                            </button>
-                            <button [disabled]="!checkedGeoFenceArray.length" class="btn btn-danger rounded-circle ms-3" (click)="confirmationDialog(true, 'delete')">
-                                <i class="fa-regular fa-trash-can"></i>
                             </button>
                         </div>
                     </div>
