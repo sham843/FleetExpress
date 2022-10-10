@@ -72,7 +72,7 @@
                                 <td>{{geofenceList?.rowNumber}}</td>
                                 <!-- <td>{{geofenceList?.indexOf(geofenceList) + 1}}</td> -->
                                 <td> {{geofenceList?.vehicleNo}}</td>
-                                <td>{{geofenceList?.poiAddress}}</td>
+                                <td>{{geofenceList?.poiAddress || '-'}}</td>
                                 <td>
                                     <mat-slide-toggle (change)="confirmationDialog($event.checked,'status')"></mat-slide-toggle>
                                 </td>

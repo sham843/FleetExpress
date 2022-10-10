@@ -8,6 +8,7 @@
             <mat-form-field appearance="legacy" class="w-100">
                 <mat-label>Select Vehicle</mat-label>
                 <mat-select formControlName="vehicleId" multiple>
+                    <mat-option disabled="disabled" class="filter-option">Select Vehicle</mat-option>
                     <mat-option *ngFor="let vhlNumber of VehicleDtArr" [value]="vhlNumber.id">
                         {{vhlNumber.vehicleRegistrationNo}}
                     </mat-option>
@@ -22,13 +23,13 @@
             <mat-form-field class="w-100" appearance="legacy">
                 <mat-label>Search Area</mat-label>
                 <input matInput aria-label="Number" placeholder="Search Location" autocorrect="off" autocapitalize="off"
-                    spellcheck="off" autocomplete="off" type="text" #search formControlName="poiAddress" required
+                    spellcheck="off" autocomplete="off" type="text" #search formControlName="poiAddress"
                     (keydown.enter)="removeShape();$event.preventDefault()">
                 <mat-icon matSuffix>search</mat-icon>
-                <mat-error>
+                <!-- <mat-error>
                     <span *ngIf="f['poiAddress'].errors?.required" class="text-danger">
                         Area is required</span>
-                </mat-error>
+                </mat-error> -->
             </mat-form-field>
         </div>
     </div>
