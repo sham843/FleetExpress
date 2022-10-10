@@ -43,11 +43,11 @@
                             </div>
                         </div>
                         <div class="col-sm-4 text-end">
+                            <button [disabled]="!checkedGeoFenceArray.length" class="btn btn-danger rounded-circle me-3" (click)="confirmationDialog(true, 'delete')">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </button>
                             <button class="btn btn-add" (click)="openCreateGeofenceDialog()">
                                 <i class="fa-solid fa-plus"></i>
-                            </button>
-                            <button [disabled]="!checkedGeoFenceArray.length" class="btn btn-danger rounded-circle ms-3" (click)="confirmationDialog(true, 'delete')">
-                                <i class="fa-regular fa-trash-can"></i>
                             </button>
                         </div>
                     </div>
@@ -62,19 +62,20 @@
                                 <th>ACTIVE</th>
                                 <th>ACTION</th>
                                 <th>
-                                   Select
+                                    <mat-checkbox (change)='selAllGeofence($event,0)' value=""  [(ngModel)]="selectAll"
+                                    [(ngModel)]="selectAll"></mat-checkbox>
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let geofenceList of geofenceListArray | paginate: { itemsPerPage: 10, currentPage: paginationNo, totalItems:totalPages  }; let i = index">
+                            <tr *ngFor="let geofenceList of geofenceListArray | paginate: { itemsPerPage: 10, currentPage: paginationNo, totalItems:totalPages  }; let i = index" [ngClass]="{'highLightRow':geofenceList?.poiId==highlightRow}">
                                 <!-- <td>{{geofenceList?.}}</td> -->
                                 <td>{{geofenceList?.rowNumber}}</td>
                                 <!-- <td>{{geofenceList?.indexOf(geofenceList) + 1}}</td> -->
                                 <td> {{geofenceList?.vehicleNo}}</td>
                                 <td>{{geofenceList?.poiAddress || '-'}}</td>
                                 <td>
-                                    <mat-slide-toggle (change)="confirmationDialog($event.checked,'status')"></mat-slide-toggle>
+                                    <mat-slide-toggle  [checked]="geofenceList?.isActive" (change)="confirmationDialog($event.checked,'status',geofenceList.poiId)"></mat-slide-toggle>
                                 </td>
                                
                                 <td>
@@ -88,7 +89,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <mat-checkbox class="example-margin" (change)="selGeoFence($event, geofenceList?.poiId)"></mat-checkbox>
+                                    <mat-checkbox class="example-margin" [(ngModel)]="geofenceList.checked" (change)="selAllGeofence($event, geofenceList?.poiId)"></mat-checkbox>
                                 </td>
                             </tr>
                             <ng-container *ngIf="geofenceListArray.length==0">
