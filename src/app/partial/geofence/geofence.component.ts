@@ -121,7 +121,7 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode == "200") {
-          this.commonMethods.snackBar(res.statusMessage, 0);
+          this.commonMethods.snackBar(res.responseData, 0);
           this.getAllGeofecneData();
         }
       },
@@ -166,7 +166,7 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode == "200") {
-          this.commonMethods.snackBar(res.statusMessage, 0);
+          this.commonMethods.snackBar(res.responseData, 0);
           this.getAllGeofecneData();
         }
       },
