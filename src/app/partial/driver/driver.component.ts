@@ -222,7 +222,7 @@ export class DriverComponent implements OnInit {
     }
   }
   commonModule(label: string,driverData?:any) {
-    let obj;
+   let obj: any;
    label=='edit'?(obj=driverData,this.highLightRow=driverData?.driverId):obj='';
     const dialog = this.dialog.open(ModalsComponent, {
       width: '900px',

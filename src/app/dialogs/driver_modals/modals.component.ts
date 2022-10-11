@@ -32,6 +32,7 @@ export class ModalsComponent implements OnInit {
   licenceUpdFlag: boolean = false;
   buttonFlag: boolean = true;
   addressFlag:boolean=false;
+  cardTitle!:string;
   @ViewChild('closeModel') closeModel: any;
   @ViewChild('panUpload') panUpload: any;
   @ViewChild('aadharUpload') aadharUpload: any;
@@ -52,7 +53,8 @@ export class ModalsComponent implements OnInit {
     private commonMethods: CommonMethodsService) { }
 
   ngOnInit(): void {
-    this.dialogData = this.data ? this.data : '';
+    this.dialogData = this.data ?this.data:'';
+  this.dialogData!=0? this.cardTitle='Edit Driver' :this.cardTitle='Add Driver';
     this.getFormControl();
   }
   get f() { return this.driverRegForm.controls };

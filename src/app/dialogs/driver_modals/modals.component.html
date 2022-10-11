@@ -1,5 +1,5 @@
 <div class="position-relative mb-3">
-    <h5 mat-dialog-title class="mb-0"> Add Driver</h5>
+    <h5 mat-dialog-title class="mb-0">{{cardTitle}}</h5>
     <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick(formDirective)"><i
             class="fas fa-times"></i></button>
 </div>
@@ -205,9 +205,11 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <mat-checkbox class="small" (change)="checkArress($event)"
+                    <div class="col-sm-6">
+                        <mat-checkbox class="small" (change)="checkArress($event)" [disabled]="driverRegForm.value.presentAddress.length == 0"
                         [checked]="(driverRegForm.value.presentAddress.length > 0) && (driverRegForm.value.presentAddress == driverRegForm.value.permanentAddress)">
                         Same as Present Address</mat-checkbox>
+                    </div>
 
                     <ng-container class="form-group">
                         <input matInput class="d-none" formControlName="flag">
