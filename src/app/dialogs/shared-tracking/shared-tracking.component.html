@@ -7,9 +7,10 @@
 <div class="row mb-4">
     <div class="col-sm-8">
         <mat-form-field appearance="standard" class="w-100">
-            <mat-label>Favorite food</mat-label>
+            <mat-label>Select Time Period</mat-label>
             <mat-select>
-                <mat-option>
+                <mat-option *ngFor="let item of timeZone" name="timePeriod" [formControl]="timePeriod" [value]="item?.id">
+                    {{item?.lable}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
@@ -26,7 +27,7 @@
 </div>
 <div class="form-container w-100">
     <div class="d-flex justify-content-between">
-        <button type="button" class="btn btn-light-main" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-main">Share Location</button>
+        <button type="button" class="btn btn-light-main" type="button" mat-dialog-close (click)="onNoClick('No')" >Close</button>
+        <button type="button" class="btn btn-main" cdkFocusInitial (click)="onNoClick('Yes')"type="submit">Share Location</button>
     </div>
 </div>
