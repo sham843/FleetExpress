@@ -62,10 +62,12 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   openCreateGeofenceDialog(data?: any) {
+    this.selectAll ? this.uncheckAllGeofence():'';
     this.highlightRow = data?.poiId;
     const dialogRef = this.dialog.open(CreateGeofenceComponent, {
       width: this.configService.dialogBoxWidth[2],
       data: data,
+      disableClose: this.configService.disableCloseBtnFlag,
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -142,6 +144,13 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.checkedGeoFenceArray = [];
     this.checkedGeoFenceArray = this.geofenceListArray.filter((x: any) => x.checked == true);
     this.selectAll = this.geofenceListArray.length == this.checkedGeoFenceArray.length ? true : false;
+  }
+
+  uncheckAllGeofence(){
+    this.selectAll = false;
+    this.geofenceListArray.map((ele:any)=>{
+      ele.checked = false
+    })
   }
 
   deleteGeoFence() {

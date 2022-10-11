@@ -1,19 +1,18 @@
 
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl} from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
 
 @Component({
   selector: 'app-shared-tracking',
   templateUrl: './shared-tracking.component.html',
-  styleUrls: ['./shared-tracking.component.scss']
+  styleUrls: ['./shared-tracking.component.scss'],
 })
 export class SharedTrackingComponent implements OnInit {
-
-
   dialogData= new Array();
   timePeriod = new FormControl('');
+  timeZone=[{lable:'2 Hours', id:'2_Hours'},{lable:'24 Hours', id:'24_Hours'},{lable:'7 Days', id:'7_Days'}];
 
   constructor(public dialogRef: MatDialogRef<SharedTrackingComponent>,
     public CommonMethod: CommonMethodsService,
@@ -29,8 +28,9 @@ export class SharedTrackingComponent implements OnInit {
         this.CommonMethod.snackBar('Please Enter Remark', 1);
         return;
       }
-     // let obj = { remark: this.remark.value, flag: 'Yes' }
-     // this.dialogRef.close(obj);
+     let obj = { remark: this.timePeriod.value, flag: 'Yes' };
+     console.log(obj);
+     this.dialogRef.close(obj);
     } else {
       this.dialogRef.close(flag);
     }
