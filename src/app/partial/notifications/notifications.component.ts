@@ -80,8 +80,7 @@ export class NotificationsComponent implements OnInit {
     })
   }
   closeAlertSelect(){
-    this.notificationForm.controls['alertType'].patchValue(null);
-    this.getNotificationsData();
+    this.notificationForm.controls['alertType'].value?(this.notificationForm.controls['alertType'].patchValue(null),this.getNotificationsData()):'';
   }
   
  
