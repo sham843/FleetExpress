@@ -82,6 +82,18 @@
                         </mat-form-field>
                     </div>
                     <div class="col-sm-6">
+                        <mat-form-field [appearance]="config.matFormField" class="w-100">
+                            <input matInput [matDatepicker]="picker1" formControlName="licenceExpiryDate"
+                                [readonly]="true" placeholder="Licence Expiry Date" (click)="picker1.open()">
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                            <mat-error *ngIf="f['licenceExpiryDate'].errors">
+                                <span class="text-danger" *ngIf="f['licenceExpiryDate'].hasError('required')">Licence
+                                    expiry date required</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-6">
                         <div class="d-flex align-items-center">
                             <mat-form-field [appearance]="config.matFormField" class="w-100">
                                 <mat-label>Driving Licence Number</mat-label>
@@ -172,18 +184,6 @@
                     </div>
                     <div class="col-sm-6">
                         <mat-form-field [appearance]="config.matFormField" class="w-100">
-                            <input matInput [matDatepicker]="picker1" formControlName="licenceExpiryDate"
-                                [readonly]="true" placeholder="Licence Expiry Date" (click)="picker1.open()">
-                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                            <mat-datepicker #picker1></mat-datepicker>
-                            <mat-error *ngIf="f['licenceExpiryDate'].errors">
-                                <span class="text-danger" *ngIf="f['licenceExpiryDate'].hasError('required')">Licence
-                                    expiry date required</span>
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="col-sm-6">
-                        <mat-form-field [appearance]="config.matFormField" class="w-100">
                             <textarea matInput formControlName="presentAddress" placeholder="Present Address"
                                 maxlength="150"></textarea>
                             <mat-error *ngIf="f['presentAddress'].errors">
@@ -206,8 +206,8 @@
                         </mat-form-field>
                     </div>
                     <div class="col-sm-6">
-                        <mat-checkbox class="small" (change)="checkArress($event)" [disabled]="driverRegForm.value.presentAddress.length == 0"
-                        [checked]="(driverRegForm.value.presentAddress.length > 0) && (driverRegForm.value.presentAddress == driverRegForm.value.permanentAddress)">
+                        <mat-checkbox class="small" (change)="checkArress($event)" [disabled]="driverRegForm.value.presentAddress?.length == 0"
+                        [checked]="(driverRegForm.value.presentAddress?.length > 0) && (driverRegForm.value.presentAddress == driverRegForm.value.permanentAddress)">
                         Same as Present Address</mat-checkbox>
                     </div>
 

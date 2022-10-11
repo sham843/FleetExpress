@@ -169,7 +169,7 @@ export class DriverComponent implements OnInit {
 
   // ----------------------------------------------Delete Record----------------------------------------------------------------
 
-  removeDriver(event: any, driverId: number) {
+  removeDriverCheck(event: any, driverId: number) {
     for (var i = 0; i < this.driverDetails.length; i++) {
       if (driverId != 0) {
         this.selectAll = false;

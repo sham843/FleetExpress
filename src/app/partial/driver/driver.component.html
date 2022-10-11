@@ -28,7 +28,6 @@
                                                 (keypress)="this.validation.alphaNumeric($event)" required
                                                 maxlength="15">
                                         </span>
-                                        <!-- *ngIf="searchHideShow"  *ngIf="clearHideShow" -->
                                         <span class="input-group-text" *ngIf="!searchDriverForm.value.driverName">
                                             <i class="fa-solid fa-magnifying-glass"
                                                 (click)="paginationNo=1;getDriverDetails('search')"></i>
@@ -62,7 +61,7 @@
                                 <th>UNBLOCK/BLOCK</th>
                                 <th>ACTION</th>
                                 <th>
-                                    <mat-checkbox [disabled]="!driverDetails?.length" (change)='removeDriver($event,0)' value=""  [(ngModel)]="selectAll"></mat-checkbox>
+                                    <mat-checkbox [disabled]="!driverDetails?.length" (change)='removeDriverCheck($event,0)' value=""  [(ngModel)]="selectAll"></mat-checkbox>
                                 </th>
                             </tr>
                         </thead>
@@ -93,7 +92,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <mat-checkbox [(ngModel)]="driver.checked" (change)="removeDriver($event,driver.driverId)"
+                                    <mat-checkbox [(ngModel)]="driver.checked" (change)="removeDriverCheck($event,driver.driverId)"
                                       value=""></mat-checkbox>
                                 </td>
                             </tr>

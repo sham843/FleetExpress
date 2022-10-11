@@ -54,7 +54,11 @@
                             </div>
                         </div>
                         <div class="col-sm-4 text-end">
-                            <button class="btn btn-add" data-bs-toggle="modal" data-bs-target="#AddVehicleModal">
+                            <button [disabled]="!vehicleData?.length || !checkedVehicle.length" class="btn btn-danger rounded-circle"
+                            (click)="confirmationDialog(true, 'delete')">
+                            <i class="fa-regular fa-trash-can"></i>  </button>
+
+                            <button class="btn btn-add ms-3" data-bs-toggle="modal" data-bs-target="#AddVehicleModal">
                                 <i class="fa-solid fa-plus"></i>
                             </button>
                         </div>
@@ -74,8 +78,9 @@
                                 <th>UPDATE DRIVER</th>
                                 <th>UNBLOCK/BLOCK</th>
                                 <th>ACTION</th>
+                                <th>hiii</th>
                                 <th>
-                                    <mat-checkbox></mat-checkbox>
+                                    <mat-checkbox  [disabled]="!vehicleData?.length" (change)='selectVehicle($event,0)' value=""  [(ngModel)]="selectAll"></mat-checkbox>
                                 </th>
                             </tr>
                         </thead>
@@ -86,11 +91,11 @@
                                 <td style="width:50px;">
                                     <img src="assets/images/Vehicle-profile.svg" style="width: 37px;">
                                 </td>
-                                <td>{{vehicle.vehicleNo}}</td>
-                                <td>TATA</td>
-                                <td>Nexon</td>
-                                <td>35465132021</td>
-                                <td>3546513</td>
+                                <td>{{vehicle.vehicleNo || '-'}}</td>
+                                <td>{{vehicle.manufacturer || '-'}}</td>
+                                <td>{{vehicle.model || '-'}}</td>
+                                <td>{{vehicle.chassisNo || '-'}}</td>
+                                <td>{{vehicle.engineNo || '-'}}</td>
                                 <td>
                                     <button class="btn btn-light-main btn-sm" data-bs-toggle="modal" data-bs-target="#AssignDriverModal"
                                     (click)="getDriverData()">Assign Driver</button>
@@ -108,13 +113,12 @@
                                             data-bs-target="#CreateGeofenceModal">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                         </button>
-                                        <!-- <button class="btn bg-danger bg-opacity-10 text-danger btn-sm">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                        </button> -->
                                     </div>
                                 </td>
+                                <td> <button class="btn btn-primary" (click)="confirmationDialog(true,'assign',vehicle.vehicleNo)">assign</button></td>
                                 <td>
-                                    <mat-checkbox></mat-checkbox>
+                                    <mat-checkbox [(ngModel)]="vehicle.checked" (change)="selectVehicle($event,vehicle.vehicleNo)"
+                                      value=""></mat-checkbox>
                                 </td>
                             </tr>
                         </tbody>
@@ -123,7 +127,7 @@
                         <div class="alert alert-danger text-center errorMSG w-100">Data is not available
                         </div>
                     </div>
-                 <div *ngIf="vehicleData?.length != 0">
+                 <div *ngIf="vehicleData?.length">
                     <pagination-controls  previousLabel="" nextLabel=""
                         (pageChange)="onPagintion($event)" class="text-end m-2">
                     </pagination-controls>

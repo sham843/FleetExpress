@@ -1,0 +1,80 @@
+<div class="position-relative mb-3">
+    <h5 mat-dialog-title class="mb-0">{{dialogData?.cardTitle}}</h5>
+    <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick('Yes')"><i
+            class="fas fa-times"></i></button>
+</div>
+<form [formGroup]="userForm" (ngSubmit)="submitUser()">
+    <div class="row">
+        <div class="col-sm-6">
+            <mat-form-field appearance="standard" class="w-100">
+                <mat-label>Full Name</mat-label>
+                <input matInput placeholder="Enter Full Name" formControlName="fName"
+                    (keypress)="validationService.alphabetsWithSpaces($event)">
+            </mat-form-field>
+            <mat-error *ngIf="userformSubmitted && user['fName'].errors">
+            </mat-error>
+        </div>
+        <div class="col-sm-6">
+            <mat-form-field appearance="standard" class="w-100">
+                <mat-label>Mobile Number</mat-label>
+                <input matInput placeholder="Enter Mobile Number" formControlName="mobileNumber"
+                    (keypress)="validationService.onlyDigits($event)" [maxLength]="10">
+            </mat-form-field>
+            <mat-error *ngIf="userformSubmitted && user['mobileNumber'].errors">
+                <span class="text-danger"
+                    *ngIf="userformSubmitted && user['mobileNumber'].hasError('pattern')">Enter valid
+                    mobile Number</span>
+            </mat-error>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-sm-6">
+            <mat-form-field appearance="standard" class="w-100">
+                <mat-label>Assign Vehicle</mat-label>
+                <mat-select multiple formControlName="assignedVehicle">
+                    <mat-option *ngFor="let vehicles of vehicleDtArr"
+                        [value]="vehicles.vehicleRegistrationNo"  [disabled]="((vehicles.userId != editData?.id  && editFlag==true) || editFlag==false) && vehicles.userId != 0  ">{{vehicles.vehicleRegistrationNo}}
+                    </mat-option>
+                    <!-- [disabled]="(vehicles.userId != editData?.id && vehicles.userId != 0  && editFlag==true) || (editFlag==false && vehicles.userId != 0) " -->
+                </mat-select>
+               <!--  <button mat-icon-button matSuffix mat-stroked-button>
+                    {{user['assignedVehicle'].value? user['assignedVehicle'].value.length: 0}}
+                </button> -->
+            </mat-form-field>
+            <mat-error *ngIf="userformSubmitted && user['assignedVehicle'].errors"></mat-error>
+            <div class="d-flex">
+                <span class="vehicle-chips" *ngFor="let vehicles of user['assignedVehicle'].value">
+                    {{vehicles}}
+                    <button type="button" class="btn-close" (click)="removeSelectedValue(vehicles)"
+                        aria-label="Close"></button>
+                </span>
+                <!-- <span class="vehicle-chips">
+                    MH12FT8523
+                    <button type="button" class="btn-close" aria-label="Close"></button>
+                </span> -->
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="d-flex align-items-center justify-content-between">
+                <mat-form-field appearance="standard" class="w-10">
+                    <mat-label>Assign Role</mat-label>
+                    <mat-select formControlName="assignedRole">
+                        <mat-option *ngFor="let role of roleDtArr" [value]="role.subUserTypeId">
+                            {{role.subUserTypeName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button type="button" class="btn btn-outline-primary btn-sm ms-2" data-bs-toggle="modal"
+                    data-bs-target="#AddRoleModal">
+                    Add Role
+                </button>
+                <mat-error *ngIf="userformSubmitted && user['assignedRole'].errors"></mat-error>
+            </div>
+        </div>
+    </div>
+    <div class="form-container w-100">
+        <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-light-main" (click)="onNoClick('No')">{{dialogData?.cancelBtnText}}</button>
+            <button type="submit" class="btn btn-main"> {{dialogData?.submitBtnText}}</button>
+        </div>
+    </div>
+</form>
