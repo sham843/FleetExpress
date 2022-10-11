@@ -66,12 +66,14 @@ export class RegisterVehicleComponent implements OnInit {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.vehicleData = response.responseData.responseData1;
-        console.log(this.vehicleData)
        this.vehicleData.forEach((ele: any) => {
           ele.isBlock == 1 ? ele['isBlockFlag'] = true : ele['isBlockFlag'] = false;
         });
         flag == 'search' ? (this.searchHideShow = false, this.clearSerachBtn = true) : '';
         this.totalItem = response.responseData.responseData2.totalRecords;
+      }
+      else{
+        this.vehicleData=[];
       }
     },
       (error: any) => {
@@ -83,9 +85,9 @@ export class RegisterVehicleComponent implements OnInit {
   confirmationDialog(flag: boolean, label: string, event?: any, vhlData?: any) {
     let obj: any = ConfigService.dialogObj;
     if (label == 'status') {
-      obj['p1'] = flag ? 'Are you sure you want to approve?' : 'Are you sure you want to reject ?';
-      obj['cardTitle'] = flag ? 'Application  Approve' : 'Application  Reject';
-      obj['successBtnText'] = flag ? 'Approve' : 'Reject';
+      obj['p1'] = flag ? 'Are you sure you want to Block Vehicle?' : 'Are you sure you want to Unblock Vehicle?';
+      obj['cardTitle'] = flag ? 'Block Vehicle' : 'Unblock Vehicle';
+      obj['successBtnText'] = flag ? 'Block' : 'Unblock';
       obj['cancelBtnText'] = 'Cancel';
     } else if (label == 'delete') {
       obj['p1'] = 'Are you sure you want to delete this record';
@@ -104,6 +106,9 @@ export class RegisterVehicleComponent implements OnInit {
       if (res == 'Yes' && label == 'status') {
         this.blockUnblockVhl(vhlData,event);
       } 
+      else{
+        this.getVehiclesData();
+      }
     }
     )
   }
@@ -118,11 +123,9 @@ export class RegisterVehicleComponent implements OnInit {
     "isBlock": isBlock,
     "remark": ""
   }
-  console.log(param)
   this.spinner.show();
   this.apiCall.setHttp('put', 'vehicle/BlockUnblockVehicle', true, param, false, 'fleetExpressBaseUrl');
-  // this.subscription = 
-  this.apiCall.getHttp().subscribe((response: any) => {
+this.subscription =this.apiCall.getHttp().subscribe((response: any) => {
     if (response.statusCode == "200") {
       this.spinner.hide();
       this.getVehiclesData();
@@ -162,5 +165,10 @@ getDriverData(vhlData?: any) {
   onPagintion(pageNo: any){
       this.paginationNo = pageNo;
       this.getVehiclesData();
+  }
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

@@ -60,6 +60,7 @@ export class ModalsComponent implements OnInit {
   get f() { return this.driverRegForm.controls };
   // --------------------------------------------------form controls------------------------------------------------------------------
   getFormControl() {
+    console.log(this.dialogData)
     this.driverRegForm = this.fb.group({
       profilePhoto: [''],
       mobileNo: [this.dialogData ? this.dialogData?.mobileNo : '', Validators.compose([Validators.required, Validators.pattern('^[6-9][0-9]{9}$'), Validators.maxLength(10)])],
@@ -151,10 +152,11 @@ export class ModalsComponent implements OnInit {
   }
   //  ------------------------------------------------------add driver-----------------------------------------------------------------
   onSubmit(formDirective: any) {
-    console.log(this.driverRegForm.value)
     let formData = this.driverRegForm.value;
+    let licenceExpireDt=formData.licenceExpiryDate
     formData.id = this.dialogData ? this.dialogData?.driverId : this.editId;
     formData.middleName = '';
+    formData.licenceExpiryDate =licenceExpireDt.toISOString();
     formData.dob = this.datepipe.transform(formData.dob, 'yyyy/MM/dd');
     formData.createdBy = this.webStorage.getUserId();
     formData.createdDate = this.date.toISOString();
@@ -165,9 +167,6 @@ export class ModalsComponent implements OnInit {
     formData.aadharCardDoc = this.aadharDoc || '';
     formData.licenceDoc = this.licenceDoc || '';
     formData.profilePhoto = this.profilePhotoupd != 'assets/images/Driver-profile.svg' ? this.profilePhotoupd : '';
-    if (this.driverRegForm.invalid) {
-      return;
-    } else {
       this.spinner.show();
       this.apiCall.setHttp('post', 'driver/save-update-deriver-details', true, formData, false, 'fleetExpressBaseUrl');
       this.apiCall.getHttp().subscribe((response: any) => {
@@ -187,7 +186,6 @@ export class ModalsComponent implements OnInit {
           this.error.handelError(error.status);
         })
       this.spinner.hide();
-    }
   }
 
   onNoClick(flag: any): void {
