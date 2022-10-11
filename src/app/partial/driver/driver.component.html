@@ -40,13 +40,13 @@
                             </div>
                         </div>
                         <div class="col-sm-4 text-end">
+                            <button [disabled]="!checkArray.length || !driverDetails?.length" class="btn btn-danger rounded-circle ms-3"
+                            (click)="confirmationDialog(true, 'delete')">
+                            <i class="fa-regular fa-trash-can"></i>
+                        </button>
                             <button type="button" class="btn btn-add" data-bs-toggle="modal"
                                 data-bs-target="#AddDriverModal" (click)="commonModule('add')">
                                 <i class="fa-solid fa-plus"></i>
-                            </button>
-                            <button [disabled]="!checkArray.length || !driverDetails?.length" class="btn btn-danger rounded-circle ms-3"
-                                (click)="confirmationDialog(true, 'delete')">
-                                <i class="fa-regular fa-trash-can"></i>
                             </button>
                         </div>                            
                     </div>
