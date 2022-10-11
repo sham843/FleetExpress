@@ -84,8 +84,8 @@
                     <div class="col-sm-6">
                         <div class="d-flex align-items-center">
                             <mat-form-field [appearance]="config.matFormField" class="w-100">
-                                <mat-label>Licence Number</mat-label>
-                                <input matInput placeholder="Licence Number" formControlName="licenceNumber"
+                                <mat-label>Driving Licence Number</mat-label>
+                                <input matInput placeholder="Driving Licence Number" formControlName="licenceNumber"
                                     [ngClass]="{'is-invalid':f['licenceNumber'].errors}" maxlength="20" minlength="15"
                                     (blur)="checkDocumentUpd('licence')">
                                 <mat-error *ngIf="f['licenceNumber'].errors">
