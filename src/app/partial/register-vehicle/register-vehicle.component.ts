@@ -26,6 +26,8 @@ export class RegisterVehicleComponent implements OnInit {
   clearSerachBtn:boolean=false;
   date=new Date();
   driverData=new Array();
+  selectAll!:boolean;
+  checkedVehicle=new Array();
   constructor(public validation: ValidationService,
     private fb: FormBuilder,
     private apiCall:ApiCallService,
@@ -59,6 +61,7 @@ export class RegisterVehicleComponent implements OnInit {
   }
   // --------------------------------------------get vehicle data--------------------------------------------------------------------
   getVehiclesData(flag?: any){
+    this.checkedVehicle = [];
     this.spinner.show();
     let searchText = this.searchVehicleForm.value.vehicleNo || '';
     this.apiCall.setHttp('get', 'vehicle/get-vehiclelists?searchtext=' + searchText + '&nopage=' + this.paginationNo, true, false, false, 'fleetExpressBaseUrl');
@@ -81,8 +84,33 @@ export class RegisterVehicleComponent implements OnInit {
       })
     this.spinner.hide();
   }
+  // ---------------------------------------------------------checkbox----------------------------------------------------------------
+  selectVehicle(event: any, driverId: number) {
+    for (var i = 0; i < this.vehicleData.length; i++) {
+      if (driverId != 0) {
+        this.selectAll = false;
+        if (this.vehicleData[i].driverId == driverId) {
+          this.vehicleData[i].checked = event.checked;
+        }
+      } else {
+        this.vehicleData[i].checked = event.checked;
+      }
+    }
+    this.checkedVehicle = [];
+    this.checkedVehicle = this.vehicleData.filter((x: any) => x.checked == true);
+    this.selectAll = this.vehicleData.length == this.checkedVehicle.length ? true : false;
+  }
+
+  uncheckVehicle() {
+    this.selectAll = false;
+    this.vehicleData.map((ele: any) => {
+      ele.checked = false
+      this.checkedVehicle=[];
+    })
+  }
   // ---------------------------------------------------------Comfirmation dialog------------------------------------------------------
   confirmationDialog(flag: boolean, label: string, event?: any, vhlData?: any) {
+    this.selectAll ? this.uncheckVehicle():'';
     let obj: any = ConfigService.dialogObj;
     if (label == 'status') {
       obj['p1'] = flag ? 'Are you sure you want to Block Vehicle?' : 'Are you sure you want to Unblock Vehicle?';
@@ -93,6 +121,11 @@ export class RegisterVehicleComponent implements OnInit {
       obj['p1'] = 'Are you sure you want to delete this record';
       obj['cardTitle'] = 'Delete';
       obj['successBtnText'] = 'Delete';
+      obj['cancelBtnText'] = 'Cancel';
+    }else if(label == 'assign'){
+      obj['v1'] = event;
+      obj['cardTitle'] = 'Assign Driver';
+      obj['successBtnText'] = 'Assign';
       obj['cancelBtnText'] = 'Cancel';
     }
 
@@ -162,7 +195,10 @@ getDriverData(vhlData?: any) {
       this.searchHideShow = true;
       this.clearSerachBtn = false;
     }
+
+   
   onPagintion(pageNo: any){
+    this.selectAll = false;
       this.paginationNo = pageNo;
       this.getVehiclesData();
   }
