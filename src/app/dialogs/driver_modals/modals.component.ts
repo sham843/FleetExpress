@@ -125,7 +125,7 @@ export class ModalsComponent implements OnInit {
   checkDocumentUpd(flag: any) {
     if (flag == 'licence') {
       if (this.driverRegForm.value.licenceDoc == '') {
-        this.commonMethods.snackBar("Please upload licence", 1);
+        this.commonMethods.snackBar("Please upload Driving licence", 1);
       }
     }
     else if (flag == 'aadhar') {
