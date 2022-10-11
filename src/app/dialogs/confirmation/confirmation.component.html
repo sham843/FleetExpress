@@ -11,7 +11,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body text-center">
+                <div class="card-body text-center p-0">
                     <p class="mb-3 small" *ngIf="dialogData?.p1">{{dialogData?.p1}}</p>
                     <p class="mb-3 small" *ngIf="dialogData?.p2">{{dialogData?.p2}}</p>
                     <div *ngIf="data.inputType">
@@ -21,17 +21,17 @@
                         </mat-form-field>
                     </div>
                     <ng-container *ngIf="dialogData.cardTitle== 'Assign Driver'">
-                        <div class="row">
-                            <div class="col-sm-8">
-                                <h5>{{dialogData?.v1}}</h5>
+                        <div class="row gx-2 align-items-center mt-4 mb-3">
+                            <div class="col-sm">
+                                <h5 class="mb-0">{{dialogData?.v1}}</h5>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-auto">
                                 <button type="submit" class="btn btn-light-main btn-sm">
                                     Add Driver <i class="fa-solid fa-plus"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="row align-items-center  ms-2">
+                        <div class="row align-items-center mb-3">
                             <div class="col-sm">
                                 <mat-form-field appearance="legacy" class="w-100">
                                     <mat-label>Select Driver Name</mat-label>
