@@ -62,7 +62,7 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   openCreateGeofenceDialog(data?: any) {
-    this.selectAll ? this.uncheckAllGeofence():'';
+    this.selectAll || this.checkedGeoFenceArray.length ? this.uncheckAllGeofence():'';
     this.highlightRow = data?.poiId;
     const dialogRef = this.dialog.open(CreateGeofenceComponent, {
       width: this.configService.dialogBoxWidth[2],
@@ -79,7 +79,6 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onPagintion(pageNo: any) {
-    this.selectAll = false;
     this.paginationNo = pageNo;
     this.getAllGeofecneData();
   }
