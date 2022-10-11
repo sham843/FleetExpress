@@ -3,14 +3,14 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { filter, pairwise } from 'rxjs';
-
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommonMethodsService {
-  codecareerPage!:string;
-  previousUrl!:string;
+  codecareerPage!: string;
+  previousUrl!: string;
   previousUrlFlag: any;
 
   constructor(
@@ -21,7 +21,7 @@ export class CommonMethodsService {
     public location: Location,
   ) {
   }
-  
+
   snackBar(data: string, status: number) {
     let snackClassArr: any = ['snack-success', 'snack-danger', 'snack-warning'];
     this.SnackBar.open(data, " ", {
@@ -131,7 +131,7 @@ export class CommonMethodsService {
       localStorage.getItem('pagination') ? localStorage.removeItem('pagination') : ''
     }
   }
- 
+
 
   oneMonPrevDate() {
     let prevDate = new Date();
@@ -177,14 +177,29 @@ export class CommonMethodsService {
   //    return res;
   // }
 
-//   encryptData(rawData: string){
-//     var rsa = forge.pki.publicKeyFromPem(this.configService.asymmetric_Public_Key);
-//     return window.btoa(rsa.encrypt(rawData));
-// }
+  //   encryptData(rawData: string){
+  //     var rsa = forge.pki.publicKeyFromPem(this.configService.asymmetric_Public_Key);
+  //     return window.btoa(rsa.encrypt(rawData));
+  // }
 
-  setBadgeClass(status:any){
+  currentDate(){
+    return moment.utc().startOf('day').toISOString();
+  }
+
+  set24Hours() {
+    var time = moment.duration("24:00:00");
+    var date = moment();
+    return  date.subtract(time);
+  }
+
+  setSevenDays() {
+    const maxTodayDate = moment(new Date()).add(7, 'days').calendar();
+    return moment(maxTodayDate).toISOString() < moment().toISOString() ? moment(maxTodayDate).toISOString() : moment().toISOString();
+  }
+
+  setBadgeClass(status: any) {
     let statusLowerCase = status?.toLowerCase();
-    return statusLowerCase == 'approved' ? 'bg-success' : statusLowerCase=='rejected' ? 'bg-danger' : statusLowerCase== 'pending'|| statusLowerCase== null ? 'bg-warning text-dark' : statusLowerCase=='waiting for approval' ? 'bg-info' : ''
+    return statusLowerCase == 'approved' ? 'bg-success' : statusLowerCase == 'rejected' ? 'bg-danger' : statusLowerCase == 'pending' || statusLowerCase == null ? 'bg-warning text-dark' : statusLowerCase == 'waiting for approval' ? 'bg-info' : ''
   }
 
 }
