@@ -1,4 +1,4 @@
-<p class="page-heading">Driver</p>
+<!-- <p class="page-heading">Driver</p> -->
 <div class="row">
     <div class="col-sm-12">
         <div class="display-bar">
@@ -40,13 +40,13 @@
                             </div>
                         </div>
                         <div class="col-sm-4 text-end">
-                            <button type="button" class="btn btn-add" data-bs-toggle="modal"
+                            <button [disabled]="!checkArray.length || !driverDetails?.length" class="btn btn-danger rounded-circle"
+                            (click)="confirmationDialog(true, 'delete')">
+                            <i class="fa-regular fa-trash-can"></i>
+                        </button>
+                            <button type="button" class="btn btn-add ms-3" data-bs-toggle="modal"
                                 data-bs-target="#AddDriverModal" (click)="commonModule('add')">
                                 <i class="fa-solid fa-plus"></i>
-                            </button>
-                            <button [disabled]="!checkArray.length || !driverDetails?.length" class="btn btn-danger rounded-circle ms-3"
-                                (click)="confirmationDialog(true, 'delete')">
-                                <i class="fa-regular fa-trash-can"></i>
                             </button>
                         </div>                            
                     </div>

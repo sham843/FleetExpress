@@ -109,8 +109,8 @@ export class DriverComponent implements OnInit {
 
   // -----------------------------------------------comfirmation module----------------------------------------------------------
   confirmationDialog(flag: boolean, label: string, event?: any, drData?: any) {
+    this.selectAll ? this.uncheckAllDriver():'';
     let obj: any = ConfigService.dialogObj;
-
     if (label == 'status') {
       obj['p1'] = flag ? 'Are you sure you want to Block Driver?' : 'Are you sure you want to Unblock Driver?';
       obj['cardTitle'] = flag ? 'Block Driver' : 'Unblock Driver';
@@ -189,6 +189,7 @@ export class DriverComponent implements OnInit {
     this.selectAll = false;
     this.driverDetails.map((ele: any) => {
       ele.checked = false
+      this.checkArray=[];
     })
   }
   removeDriverData() {
