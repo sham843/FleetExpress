@@ -73,10 +73,6 @@ export class RegisterVehicleComponent implements OnInit {
         flag == 'search' ? (this.searchHideShow = false, this.clearSerachBtn = true) : '';
         this.totalItem = response.responseData.responseData2.totalRecords;
       }
-      else {
-        this.spinner.hide();
-        this.error.handelError(response.statusCode);
-      }
     },
       (error: any) => {
         this.error.handelError(error.status);

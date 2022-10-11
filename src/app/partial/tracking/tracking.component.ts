@@ -295,7 +295,7 @@ export class TrackingComponent implements OnInit {
     // }
 
     const dialog = this.dialog.open(SharedTrackingComponent, {
-      width: this.configService.dialogBoxWidth[0],
+      width: this.configService.dialogBoxWidth[1],
       data: obj,
       disableClose: this.configService.disableCloseBtnFlag,
     })
