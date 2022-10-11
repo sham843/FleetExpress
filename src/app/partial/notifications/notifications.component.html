@@ -71,7 +71,8 @@
                         <div class="row justify-content-between align-items-end">
                             <div class="col-sm">
                                 <div class="vehicle-no {{item?.color[0]?.color}}">{{item?.alertType}}: {{item?.vehicleNumber }}</div>
-                                <div class="vehicle-location">{{item?.alertMessage }}</div>
+                                <div class="vehicle-location">{{item?.msgDisc }}<a [href]="item?.msgURL" target="_blank">{{item?.msgURL}}</a></div>
+                                
                             </div>
                             <div class="col-sm-auto">
                                 <span class="last-update">Last Updated : {{item?.invalidDate | date: 'dd-MM-yyyy hh:mm:ss a' }}</span>
