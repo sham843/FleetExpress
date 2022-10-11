@@ -23,7 +23,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmationComponent } from './dialogs/confirmation/confirmation.component';
 import { ModalsComponent } from './dialogs/driver_modals/modals.component';
 import { SharedTrackingComponent } from './dialogs/shared-tracking/shared-tracking.component';
-
+import { AddUpdateUserComponent } from './partial/user-management-system/add-update-user/add-update-user.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -40,7 +40,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ReportTableComponent,
     ConfirmationComponent,
     ModalsComponent,
-    SharedTrackingComponent
+    SharedTrackingComponent,
+    AddUpdateUserComponent
   ],
   imports: [
     BrowserModule,

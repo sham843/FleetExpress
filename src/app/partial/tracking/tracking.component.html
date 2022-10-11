@@ -6,8 +6,6 @@
             <div class="row align-items-center" id="filters">
                 <div class="col-sm-4 border-end">
                     <div class="input-group">
-                        <!-- <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
-                        <input type="text" class="form-control" placeholder="Search"> -->
                         <input type="text" class="form-control" placeholder="Search" [formControl]="searchContent"
                             [maxLength]="15">
                         <div class="input-group-text" *ngIf="!searchContent.value">
@@ -20,24 +18,23 @@
                 </div>
                 <div class="col-sm-2 border-end">
                     <div class="d-flex align-items-center justify-content-between">
-                        <button type="button" class="btn btn-light text-dark" (click)="selectionTab('TotalVehicles')">
-                            Total Vehicles <span class="badge ms-3">{{allVehiclelData.length}}</span>
+                        <button type="button" class="btn btn-light text-dark"
+                            (click)="clickOnTrackingTab('TotalVehicles')">
+                            Total Vehicles <span class="badge ms-3">{{allVehiclelDataClone.length}}</span>
                         </button>
-                        <!-- <div class="mb-0">Total Vehicles</div>
-                        <div>{{allVehiclelData.length}}</div> -->
                     </div>
                 </div>
                 <div class="col-sm-6">
-                    <button type="button" class="btn btn-light text-success" (click)="selectionTab('Running')">
+                    <button type="button" class="btn btn-light text-success" (click)="clickOnTrackingTab('Running')">
                         Running <span class="badge text-bg-success ms-3">{{allRunningVehiclelData.length}}</span>
                     </button>
-                    <button type="button" class="btn btn-light text-white mx-2" (click)="selectionTab('Stopped')">
+                    <button type="button" class="btn btn-light text-white mx-2" (click)="clickOnTrackingTab('Stopped')">
                         Stopped <span class="badge text-bg-warning ms-3">{{allStoppedVehiclelData.length}}</span>
                     </button>
-                    <button type="button" class="btn btn-light text-primary me-2" (click)="selectionTab('Idle')">
+                    <button type="button" class="btn btn-light text-primary me-2" (click)="clickOnTrackingTab('Idle')">
                         Idle <span class="badge text-bg-primary ms-3">{{allIdleVehiclelData.length}}</span>
                     </button>
-                    <button type="button" class="btn btn-light text-danger" (click)="selectionTab('Offline')">
+                    <button type="button" class="btn btn-light text-danger" (click)="clickOnTrackingTab('Offline')">
                         Offline <span class="badge text-bg-danger ms-3">{{allOfflineVehiclelData.length}}</span>
                     </button>
                 </div>
@@ -49,11 +46,11 @@
     <div class="col-sm-4">
         <div class="card border-0 rounded">
             <div class="card-body fixed-height rounded" *ngIf="allVehiclelData.length">
-                <div class="rounded"
-                    *ngFor="let item of (selectedTab=='Running'?allRunningVehiclelData:selectedTab=='Stopped'?allStoppedVehiclelData:selectedTab=='Idle'?allIdleVehiclelData:selectedTab=='Offline'?allOfflineVehiclelData:allVehiclelData); let i=index">
-                    <ng-container *ngIf="item?.gpsStatus=='Offline'; else templateA">
-                        <a class="d-flex vehicle p-3 bg-opacity-10 bg-danger mb-1 rounded" placement="top" routerLinkActive="active"
-                            [class.active]="selectedIndex === i" (click)="setIndex(i)">
+                <div class="rounded" *ngFor="let item of allVehiclelData; let i=index">
+                    <!-- *ngIf="item?.gpsStatus=='Offline'; else templateA" -->
+                    <ng-container>
+                        <a class="d-flex vehicle p-3 bg-opacity-10 bg-danger mb-1 rounded" placement="top"
+                            routerLinkActive="active" [class.active]="selectedIndex === i">
                             <div class="flex-shrink-0">
                                 <div class="bg-danger bg-opacity-25 text-danger rounded-circle vehicle-icon">
                                     <i class="fa-solid fa-car"></i>
@@ -61,7 +58,13 @@
                             </div>
                             <div class="flex-grow-1 ms-2">
                                 <div class="d-flex justify-content-between align-items-center my-2">
-                                    <a class="text-danger" [ngbPopover]="popContent" placement="end">
+                                    <a class="text-danger" *ngIf="item?.gpsStatus=='Offline'" [ngbPopover]="popContent"
+                                        placement="end">
+                                        <p class="vehicle-no">{{item?.vehicleNo}} </p>
+                                    </a>
+                                    <a class="text-danger" *ngIf="item?.gpsStatus!='Offline'" data-bs-toggle="offcanvas"
+                                        data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom"
+                                        [ngClass]="{'text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
                                         <p class="vehicle-no">{{item?.vehicleNo}} </p>
                                     </a>
                                     <span class="text-dark veh-status">({{'ticket raised'}})</span>
@@ -96,86 +99,26 @@
                                         </div>
                                     </div>
                                     <div class="share-call">
-                                        <a  class="me-3" (click)="shareingDialog()"><img
-                                                src="assets/images/Tracking/share.svg"></a>
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#CallDriverModal"><img
-                                                src="assets/images/Tracking/call-vehicle.svg"></a>
+                                        <a class="me-3"><img src="assets/images/Tracking/share.svg"></a>
+                                        <a><img src="assets/images/Tracking/call-vehicle.svg"></a>
                                     </div>
                                 </div>
                             </div>
                         </a>
                     </ng-container>
-                    <ng-template #templateA>
-                        <a class="d-flex vehicle p-3 active" routerLinkActive="active" 
-                            [class.active]="selectedIndex === i" (click)="setIndex(i)">
-                            <div class="flex-shrink-0">
-                                <div class="bg-opacity-25 rounded-circle vehicle-icon"
-                                    [ngClass]="{'text-success bg-success':item?.gpsStatus=='Running','text-warning bg-warning':item?.gpsStatus=='Stopped','text-primary bg-primary':item?.gpsStatus=='Idle'}">
-                                    <i class="fa-solid fa-car"></i>
-                                </div>
-                            </div>
-                            <div class="flex-grow-1 ms-2">
-                                <div class="d-flex justify-content-between align-items-center my-2">
-                                    <a (click)="getVehicleAllDetails(item?.vehicleNo)" data-bs-toggle="offcanvas"
-                                    data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom"
-                                        [ngClass]="{'text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
-                                        <p class="vehicle-no">{{item?.vehicleNo}}</p>
-                                    </a>
-                                    <span class="veh-status"
-                                        [ngClass]="{'text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
-                                        <i class="fa-solid fa-circle me-2"></i>{{item?.gpsStatus}}
-                                    </span>
-                                </div>
-                                <div class="d-flex align-items-start">
-                                    <img src="assets/images/Tracking/location-vehicle.svg" class="me-2 mt-1">
-                                    <div class="vehicle-location">
-                                        <p>Yavatmal District Maharashtra</p>
-                                        <small>
-                                            <!-- 22 Jul 2022, 16:28  -->
-                                            {{ item?.deviceDatetime | date:'dd MMM yyyy hh:mm a'}}
-                                        </small>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-start mb-2">
-                                    <img src="assets/images/Tracking/info-vehicle.svg" class="me-2 mt-1">
-                                    <div class="vehicle-running">
-                                        {{item?.speed}} kmph | Running since : 3 days : 5 hrs | 480 km today
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="vehicle-status">
-                                        <div class="d-flex">
-                                            <span><img src="assets/images/Tracking/battery.svg" class="me-1"> 50%</span>
-                                            <span class="mx-3"><img src="assets/images/Tracking/network.svg"
-                                                    class="me-1">
-                                                100%</span>
-                                            <span><img src="assets/images/Tracking/ON-vehicle.svg" class="me-1">
-                                                ON</span>
-                                        </div>
-                                    </div>
-                                    <div class="share-call">
-                                        <a href="#" class="me-3" data-bs-toggle="modal"
-                                            data-bs-target="#ShareLocationModal"><img
-                                                src="assets/images/Tracking/share.svg"></a>
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#CallDriverModal"><img
-                                                src="assets/images/Tracking/call-vehicle.svg"></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </ng-template>
                     <ng-template #popContent class="bg-danger">
                         <p>GPS Wire Cut. Is the vehicle in maintenance?</p>
                         <div class="d-flex justify-content-end">
-                            <button class="btn btn-sm btn-outline-danger text-dark" data-bs-toggle="modal"
-                                data-bs-target="#RaiseTicketModal">No</button>
-                            <button class="btn btn-sm btn-outline-danger text-dark" data-bs-toggle="modal"
-                                data-bs-target="#MaintenanceModal" (click)="getVehicleNumber(item)">Yes</button>
+                            <button class="btn btn-sm btn-outline-danger text-dark"
+                                (click)="openTicketRaisedDialog(item,'compliant')">No</button>
+                            <button class="btn btn-sm btn-outline-danger text-dark"
+                                (click)="openTicketRaisedDialog(item,'maintenance')">Yes</button>
                         </div>
                     </ng-template>
                 </div>
             </div>
-            <div *ngIf="(selectedTab=='Running'? !allRunningVehiclelData.length:selectedTab=='Stopped'? !allStoppedVehiclelData.length:selectedTab=='Idle'?!allIdleVehiclelData.length:selectedTab=='Offline'?!allOfflineVehiclelData.length:!allVehiclelData.length)|| !allVehiclelData.length " class="card-body fixed-height p-1">
+            <div *ngIf="(selectedTab=='Running'? !allRunningVehiclelData.length:selectedTab=='Stopped'? !allStoppedVehiclelData.length:selectedTab=='Idle'?!allIdleVehiclelData.length:selectedTab=='Offline'?!allOfflineVehiclelData.length:!allVehiclelData.length)|| !allVehiclelData.length "
+                class="card-body fixed-height p-1">
                 <div class="alert alert-danger text-center py-2"> No data found</div>
             </div>
 
@@ -278,7 +221,7 @@
                                         </div>
                                     </div>
                                     <div class="col-sm">
-                                        <form [formGroup]="itineraryForm">
+                                        <!-- <form [formGroup]="itineraryForm">
                                             <div class="d-flex justify-content-end align-items-center" id="itinerary-buttons">
                                                 <mat-form-field appearance="legacy" class="me-1" style="width:100px !important;">
                                                     <mat-select formControlName="timePeriod"
@@ -292,11 +235,11 @@
                                                 </mat-form-field>
                                                 <mat-form-field appearance="legacy" *ngIf="itinerary['timePeriod']?.value=='4'"> 
                                                     <mat-label>Enter From Date-To Date</mat-label>
-                                                    <mat-date-range-input [rangePicker]="picker" [max]="currentDate">
+                                                    <mat-date-range-input [rangePicker]="picker" [max]="todayDate">
                                                         <input matStartDate placeholder="From Date"  (dateChange)="settodate(f['fromDate'].value);checkValidDate()"
-                                                            formControlName="fromDate" autocomplete="off" [max]="currentDate">
+                                                            formControlName="fromDate" autocomplete="off" [max]="todayDate">
                                                         <input matEndDate placeholder="To Date"
-                                                            formControlName="toDate" autocomplete="off" [min]="itinerary['fromDate'].value " [max]="maxTodayDate || currentDate">
+                                                            formControlName="toDate" autocomplete="off" [min]="itinerary['fromDate'].value " [max]="maxTodayDate || todayDate">
                                                     </mat-date-range-input>
                                                     <mat-datepicker-toggle matSuffix [for]="picker">
                                                     </mat-datepicker-toggle>
@@ -332,7 +275,7 @@
                                                     </button>
                                                 </mat-menu>
                                             </div>
-                                        </form>
+                                        </form> -->
                                     </div>
                                 </div>
                                 <div class="fixed-height-table">
@@ -461,7 +404,8 @@
                                                 <p>{{driverDetailsData[0]?.name }}</p>
                                                 <small>{{driverDetailsData[0]?.mobileNo }}</small>
                                             </div>
-                                            <a class="call-driver bg-success" [href]="'tel:'+ driverDetailsData[0]?.mobileNo">
+                                            <a class="call-driver bg-success"
+                                                [href]="'tel:'+ driverDetailsData[0]?.mobileNo">
                                                 <i class="fa-solid fa-phone"></i>
                                             </a>
                                         </div>
@@ -469,17 +413,23 @@
                                             <div class="col-sm">
                                                 <small>Aadhar Card No.</small>
                                                 <p>{{driverDetailsData[0]?.aadharNumber }}</p>
-                                                <a *ngIf="driverDetailsData[0]?.aadharCardDoc" [href]="driverDetailsData[0]?.aadharCardDoc" target="_blank"><i class="fa-solid fa-file-pdf"></i></a> 
+                                                <a *ngIf="driverDetailsData[0]?.aadharCardDoc"
+                                                    [href]="driverDetailsData[0]?.aadharCardDoc" target="_blank"><i
+                                                        class="fa-solid fa-file-pdf"></i></a>
                                             </div>
                                             <div class="col-sm">
                                                 <small>PAN Card No.</small>
                                                 <p>{{driverDetailsData[0]?.panNumber }}</p>
-                                                <a *ngIf="driverDetailsData[0]?.panCardDoc" [href]="driverDetailsData[0]?.panCardDoc" target="_blank"><i class="fa-solid fa-file-pdf"></i></a> 
+                                                <a *ngIf="driverDetailsData[0]?.panCardDoc"
+                                                    [href]="driverDetailsData[0]?.panCardDoc" target="_blank"><i
+                                                        class="fa-solid fa-file-pdf"></i></a>
                                             </div>
                                             <div class="col-sm">
                                                 <small>License No.</small>
                                                 <p>{{driverDetailsData[0]?.licenceNumber }}</p>
-                                                <a *ngIf="driverDetailsData[0]?.licenceDoc" [href]="driverDetailsData[0]?.licenceDoc" target="_blank"><i class="fa-solid fa-file-pdf"></i></a> 
+                                                <a *ngIf="driverDetailsData[0]?.licenceDoc"
+                                                    [href]="driverDetailsData[0]?.licenceDoc" target="_blank"><i
+                                                        class="fa-solid fa-file-pdf"></i></a>
                                             </div>
                                             <div class="col-sm">
                                                 <small>License Expiry</small>
@@ -502,8 +452,9 @@
                                         <div class="d-flex mb-4">
                                             <div class="driver-name">
                                                 <p>{{vehicleDetailsData[0]?.regNo}}</p>
-                                                <small>{{vehicleDetailsData[0]?.vehicleMake}} {{vehicleDetailsData[0]?.vehicleMake}}
-                                                    <!-- Tata 207 EX Pickup -->
+                                                <small>{{vehicleDetailsData[0]?.vehicleMake}}
+                                                    {{vehicleDetailsData[0]?.vehicleMake}}
+
                                                 </small>
                                             </div>
                                         </div>
@@ -591,102 +542,6 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>MH 09 HS 4028</td>
-                                                <td>Yavatmal District Maharashtra</td>
-                                                <td>02 km</td>
-                                                <td>26-08-2022 4:25 PM</td>
-                                                <td>
-                                                    <div class="d-flex">
-                                                        <span class="text-warning me-2"><i
-                                                                class="fa-solid fa-circle"></i></span>
-                                                        <span>Stopped</span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex">
-                                                        <button class="btn btn-light-main text-main me-2 btn-icon">
-                                                            <i class="fa-solid fa-phone-volume"></i>
-                                                        </button>
-                                                        <button
-                                                            class="btn bg-success bg-opacity-10 text-success btn-icon">
-                                                            <i class="fa-solid fa-route"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>MH 09 HS 4028</td>
-                                                <td>Yavatmal District Maharashtra</td>
-                                                <td>02 km</td>
-                                                <td>26-08-2022 4:25 PM</td>
-                                                <td>
-                                                    <div class="d-flex">
-                                                        <span class="text-primary me-2"><i
-                                                                class="fa-solid fa-circle"></i></span>
-                                                        <span>Idle</span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex">
-                                                        <button class="btn btn-light-main text-main me-2 btn-icon">
-                                                            <i class="fa-solid fa-phone-volume"></i>
-                                                        </button>
-                                                        <button
-                                                            class="btn bg-success bg-opacity-10 text-success btn-icon">
-                                                            <i class="fa-solid fa-route"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>MH 09 HS 4028</td>
-                                                <td>Yavatmal District Maharashtra</td>
-                                                <td>02 km</td>
-                                                <td>26-08-2022 4:25 PM</td>
-                                                <td>
-                                                    <div class="d-flex">
-                                                        <span class="text-danger me-2"><i
-                                                                class="fa-solid fa-circle"></i></span>
-                                                        <span>Offline</span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex">
-                                                        <button class="btn btn-light-main text-main me-2 btn-icon">
-                                                            <i class="fa-solid fa-phone-volume"></i>
-                                                        </button>
-                                                        <button
-                                                            class="btn bg-success bg-opacity-10 text-success btn-icon">
-                                                            <i class="fa-solid fa-route"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>MH 09 HS 4028</td>
-                                                <td>Yavatmal District Maharashtra</td>
-                                                <td>02 km</td>
-                                                <td>26-08-2022 4:25 PM</td>
-                                                <td>
-                                                    <div class="d-flex">
-                                                        <span class="text-danger me-2"><i
-                                                                class="fa-solid fa-circle"></i></span>
-                                                        <span>Offline</span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex">
-                                                        <button class="btn btn-light-main text-main me-2 btn-icon">
-                                                            <i class="fa-solid fa-phone-volume"></i>
-                                                        </button>
-                                                        <button
-                                                            class="btn bg-success bg-opacity-10 text-success btn-icon">
-                                                            <i class="fa-solid fa-route"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -695,252 +550,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- Modal for share location -->
-<div class="modal fade" id="ShareLocationModal" tabindex="-1" aria-labelledby="ShareLocationModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-light-gradient text-dark">
-                <p class="modal-title mb-0" id="ShareLocationModalLabel">Share Location</p>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-sm-8">
-                        <mat-form-field appearance="fill" class="w-100">
-                            <mat-label>Favorite food</mat-label>
-                            <mat-select>
-                                <mat-option *ngFor="let food of foods" [value]="food.value">
-                                    {{food.viewValue}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-container">
-                            <label class="form-label">Share Via</label>
-                            <div class="d-block">
-                                <img src="assets/images/Tracking/whatsapp.svg" class="share-icon me-4">
-                                <img src="assets/images/Tracking/gmail.svg" class="share-icon">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <div class="form-container w-100">
-                    <div class="d-flex justify-content-between">
-                        <button type="button" class="btn btn-light-main" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-main">Share Location</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- Modal for call driver -->
-<div class="modal fade" id="CallDriverModal" tabindex="-1" aria-labelledby="CallDriverModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content">
-            <div class="modal-header bg-light-gradient text-dark">
-                <p class="modal-title mb-0" id="CallDriverModalLabel">Call Driver on</p>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p class="mb-0 fw-bold">+ 91 9421774125</p>
-            </div>
-            <div class="modal-footer">
-                <div class="form-container w-100">
-                    <div class="d-flex justify-content-between">
-                        <button type="button" class="btn btn-light-main" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-main">Okay</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- Modal for video -->
-<div class="modal fade" id="PlayRouteModal" tabindex="-1" aria-labelledby="PlayRouteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <p class="modal-title mb-0" id="PlayRouteModalLabel">Play Route</p>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-2">
-                Video
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal to raise ticket -->
-<div class="modal fade" id="RaiseTicketModal" tabindex="-1" aria-labelledby="RaiseTicketModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-light-gradient text-dark">
-                <p class="modal-title mb-0" id="RaiseTicketModalLabel">Raise Ticket for <span
-                        class="fw-bold text-main">MH29T0444</span></p>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="form-container">
-                    <p class="mb-0">GPS Wire Cut <small class="text-muted">22 jul 2022 , 01:31</small></p>
-                    <small class="text-muted">The Technician will visit you as per the below details.</small>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <mat-form-field class="w-100" appearance="standard">
-                                <mat-label>Your Number</mat-label>
-                                <input matInput placeholder="Your Number">
-                                <span matPrefix class="me-2">+91 </span>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-sm-6">
-                            <mat-form-field class="w-100" appearance="standard">
-                                <mat-label>Driver's Phone Number</mat-label>
-                                <input matInput placeholder="Driver's Phone Number">
-                                <span matPrefix class="me-2">+91 </span>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <mat-form-field appearance="standard" class="w-100">
-                                <mat-label>Vehicle's available State</mat-label>
-                                <mat-select>
-                                    <mat-option *ngFor="let food of foods" [value]="food.value">
-                                        {{food.viewValue}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-sm-6">
-                            <mat-form-field appearance="standard" class="w-100">
-                                <mat-label>Vehicle's available City</mat-label>
-                                <mat-select>
-                                    <mat-option *ngFor="let food of foods" [value]="food.value">
-                                        {{food.viewValue}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <mat-form-field appearance="standard" class="w-100">
-                                <mat-label>Vehicle's available Date</mat-label>
-                                <input matInput [matDatepicker]="availabledate">
-                                <mat-datepicker-toggle matSuffix [for]="availabledate"></mat-datepicker-toggle>
-                                <mat-datepicker #availabledate></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-sm-6">
-                            <mat-form-field appearance="standard" class="w-100">
-                                <mat-label>Vehicle’s available Time</mat-label>
-                                <input matInput [matDatepicker]="availabletime">
-                                <mat-datepicker-toggle matSuffix [for]="availabletime"></mat-datepicker-toggle>
-                                <mat-datepicker #availabletime></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <div class="form-container w-100">
-                    <div class="d-flex justify-content-between">
-                        <button type="button" class="btn btn-light-main" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-main">Raise Ticket</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal for raise maintenance -->
-<div class="modal fade" id="MaintenanceModal" tabindex="-1" aria-labelledby="MaintenanceModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <form [formGroup]="maintananceForm" (ngSubmit)="submitvehicleMarkMaintance()">
-                <div class="modal-header bg-light-gradient text-dark">
-                    <p class="modal-title mb-0" id="MaintenanceModalLabel">Mark <span
-                            class="fw-bold text-main">{{vehicleDetails?.vehicleNo}}</span> in 'Maintenance'</p>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-container">
-                        <div class="mb-3">
-                            <div class="form-label">Select Maintenance Type</div>
-                            <div class="d-flex align-items-center ps-3">
-                                <div class="form-check form-switch d-flex align-items-center me-4">
-                                    <input class="me-2" type="radio" value="1" id="flexRadioDefault1"
-                                        formControlName="maintenanceType">
-                                    <label class="form-check-label" for="flexRadioDefault1">Scheduled</label>
-                                </div>
-                                <div class="form-check form-switch d-flex align-items-center me-4">
-                                    <input class="me-2" type="radio" value="2" id="flexRadioDefault2"
-                                        formControlName="maintenanceType">
-                                    <label class="form-check-label" for="flexRadioDefault2">Repair</label>
-                                </div>
-                                <div class="form-check form-switch d-flex align-items-center">
-                                    <input class="me-2" type="radio" value="3" id="flexRadioDefault3"
-                                        formControlName="maintenanceType">
-                                    <label class="form-check-label" for="flexRadioDefault3">Accident</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-0">
-                            <div class="form-label">Since when the vehicle is in Maintenance?</div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <mat-form-field appearance="standard" class="w-100">
-                                        <mat-label>From Date and time</mat-label>
-                                        <input matInput [ngxMatDatetimePicker]="fromDate" [max]="currentDate"
-                                            formControlName="maintenanceFrom">
-                                        <mat-datepicker-toggle matSuffix [for]="$any(fromDate)"></mat-datepicker-toggle>
-                                        <ngx-mat-datetime-picker #fromDate>
-                                        </ngx-mat-datetime-picker>
-                                    </mat-form-field>
-                                </div>
-                                <div class="col-sm-6">
-                                    <mat-form-field appearance="standard" class="w-100">
-                                        <mat-label>To Date and time</mat-label>
-                                        <input matInput [ngxMatDatetimePicker]="toDate" formControlName="maintenanceTo"
-                                            [max]="currentDate">
-                                        <mat-datepicker-toggle matSuffix [for]="$any(toDate)"></mat-datepicker-toggle>
-                                        <ngx-mat-datetime-picker #toDate>
-                                        </ngx-mat-datetime-picker>
-                                    </mat-form-field>
-                                </div>
-                            </div>
-                        </div>
-                        <mat-form-field appearance="standard" class="w-100">
-                            <mat-label>Add Remarks</mat-label>
-                            <textarea matInput placeholder="Type here..." formControlName="remark"
-                                [maxlength]="100"></textarea>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="form-container w-100">
-                        <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-light-main" data-bs-dismiss="modal">Cancel</button>
-                            <button class="btn btn-main" data-bs-dismiss="modal">Mark Vehicle In Maintenance</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-
         </div>
     </div>
 </div>

@@ -7,11 +7,13 @@ import { AgmCoreModule } from '@agm/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TicketRaisedComponent } from './ticket-raised/ticket-raised.component';
 
 
 @NgModule({
   declarations: [
     TrackingComponent,
+    TicketRaisedComponent,
   ],
   imports: [
     CommonModule,
