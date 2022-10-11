@@ -54,7 +54,7 @@
                             </div>
                         </div>
                         <div class="col-sm-4 text-end">
-                            <button [disabled]="!vehicleData?.length || !checkedVehicle.length" class="btn btn-danger rounded-circle"
+                            <button [disabled]="!vehicleData.length || !checkedVehicle.length" class="btn btn-danger rounded-circle"
                             (click)="confirmationDialog(true, 'delete')">
                             <i class="fa-regular fa-trash-can"></i>  </button>
 
@@ -78,9 +78,8 @@
                                 <th>UPDATE DRIVER</th>
                                 <th>UNBLOCK/BLOCK</th>
                                 <th>ACTION</th>
-                                <th>hiii</th>
                                 <th>
-                                    <mat-checkbox  [disabled]="!vehicleData?.length" (change)='selectVehicle($event,0)' value=""  [(ngModel)]="selectAll"></mat-checkbox>
+                                    <mat-checkbox  [disabled]="!vehicleData.length" (change)='selectVehicle($event,0)' value=""  [(ngModel)]="selectAll"></mat-checkbox>
                                 </th>
                             </tr>
                         </thead>
@@ -96,9 +95,12 @@
                                 <td>{{vehicle.model || '-'}}</td>
                                 <td>{{vehicle.chassisNo || '-'}}</td>
                                 <td>{{vehicle.engineNo || '-'}}</td>
-                                <td>
-                                    <button class="btn btn-light-main btn-sm" data-bs-toggle="modal" data-bs-target="#AssignDriverModal"
-                                    (click)="getDriverData()">Assign Driver</button>
+                                <td>{{vehicle?.driverName}}
+                                    <button class="btn btn-light-main btn-sm" data-bs-toggle="modal" *ngIf="!vehicle?.driverName"
+                                    (click)="confirmationDialog(true,'assign','assign',vehicle)">Assign Driver</button>
+
+                                    <button class="btn border border-warning text-warning btn-sm" data-bs-toggle="modal" *ngIf="vehicle?.driverName"
+                                    (click)="confirmationDialog(false,'assign','unassign',vehicle)">Unassign Driver</button>
                                 </td>
                                 <td>
                                     <div class="form-check form-switch">
@@ -115,7 +117,6 @@
                                         </button>
                                     </div>
                                 </td>
-                                <td> <button class="btn btn-primary" (click)="confirmationDialog(true,'assign',vehicle.vehicleNo)">assign</button></td>
                                 <td>
                                     <mat-checkbox [(ngModel)]="vehicle.checked" (change)="selectVehicle($event,vehicle.vehicleNo)"
                                       value=""></mat-checkbox>
@@ -140,7 +141,7 @@
 
 
 <!-- Modal for add vehicle -->
-<div class="modal fade" id="AddVehicleModal" tabindex="-1" aria-labelledby="AddVehicleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="AddVehicleModal" tabindex="-1" aria-labelledby="AddVehicleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header bg-light-gradient text-dark">
@@ -278,7 +279,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 
 

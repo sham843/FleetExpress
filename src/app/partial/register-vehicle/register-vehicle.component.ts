@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { debounceTime, distinctUntilChanged, filter, Subscription } from 'rxjs';
 import { ConfirmationComponent } from 'src/app/dialogs/confirmation/confirmation.component';
+import { ModalsComponent } from 'src/app/dialogs/driver_modals/modals.component';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
@@ -17,26 +18,26 @@ import { WebStorageService } from 'src/app/services/web-storage.service';
 })
 export class RegisterVehicleComponent implements OnInit {
   searchVehicleForm!: FormGroup;
-  vehicleData=new Array();
-  paginationNo:number=1;
-  pageSize:number=10;
-  totalItem!:number;
-  subscription!:Subscription;
-  searchHideShow:boolean=true;
-  clearSerachBtn:boolean=false;
-  date=new Date();
-  driverData=new Array();
-  selectAll!:boolean;
-  checkedVehicle=new Array();
+  vehicleData = new Array();
+  paginationNo: number = 1;
+  pageSize: number = 10;
+  totalItem!: number;
+  subscription!: Subscription;
+  searchHideShow: boolean = true;
+  clearSerachBtn: boolean = false;
+  date = new Date();
+  driverData = new Array();
+  selectAll!: boolean;
+  checkedVehicle = new Array();
   constructor(public validation: ValidationService,
     private fb: FormBuilder,
-    private apiCall:ApiCallService,
-    private spinner:NgxSpinnerService,
-    private error:ErrorsService,
-    private webStorage:WebStorageService,
-   private dialog:MatDialog,
-   private config:ConfigService
-    ) { }
+    private apiCall: ApiCallService,
+    private spinner: NgxSpinnerService,
+    private error: ErrorsService,
+    private webStorage: WebStorageService,
+    private dialog: MatDialog,
+    private config: ConfigService
+  ) { }
 
   ngOnInit(): void {
     this.getFormControl();
@@ -60,7 +61,7 @@ export class RegisterVehicleComponent implements OnInit {
     })
   }
   // --------------------------------------------get vehicle data--------------------------------------------------------------------
-  getVehiclesData(flag?: any){
+  getVehiclesData(flag?: any) {
     this.checkedVehicle = [];
     this.spinner.show();
     let searchText = this.searchVehicleForm.value.vehicleNo || '';
@@ -69,20 +70,44 @@ export class RegisterVehicleComponent implements OnInit {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.vehicleData = response.responseData.responseData1;
-       this.vehicleData.forEach((ele: any) => {
+        this.vehicleData.forEach((ele: any) => {
           ele.isBlock == 1 ? ele['isBlockFlag'] = true : ele['isBlockFlag'] = false;
         });
         flag == 'search' ? (this.searchHideShow = false, this.clearSerachBtn = true) : '';
         this.totalItem = response.responseData.responseData2.totalRecords;
       }
-      else{
-        this.vehicleData=[];
+      else {
+        this.vehicleData = [];
       }
     },
       (error: any) => {
         this.error.handelError(error.status);
       })
     this.spinner.hide();
+  }
+  // ---------------------------------------------------------------Assign Driver---------------------------------------------------
+  assignDriverToVehicle(flag: any, data: any, id: number) {
+    console.log(flag)
+    console.log(data)
+    let param = {
+      "id": 0,
+      "driverId": flag == 'assign' ?id:data.driverId,
+      "vehicleId": flag == 'assign' ? data?.vehicleId : 0,
+      "assignedby": this.webStorage.getUserId(),
+      "assignedDate": this.date.toISOString(),
+      "isDeleted": 0,
+      "vehicleNumber": data?.vehicleNo,
+      "userId": this.webStorage.getUserId()
+    }
+    this.apiCall.setHttp('put', 'vehicle/assign-driver-to-vehicle', true, param, false, 'fleetExpressBaseUrl');
+    this.subscription = this.apiCall.getHttp().subscribe((response: any) => {
+      if (response.statusCode == "200") {
+        this.getVehiclesData();
+      }
+    })/* ,
+      (error: any) => {
+        this.error.handelError(error.status);
+      }) */
   }
   // ---------------------------------------------------------checkbox----------------------------------------------------------------
   selectVehicle(event: any, driverId: number) {
@@ -105,30 +130,31 @@ export class RegisterVehicleComponent implements OnInit {
     this.selectAll = false;
     this.vehicleData.map((ele: any) => {
       ele.checked = false
-      this.checkedVehicle=[];
+      this.checkedVehicle = [];
     })
   }
   // ---------------------------------------------------------Comfirmation dialog------------------------------------------------------
-  confirmationDialog(flag: boolean, label: string, event?: any, vhlData?: any) {
-    this.selectAll ? this.uncheckVehicle():'';
+  confirmationDialog(flag: boolean, label: string, event?: any, editData?: any) {
+   
+    this.selectAll ? this.uncheckVehicle() : '';
     let obj: any = ConfigService.dialogObj;
-    if (label == 'status') {
+    if (label == 'status') {    //block vehicle
       obj['p1'] = flag ? 'Are you sure you want to Block Vehicle?' : 'Are you sure you want to Unblock Vehicle?';
       obj['cardTitle'] = flag ? 'Block Vehicle' : 'Unblock Vehicle';
       obj['successBtnText'] = flag ? 'Block' : 'Unblock';
       obj['cancelBtnText'] = 'Cancel';
-    } else if (label == 'delete') {
+    } else if (label == 'assign') {  //Assign vehicle
+      obj['v1'] = editData?.vehicleNo;
+      obj['p1'] = flag ?  '' : 'Are you sure you want to unassign driver?';
+      obj['cardTitle'] = flag ? 'Assign Driver' : 'Unassign Driver';
+      obj['successBtnText'] = flag ? 'Assign' : 'Unassign';
+      obj['cancelBtnText'] = 'Cancel';
+    } else if (label == 'delete') {  //Delete vehiclen
       obj['p1'] = 'Are you sure you want to delete this record';
       obj['cardTitle'] = 'Delete';
       obj['successBtnText'] = 'Delete';
       obj['cancelBtnText'] = 'Cancel';
-    }else if(label == 'assign'){
-      obj['v1'] = event;
-      obj['cardTitle'] = 'Assign Driver';
-      obj['successBtnText'] = 'Assign';
-      obj['cancelBtnText'] = 'Cancel';
     }
-
     const dialog = this.dialog.open(ConfirmationComponent, {
       width: this.config.dialogBoxWidth[0],
       data: obj,
@@ -137,70 +163,73 @@ export class RegisterVehicleComponent implements OnInit {
 
     dialog.afterClosed().subscribe(res => {
       if (res == 'Yes' && label == 'status') {
-        this.blockUnblockVhl(vhlData,event);
-      } 
-      else{
+        this.blockUnblockVhl(editData, event);
+      }
+      else if (res == 'Yes' && label == 'delete') {
+        this.getVehiclesData();
+      }
+      else if (label == 'assign') {
+        if (res == 'Ok') {
+          const dialog = this.dialog.open(ModalsComponent, {
+            width: '900px',
+            data: '',
+            disableClose: this.config.disableCloseBtnFlag,
+          })
+          dialog.afterClosed().subscribe(res => {
+            if (res == 'Yes') {
+            }
+          })
+        }
+        else {
+          this.assignDriverToVehicle(event, editData, res);
+        }
+      }
+      else {
         this.getVehiclesData();
       }
     }
     )
   }
- // --------------------------------------------------------Block/Unblock Vehicle-------------------------------------------
- blockUnblockVhl(vhlData: any, event: any) {
-  let isBlock: any;
-  event.checked == true ? isBlock = 1 : isBlock = 0;
-  let param = {
-    "vehicleId": vhlData.vehicleId,
-    "blockedDate": this.date.toISOString(),
-    "blockedBy": this.webStorage.getUserId(),
-    "isBlock": isBlock,
-    "remark": ""
+  // --------------------------------------------------------Block/Unblock Vehicle-------------------------------------------
+  blockUnblockVhl(vhlData: any, event: any) {
+    let isBlock: any;
+    event.checked == true ? isBlock = 1 : isBlock = 0;
+    let param = {
+      "vehicleId": vhlData.vehicleId,
+      "blockedDate": this.date.toISOString(),
+      "blockedBy": this.webStorage.getUserId(),
+      "isBlock": isBlock,
+      "remark": ""
+    }
+    this.spinner.show();
+    this.apiCall.setHttp('put', 'vehicle/BlockUnblockVehicle', true, param, false, 'fleetExpressBaseUrl');
+    this.subscription = this.apiCall.getHttp().subscribe((response: any) => {
+      if (response.statusCode == "200") {
+        this.spinner.hide();
+        this.getVehiclesData();
+      }
+      else {
+        this.spinner.hide();
+        this.error.handelError(response.statusCode);
+      }
+    },
+      (error: any) => {
+        this.error.handelError(error.status);
+      })
   }
-  this.spinner.show();
-  this.apiCall.setHttp('put', 'vehicle/BlockUnblockVehicle', true, param, false, 'fleetExpressBaseUrl');
-this.subscription =this.apiCall.getHttp().subscribe((response: any) => {
-    if (response.statusCode == "200") {
-      this.spinner.hide();
-      this.getVehiclesData();
-    }
-    else {
-      this.spinner.hide();
-      this.error.handelError(response.statusCode);
-    }
-  },
-    (error: any) => {
-      this.error.handelError(error.status);
-    })
-}
-// --------------------------------------get Driver Data------------------------------------------------------------------
-getDriverData(vhlData?: any) { 
-  vhlData
-  // this.asgVehicleData = vhlData;
-  // this.asgVehicleNo = vhlData.vehicleNo;
-  this.spinner.show();
-  this.apiCall.setHttp('get', 'driver/get-driver-details', true, false, false, 'fleetExpressBaseUrl');
-  this.apiCall.getHttp().subscribe((response: any) => {
-    if (response.statusCode == "200") {
-      this.spinner.hide();
-      this.driverData = response.responseData;
-    }
-  },
-    (error: any) => {
-      this.error.handelError(error.status);
-    })
-}
-  clearSearchData(){
-      this.searchVehicleForm.controls['vehicleNo'].setValue('');
-      this.getVehiclesData();
-      this.searchHideShow = true;
-      this.clearSerachBtn = false;
-    }
 
-   
-  onPagintion(pageNo: any){
+  clearSearchData() {
+    this.searchVehicleForm.controls['vehicleNo'].setValue('');
+    this.getVehiclesData();
+    this.searchHideShow = true;
+    this.clearSerachBtn = false;
+  }
+
+
+  onPagintion(pageNo: any) {
     this.selectAll = false;
-      this.paginationNo = pageNo;
-      this.getVehiclesData();
+    this.paginationNo = pageNo;
+    this.getVehiclesData();
   }
   ngOnDestroy() {
     if (this.subscription) {
