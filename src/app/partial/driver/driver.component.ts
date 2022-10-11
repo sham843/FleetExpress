@@ -108,9 +108,9 @@ export class DriverComponent implements OnInit {
     let obj: any = ConfigService.dialogObj;
 
     if (label == 'status') {
-      obj['p1'] = flag ? 'Are you sure you want to approve?' : 'Are you sure you want to reject ?';
-      obj['cardTitle'] = flag ? 'Application  Approve' : 'Application  Reject';
-      obj['successBtnText'] = flag ? 'Approve' : 'Reject';
+      obj['p1'] = flag ? 'Are you sure you want to Block Driver?' : 'Are you sure you want to Unblock Driver?';
+      obj['cardTitle'] = flag ? 'Block Driver' : 'Unblock Driver';
+      obj['successBtnText'] = flag ? 'Block' : 'Unblock';
       obj['cancelBtnText'] = 'Cancel';
     } else if (label == 'delete') {
       obj['p1'] = 'Are you sure you want to delete this record';
@@ -181,6 +181,12 @@ export class DriverComponent implements OnInit {
     this.selectAll = this.driverDetails.length == this.checkArray.length ? true : false;
   } 
 
+  uncheckAllDriver(){
+    this.selectAll = false;
+    this.driverDetails.map((ele:any)=>{
+      ele.checked = false
+    })
+  }
   removeDriverData() {
     this.deleteBtn = false;
     let param = new Array();
@@ -222,6 +228,7 @@ export class DriverComponent implements OnInit {
     }
   }
   commonModule(label: string,driverData?:any) {
+    this.selectAll ? this.uncheckAllDriver():'';
    let obj: any;
    label=='edit'?(obj=driverData,this.highLightRow=driverData?.driverId):obj='';
     const dialog = this.dialog.open(ModalsComponent, {
