@@ -62,7 +62,7 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   openCreateGeofenceDialog(data?: any) {
-    this.selectAll || this.checkedGeoFenceArray.length ? this.uncheckAllGeofence():'';
+    this.selectAll || this.checkedGeoFenceArray.length ? (this.uncheckAllGeofence(), this.checkedGeoFenceArray = []):'';
     this.highlightRow = data?.poiId;
     const dialogRef = this.dialog.open(CreateGeofenceComponent, {
       width: this.configService.dialogBoxWidth[2],

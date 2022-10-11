@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -35,6 +35,7 @@ export class DriverComponent implements OnInit {
   flagArray = new Array();
   deleteBtn: boolean = false;
   selectAll!: boolean;
+
   constructor(private fb: FormBuilder,
     public validation: ValidationService,
     public config: ConfigService,
@@ -59,18 +60,21 @@ export class DriverComponent implements OnInit {
         this.paginationNo = 1;
         this.getDriverDetails();
         this.searchHideShow = false;
-      this.clearHideShow = true;
+        this.clearHideShow = true;
       })
   }
+
   //--------------------------------------------------------form Controls----------------------------------------------------
   getRegFormData() {
     this.searchDriverForm = this.fb.group({
       driverName: ['', Validators.compose([Validators.required, Validators.maxLength(15)])]
     })
   }
+
+
   // -----------------------------------------------Driver Details----------------------------------------------------------
   getDriverDetails(flag?: any) {
-    this.checkArray=[];
+    this.checkArray = [];
     if (flag == 'search') {
       this.searchHideShow = false;
       this.clearHideShow = true;
@@ -127,18 +131,18 @@ export class DriverComponent implements OnInit {
 
     dialog.afterClosed().subscribe(res => {
       if (res == 'Yes' && label == 'status') {
-        this.blobkUnblockDriver(event, drData);
+        this.blockUnblockDriver(event, drData);
       } else if (res == 'Yes' && label == 'delete') {
-        console.log('delete');
         this.removeDriverData();
+      }else{
+        this.getDriverDetails();
       }
+      
     }
     )
   }
   // -----------------------------------------Block/Unblock Driver--------------------------------------------------------------
-  blobkUnblockDriver(event: any, drData: any) {
-    console.log(event.checked);
-    console.log(drData)
+  blockUnblockDriver(event: any, drData: any) {
     let param = {
       "id": 0,
       "driverId": drData.driverId,
@@ -162,11 +166,11 @@ export class DriverComponent implements OnInit {
         this.error.handelError(error.status);
       })
   }
-  
+
   // ----------------------------------------------Delete Record----------------------------------------------------------------
 
-  removeDriver(event: any,driverId:number) {
-   for (var i = 0; i < this.driverDetails.length; i++) {
+  removeDriver(event: any, driverId: number) {
+    for (var i = 0; i < this.driverDetails.length; i++) {
       if (driverId != 0) {
         this.selectAll = false;
         if (this.driverDetails[i].driverId == driverId) {
@@ -179,11 +183,11 @@ export class DriverComponent implements OnInit {
     this.checkArray = [];
     this.checkArray = this.driverDetails.filter((x: any) => x.checked == true);
     this.selectAll = this.driverDetails.length == this.checkArray.length ? true : false;
-  } 
+  }
 
-  uncheckAllDriver(){
+  uncheckAllDriver() {
     this.selectAll = false;
-    this.driverDetails.map((ele:any)=>{
+    this.driverDetails.map((ele: any) => {
       ele.checked = false
     })
   }
@@ -204,7 +208,7 @@ export class DriverComponent implements OnInit {
     // this.subscription = 
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
-        this.checkArray=[];
+        this.checkArray = [];
         this.spinner.hide();
         this.getDriverDetails();
       }
@@ -216,21 +220,21 @@ export class DriverComponent implements OnInit {
   }
 
   onPagintion(pageNo: any) {
-    this.selectAll=false;
+    this.selectAll = false;
     this.paginationNo = pageNo;
     this.getDriverDetails();
   }
-  get f() { return this.driverRegForm.controls };
+  
 
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
-  commonModule(label: string,driverData?:any) {
-    this.selectAll ? this.uncheckAllDriver():'';
-   let obj: any;
-   label=='edit'?(obj=driverData,this.highLightRow=driverData?.driverId):obj='';
+  commonModule(label: string, driverData?: any) {
+    this.selectAll || this.checkArray ? (this.uncheckAllDriver(), this.checkArray = []) : '';
+    let obj: any;
+    label == 'edit' ? (obj = driverData, this.highLightRow = driverData?.driverId) : obj = '';
     const dialog = this.dialog.open(ModalsComponent, {
       width: '900px',
       data: obj,
@@ -238,9 +242,8 @@ export class DriverComponent implements OnInit {
     })
 
     dialog.afterClosed().subscribe(res => {
-      this.highLightRow='';
-      console.log(res)
-      if(res=='add'){
+      this.highLightRow = '';
+      if (res == 'add') {
         this.getDriverDetails();
       }
     }
