@@ -1,7 +1,6 @@
 import { Component, OnInit} from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormControl} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { ConfirmationComponent } from 'src/app/dialogs/confirmation/confirmation.component';
@@ -9,9 +8,9 @@ import { ApiCallService } from 'src/app/services/api-call.service';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
-import { MasterService } from 'src/app/services/master.service';
 import { ValidationService } from 'src/app/services/validation.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
+import { AddUpdateUserComponent } from './add-update-user/add-update-user.component';
 
 @Component({
   selector: 'app-user-management-system',
@@ -22,8 +21,6 @@ export class UserManagementSystemComponent implements OnInit {
   VehicleDtArr= new Array();
   showTab !:string;
   tableLables= new Array();
-  userForm!:FormGroup;
-  roleForm!:FormGroup;
   subscription!: Subscription;
   userData= new Array();
   roleDtArr= new Array();
@@ -33,32 +30,22 @@ export class UserManagementSystemComponent implements OnInit {
   selectAll!: boolean;
   selectedTableData= new Array();
   editFlag:boolean=false
-  editData !: object| any;
   totalUserTableData: number=0;
   searchContent = new FormControl();
-  filterData = new  Array();
   highlightRowindex !:number;
   pageNumber: number = 1;
   pageSize: number = 10;
-  get user() { return this.userForm.controls };
-  get role() { return this.roleForm.controls };
   constructor(private apiCall:ApiCallService,
-    private fb:FormBuilder,
     private commonMethods:CommonMethodsService,
     public validationService:ValidationService,
     private error:ErrorsService,
     private spinner:NgxSpinnerService,
-    private modalService:NgbModal,
     private dialog:MatDialog,
     private webStorage:WebStorageService,
-    private master:MasterService,
     private configService:ConfigService) { }
 
   ngOnInit(): void {
-    this.getRegFormData();
     this.userData.push(this.webStorage.getUser());
-    this.getVehicleData();
-    this.getRoleData();
     this.selectedTab('users');
     this.getUserTableData();
     this.getRoleTableData();
@@ -68,18 +55,6 @@ export class UserManagementSystemComponent implements OnInit {
      this.getUserTableData();
     });
  }
-  getRegFormData() {
-    this.userForm = this.fb.group({
-      fName: ['', Validators.required],
-      mobileNumber: ['', [Validators.required, Validators.pattern('^[6-9][0-9]{9}$')]],
-      assignedVehicle: ['', Validators.required],
-      assignedRole: ['', Validators.required],
-    })
-    this.roleForm = this.fb.group({
-      roleName: [],
-      topping: [],
-    })
-  }
   onPagintion(pageNo: any) {
     this.pageNumber = pageNo;
     this.selectedTableData=[];
@@ -89,33 +64,6 @@ export class UserManagementSystemComponent implements OnInit {
   }
   clickedRow(index:any){
     this.highlightRowindex=index;
-  }
-  getVehicleData() {
-    let vhlData=this.master.getVehicleListData();
-    vhlData.subscribe({
-      next:(response: any) => {
-        this.VehicleDtArr = response;
-      }
-    }),
-    (error: any) => {
-      this.error.handelError(error.status);
-    }
-  }
-  getRoleData() {
-    this.apiCall.setHttp('get', 'userdetail/getallSubusertype_usertype?UserTypeId=1'+'&Subusertypeid='+this.userData[0]?.subUserTypeId, true, false, false, 'fleetExpressBaseUrl');
-    // this.subscription = 
-    this.apiCall.getHttp().subscribe({
-      next: (res: any) => {
-        if (res.statusCode === "200") {
-          this.roleDtArr = res.responseData;
-        } else {
-          if (res.statusCode != "404") {
-            this.error.handelError(res.statusCode)
-          }
-        }
-      }
-    },
-    (error: any) => { this.error.handelError(error.status) });
   }
   getUserTableData(){
     this.totalUserTableData=0;
@@ -164,111 +112,6 @@ export class UserManagementSystemComponent implements OnInit {
     }
     this.searchContent.reset();
   }
-  removeSelectedValue(Vehicles:any){
-    const index: number = this.userForm.value.assignedVehicle.indexOf(Vehicles);
-    let selectedVehicleObj= this.userForm.value.assignedVehicle;
-    selectedVehicleObj.splice(index, 1);
-    this.userForm.controls['assignedVehicle'].setValue(selectedVehicleObj);
-  }
-  open(modal:any) {
-    this.modalService.open(modal, { size: 'lg' ,centered: true });
-  }
-  
-  submitUser(){
-    this.userformSubmitted=true;
-    if(this.userForm.invalid){ 
-      return;
-    }else{
-    const userFormData=this.userForm.value;
-      let vehiclearray:any=[];
-      for(let i=0;i< userFormData.assignedVehicle.length ; i++){
-        vehiclearray.push(this.VehicleDtArr.find(x=>x.vehicleRegistrationNo==userFormData?.assignedVehicle[i]));
-      }
-      if (this.editFlag) {
-        const filtervehicles = this.editData.vehicle.filter((x:any) => {
-          return vehiclearray.some((f:any) => {
-            return f.vehicleRegistrationNo == x.vehicleNumber ;
-          });
-        });
-        this.filterData=[];
-        this.filterData = filtervehicles;
-        this.filterData.map((x: any) => {
-          const index = this.editData.vehicle.findIndex((xx: any) => xx.vehicleNumber == x.vehicleNumber);
-          this.editData.vehicle.splice(index, 1);
-        })
-        vehiclearray.map((x:any)=>{
-          x.isAssigned = 1,
-          x.userId=this.editFlag==false?0:this.editData.id;
-        })
-        let vehicleunassignedData:any=[];
-        this.editData.vehicle.map((x:any)=>{
-          const vehicleunassigned = {
-            id:x.vehicleId,
-            isAssigned:0,
-            userId:this.editData.id,
-            vehicleRegistrationNo:x.vehicleNumber
-
-          }
-          vehicleunassignedData.push(vehicleunassigned)
-        })
-        vehiclearray=vehiclearray.concat(vehicleunassignedData);
-
-      }
-      if(!this.editFlag){
-        vehiclearray.map((x:any)=>{
-          x.isAssigned = 1
-          x.userId=this.editFlag==false?0:this.editData.id;
-        })
-      }
-      
-    const obj = {
-      "id": this.editFlag==false?0: this.editData.id ,
-      "name": userFormData.fName,
-      "userAddress": "",
-      "districtId": 0,
-      "talukaId": 0,
-      "mobileNo1": userFormData.mobileNumber,
-      "userName": userFormData.mobileNumber,
-      "user_Type": userFormData.assignedRole,
-      "emailId": "",
-      "acivationKey1": "",
-      "createdBy": this.userData[0]?.id,
-      "flag": this.editFlag==false?"I":'U',
-      "vehicleOwnerId": this.userData[0]?.vehicleOwnerId,
-      "vehicle": vehiclearray
-    }
-    this.spinner.show();
-    this.apiCall.setHttp('post', 'userdetail/save-update-user-for-tracking', true, obj, false, 'fleetExpressBaseUrl');
-    // this.subscription = 
-    this.apiCall.getHttp().subscribe({
-      next: (res: any) => {
-        this.spinner.hide();
-        if (res.statusCode === "200") {
-          if (res.responseData.responseData1[0].isSuccess) {
-            this.roleDtArr = res.responseData;
-            this.getUserTableData();
-            this.commonMethods.snackBar(res.responseData.responseData1[0].msg,0);
-          } else {
-            this.commonMethods.snackBar(res.responseData.responseData1[0].msg,0);
-          }
-
-        } else {
-          if (res.statusCode != "404") {
-            this.error.handelError(res.statusCode)
-          }
-        }
-        this.modalClose();
-        this.editFlag = false;
-      }
-    },(error: any) => { 
-      this.spinner.hide();
-      this.editFlag=false;
-      this.modalClose();
-      this.error.handelError(error.status)
-     } );
-  }
-
-  }
   selectUsers(event: any, id: any){
     for(var i = 0 ; i < this.userTableData.length; i++){
       if(id != 0) {
@@ -284,24 +127,6 @@ export class UserManagementSystemComponent implements OnInit {
     this.selectedTableData = this.userTableData.filter((x: any) => x.checked == true);
     this.selectAll =this.userTableData.length == this.selectedTableData.length ?  true : false;
    
-  }
-
-  onEdit(editvalues:any,modal:any){
-    this.editFlag=true;
-    this.editData=editvalues;
-    this.getVehicleData();
-    this.getRoleData();
-    var vehicleNumber= new Array();
-    editvalues.vehicle.forEach((element:any) => {
-      vehicleNumber.push(element.vehicleNumber)
-    });
-    this.userForm.patchValue({
-      fName:editvalues.name,
-      mobileNumber:editvalues.mobileNo1,
-      assignedRole:parseInt(editvalues.userType) ,
-    })
-    this.userForm.controls['assignedVehicle'].setValue(vehicleNumber);
-    this.open(modal);
   }
   checkBlock(rowData:any,value:any){ 
     const obj={
@@ -329,12 +154,6 @@ export class UserManagementSystemComponent implements OnInit {
     })
   }
 
-  modalClose(){
-    this.userForm.reset();
-    this.roleForm.reset();
-    this.editFlag=false;
-    this.modalService.dismissAll();
-  }
   confirmationDialog(flag: boolean,label:string, selectedRowObj?:any) {
     let obj: any = ConfigService.dialogObj;
 
@@ -391,6 +210,27 @@ export class UserManagementSystemComponent implements OnInit {
      this.error.handelError(error.status) ;
     });
   }
+
+  addUpdateDialog(status :string, selectedObj?:any) {
+    console.log(status,selectedObj)
+    let obj: any = ConfigService.dialogObj;
+      obj['cardTitle'] = status=='user' ? (!selectedObj?'Ceate User':'Update User') : (!selectedObj?'Ceate Role':'Update Role');
+      obj['cancelBtnText'] = 'Cancel';
+      obj['submitBtnText'] = !selectedObj? 'Submit':'Update';
+      obj['selectedDataObj']=selectedObj,
+    console.log(obj)
+
+     const dialog = this.dialog.open(AddUpdateUserComponent, {
+      width: this.configService.dialogBoxWidth[2],
+      data: obj,
+      disableClose: this.configService.disableCloseBtnFlag,
+    })
+
+    dialog.afterClosed().subscribe(res => {
+      res == 'Yes'?    this.getUserTableData():'' ;   
+     })
+  }
+
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();

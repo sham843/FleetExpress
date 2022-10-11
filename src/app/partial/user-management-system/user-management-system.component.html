@@ -46,16 +46,14 @@
                                     <div class="text-center justify-content-center" *ngIf="showTab=='users'">
                                         <img src="../../../assets/images/No-Users-Created.svg" alt="">
                                         <p class="my-3">No Users Created</p>
-                                        <button class="btn btn-main" data-bs-toggle="modal"
-                                            data-bs-target="#AddUserModal">
+                                        <button class="btn btn-main" (click)="addUpdateDialog('user')">
                                             New User
                                         </button>
                                     </div>
                                     <div class="text-center justify-content-center" *ngIf="showTab=='role'">
                                         <img src="../../../assets/images/No-Users-Role-Created.svg" alt="">
                                         <p class="my-3">No Users Role Created</p>
-                                        <button class="btn btn-main" data-bs-toggle="modal"
-                                            data-bs-target="#AddRoleModal">
+                                        <button class="btn btn-main"  (click)="addUpdateDialog('role')">
                                             New Role
                                         </button>
                                     </div>
@@ -86,10 +84,10 @@
                                             <button *ngIf="selectedTableData.length" class="btn btn-add" (click)="confirmationDialog(true, 'delete')">
                                                 <i class="fa-solid fa-trash-can"></i>
                                             </button>
-                                            <button *ngIf="showTab=='users'" class="btn btn-add" (click)="open(AddUserModal)">
+                                            <button *ngIf="showTab=='users'" class="btn btn-add" (click)="addUpdateDialog('user')">
                                                 <i class="fa-solid fa-plus"></i>
                                             </button>
-                                            <button *ngIf="showTab=='role'" class="btn btn-add" (click)="open(AddRoleModal)">
+                                            <button *ngIf="showTab=='role'" class="btn btn-add" (click)="addUpdateDialog('role')">
                                                 <i class="fa-solid fa-plus"></i>
                                             </button>
 
@@ -121,7 +119,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="d-flex">
-                                                        <button class="btn btn-light-main btn-icon me-2" (click)="onEdit(element,AddUserModal)">
+                                                        <button class="btn btn-light-main btn-icon me-2" (click)="addUpdateDialog('user', element)">
                                                             <i class="fa-regular fa-pen-to-square"></i>
                                                         </button>
                                                     </div>
@@ -175,10 +173,8 @@
 </div>
 
 <!-- Modal for new user -->
-<ng-template #AddUserModal let-modal>
-    <!-- <div class="modal fade modal-lg" id="AddUserModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
-    tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered"> -->
+<!-- <ng-template #AddUserModal let-modal>
+
         <form [formGroup]="userForm" (ngSubmit)="submitUser()">
             <div class="modal-content">
                 <div class="modal-header bg-light-gradient text-dark">
@@ -218,11 +214,9 @@
                                     <mat-option *ngFor="let vehicles of VehicleDtArr"
                                         [value]="vehicles.vehicleRegistrationNo" [disabled]="((vehicles.userId != editData?.id  && editFlag==true) || editFlag==false) && vehicles.userId != 0  ">{{vehicles.vehicleRegistrationNo}}
                                     </mat-option>
-                                    <!-- [disabled]="(vehicles.userId != editData?.id && vehicles.userId != 0  && editFlag==true) || (editFlag==false && vehicles.userId != 0) " -->
+                                   
                                 </mat-select>
-                               <!--  <button mat-icon-button matSuffix mat-stroked-button>
-                                    {{user['assignedVehicle'].value? user['assignedVehicle'].value.length: 0}}
-                                </button> -->
+                
                             </mat-form-field>
                             <mat-error *ngIf="userformSubmitted && user['assignedVehicle'].errors"></mat-error>
                             <div class="d-flex">
@@ -231,10 +225,7 @@
                                     <button type="button" class="btn-close" (click)="removeSelectedValue(vehicles)"
                                         aria-label="Close"></button>
                                 </span>
-                                <!-- <span class="vehicle-chips">
-                                    MH12FT8523
-                                    <button type="button" class="btn-close" aria-label="Close"></button>
-                                </span> -->
+                             
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -265,9 +256,9 @@
                 </div>
             </div>
         </form>
-    <!-- </div>
-</div> -->
-  </ng-template>
+
+
+  </ng-template> -->
 <!-- <div class="modal fade modal-lg" id="AddUserModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
     tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">

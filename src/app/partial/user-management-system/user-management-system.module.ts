@@ -9,7 +9,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
-    UserManagementSystemComponent
+    UserManagementSystemComponent,
   ],
   imports: [
     CommonModule,
