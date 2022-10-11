@@ -72,6 +72,7 @@ export class NotificationsComponent implements OnInit {
       next:(res:any)=>{
         res.map((x:any)=>{
           x.color= this.shared.alertTypeArray.filter(xx=>(xx.alertType== x.alertType) )
+         
         })
         console.log(res)
         this.alertTypeListData.push(...res);
@@ -104,9 +105,14 @@ export class NotificationsComponent implements OnInit {
         if (res.statusCode === "200") {
           res.responseData.data.map((x:any)=>{
             x.color= this.shared.alertTypeArray.filter(xx=>(xx.alertType== x.alertType) )
+            if(x.alertMessage){
+              const disc_msgArray=x.alertMessage.split('https');
+             x.msgDisc=disc_msgArray[0];
+             disc_msgArray[1]?x.msgURL='https'.concat(disc_msgArray[1]):'';
+            }
           })
+
           this.notificationData=res.responseData.data;
-          console.log( this.notificationData);
           this.notificationTotalCount=res.responseData.totalCount;
         } else {
             this.notificationData = [];
