@@ -85,7 +85,8 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let vehicle of vehicleData | paginate: {itemsPerPage: pageSize, 
-                                currentPage: paginationNo, totalItems:totalItem}; let i=index">
+                                currentPage: paginationNo, totalItems:totalItem}; let i=index"
+                                [ngClass]="{'highLightRow':highLightRow==vehicle.vehicleId}">
                                 <td>{{((paginationNo + 1) * 10 + i + 1)-20}}</td>
                                 <td style="width:50px;">
                                     <img src="assets/images/Vehicle-profile.svg" style="width: 37px;">
@@ -138,10 +139,10 @@
         </div>
     </div>
 </div>
-
+<button (click)="vehicleModal('add','')">modals</button>
 
 <!-- Modal for add vehicle -->
-<!-- <div class="modal fade" id="AddVehicleModal" tabindex="-1" aria-labelledby="AddVehicleModalLabel" aria-hidden="true">
+<div class="modal fade" id="AddVehicleModal" tabindex="-1" aria-labelledby="AddVehicleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header bg-light-gradient text-dark">
@@ -279,10 +280,7 @@
             </div>
         </div>
     </div>
-</div> -->
-
-
-
+</div> 
 <!-- Modal for assign driver -->
 <div class="modal fade" id="AssignDriverModal" tabindex="-1" aria-labelledby="AssignDriverModalLabel"
     aria-hidden="true">

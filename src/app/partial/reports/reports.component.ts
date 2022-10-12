@@ -258,17 +258,6 @@ export class ReportsComponent implements OnInit {
 
 
   showTableData() {
-    // let Title: string, dialogText: string;
-    // event == true ? Title = 'User Block' : Title = 'User Unblock';
-    // event == true ? dialogText = 'Do you want to User Block ?' : dialogText = 'Do you want to User Unblock ?';
-   /*  const dialogRef = this.dialog.open(ReportTableComponent, {
-      width: '1000px' ,
-      height:auto,
-      data: { p1: this.reportResponseData, p2: '',  successBtnText: 'Yes', dialogIcon: 'done_outline', cancelBtnText: 'No' },
-      disableClose: this.comman.disableCloseFlag,
-    });
-    dialogRef.afterClosed().subscribe((res: any) => {     
-        // res == 'Yes' ?   this.checkBlock(element, event): element.isBlock = !event;   
-    }); */
+   
   }
 }
