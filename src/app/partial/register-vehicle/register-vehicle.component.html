@@ -48,6 +48,7 @@
                                             <span class="input-group-text" *ngIf="searchVehicleForm.value.vehicleNo">
                                                 <i class="fa-solid fa-xmark" (click)="clearSearchData()"></i></span>
                                         </div>
+                                       {{this.searchVehicleForm.value.vehicleNo}}
                                     </form>
                                 </div>
                                 
@@ -96,7 +97,7 @@
                                 <td>{{vehicle.model || '-'}}</td>
                                 <td>{{vehicle.chassisNo || '-'}}</td>
                                 <td>{{vehicle.engineNo || '-'}}</td>
-                                <td>{{vehicle?.driverName}}
+                                <td>
                                     <button class="btn btn-light-main btn-sm" *ngIf="!vehicle?.driverName"
                                     (click)="confirmationDialog(true,'assign','assign',vehicle)">Assign Driver</button>
 
@@ -112,7 +113,7 @@
                                 </td>
                                 <td>
                                     <div class="d-flex">
-                                        <button class="btn btn-light-main btn-icon me-2 btn-sm">
+                                        <button class="btn btn-light-main btn-icon me-2 btn-sm" (click)="vehicleModal('edit',vehicle)">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                         </button>
                                     </div>
