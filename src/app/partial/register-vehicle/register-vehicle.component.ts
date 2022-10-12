@@ -101,7 +101,7 @@ export class RegisterVehicleComponent implements OnInit {
     } else if (label == 'assign') {  //Assign vehicle
       obj['v1'] = editData?.vehicleNo;
       obj['p1'] = flag ?  '' : 'Are you sure you want to unassign driver?';
-      obj['cardTitle'] = flag ? 'Assign Driver' : 'Unassign Driver';
+      obj['cconfirmationDialogardTitle'] = flag ? 'Assign Driver' : 'Unassign Driver';
       obj['successBtnText'] = flag ? 'Assign' : 'Unassign';
       obj['cancelBtnText'] = 'Cancel';
     } else if (label == 'delete') {  //Delete vehiclen
@@ -220,13 +220,11 @@ export class RegisterVehicleComponent implements OnInit {
   clearSearchData() {
     this.searchVehicleForm.controls['vehicleNo'].setValue('');
     this.getVehiclesData();
-    this.searchHideShow = true;
-    this.clearSerachBtn = false;
   }
-  vehicleModal(label: string, driverData?: any){
+  vehicleModal(label: string, vehicleData?: any){
       this.selectAll || this.vehicleData ? (this.uncheckVehicle(), this.vehicleData = []) : '';
       let obj: any;
-      label == 'edit' ? (obj = driverData, this.highLightRow = driverData?.driverId) : obj = '';
+      label == 'edit' ? (obj = vehicleData, this.highLightRow = vehicleData?.driverId) : obj = '';
       const dialog = this.dialog.open(VehicleModalComponent, {
         width: '900px',
         data: obj,
