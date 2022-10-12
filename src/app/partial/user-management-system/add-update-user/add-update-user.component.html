@@ -3,19 +3,19 @@
     <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick('Yes')"><i
             class="fas fa-times"></i></button>
 </div>
-<form [formGroup]="userForm" (ngSubmit)="submitUser()">
+<form  *ngIf="dialogData?.seletedTab=='user'" [formGroup]="userForm" (ngSubmit)="submitUser()">
     <div class="row">
         <div class="col-sm-6">
-            <mat-form-field appearance="standard" class="w-100">
+            <mat-form-field [appearance]="config.matFormField" class="w-100">
                 <mat-label>Full Name</mat-label>
-                <input matInput placeholder="Enter Full Name" formControlName="fName"
+                <input matInput placeholder="Enter Full Name" formControlName="fName" class="text-capitalize"
                     (keypress)="validationService.alphabetsWithSpaces($event)">
             </mat-form-field>
             <mat-error *ngIf="userformSubmitted && user['fName'].errors">
             </mat-error>
         </div>
         <div class="col-sm-6">
-            <mat-form-field appearance="standard" class="w-100">
+            <mat-form-field [appearance]="config.matFormField" class="w-100">
                 <mat-label>Mobile Number</mat-label>
                 <input matInput placeholder="Enter Mobile Number" formControlName="mobileNumber"
                     (keypress)="validationService.onlyDigits($event)" [maxLength]="10">
@@ -29,7 +29,7 @@
     </div>
     <div class="row mb-4">
         <div class="col-sm-6">
-            <mat-form-field appearance="standard" class="w-100">
+            <mat-form-field [appearance]="config.matFormField" class="w-100">
                 <mat-label>Assign Vehicle</mat-label>
                 <mat-select multiple formControlName="assignedVehicle">
                     <mat-option *ngFor="let vehicles of vehicleDtArr"
@@ -48,7 +48,7 @@
         </div>
         <div class="col-sm-6">
             <div class="d-flex align-items-center justify-content-between">
-                <mat-form-field appearance="standard" class="w-10">
+                <mat-form-field [appearance]="config.matFormField" class="w-10">
                     <mat-label>Assign Role</mat-label>
                     <mat-select formControlName="assignedRole">
                         <mat-option *ngFor="let role of roleDtArr" [value]="role.subUserTypeId">
@@ -61,6 +61,34 @@
                 </button>
                 <mat-error *ngIf="userformSubmitted && user['assignedRole'].errors"></mat-error>
             </div>
+        </div>
+    </div>
+    <div class="form-container w-100">
+        <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-light-main" (click)="onNoClick('No')">{{dialogData?.cancelBtnText}}</button>
+            <button type="submit" class="btn btn-main"> {{dialogData?.submitBtnText}}</button>
+        </div>
+    </div>
+</form>
+<form *ngIf="dialogData?.seletedTab=='role'" [formGroup]="roleForm" (ngSubmit)="submitRole()">
+    <div class="row justify-content-between">
+        <div class="col-sm-6">
+            <mat-form-field [appearance]="config.matFormField" class="w-100">
+                <mat-label>Role Name</mat-label>
+                <input matInput placeholder="Enter Role Name" formControlName="roleName" class="text-capitalize"
+                    (keypress)="validationService.alphabetsWithSpaces($event)">
+            </mat-form-field>
+            <mat-error *ngIf="userformSubmitted && user['roleName'].errors">
+            </mat-error>
+        </div>
+        <div class="col-sm-6">
+            <mat-form-field [appearance]="config.matFormField" class="w-100">
+                <mat-label>Assign Responsibilities</mat-label>
+                <mat-select multiple formControlName="assignedResponsibilities">
+                    <!-- <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}
+                    </mat-option> -->
+                </mat-select>
+            </mat-form-field>
         </div>
     </div>
     <div class="form-container w-100">

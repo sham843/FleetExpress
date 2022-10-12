@@ -28,7 +28,9 @@ export class UserManagementSystemComponent implements OnInit {
   userTableData= new Array();
   roleTableData= new Array();
   selectAll!: boolean;
+  selectAllRoles!: boolean;
   selectedTableData= new Array();
+  selectedRoleTableData= new Array();
   editFlag:boolean=false
   totalUserTableData: number=0;
   searchContent = new FormControl();
@@ -47,8 +49,6 @@ export class UserManagementSystemComponent implements OnInit {
   ngOnInit(): void {
     this.userData.push(this.webStorage.getUser());
     this.selectedTab('users');
-    this.getUserTableData();
-    this.getRoleTableData();
   }
   ngAfterViewInit(){
     this.searchContent.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(()=>{
@@ -90,7 +90,6 @@ export class UserManagementSystemComponent implements OnInit {
   }
   getRoleTableData(){
     this.apiCall.setHttp('get', 'userrights/getUserRights?UserTypeId=1&SubUserTypeId=10', true, false, false, 'fleetExpressBaseUrl');
-    // this.subscription = 
     this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
@@ -103,13 +102,18 @@ export class UserManagementSystemComponent implements OnInit {
       },
     },(error: any) => { this.error.handelError(error.status) });
   }
+  
+
   selectedTab(tab:any){
-    this.showTab=tab;
     if(tab=='users'){
-      this.tableLables=[{id:1,label:'SR.NO'},{id:2,label:'NAME'},{id:3,label:'MOBILE NUMBER'},{id:4,label:'ROLE'},{id:5,label:'BLOCK/UNBLOCK'},{id:6,label:'ACTION'}]
+      this.tableLables=[{id:1,label:'SR.NO'},{id:2,label:'NAME'},{id:3,label:'MOBILE NUMBER'},{id:4,label:'ROLE'},{id:5,label:'UNBLOCK/BLOCK'},{id:6,label:'ACTION'}]
+      this.showTab!=tab?this.getUserTableData():'';
     }else{
       this.tableLables=[{id:1,label:'SR.NO'},{id:2,label:'ROLE NAME'},{id:3,label:'ASSIGN RESPONSIBILITIES'},{id:4,label:'ACTION'}]
+      this.showTab!=tab?this.getRoleTableData():'';
     }
+    this.showTab=tab;
+    this.pageNumber=1;
     this.searchContent.reset();
   }
   selectUsers(event: any, id: any){
@@ -126,6 +130,23 @@ export class UserManagementSystemComponent implements OnInit {
     this.selectedTableData = [];
     this.selectedTableData = this.userTableData.filter((x: any) => x.checked == true);
     this.selectAll =this.userTableData.length == this.selectedTableData.length ?  true : false;
+   
+  }
+
+  selectRoles(event: any, id: any){
+    for(var i = 0 ; i < this.roleTableData.length; i++){
+      if(id != 0) {
+        this.selectAllRoles = false;
+        if(this.roleTableData[i].id == id){
+          this.roleTableData[i].checked = event.checked;
+        }
+      }else{
+        this.roleTableData[i].checked = event.checked;
+      }
+    }
+    this.selectedRoleTableData = [];
+    this.selectedRoleTableData = this.roleTableData.filter((x: any) => x.checked == true);
+    this.selectAllRoles =this.roleTableData.length == this.selectedRoleTableData.length ?  true : false;
    
   }
   checkBlock(rowData:any,value:any){ 
@@ -213,7 +234,8 @@ export class UserManagementSystemComponent implements OnInit {
 
   addUpdateDialog(status :string, selectedObj?:any) {
     let obj: any = ConfigService.dialogObj;
-      obj['cardTitle'] = status=='user' ? (!selectedObj?'Ceate User':'Update User') : (!selectedObj?'Ceate Role':'Update Role');
+      obj['cardTitle'] = status=='user' ? (!selectedObj?'Create User':'Update User') : (!selectedObj?'Create Role':'Update Role');
+      obj['seletedTab'] = status;
       obj['cancelBtnText'] = 'Cancel';
       obj['submitBtnText'] = !selectedObj? 'Submit':'Update';
       obj['selectedDataObj']=selectedObj
