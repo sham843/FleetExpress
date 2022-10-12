@@ -198,6 +198,7 @@ export class UserManagementSystemComponent implements OnInit {
         this.spinner.hide();
         if (res.statusCode === "200") {
           this.getUserTableData();
+          this.selectedTableData=[];
           this.commonMethods.snackBar(res.statusMessage,0);
         } else {
           if (res.statusCode != "404") {
@@ -212,7 +213,6 @@ export class UserManagementSystemComponent implements OnInit {
   }
 
   addUpdateDialog(status :string, selectedObj?:any) {
-    console.log(status,selectedObj)
     let obj: any = ConfigService.dialogObj;
       obj['cardTitle'] = status=='user' ? (!selectedObj?'Ceate User':'Update User') : (!selectedObj?'Ceate Role':'Update Role');
       obj['cancelBtnText'] = 'Cancel';

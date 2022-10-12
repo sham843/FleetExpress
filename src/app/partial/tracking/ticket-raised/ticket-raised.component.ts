@@ -1,9 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import { ApiCallService } from 'src/app/services/api-call.service';
+import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 
 @Component({
@@ -16,11 +17,13 @@ export class TicketRaisedComponent implements OnInit {
   dialogData !:object|any;
   currentDate=new Date();
   subscription!:Subscription;
-  minTodate:any
+  timePeriod = new FormControl('');
+  timeZone=[{lable:'2 Hours', id:'2_Hours'},{lable:'24 Hours', id:'24_Hours'},{lable:'7 Days', id:'7_Days'}];
+
   get maintanance() { return this.maintananceForm.controls };
   constructor(public dialogRef: MatDialogRef<TicketRaisedComponent>,
-     private fb:FormBuilder,
-    // public validationService:ValidationService, 
+     private fb:FormBuilder, private commonMethod:CommonMethodsService,
+     //public validationService:ValidationService, 
     private error:ErrorsService, private apiCall:ApiCallService,
     private spinner:NgxSpinnerService,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -50,6 +53,9 @@ export class TicketRaisedComponent implements OnInit {
         "vehicleId": this.dialogData?.vehicleId,
         "vehicleNumber":this.dialogData?.vehicleNo,
         "flag": "I",
+        "createdBy": 0,
+        "createdDate": new Date().toISOString(),
+        "isDeleted": false,
       }
       this.spinner.show();
       this.apiCall.setHttp('post', 'maintenance/save-update-maintenance', true, obj, false, 'fleetExpressBaseUrl');
@@ -57,13 +63,10 @@ export class TicketRaisedComponent implements OnInit {
         next: (res: any) => {
           this.spinner.hide();
           if (res.statusCode === "200") {
-            if (res.responseData.responseData1[0].isSuccess) {
+            this.commonMethod.snackBar('Mantainance ticket raised sucssessfully',0)
               this.onNoClick('Yes');
-            } 
           } else {
-            if (res.statusCode != "404") {
-              this.error.handelError(res.statusCode)
-            }
+              this.error.handelError(res.statusCode);
           }
         }
       },(error: any) => {
@@ -75,8 +78,8 @@ export class TicketRaisedComponent implements OnInit {
   
   onNoClick(flag: any): void {
     if (flag == 'Yes') {
-     let obj = { flag: 'Yes' };
-     this.dialogRef.close(obj);
+    //  let obj = { flag: 'Yes' };
+     this.dialogRef.close(flag);
     } else {
       this.dialogRef.close(flag);
     }

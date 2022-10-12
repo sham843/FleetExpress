@@ -200,11 +200,11 @@ export class AddUpdateUserComponent implements OnInit {
 
   }
   onNoClick(flag: any): void {
-    if (flag == 'Yes') {
-     let obj = { flag: 'Yes' };
-     this.dialogRef.close(obj);
-    } else {
+    // if (flag == 'Yes') {
+    //  let obj = { flag: 'Yes' };
+    //  this.dialogRef.close(obj);
+    // } else {
       this.dialogRef.close(flag);
-    }
+    //}
   }
 }
