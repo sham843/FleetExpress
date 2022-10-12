@@ -95,14 +95,13 @@ export class TrackingComponent implements OnInit {
   openTicketRaisedDialog(data:any,flag:string){
     let obj = {flag:flag ,...data}
     const dialogRef = this.dialog.open(TicketRaisedComponent, {
-      width: '250px',
+      width: '520px',
       data: obj,
     });
     dialogRef.afterClosed().subscribe(result => {
-      result
+      result=='Yes'? (flag=='maintenance'?this.getAllVehicleListData(true):''):''
     });
   }
-  
 
   //----------------------------------------------------------- bottom sheet method start heare ---------------------------------------------//
   getItineraryForm() {

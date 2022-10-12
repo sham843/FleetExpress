@@ -263,7 +263,7 @@ export class DashboardComponent implements OnInit {
     }
     if (items.length > 0) {
       this.VehiclesLastUpdatedbarChartOptions.series = [{
-        name: "basic",
+        name: "Speed  (km/hr)",
         data: seriesData
       }];
       this.VehiclesLastUpdatedbarChartOptions.xaxis = {};
