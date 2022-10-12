@@ -20,13 +20,14 @@
                             <textarea matInput ngDefaultControl [formControl]="remark" rows="4"> </textarea>
                         </mat-form-field>
                     </div>
+<!-----------------------------------------------------------------Assign driver modal ---------------------------------------->
                     <ng-container *ngIf="dialogData.cardTitle== 'Assign Driver'">
                         <div class="row gx-2 align-items-center mt-4 mb-3">
                             <div class="col-sm">
                                 <h5 class="mb-0">{{dialogData?.v1}}</h5>
                             </div>
                             <div class="col-sm-auto">
-                                <button type="submit" class="btn btn-light-main btn-sm">
+                                <button type="button" class="btn btn-light-main btn-sm" (click)="onNoClick('Ok')">
                                     Add Driver <i class="fa-solid fa-plus"></i>
                                 </button>
                             </div>
@@ -35,15 +36,16 @@
                             <div class="col-sm">
                                 <mat-form-field appearance="legacy" class="w-100">
                                     <mat-label>Select Driver Name</mat-label>
-                                    <mat-select formControlName="driverName">
-                                        <mat-option>
-
+                                    <mat-select [formControl]="driverName">
+                                        <mat-option *ngFor="let driver of driverData" [value]="driver.driverId">
+                                            {{driver.name}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
                         </div>
                     </ng-container>
+<!----------------------------------------------------------------------End assign driver modal-------------------------------  -->
                     <div class="row">
                         <div class="d-flex justify-content-between">
                             <button type="button" class="me-2 btn-light-main btn" type="button" mat-dialog-close
