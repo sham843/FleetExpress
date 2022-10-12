@@ -77,12 +77,13 @@ export class TicketRaisedComponent implements OnInit {
   }
   
   onNoClick(flag: any): void {
-    if (flag == 'Yes') {
+    this.dialogRef.close(flag);
+    // if (flag == 'Yes') {
     //  let obj = { flag: 'Yes' };
-     this.dialogRef.close(flag);
-    } else {
-      this.dialogRef.close(flag);
-    }
+    //  this.dialogRef.close(obj);
+    // } else {
+    //   this.dialogRef.close(flag);
+    // }
   }
 
 }
