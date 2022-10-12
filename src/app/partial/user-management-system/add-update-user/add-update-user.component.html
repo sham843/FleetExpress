@@ -35,11 +35,7 @@
                     <mat-option *ngFor="let vehicles of vehicleDtArr"
                         [value]="vehicles.vehicleRegistrationNo"  [disabled]="((vehicles.userId != editData?.id  && editFlag==true) || editFlag==false) && vehicles.userId != 0  ">{{vehicles.vehicleRegistrationNo}}
                     </mat-option>
-                    <!-- [disabled]="(vehicles.userId != editData?.id && vehicles.userId != 0  && editFlag==true) || (editFlag==false && vehicles.userId != 0) " -->
                 </mat-select>
-               <!--  <button mat-icon-button matSuffix mat-stroked-button>
-                    {{user['assignedVehicle'].value? user['assignedVehicle'].value.length: 0}}
-                </button> -->
             </mat-form-field>
             <mat-error *ngIf="userformSubmitted && user['assignedVehicle'].errors"></mat-error>
             <div class="d-flex">
@@ -48,10 +44,6 @@
                     <button type="button" class="btn-close" (click)="removeSelectedValue(vehicles)"
                         aria-label="Close"></button>
                 </span>
-                <!-- <span class="vehicle-chips">
-                    MH12FT8523
-                    <button type="button" class="btn-close" aria-label="Close"></button>
-                </span> -->
             </div>
         </div>
         <div class="col-sm-6">
