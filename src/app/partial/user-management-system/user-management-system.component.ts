@@ -184,6 +184,7 @@ export class UserManagementSystemComponent implements OnInit {
   DeleteUserData() {
     this.spinner.show();
     let objDeleteData= new Array();
+    this.selectAll=false;
     for(let i=0; i < this.selectedTableData.length; i++){
       const obj = {
         id: this.selectedTableData[i].id,
@@ -192,8 +193,7 @@ export class UserManagementSystemComponent implements OnInit {
       objDeleteData.push(obj)
     }
     this.apiCall.setHttp('DELETE', 'userdetail/Delete-User', true, objDeleteData, false, 'fleetExpressBaseUrl');
-    // this.subscription =
-     this.apiCall.getHttp().subscribe({
+    this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         this.spinner.hide();
         if (res.statusCode === "200") {
@@ -217,9 +217,7 @@ export class UserManagementSystemComponent implements OnInit {
       obj['cardTitle'] = status=='user' ? (!selectedObj?'Ceate User':'Update User') : (!selectedObj?'Ceate Role':'Update Role');
       obj['cancelBtnText'] = 'Cancel';
       obj['submitBtnText'] = !selectedObj? 'Submit':'Update';
-      obj['selectedDataObj']=selectedObj,
-    console.log(obj)
-
+      obj['selectedDataObj']=selectedObj
      const dialog = this.dialog.open(AddUpdateUserComponent, {
       width: this.configService.dialogBoxWidth[2],
       data: obj,
@@ -227,7 +225,7 @@ export class UserManagementSystemComponent implements OnInit {
     })
 
     dialog.afterClosed().subscribe(res => {
-      res == 'Yes'?    this.getUserTableData():'' ;   
+      res == 'Yes'? this.getUserTableData():'' ;   
      })
   }
 

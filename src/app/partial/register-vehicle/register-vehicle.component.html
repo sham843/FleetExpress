@@ -54,7 +54,7 @@
                             </div>
                         </div>
                         <div class="col-sm-4 text-end">
-                            <button [disabled]="!vehicleData?.length || !checkedVehicle.length" class="btn btn-danger rounded-circle"
+                            <button [disabled]="!vehicleData.length || !checkedVehicle.length" class="btn btn-danger rounded-circle"
                             (click)="confirmationDialog(true, 'delete')">
                             <i class="fa-regular fa-trash-can"></i>  </button>
 
@@ -78,15 +78,15 @@
                                 <th>UPDATE DRIVER</th>
                                 <th>UNBLOCK/BLOCK</th>
                                 <th>ACTION</th>
-                                <th>hiii</th>
                                 <th>
-                                    <mat-checkbox  [disabled]="!vehicleData?.length" (change)='selectVehicle($event,0)' value=""  [(ngModel)]="selectAll"></mat-checkbox>
+                                    <mat-checkbox  [disabled]="!vehicleData.length" (change)='selectVehicle($event,0)' value=""  [(ngModel)]="selectAll"></mat-checkbox>
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let vehicle of vehicleData | paginate: {itemsPerPage: pageSize, 
-                                currentPage: paginationNo, totalItems:totalItem}; let i=index">
+                                currentPage: paginationNo, totalItems:totalItem}; let i=index"
+                                [ngClass]="{'highLightRow':highLightRow==vehicle.vehicleId}">
                                 <td>{{((paginationNo + 1) * 10 + i + 1)-20}}</td>
                                 <td style="width:50px;">
                                     <img src="assets/images/Vehicle-profile.svg" style="width: 37px;">
@@ -96,9 +96,12 @@
                                 <td>{{vehicle.model || '-'}}</td>
                                 <td>{{vehicle.chassisNo || '-'}}</td>
                                 <td>{{vehicle.engineNo || '-'}}</td>
-                                <td>
-                                    <button class="btn btn-light-main btn-sm" data-bs-toggle="modal" data-bs-target="#AssignDriverModal"
-                                    (click)="getDriverData()">Assign Driver</button>
+                                <td>{{vehicle?.driverName}}
+                                    <button class="btn btn-light-main btn-sm" data-bs-toggle="modal" *ngIf="!vehicle?.driverName"
+                                    (click)="confirmationDialog(true,'assign','assign',vehicle)">Assign Driver</button>
+
+                                    <button class="btn border border-warning text-warning btn-sm" data-bs-toggle="modal" *ngIf="vehicle?.driverName"
+                                    (click)="confirmationDialog(false,'assign','unassign',vehicle)">Unassign Driver</button>
                                 </td>
                                 <td>
                                     <div class="form-check form-switch">
@@ -115,7 +118,6 @@
                                         </button>
                                     </div>
                                 </td>
-                                <td> <button class="btn btn-primary" (click)="confirmationDialog(true,'assign',vehicle.vehicleNo)">assign</button></td>
                                 <td>
                                     <mat-checkbox [(ngModel)]="vehicle.checked" (change)="selectVehicle($event,vehicle.vehicleNo)"
                                       value=""></mat-checkbox>
@@ -137,7 +139,7 @@
         </div>
     </div>
 </div>
-
+<button (click)="vehicleModal('add','')">modals</button>
 
 <!-- Modal for add vehicle -->
 <div class="modal fade" id="AddVehicleModal" tabindex="-1" aria-labelledby="AddVehicleModalLabel" aria-hidden="true">
@@ -278,10 +280,7 @@
             </div>
         </div>
     </div>
-</div>
-
-
-
+</div> 
 <!-- Modal for assign driver -->
 <div class="modal fade" id="AssignDriverModal" tabindex="-1" aria-labelledby="AssignDriverModalLabel"
     aria-hidden="true">
