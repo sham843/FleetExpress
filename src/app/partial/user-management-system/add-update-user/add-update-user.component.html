@@ -9,7 +9,7 @@
             <mat-form-field [appearance]="config.matFormField" class="w-100">
                 <mat-label>Full Name</mat-label>
                 <input matInput placeholder="Enter Full Name" formControlName="fName" class="text-capitalize"
-                    (keypress)="validationService.alphabetsWithSpaces($event)">
+                    (keypress)="validationService.alphabetsWithSpaces($event)" [maxlength]="30">
             </mat-form-field>
             <mat-error *ngIf="userformSubmitted && user['fName'].errors">
             </mat-error>
@@ -76,7 +76,7 @@
             <mat-form-field [appearance]="config.matFormField" class="w-100">
                 <mat-label>Role Name</mat-label>
                 <input matInput placeholder="Enter Role Name" formControlName="roleName" class="text-capitalize"
-                    (keypress)="validationService.alphabetsWithSpaces($event)">
+                    (keypress)="validationService.alphaNumericWithSpaces($event)" [maxlength]="30">
             </mat-form-field>
             <mat-error *ngIf="userformSubmitted && user['roleName'].errors">
             </mat-error>
