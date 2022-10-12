@@ -224,7 +224,6 @@ export class ManageVehicleComponent implements OnInit,OnDestroy {
   }
 
   patchEditVhlData(data: any, vehicleName: any) {
-    console.log(data)
     this.highLightRow = data.vehicleId;
     this.vhlId = data.vehicleId;
     this.driverName = vehicleName.driverName;

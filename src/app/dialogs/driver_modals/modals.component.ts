@@ -60,7 +60,6 @@ export class ModalsComponent implements OnInit {
   get f() { return this.driverRegForm.controls };
   // --------------------------------------------------form controls------------------------------------------------------------------
   getFormControl() {
-    console.log(this.dialogData)
     this.driverRegForm = this.fb.group({
       profilePhoto: [''],
       mobileNo: [this.dialogData ? this.dialogData?.mobileNo : '', Validators.compose([Validators.required, Validators.pattern('^[6-9][0-9]{9}$'), Validators.maxLength(10)])],

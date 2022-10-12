@@ -466,7 +466,6 @@ export class CreateGeofenceComponent implements OnInit {
     else if (radius < 15000) {
       zoom = 10;
     }
-    console.log(zoom);
     this.map.setZoom(zoom)
   }
 

@@ -176,7 +176,6 @@ export class UserManagementSystemComponent implements OnInit {
     })
 
     dialog.afterClosed().subscribe(res => {
-      console.log(res); 
       res == 'Yes' && label=='delete' ?  this.DeleteUserData():'';
        res == 'Yes' && label=='status' ?   this.checkBlock(selectedRowObj, flag): selectedRowObj.isBlock = !flag; ;   
     })

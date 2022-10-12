@@ -38,7 +38,7 @@
                                     <mat-label>Select Driver Name</mat-label>
                                     <mat-select [formControl]="driverName">
                                         <mat-option *ngFor="let driver of driverData" [value]="driver.driverId">
-                                            {{driver.name}}
+                                            {{driver.name}}     {{driver.isAssigned}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>

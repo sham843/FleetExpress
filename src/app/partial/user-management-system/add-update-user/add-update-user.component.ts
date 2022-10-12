@@ -37,7 +37,6 @@ export class AddUpdateUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.dialogData = this.data;
-    console.log(this.dialogData);
     this.editData=this.dialogData?.selectedDataObj;
     this.editFlag=this.editData?true:false;
     this.userData.push(this.webStorage.getUser());

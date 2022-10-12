@@ -225,7 +225,6 @@ export class DashboardComponent implements OnInit {
         if (responseData.statusCode === "200" || responseData.length > 0) {
           this.powerCutData=responseData.responseData.filter((x:any)=> x.alertType=='power-cut');
           this.overSpeedData=responseData.responseData.filter((x:any)=> x.alertType=='overspeed');
-          console.log(this.powerCutData,this.overSpeedData)
         }
         else {
           (error: any) => {
