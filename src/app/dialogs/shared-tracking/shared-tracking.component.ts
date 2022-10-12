@@ -29,7 +29,6 @@ export class SharedTrackingComponent implements OnInit {
         return;
       }
      let obj = { remark: this.timePeriod.value, flag: 'Yes' };
-     console.log(obj);
      this.dialogRef.close(obj);
     } else {
       this.dialogRef.close(flag);

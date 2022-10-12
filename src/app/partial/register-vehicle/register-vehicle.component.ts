@@ -147,8 +147,6 @@ export class RegisterVehicleComponent implements OnInit {
   }
   // ---------------------------------------------------------------Assign Driver---------------------------------------------------
   assignDriverToVehicle(flag: any, data: any, id: number) {
-    console.log(flag)
-    console.log(data)
     let param = {
       "id": 0,
       "driverId": flag == 'assign' ?id:data.driverId,

@@ -74,7 +74,6 @@ export class NotificationsComponent implements OnInit {
           x.color= this.shared.alertTypeArray.filter(xx=>(xx.alertType== x.alertType) )
          
         })
-        console.log(res)
         this.alertTypeListData.push(...res);
       }
     })
@@ -87,7 +86,6 @@ export class NotificationsComponent implements OnInit {
   getNotificationsData(){ 
     this.notificationData = [];
     const formData=this.notificationForm.value;
-    console.log(formData);
     const fromdate = formData?.date?new Date(formData?.date):new Date();
     const todate = new Date(fromdate.setDate(fromdate.getDate() + 1));
     const obj={

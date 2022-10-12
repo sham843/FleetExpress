@@ -176,7 +176,6 @@ export class UserManagementSystemComponent implements OnInit {
     })
 
     dialog.afterClosed().subscribe(res => {
-      console.log(res); 
       res == 'Yes' && label=='delete' ?  this.DeleteUserData():'';
        res == 'Yes' && label=='status' ?   this.checkBlock(selectedRowObj, flag): selectedRowObj.isBlock = !flag; ;   
     })
@@ -212,7 +211,6 @@ export class UserManagementSystemComponent implements OnInit {
   }
 
   addUpdateDialog(status :string, selectedObj?:any) {
-    console.log(status,selectedObj)
     let obj: any = ConfigService.dialogObj;
       obj['cardTitle'] = status=='user' ? (!selectedObj?'Ceate User':'Update User') : (!selectedObj?'Ceate Role':'Update Role');
       obj['cancelBtnText'] = 'Cancel';

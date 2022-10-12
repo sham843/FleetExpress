@@ -22,7 +22,6 @@ export class ConfirmationComponent implements OnInit {
     private error:ErrorsService) { }
 
   ngOnInit(): void {
-    console.log(this.data)
     this.dialogData = this.data;
     this.dialogData.cardTitle== 'Assign Driver'?this.getDriverData():'';
   }

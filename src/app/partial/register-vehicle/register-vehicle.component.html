@@ -58,7 +58,7 @@
                             (click)="confirmationDialog(true, 'delete')">
                             <i class="fa-regular fa-trash-can"></i>  </button>
 
-                            <button class="btn btn-add ms-3" data-bs-toggle="modal" data-bs-target="#AddVehicleModal">
+                            <button class="btn btn-add ms-3" (click)="vehicleModal('add','')">
                                 <i class="fa-solid fa-plus"></i>
                             </button>
                         </div>
@@ -97,12 +97,12 @@
                                 <td>{{vehicle.chassisNo || '-'}}</td>
                                 <td>{{vehicle.engineNo || '-'}}</td>
                                 <td>{{vehicle?.driverName}}
-                                    <button class="btn btn-light-main btn-sm" data-bs-toggle="modal" *ngIf="!vehicle?.driverName"
+                                    <button class="btn btn-light-main btn-sm" *ngIf="!vehicle?.driverName"
                                     (click)="confirmationDialog(true,'assign','assign',vehicle)">Assign Driver</button>
 
-                                    <button class="btn border border-warning text-warning btn-sm" data-bs-toggle="modal" *ngIf="vehicle?.driverName"
+                                    <button class="btn border border-warning text-warning btn-sm" *ngIf="vehicle?.driverName"
                                     (click)="confirmationDialog(false,'assign','unassign',vehicle)">Unassign Driver</button>
-                                </td>
+                                    </td>
                                 <td>
                                     <div class="form-check form-switch">
                                             <mat-slide-toggle [checked]="vehicle.isBlockFlag"
@@ -112,8 +112,7 @@
                                 </td>
                                 <td>
                                     <div class="d-flex">
-                                        <button class="btn btn-light-main btn-icon me-2 btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#CreateGeofenceModal">
+                                        <button class="btn btn-light-main btn-icon me-2 btn-sm">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                         </button>
                                     </div>
@@ -136,193 +135,6 @@
                  </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-<button (click)="vehicleModal('add','')">modals</button>
-
-<!-- Modal for add vehicle -->
-<div class="modal fade" id="AddVehicleModal" tabindex="-1" aria-labelledby="AddVehicleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content">
-            <div class="modal-header bg-light-gradient text-dark">
-                <p class="modal-title mb-0" id="AddVehicleModalLabel">Vehicle Details</p>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-sm-2">
-                        <div class="position-relative form-group">
-                            <img src="assets/images/user.jpg" class="vehicle-image">
-                            <div class="vehicle-buttons d-flex flex-column upload-btn-wrapper">
-                                <button type="button" class="btn bg-light text-primary">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-                                <input type="file" #profileUpload name="myfile" accept=".jpg,.jpeg,.png"
-                                    formControlName="profilePhoto" matTooltip="Upload only png,jpg,jpeg file" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-10">
-                        <div class="row mb-1">
-                            <div class="col-sm-4">
-                                <mat-form-field appearance="legacy" class="w-100">
-                                    <mat-label>Vehicle No</mat-label>
-                                    <input matInput placeholder="Vehicle No">
-                                </mat-form-field>
-                            </div>
-                            <div class="col-sm-4">
-                                <mat-form-field appearance="legacy" class="w-100">
-                                    <mat-label>Fuel Type</mat-label>
-                                    <input matInput placeholder="Fuel Type">
-                                </mat-form-field>
-                            </div>
-                            <div class="col-sm-4">
-                                <mat-form-field appearance="legacy" class="w-100">
-                                    <mat-label>Manufacturer</mat-label>
-                                    <input matInput placeholder="Manufacturer">
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <div class="row mb-1">
-                            <div class="col-sm-4">
-                                <mat-form-field appearance="legacy" class="w-100">
-                                    <mat-label>Vehicle Model</mat-label>
-                                    <input matInput placeholder="Vehicle Model">
-                                </mat-form-field>
-                            </div>
-                            <div class="col-sm-4">
-                                <mat-form-field appearance="legacy" class="w-100">
-                                    <mat-label>Chassis No.</mat-label>
-                                    <input matInput placeholder="Chassis No.">
-                                </mat-form-field>
-                            </div>
-                            <div class="col-sm-4">
-                                <mat-form-field appearance="legacy" class="w-100">
-                                    <mat-label>Engine No.</mat-label>
-                                    <input matInput placeholder="Engine No.">
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <div class="row mb-1">
-                            <div class="col-sm-4">
-                                <div class="d-flex align-items-center">
-                                    <mat-form-field appearance="legacy" class="w-100">
-                                        <mat-label>Choose a date</mat-label>
-                                        <input matInput [matDatepicker]="picker">
-                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                        <mat-datepicker #picker></mat-datepicker>
-                                    </mat-form-field>
-                                    <button mat-icon-button>
-                                        <mat-icon>file_upload</mat-icon>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="d-flex align-items-center">
-                                    <mat-form-field appearance="legacy" class="w-100">
-                                        <mat-label>Registration Certificate</mat-label>
-                                        <input matInput placeholder="Registration Certificate">
-                                    </mat-form-field>
-                                    <button mat-icon-button>
-                                        <mat-icon>file_upload</mat-icon>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="d-flex align-items-center">
-                                    <mat-form-field appearance="legacy" class="w-100">
-                                        <mat-label>Pollution Expiry Date</mat-label>
-                                        <input matInput [matDatepicker]="picker1">
-                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                        <mat-datepicker #picker1></mat-datepicker>
-                                    </mat-form-field>
-                                    <button mat-icon-button>
-                                        <mat-icon>file_upload</mat-icon>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="d-flex align-items-center">
-                                    <mat-form-field appearance="legacy" class="w-100">
-                                        <mat-label>Fitness Expiry</mat-label>
-                                        <input matInput [matDatepicker]="picker2">
-                                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                                        <mat-datepicker #picker2></mat-datepicker>
-                                    </mat-form-field>
-                                    <button mat-icon-button>
-                                        <mat-icon>file_upload</mat-icon>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="d-flex align-items-center">
-                                    <mat-form-field appearance="legacy" class="w-100">
-                                        <mat-label>National Permit</mat-label>
-                                        <input matInput placeholder="National Permit">
-                                    </mat-form-field>
-                                    <button mat-icon-button>
-                                        <mat-icon>file_upload</mat-icon>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer form-container">
-                <div class="d-flex align-items-center justify-content-between">
-                    <button type="button" class="btn btn-light-main me-3" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-main">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> 
-<!-- Modal for assign driver -->
-<div class="modal fade" id="AssignDriverModal" tabindex="-1" aria-labelledby="AssignDriverModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-light-gradient text-dark">
-                <p class="modal-title mb-0" id="AssignDriverModalLabel">
-                    Assign Driver
-                </p>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <!-- formDirective -->
-            <form>
-                <div class="modal-body">
-                    <h5>MH12 AB 1234</h5>
-                    <div class="row align-items-center">
-                        <div class="col-sm">
-                            <mat-form-field appearance="legacy" class="w-100">
-                                <mat-label>Select Driver Name</mat-label>
-                                <mat-select formControlName="driverName">
-                                    <mat-option *ngFor="let driver of driverData" [value]="driver.driverId">
-                                        {{driver.name}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-sm-auto">
-                            <button type="submit" class="btn btn-light-main btn-sm">
-                                Add Driver <i class="fa-solid fa-plus ms-2"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="form-container w-100">
-                        <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-light-main" #closeModel data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-main">Assign</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
         </div>
     </div>
 </div>

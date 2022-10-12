@@ -1,114 +1,131 @@
-<!-- <div class="position-relative mb-3">
+<div class="position-relative mb-3">
     <h5 mat-dialog-title class="mb-0">{{cardTitle}}</h5>
-    <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick(formDirective)"><i
+    <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick('No')"><i
             class="fas fa-times"></i></button>
 </div>
 <div>
-    <form [formGroup]="driverRegForm" #formDirective="ngForm" (ngSubmit)="onSubmit(formDirective)">
+    <form [formGroup]="registerVehicleForm" #formDirective="ngForm" (ngSubmit)="saveVehicleDetails(formDirective)">
         <div class="row">
             <div class="col-sm-3">
                 <div class="position-relative">
                     <img src={{profilePhoto}} class="vehicle-image">
-                                <div class="vehicle-buttons d-flex flex-column upload-btn-wrapper">
-                                    <button class="btn bg-light text-primary" (click)="uploadprofile.click()">
-                                        <i class="fa-solid fa-plus"></i>
-                                    </button>
-                                    <input type="file" name="myfile" formControlName="profile"
-                                        #uploadprofile (change)="profilePhotoUpd($event)" accept=".png,.jpg,.jpeg"/>
-                                </div>
+                    <div class="vehicle-buttons d-flex flex-column upload-btn-wrapper">
+                        <button class="btn bg-light text-primary" (click)="uploadprofile.click()">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                        <input type="file" name="myfile" formControlName="profile" #uploadprofile
+                            (change)="profilePhotoUpd($event)" accept=".png,.jpg,.jpeg" />
                     </div>
                 </div>
             </div>
-
             <div class="col-sm-9">
                 <div class="row align-items-end">
                     <div class="col-sm-6">
                         <mat-form-field appearance="standard" class="w-100">
-                                        <mat-label>Vehicle No</mat-label>
-                                        <input matInput formControlName="vhlNumber" required
-                                            [ngClass]="{'is-invalid':f['vhlNumber'].errors}"
-                                            (keypress)="this.vs.alphaNumeric($event)" maxlength="15">
-                                        <mat-error *ngIf="f['vhlNumber'].errors">
-                                            <span *ngIf="f['vhlNumber'].hasError('required')" class="text-danger">Vehicle Number required</span>
-                                            <span *ngIf="f['vhlNumber'].hasError('pattern')" class="text-danger">Please enter valid Vehicle Numbers</span>
-                                        </mat-error>
-                                    </mat-form-field>
-                    </div>
-                    <div class="col-sm-6">
-                       <mat-form-field appearance="standard" class="w-100">
-                                         <mat-form-field appearance="standard" class="w-100">
-                                        <mat-label>Plate No</mat-label>
-                                        <input matInput formControlName="plateNo" required
-                                            [ngClass]="{'is-invalid':f['plateNo'].errors}"
-                                            (keypress)="this.vs.alphaNumeric($event)" maxlength="17">
-                                        <mat-error *ngIf="f['plateNo'].errors">
-                                            <span *ngIf="f['plateNo'].hasError('required')" class="text-danger">Plate Number required</span>
-                                            <span *ngIf="f['plateNo'].hasError('pattern')" class="text-danger">Please enter valid Plate Number</span>
-                                        </mat-error>
-                                    </mat-form-field>
-                    </div>
-                    <div class="col-sm-6">
-                        <mat-form-field appearance="standard" class="w-100">
-                                        <mat-label>Plate No</mat-label>
-                                        <input matInput formControlName="plateNo" required
-                                            [ngClass]="{'is-invalid':f['plateNo'].errors}"
-                                            (keypress)="this.vs.alphaNumeric($event)" maxlength="17">
-                                        <mat-error *ngIf="f['plateNo'].errors">
-                                            <span *ngIf="f['plateNo'].hasError('required')" class="text-danger">Plate Number required</span>
-                                            <span *ngIf="f['plateNo'].hasError('pattern')" class="text-danger">Please enter valid Plate Number</span>
-                                        </mat-error>
-                                    </mat-form-field>
-                    </div>
-                    <div class="col-sm-6">
-                        <mat-form-field appearance="standard" class="w-100">
-                                        <mat-label>Model</mat-label>
-                                        <input matInput formControlName="model" required
-                                            [ngClass]="{'is-invalid':f['model'].errors}"
-                                            (keypress)="this.vs.alphaNumeric($event)" maxlength="10">
-                                        <mat-error *ngIf="f['model'].errors">
-                                            <span *ngIf="f['model'].hasError('required')" class="text-danger">Model required</span>
-                                            <span *ngIf="f['model'].hasError('pattern')" class="text-danger">Please enter valid Model Number</span>
-                                        </mat-error>
-                                    </mat-form-field>
-                    </div>
-                    <div class="col-sm-6">
-                        <mat-form-field [appearance]="config.matFormField" class="w-100">
-                            <input matInput [matDatepicker]="picker1" formControlName="licenceExpiryDate"
-                                [readonly]="true" placeholder="Licence Expiry Date" (click)="picker1.open()">
-                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                            <mat-datepicker #picker1></mat-datepicker>
-                            <mat-error *ngIf="f['licenceExpiryDate'].errors">
-                                <span class="text-danger" *ngIf="f['licenceExpiryDate'].hasError('required')">Licence
-                                    expiry date required</span>
+                            <mat-label>Vehicle No</mat-label>
+                            <input matInput formControlName="vehicleNo" required
+                                (keypress)="this.vs.alphaNumeric($event)" maxlength="15">
+                            <mat-error *ngIf="f['vehicleNo'].errors">
+                                <span *ngIf="f['vehicleNo'].hasError('required')" class="text-danger">Vehicle number
+                                    required</span>
+                                <span *ngIf="f['vehicleNo'].hasError('pattern')" class="text-danger">Please enter valid
+                                vehicle numbers</span>
                             </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="col-sm-6">
+                        <mat-form-field appearance="standard" class="w-100">
+                            <mat-label>Fuel Type</mat-label>
+                            <input matInput formControlName="fuelType" required
+                                (keypress)="this.vs.alphaNumeric($event)" maxlength="17">
+                            <mat-error *ngIf="f['fuelType'].errors">
+                                <span *ngIf="f['fuelType'].hasError('required')" class="text-danger">Fuel type
+                                    required</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <mat-form-field appearance="standard" class="w-100">
+                            <mat-label>Manufacturer</mat-label>
+                            <input matInput formControlName="manufacturer" required
+                                (keypress)="this.vs.alphaNumeric($event)" maxlength="17">
+                            <mat-error *ngIf="f['manufacturer'].errors">
+                                <span *ngIf="f['manufacturer'].hasError('required')" class="text-danger">Manufacturer is required</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-6">
+                        <mat-form-field appearance="standard" class="w-100">
+                            <mat-label>Model</mat-label>
+                            <input matInput formControlName="model" required (keypress)="this.vs.alphaNumeric($event)"
+                                maxlength="10">
+                            <mat-error *ngIf="f['model'].errors">
+                                <span *ngIf="f['model'].hasError('required')" class="text-danger">Model is required</span>
+                                <!--  <span *ngIf="f['model'].hasError('pattern')" class="text-danger">Please enter valid
+                                            Model
+                                            Number</span> -->
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <mat-form-field appearance="standard" class="w-100">
+                            <mat-label>Chassis No.</mat-label>
+                            <input matInput formControlName="chassicNo" required (keypress)="this.vs.onlyDigits($event)"
+                                maxlength="18">
+                            <mat-error *ngIf="f['chassicNo'].errors">
+                                <span *ngIf="f['chassicNo'].hasError('required')" class="text-danger">Chassis
+                                    Number
+                                    required</span>
+                                <!-- <span *ngIf="f['chassicNo'].hasError('pattern')" class="text-danger">Please enter valid
+                                    Chassis Number</span> -->
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-6">
+                        <mat-form-field appearance="standard" class="w-100">
+                            <mat-label>Engine No.</mat-label>
+                            <input matInput formControlName="engineNo" required (keypress)="this.vs.onlyDigits($event)"
+                                maxlength="18">
+                            <mat-error *ngIf="f['engineNo'].errors">
+                                <span *ngIf="f['engineNo'].hasError('required')" class="text-danger">Chassis
+                                    Number
+                                    required</span>
+                                <!--  <span *ngIf="f['engineNo'].hasError('pattern')" class="text-danger">Please enter valid
+                                    Chassis Number</span> -->
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
                         <div class="d-flex align-items-center">
                             <mat-form-field [appearance]="config.matFormField" class="w-100">
-                                <mat-label>Driving Licence Number</mat-label>
-                                <input matInput placeholder="Driving Licence Number" formControlName="licenceNumber"
-                                    [ngClass]="{'is-invalid':f['licenceNumber'].errors}" maxlength="20" minlength="15"
-                                    (blur)="checkDocumentUpd('licence')">
-                                <mat-error *ngIf="f['licenceNumber'].errors">
-                                    <span class="text-danger" *ngIf="f['licenceNumber'].hasError('pattern')">Enter valid
+                                <mat-label>Insurance Expiry Date</mat-label>
+                                <input matInput placeholder="Insurance Expiry Date" formControlName="insuranceExDate"
+                                    maxlength="20" minlength="15" (blur)="checkDocumentUpd('insurance')">
+                                <mat-error *ngIf="f['insuranceExDate'].errors">
+                                    <!-- <span class="text-danger" *ngIf="f['insuranceExDate'].hasError('pattern')">Enter valid
                                         licence
-                                        number</span>
-                                    <span class="text-danger" *ngIf="f['licenceNumber'].hasError('required')">licence
-                                        number
-                                        is
-                                        required</span>
+                                        number</span> -->
+                                    <span class="text-danger"
+                                        *ngIf="f['insuranceExDate'].hasError('required')">Insurance
+                                        expiry date
+                                        is required</span>
                                 </mat-error>
                             </mat-form-field>
-                            <input type="file" name="myfile" #licenceUpload formControlName="licenceDoc"
-                                style="display: none;" (change)="documentUpload($event,'licence')" accept=".pdf" />
-                            <button type="button" *ngIf="!this.licenceDoc?.length" mat-icon-button
-                                (click)="licenceUpload.click()" matTooltip="Upload only PDF file" accept=".pdf"
+                            <input type="file" name="myfile" #uploadInsurance formControlName="insuranceDoc"
+                                style="display: none;" (change)="documentUpload($event,'insurance')" accept=".pdf" />
+                            <button type="button" *ngIf="!this.insuranceDoc?.length" mat-icon-button
+                                (click)="uploadInsurance.click()" matTooltip="Upload only PDF file" accept=".pdf"
                                 required>
                                 <mat-icon>file_upload</mat-icon>
                             </button>
-                            <button type="button" class="border border-0 bg-white" *ngIf="this.licenceDoc?.length"
-                                (click)="clearDoc('licence')">
+                            <button type="button" class="border border-0 bg-white" *ngIf="this.insuranceDoc?.length"
+                                (click)="clearDoc('insurance')">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </div>
@@ -116,28 +133,59 @@
                     <div class="col-sm-6">
                         <div class="d-flex align-items-center">
                             <mat-form-field [appearance]="config.matFormField" class="w-100">
-                                <mat-label>Aadhaar Number</mat-label>
-                                <input matInput placeholder="Aadhaar Number" formControlName="aadharNumber"
-                                    [ngClass]="{'is-invalid':f['aadharNumber'].errors}" maxlength="12"
-                                    (keypress)="this.validation.onlyDigits($event)" minlength="12"
-                                    (blur)="checkDocumentUpd('aadhar')">
-                                <mat-error *ngIf="f['aadharNumber'].errors">
-                                    <span class="text-danger" *ngIf="f['aadharNumber'].hasError('required')">Aadhar
-                                        numberis required</span>
-                                    <span class="text-danger" *ngIf="f['aadharNumber'].hasError('pattern')">Enter Valid
-                                        Aadhar card number</span>
+                                <mat-label>Register Certificate Number</mat-label>
+                                <input matInput placeholder="Register Certificate Number" formControlName="registerNo"
+                                    maxlength="12" (keypress)="this.vs.onlyDigits($event)" minlength="12"
+                                    (blur)="checkDocumentUpd('register')">
+                                <mat-error *ngIf="f['registerNo'].errors">
+                                    <span class="text-danger" *ngIf="f['registerNo'].hasError('required')">Register
+                                        certificate number
+                                        is required</span>
+                                    <!-- <span class="text-danger" *ngIf="f['registerNo'].hasError('pattern')">Enter Valid register certificate number</span> -->
                                 </mat-error>
                             </mat-form-field>
                             <div>
-                                <input type="file" name="myfile" #aadharUpload formControlName="aadharCardDoc"
-                                    style="display: none;" (change)="documentUpload($event,'aadhar')" accept=".pdf" />
-                                <button type="button" *ngIf="!this.aadharDoc?.length" mat-icon-button
-                                    (click)="aadharUpload.click()" matTooltip="Upload only PDF file" accept=".pdf"
+                                <input type="file" name="myfile" #uploadRegister formControlName="registerDoc"
+                                    style="display: none;" (change)="documentUpload($event,'register')" accept=".pdf" />
+                                <button type="button" *ngIf="!this.registerDoc?.length" mat-icon-button
+                                    (click)="uploadRegister.click()" matTooltip="Upload only PDF file" accept=".pdf"
                                     required>
                                     <mat-icon>file_upload</mat-icon>
                                 </button>
-                                <button type="button" class="border border-0 bg-white" *ngIf="this.aadharDoc?.length"
-                                    (click)="clearDoc('aadhar')">
+                                <button type="button" class="border border-0 bg-white" *ngIf="this.registerDoc?.length"
+                                    (click)="clearDoc('register')">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-center">
+                            <mat-form-field [appearance]="config.matFormField" class="w-100">
+                                <mat-label>Pollution Expiry Date</mat-label>
+                                <input matInput placeholder="Pollution Expiry Date" formControlName="pollutionExDate"
+                                    maxlength="10" (keyup)="this.vs.noSpaces($event)"
+                                    (blur)="checkDocumentUpd('pollution')">
+                                <mat-error *ngIf="f['pollutionExDate'].errors">
+                                    <span class="text-danger"
+                                        *ngIf="f['pollutionExDate'].hasError('required')">Pollution
+                                        expiry date
+                                        is required</span>
+                                    <!-- <span class="text-danger" *ngIf="f['pollutionExDate'].hasError('pattern')">Enter valid pollution expiry date</span> -->
+                                </mat-error>
+                            </mat-form-field>
+                            <div>
+                                <input type="file" name="myfile" #uploadPollution formControlName="pollutionDoc"
+                                    style="display:none;" (change)="documentUpload($event,'pollution')" accept=".pdf" />
+                                <button type="button" *ngIf="!this.pollutionDoc?.length" mat-icon-button
+                                    (click)="uploadPollution.click()" matTooltip="Upload only PDF file" accept=".pdf"
+                                    required>
+                                    <mat-icon>file_upload</mat-icon>
+                                </button>
+                                <button type="button" class="border border-0 bg-white" *ngIf="this.pollutionDoc?.length"
+                                    (click)="clearDoc('pollution')">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </button>
                             </div>
@@ -146,74 +194,71 @@
                     <div class="col-sm-6">
                         <div class="d-flex align-items-center">
                             <mat-form-field [appearance]="config.matFormField" class="w-100">
-                                <mat-label>PAN Number</mat-label>
-                                <input matInput placeholder="PAN Number" formControlName="panNumber" maxlength="10"
-                                    (keyup)="this.validation.noSpaces($event)"
-                                    [ngClass]="{'is-invalid':f['panNumber'].errors}" (blur)="checkDocumentUpd('pan')">
-                                <mat-error *ngIf="f['panNumber'].errors">
-                                    <span class="text-danger" *ngIf="f['panNumber'].hasError('required')">Aadhar number
-                                        is required</span>
-                                    <span class="text-danger" *ngIf="f['panNumber'].hasError('pattern')">Enter valid pan
-                                        card number</span>
+                                <mat-label>Fitness Expiry Date</mat-label>
+                                <input matInput placeholder="Fitness Expiry Date" formControlName="fitnessExDate"
+                                    maxlength="10" (keyup)="this.vs.noSpaces($event)"
+                                    (blur)="checkDocumentUpd('fitness')">
+                                <mat-error *ngIf="f['fitnessExDate'].errors">
+                                    <span class="text-danger" *ngIf="f['fitnessExDate'].hasError('required')">Fitness
+                                        Expiry Date is
+                                        required</span>
+                                    <!-- <span class="text-danger" *ngIf="f['fitnessExDate'].hasError('pattern')">Enter valid fitness expiry date</span> -->
                                 </mat-error>
                             </mat-form-field>
                             <div>
-                                <input type="file" name="myfile" #panUpload formControlName="panCardDoc"
-                                    style="display: none;" (change)="documentUpload($event,'pan')" accept=".pdf" />
-                                <button type="button" *ngIf="!this.panDoc?.length" mat-icon-button
-                                    (click)="panUpload.click()" matTooltip="Upload only PDF file" accept=".pdf"
+                                <input type="file" name="myfile" #uploadFitness formControlName="fitnessDoc"
+                                    style="display:none;" (change)="documentUpload($event,'fitness')" accept=".pdf" />
+                                <button type="button" *ngIf="!this.fitnessDoc?.length" mat-icon-button
+                                    (click)="uploadFitness.click()" matTooltip="Upload only PDF file" accept=".pdf"
                                     required>
                                     <mat-icon>file_upload</mat-icon>
                                 </button>
-                                <button type="button" class="border border-0 bg-white" *ngIf="this.panDoc?.length"
-                                    (click)="clearDoc('pan')">
+                                <button type="button" class="border border-0 bg-white" *ngIf="this.fitnessDoc?.length"
+                                    (click)="clearDoc('fitness')">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-sm-6">
-                        <mat-form-field [appearance]="config.matFormField" class="w-100">
-                            <textarea matInput formControlName="presentAddress" placeholder="Present Address"
-                                maxlength="150"></textarea>
-                            <mat-error *ngIf="f['presentAddress'].errors">
-                                <span class="text-danger" *ngIf="f['presentAddress'].hasError('required')">Present
-                                    Address
-                                    is
-                                    required</span>
-                            </mat-error>
-                        </mat-form-field>
+                        <div class="d-flex align-items-center">
+                            <mat-form-field [appearance]="config.matFormField" class="w-100">
+                                <mat-label>National Permit Number</mat-label>
+                                <input matInput placeholder="Permit Number" formControlName="permitNo" maxlength="10"
+                                    (keyup)="this.vs.noSpaces($event)" (blur)="checkDocumentUpd('permit')">
+                                <mat-error *ngIf="f['permitNo'].errors">
+                                    <span class="text-danger" *ngIf="f['permitNo'].hasError('required')">National permit
+                                        number is
+                                        required</span>
+                                    <!-- <span class="text-danger" *ngIf="f['permitNo'].hasError('pattern')">Enter valid national permit number </span> -->
+                                </mat-error>
+                            </mat-form-field>
+                            <div>
+                                <input type="file" name="myfile" #uploadPermit formControlName="permitDoc"
+                                    style="display: none;" (change)="documentUpload($event,'permit')" accept=".pdf" />
+                                <button type="button" *ngIf="!this.nationalDoc?.length" mat-icon-button
+                                    (click)="uploadPermit.click()" matTooltip="Upload only PDF file" accept=".pdf"
+                                    required>
+                                    <mat-icon>file_upload</mat-icon>
+                                </button>
+                                <button type="button" class="border border-0 bg-white" *ngIf="this.nationalDoc?.length"
+                                    (click)="clearDoc('permit')">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-6">
-                        <mat-form-field [appearance]="config.matFormField" class="w-100">
-                            <textarea matInput formControlName="permanentAddress" placeholder="Permanent Address"
-                                maxlength="150"></textarea>
-                            <mat-error *ngIf="f['permanentAddress'].errors">
-                                <span class="text-danger" *ngIf="f['permanentAddress'].hasError('required')">Permanent
-                                    Address is
-                                    required</span>
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="col-sm-6">
-                        <mat-checkbox class="small" (change)="checkArress($event)" [disabled]="driverRegForm.value.presentAddress?.length == 0"
-                        [checked]="(driverRegForm.value.presentAddress?.length > 0) && (driverRegForm.value.presentAddress == driverRegForm.value.permanentAddress)">
-                        Same as Present Address</mat-checkbox>
-                    </div>
-
-                    <ng-container class="form-group">
-                        <input matInput class="d-none" formControlName="flag">
-                    </ng-container>
                 </div>
             </div>
             <div class="form-container w-100">
                 <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-light-main" #closeModel data-bs-dismiss="modal"
-                        (click)="onNoClick(formDirective)">Cancel</button>
-
+                    <button type="button" class="btn btn-light-main" data-bs-dismiss="modal"
+                        (click)="onNoClick('No')">Cancel</button>
                     <button type="submit" class="btn btn-main">{{buttonFlag?'Save':'Update'}}</button>
                 </div>
             </div>
         </div>
     </form>
-</div> -->
+</div>
