@@ -226,7 +226,8 @@ export class SharedService {
   }
 
   getAddress(cr: any, i: any) { // get address by lat long
-    return new Promise((resolve) => {  //  return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {  //  return new Promise((resolve, reject) => {
+      console.log(reject);
       setTimeout(() => {
         let geocoder: any = new google.maps.Geocoder;
         var latlng = { lat: parseFloat(cr.latitude), lng: parseFloat(cr.longitude) };
