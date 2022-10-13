@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Observable } from 'rxjs';
 import { CommonMethodsService } from './common-methods.service';
 import { WebStorageService } from './web-storage.service';
 
@@ -26,15 +27,27 @@ export class ApiCallService {
   constructor(private http: HttpClient,
     private webStorage: WebStorageService,
     private spinner: NgxSpinnerService,
-    private commonMethods:CommonMethodsService) {
+    private commonMethods: CommonMethodsService) {
   }
 
-  
+
   getBaseurl(url: string) {
     switch (url) {
       case 'fleetExpressBaseUrl': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/'; break
       default: return ''; break;
     }
+  }
+  vehicleCount() {
+    return new Observable(obj => {
+      this.setHttp('get', 'vehicle/get-vehiclelists?', true, false, false, 'fleetExpressBaseUrl');
+      this.getHttp().subscribe({
+        next: (res: any) => {
+          if (res.statusCode == "200") {
+            obj.next(res);
+          }
+        }
+      })
+    })
   }
   clearHttp() {
     this.httpObj.type = '';
@@ -104,7 +117,7 @@ export class ApiCallService {
       this.httpObj.options.params = false;
     }
   }
-  
+
   tokenExpiredAndRefresh(obj: any) {
     let callRefreshTokenAPI = this.http.post('https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/login/refresh-token', obj);
     callRefreshTokenAPI.subscribe((res: any) => {
@@ -124,7 +137,7 @@ export class ApiCallService {
         localStorage.clear();
         this.commonMethods.routerLinkRedirect('login');
         this.commonMethods.snackBar("Your Session Has Expired. Please Re-Login Again.", 1);
-         }
+      }
     })
   }
 }

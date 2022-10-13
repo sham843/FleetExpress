@@ -9,14 +9,21 @@
         <div class="row">
             <div class="col-sm-3">
                 <div class="position-relative">
-                    <img src="{{profilePhotoupd}}" class="vehicle-image">
+                    <img src="{{profilePhoto}}" class="vehicle-image">
+
+                    <input type="file" #profileUpload name="myfile" accept=".jpg,.jpeg,.png"
+                    formControlName="profilePhoto" matTooltip="Upload only png,jpg,jpeg file"
+                    (change)="profileUploads($event)" style="display:none;"/>
+
                     <div class="vehicle-buttons d-flex flex-column upload-btn-wrapper">
-                        <button type="button" class="btn bg-light text-primary" (click)="profileUpload.click()">
+                        <button type="button" class="btn bg-light text-primary" (click)="profileUpload.click()"
+                        *ngIf="!this.profilePhotoupd?.length || this.profilePhotoupd=='assets/images/user.jpg'">
                             <i class="fa-solid fa-plus"></i>
                         </button>
-                        <input type="file" #profileUpload name="myfile" accept=".jpg,.jpeg,.png"
-                            formControlName="profilePhoto" matTooltip="Upload only png,jpg,jpeg file"
-                            (change)="profileUploads($event)" />
+                        <button type="button" class="border border-0 btn bg-light text-primary"
+                            *ngIf="this.profilePhotoupd?.length && this.profilePhotoupd!='assets/images/user.jpg'" (click)="clearDoc()">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
                     </div>
                 </div>
             </div>

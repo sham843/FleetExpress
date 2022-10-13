@@ -18,8 +18,10 @@ import { WebStorageService } from 'src/app/services/web-storage.service';
 export class ProfileModalComponent implements OnInit {
   myProfileForm!:FormGroup;
   dialogData:any;
+  profilePhoto!:string;
   remark = new FormControl('');
-  profilePhotoupd!:string;
+  profilePhotoupd:string='assets/images/user.jpg';
+  @ViewChild('profileUpload') profileUpload: any;
   @ViewChild(FormGroupDirective) formGroupDirective!: FormGroupDirective;
   date=new Date();
   constructor(private fb:FormBuilder,
@@ -54,10 +56,19 @@ export class ProfileModalComponent implements OnInit {
       panNo: ['', Validators.compose([Validators.pattern('[A-Z]{3}[ABCFGHLJPTF]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}')])],
       panDoc: ['']
     })
-    this.profilePhotoupd=this.dialogData.profilePhoto
+    this.profilePhotoupd=this.dialogData.profilePhoto?this.dialogData.profilePhoto:this.profilePhotoupd='assets/images/user.jpg';
   }
 // --------------------------------------------------------------profile photo Upload--------------------------------------------------
 profileUploads(event: any) {
+  if (event.target.files && event.target.files[0]) {
+    var reader = new FileReader();
+    reader.onload = (event: any) => {
+      this.profilePhoto = event.target.result;
+    }
+    reader.readAsDataURL(event.target.files[0]);
+  }
+
+
   this.spinner.show();
   let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'driverProfile', "png,jpg,jpeg");
   documentUrl.subscribe({
@@ -77,6 +88,11 @@ profileUploads(event: any) {
     })
   this.spinner.hide();
 }
+
+clearDoc(){
+  this.profileUpload.nativeElement.value = '';
+   this.profilePhotoupd='assets/images/user.jpg';
+}
   // ----------------------------------------------------edit profile---------------------------------------------------------------
   profileSave() {
     if (this.myProfileForm.invalid) {
@@ -84,7 +100,7 @@ profileUploads(event: any) {
     }
     else {
       let formData = this.myProfileForm.value;
-      formData.id=256;
+      formData.id=this.webStorage.getVehicleOwnerId();
       formData.profilePhoto=this.profilePhotoupd,
       formData.ownerCompany='',
       formData.gstNo='',

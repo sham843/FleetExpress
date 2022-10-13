@@ -8,12 +8,15 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TicketRaisedComponent } from './ticket-raised/ticket-raised.component';
+import { ConfigService } from 'src/app/services/config.service';
+import { VehicleTrackingDetailsComponent } from './vehicle-tracking-details/vehicle-tracking-details.component';
 
 
 @NgModule({
   declarations: [
     TrackingComponent,
     TicketRaisedComponent,
+    VehicleTrackingDetailsComponent,
   ],
   imports: [
     CommonModule,
@@ -25,9 +28,7 @@ import { TicketRaisedComponent } from './ticket-raised/ticket-raised.component';
      NgxMatDatetimePickerModule,
      NgxMatNativeDateModule,
      NgxMatTimepickerModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyAkNBALkBX7trFQFCrcHO2I85Re2MmzTo8',
-    }),
+     AgmCoreModule.forRoot(ConfigService.googleApiObj),
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
