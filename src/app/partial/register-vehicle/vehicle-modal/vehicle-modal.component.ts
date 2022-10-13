@@ -55,7 +55,6 @@ export class VehicleModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.dialogData = this.data;
-    console.log(this.dialogData)
     this.dialogData!=0? this.cardTitle='Edit Vehicle' :this.cardTitle='Add Vehicle';
     this.getFormControl();
   }

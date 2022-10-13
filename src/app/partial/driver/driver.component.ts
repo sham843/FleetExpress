@@ -96,7 +96,6 @@ export class DriverComponent implements OnInit {
   }
 
   clearSearchData() {
-    console.log("clear")
     this.driverName.setValue('');
     this.getDriverDetails();
   }

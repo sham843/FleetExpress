@@ -38,7 +38,6 @@ export class ProfileModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.dialogData = this.data ? this.data : '';
-    console.log(this.dialogData);
     this.ProfileFormControl();
   }
   ProfileFormControl() {
@@ -117,7 +116,6 @@ clearDoc(){
       formData.isSnapToRoadService= 0,
       formData.isAddressLocationService=0,
       formData.flag='u'
-      console.log(formData);
       this.apiCall.setHttp('post', 'vehicle-owner/save-update-vehicle-owner', true, formData, false, 'fleetExpressBaseUrl');
       this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
