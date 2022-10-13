@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { debounceTime, distinctUntilChanged, filter, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { ConfirmationComponent } from 'src/app/dialogs/confirmation/confirmation.component';
 import { ModalsComponent } from 'src/app/dialogs/driver_modals/modals.component';
 import { ApiCallService } from 'src/app/services/api-call.service';
@@ -38,7 +38,6 @@ export class DriverComponent implements OnInit {
   checkdata = new Array();
   driverName=new FormControl('');
   constructor(
-    // private fb: FormBuilder,
     public validation: ValidationService,
     public config: ConfigService,
     private apiCall: ApiCallService,
@@ -48,14 +47,12 @@ export class DriverComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.getRegFormData();
     this.getDriverDetails();
   }
 
   ngAfterViewInit() {
     let formValue = this.driverName.valueChanges;
     formValue.pipe(
-      filter(() => this.driverName.valid),
       debounceTime(1000),
       distinctUntilChanged())
       .subscribe(() => {
@@ -63,14 +60,6 @@ export class DriverComponent implements OnInit {
         this.getDriverDetails();
       })
   }
-
-  //--------------------------------------------------------form Controls----------------------------------------------------
- /*  getRegFormData() {
-    this.searchDriverForm = this.fb.group({
-      driverName: ['', Validators.compose([Validators.required, Validators.maxLength(15)])]
-    })
-  }
- */
 
   // -----------------------------------------------Driver Details----------------------------------------------------------
   getDriverDetails(flag?: any) {
