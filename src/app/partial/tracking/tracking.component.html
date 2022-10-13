@@ -47,14 +47,15 @@
         <div class="card border-0 rounded">
             <div class="card-body fixed-height rounded" *ngIf="allVehiclelData.length">
                 <div class="rounded" *ngFor="let item of allVehiclelData; let i=index">
-                    <!-- *ngIf="item?.gpsStatus=='Offline'; else templateA" -->
                     <ng-container>
                         <a class="d-flex vehicle p-3 bg-opacity-10 mb-1 rounded bg-opacity-10" placement="top"
-                            routerLinkActive="active" [class.active]="selectedIndex === i" (click)="selectedIndex = i" [ngClass]="{'bg-danger':item?.gpsStatus=='Offline','bg-success':item?.gpsStatus=='Running','bg-warning':item?.gpsStatus=='Stopped','bg-primary':item?.gpsStatus=='Idle'}">
-                            
+                            routerLinkActive="active" [class.active]="selectedIndex === i" (click)="selectedIndex = i"
+                            [ngClass]="{'bg-danger':item?.gpsStatus=='Offline','bg-success':item?.gpsStatus=='Running','bg-warning':item?.gpsStatus=='Stopped','bg-primary':item?.gpsStatus=='Idle'}">
+
 
                             <div class="flex-shrink-0">
-                                <div class="bg-opacity-25  rounded-circle vehicle-icon" [ngClass]="{'text-danger':item?.gpsStatus=='Offline','text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
+                                <div class="bg-opacity-25  rounded-circle vehicle-icon"
+                                    [ngClass]="{'text-danger':item?.gpsStatus=='Offline','text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
                                     <i class="fa-solid fa-car"></i>
                                 </div>
                             </div>
@@ -64,15 +65,15 @@
                                         placement="end">
                                         <p class="vehicle-no">{{item?.vehicleNo}} </p>
                                     </a>
-                                    <a  *ngIf="item?.gpsStatus!='Offline'" (click)="vehicleNo = item?.vehicleNo" data-bs-toggle="offcanvas"
-                                        data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom"
+                                    <a *ngIf="item?.gpsStatus!='Offline'" (click)="vehicleNo = item?.vehicleNo"
+                                        (click)="openvechileTrackingDetailsSheet()"
                                         [ngClass]="{'text-danger':item?.gpsStatus=='Offline','text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
                                         <p class="vehicle-no">{{item?.vehicleNo}} </p>
                                     </a>
-                                    <span class="text-dark veh-status">({{'ticket raised'}})</span>
-                                    <a class="text-primary veh-status" data-bs-toggle="modal"
-                                        data-bs-target="#MaintenanceviewModal"> View Details</a>
-                                    <span class="veh-status"  [ngClass]="{'text-danger':item?.gpsStatus=='Offline','text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
+                                    <span class="text-dark veh-status">({{'Ticket Raised'}})</span>
+                                    <a class="text-primary veh-status"> View Details</a>
+                                    <span class="veh-status"
+                                        [ngClass]="{'text-danger':item?.gpsStatus=='Offline','text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
                                         <i class="fa-solid fa-circle me-2"></i>{{item?.gpsStatus}}
                                     </span>
                                 </div>
@@ -101,7 +102,8 @@
                                         </div>
                                     </div>
                                     <div class="share-call">
-                                        <a class="me-3" (click)="openTicketRaisedDialog(item,'shareLocation')"><img src="assets/images/Tracking/share.svg"></a>
+                                        <a class="me-3" (click)="openTicketRaisedDialog(item,'shareLocation')"><img
+                                                src="assets/images/Tracking/share.svg"></a>
                                         <a><img src="assets/images/Tracking/call-vehicle.svg"></a>
                                     </div>
                                 </div>
@@ -172,7 +174,7 @@
                     <agm-map [latitude]="lat" [zoom]="5" [longitude]="long" class="rounded"></agm-map>
                 </div>
             </div>
-            <div class="offcanvas offcanvas-bottom position-absolute shadow-lg border-0" data-bs-scroll="true"
+            <!-- <div class="offcanvas offcanvas-bottom position-absolute shadow-lg border-0" data-bs-scroll="true"
                 data-bs-backdrop="false" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 <div class="offcanvas-body p-1">
@@ -550,7 +552,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

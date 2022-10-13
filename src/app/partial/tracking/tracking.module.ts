@@ -9,12 +9,14 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TicketRaisedComponent } from './ticket-raised/ticket-raised.component';
 import { ConfigService } from 'src/app/services/config.service';
+import { VehicleTrackingDetailsComponent } from './vehicle-tracking-details/vehicle-tracking-details.component';
 
 
 @NgModule({
   declarations: [
     TrackingComponent,
     TicketRaisedComponent,
+    VehicleTrackingDetailsComponent,
   ],
   imports: [
     CommonModule,

@@ -11,6 +11,8 @@ import { TicketRaisedComponent } from './ticket-raised/ticket-raised.component';
 import { TravelMarker, TravelMarkerOptions } from 'travel-marker';
 import { MapsAPILoader } from '@agm/core';
 import { ConfigService } from 'src/app/services/config.service';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { VehicleTrackingDetailsComponent } from './vehicle-tracking-details/vehicle-tracking-details.component';
 declare var google: any;
 @Component({
   selector: 'app-tracking',
@@ -67,7 +69,7 @@ export class TrackingComponent implements OnInit {
   };
 
 
-  constructor(private apiCall: ApiCallService, private webStorage: WebStorageService, private mapsAPILoader: MapsAPILoader,
+  constructor(private apiCall: ApiCallService, private webStorage: WebStorageService, private mapsAPILoader: MapsAPILoader, private _bottomSheet: MatBottomSheet,
     private error: ErrorsService, public dialog: MatDialog, private fb: FormBuilder, private httpClient: HttpClient, private config: ConfigService) { }
 
   ngOnInit(): void {
@@ -100,7 +102,6 @@ export class TrackingComponent implements OnInit {
   }
 
   getAllVehicleListData(flag: boolean) {
-    //this.allVehiclelData = [],this.allRunningVehiclelData=[],this.allStoppedVehiclelData=[],this.allIdleVehiclelData=[],this.allOfflineVehiclelData=[];
     this.apiCall.setHttp('get', 'tracking/get-vehicles-current-location?UserId=' + this.webStorage.getUserId() + '&VehicleNo=' + (!this.searchContent.value ? '' : this.searchContent.value) + '&GpsStatus=', true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
@@ -116,11 +117,9 @@ export class TrackingComponent implements OnInit {
             });
           }
         } else {
-          if (res.statusCode != "404") {
-            this.allVehiclelData = [];
-            this.allVehiclelDataClone = [];
-            this.error.handelError(res.statusCode)
-          }
+          this.allVehiclelData = [];
+          this.allVehiclelDataClone = [];
+          // this.error.handelError(res.statusCode)
         }
       }
     }, (error: any) => { this.error.handelError(error.status) });
@@ -160,41 +159,9 @@ export class TrackingComponent implements OnInit {
   get itinerary() { return this.itineraryForm.controls };
   //-------------------------------------------------------------- bottom sheet method end heare --------------------------------------------//
 
-
-  //#region --vechile information fn start
-  getVehicleDetails() {
-    this.apiCall.setHttp('get', 'vehicle/search-vehicle?Search=' + this.vehicleNo, true, false, false, 'fleetExpressBaseUrl');
-    this.subscription = this.apiCall.getHttp().subscribe({
-      next: (res: any) => {
-        if (res.statusCode === "200") {
-          this.vehicleDetailsData = res.responseData.responseData;
-        } else {
-          if (res.statusCode != "404") {
-            this.vehicleDetailsData = [];
-            this.error.handelError(res.statusCode)
-          }
-        }
-      }
-    }, (error: any) => { this.error.handelError(error.status) });
+  openvechileTrackingDetailsSheet(): void {
+    this._bottomSheet.open(VehicleTrackingDetailsComponent);
   }
-
-  getDriverDetails() {
-    this.apiCall.setHttp('get', 'vehicle/get-driver-List?VehicleNo=' + this.vehicleNo, true, false, false, 'fleetExpressBaseUrl');
-    this.subscription = this.apiCall.getHttp().subscribe({
-      next: (res: any) => {
-        if (res.statusCode === "200") {
-          this.driverDetailsData = res.responseData;
-        } else {
-          if (res.statusCode != "404") {
-            this.driverDetailsData = [];
-            this.error.handelError(res.statusCode)
-          }
-        }
-      }
-    }, (error: any) => { this.error.handelError(error.status) });
-  }
-  //#endregion --vechile information fn end
-
 
   //#region -------------------------------------------------------------- map fn strat heare  -----------------------------------------------//
 
