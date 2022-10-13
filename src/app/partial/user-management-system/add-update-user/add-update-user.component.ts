@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgxSpinnerService} from 'ngx-spinner';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
+import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { MasterService } from 'src/app/services/master.service';
 import { ValidationService } from 'src/app/services/validation.service';
@@ -33,7 +34,7 @@ export class AddUpdateUserComponent implements OnInit {
     public validationService:ValidationService, private master:MasterService,
     private error:ErrorsService, private apiCall:ApiCallService, private webStorage:WebStorageService
     ,private commonMethods:CommonMethodsService, private spinner:NgxSpinnerService
-    ,@Inject(MAT_DIALOG_DATA) public data: any) { }
+    ,@Inject(MAT_DIALOG_DATA) public data: any, public config:ConfigService) { }
 
   ngOnInit(): void {
     this.dialogData = this.data;
@@ -67,7 +68,7 @@ export class AddUpdateUserComponent implements OnInit {
     })
     this.roleForm = this.fb.group({
       roleName: [],
-      topping: [],
+      assignedResponsibilities: [],
     })
   }
   getVehicleData() {
@@ -196,8 +197,8 @@ export class AddUpdateUserComponent implements OnInit {
       this.error.handelError(error.status)
      } );
   }
-
   }
+  submitRole(){ }
   onNoClick(flag: any): void {
     // if (flag == 'Yes') {
     //  let obj = { flag: 'Yes' };

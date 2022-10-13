@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { debounceTime, distinctUntilChanged, filter, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { ConfirmationComponent } from 'src/app/dialogs/confirmation/confirmation.component';
 import { ModalsComponent } from 'src/app/dialogs/driver_modals/modals.component';
 import { ApiCallService } from 'src/app/services/api-call.service';
@@ -35,8 +35,9 @@ export class DriverComponent implements OnInit {
   flagArray = new Array();
   deleteBtn: boolean = false;
   selectAll!: boolean;
-
-  constructor(private fb: FormBuilder,
+  checkdata = new Array();
+  driverName=new FormControl('');
+  constructor(
     public validation: ValidationService,
     public config: ConfigService,
     private apiCall: ApiCallService,
@@ -46,43 +47,34 @@ export class DriverComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getRegFormData();
     this.getDriverDetails();
   }
 
   ngAfterViewInit() {
-    let formValue = this.searchDriverForm.valueChanges;
+    let formValue = this.driverName.valueChanges;
     formValue.pipe(
-      filter(() => this.searchDriverForm.valid),
       debounceTime(1000),
       distinctUntilChanged())
       .subscribe(() => {
         this.paginationNo = 1;
         this.getDriverDetails();
-        this.searchHideShow = false;
-        this.clearHideShow = true;
       })
   }
-
-  //--------------------------------------------------------form Controls----------------------------------------------------
-  getRegFormData() {
-    this.searchDriverForm = this.fb.group({
-      driverName: ['', Validators.compose([Validators.required, Validators.maxLength(15)])]
-    })
-  }
-
 
   // -----------------------------------------------Driver Details----------------------------------------------------------
   getDriverDetails(flag?: any) {
     this.checkArray = [];
+    this.spinner.show();
     if (flag == 'search') {
       this.searchHideShow = false;
       this.clearHideShow = true;
     }
-    this.apiCall.setHttp('get', 'driver/get-driver?searchText=' + this.searchDriverForm.value.driverName + '&pageno=' + this.paginationNo + '&rowperPage=' + this.pageSize, true, false, false, 'fleetExpressBaseUrl');
+    this.apiCall.setHttp('get', 'driver/get-driver?searchText=' + this.driverName.value + '&pageno=' + this.paginationNo + '&rowperPage=' + this.pageSize, true, false, false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe((res: any) => {
       if (res.statusCode === "200") {
         this.driverDetails = res.responseData.responseData1;
+        !this.driverName.value ? this.checkdata = res.responseData.responseData1 : '';
+        this.spinner.hide();
         this.driverDetails.forEach((ele: any) => {
           ele['isBlockFlag'] = false;
           ele['isChecked'] = false;
@@ -91,25 +83,26 @@ export class DriverComponent implements OnInit {
           }
         });
         this.totalItem = res.responseData.responseData2.totalRecords;
+
       } else {
+        this.spinner.hide();
         this.driverDetails = [];
       }
     },
       (error: any) => {
-        this.error.handelError(error.status);
+        this.spinner.hide();
+        this.error.handelError(error.status);this.driverDetails = [];
       })
   }
 
   clearSearchData() {
-    this.searchDriverForm.controls['driverName'].setValue('');
+    this.driverName.setValue('');
     this.getDriverDetails();
-    this.searchHideShow = true;
-    this.clearHideShow = false;
   }
 
   // -----------------------------------------------comfirmation module----------------------------------------------------------
   confirmationDialog(flag: boolean, label: string, event?: any, drData?: any) {
-    this.selectAll ? this.uncheckAllDriver():'';
+    this.selectAll ? this.uncheckAllDriver() : '';
     let obj: any = ConfigService.dialogObj;
     if (label == 'status') {
       obj['p1'] = flag ? 'Are you sure you want to Block Driver?' : 'Are you sure you want to Unblock Driver?';
@@ -134,10 +127,10 @@ export class DriverComponent implements OnInit {
         this.blockUnblockDriver(event, drData);
       } else if (res == 'Yes' && label == 'delete') {
         this.removeDriverData();
-      }else{
+      } else {
         this.getDriverDetails();
       }
-      
+
     }
     )
   }
@@ -189,14 +182,14 @@ export class DriverComponent implements OnInit {
     this.selectAll = false;
     this.driverDetails.map((ele: any) => {
       ele.checked = false
-      this.checkArray=[];
+      this.checkArray = [];
     })
   }
   removeDriverData() {
     this.deleteBtn = false;
     let param = new Array();
     for (let i = 0; i < this.driverDetails.length; i++) {
-      if (this.driverDetails[i].isChecked == true) {
+      if (this.driverDetails[i].checked == true) {
         let array = {
           "driverId": this.driverDetails[i].driverId,
           "isDeleted": 1
@@ -225,7 +218,7 @@ export class DriverComponent implements OnInit {
     this.paginationNo = pageNo;
     this.getDriverDetails();
   }
-  
+
 
   ngOnDestroy() {
     if (this.subscription) {

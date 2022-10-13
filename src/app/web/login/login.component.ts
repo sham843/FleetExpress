@@ -33,8 +33,8 @@ export class LoginComponent implements OnInit {
   }
   defaultLoginForm() {
     this.loginForm = this.fb.group({
-      username: ['',[Validators.required,Validators.maxLength(20)]],
-      password: ['',[Validators.compose([Validators.required,Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$'),Validators.minLength(8),Validators.maxLength(20)])]],
+      username: ['',[Validators.required,Validators.maxLength(20)]],   
+      password: ['',[Validators.compose([Validators.required,Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&#])[A-Za-z0-9\d@$!%*?&#]{8,20}$'),Validators.minLength(8),Validators.maxLength(20)])]],
       captcha: ['',[Validators.compose([Validators.required])]]
     })
   }
@@ -49,25 +49,20 @@ export class LoginComponent implements OnInit {
       return;
     }
    else if (this.loginForm.value.captcha !=  this.commonMethods.checkvalidateCaptcha()){
-    this.commonMethods.snackBar("Invalid Captcha", 1)
+    this.commonMethods.createCaptchaCarrerPage();
+    this.commonMethods.snackBar("Invalid Captcha.Please try again", 1);
     }
 
     else {
       this.spinner.show();
       this.loginData = this.loginForm.value;
       this.apiCall.setHttp('get', 'login/login-web?'+'UserName=' + this.loginData.username.trim() + '&Password=' + this.loginData.password.trim(), false, false, false, 'fleetExpressBaseUrl');
-      // this.subscription = 
-      this.apiCall.getHttp().subscribe((res: any) => {
+      this.subscription =this.apiCall.getHttp().subscribe((res: any) => {
         if (res.statusCode == "200") {
           this.spinner.hide();
           sessionStorage.setItem('loggedIn', 'true');
           localStorage.setItem('loggedInData', JSON.stringify(res));
           this.commonMethods.routerLinkRedirect('../dashboard');
-        }
-        else {
-          this.spinner.hide();
-            this.error.handelError(res.statusCode);
-            this.commonMethods.snackBar(res.statusMessage, 1)
         }
       },(error: any) => {
         this.error.handelError(error.status);

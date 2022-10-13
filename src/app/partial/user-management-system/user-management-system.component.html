@@ -19,18 +19,12 @@
                                 Role
                             </button>
                         </li>
-                        <!-- <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="pills-role-tab" data-bs-toggle="pill" data-bs-target="#pills-role"
-                                type="button" role="tab" aria-controls="pills-role" aria-selected="false" (click)="selectedTab('role')">
-                                Role
-                            </button>
-                        </li> -->
                     </ul>
                 </div>
                 <div class="col-sm-4">
                     <div class="d-flex small">
                         <div class="me-2">Total {{showTab=='users'?'User':'Role' }}:</div>
-                        <div class="fw-bold">{{totalUserTableData}}</div>
+                        <div class="fw-bold">{{showTab=='users'?totalUserTableData:roleTableData.length }}</div>
                     </div>
                 </div>
             </div>
@@ -73,7 +67,7 @@
                                                 </div>
                                                 <div class="col-sm-8">
                                                     <div class="input-group">
-                                                        <input type="text" class="form-control" placeholder="Search" [formControl]="searchContent">
+                                                        <input type="text" class="form-control" placeholder="Search"  [maxlength]="15" [formControl]="searchContent">
                                                         <div class="input-group-text" *ngIf="!searchContent.value"><i class="fa-solid fa-magnifying-glass"></i></div>
                                                         <div class="input-group-text" *ngIf="searchContent.value"><i class="fa fa-times" (click)="searchContent.reset()"></i></div>
                                                     </div>
@@ -100,33 +94,33 @@
                                             <tr>
                                                 <th *ngFor="let element of tableLables"
                                                     [ngClass]="{ 'srno': element.id==1 }">{{element.label}}</th>
-                                                <th *ngIf="showTab=='users'">
-                                                    <mat-checkbox (change)='selectUsers($event,0)' value=""
-                                                        [(ngModel)]="selectAll"></mat-checkbox>
+                                                <th >
+                                                    <mat-checkbox *ngIf="showTab=='users'" (change)='selectUsers($event,0)' value="" [(ngModel)]="selectAll"></mat-checkbox>
+                                                    <mat-checkbox *ngIf="showTab=='role'" (change)='selectRoles($event,0)' value="" [(ngModel)]="selectAllRoles"></mat-checkbox>
                                                 </th>
 
                                             </tr>
                                         </thead>
-                                        <tbody *ngIf="showTab=='users'" >
-                                            <tr *ngFor="let element of userTableData| paginate: {itemsPerPage: pageSize, 
-                                                currentPage: pageNumber, totalItems:totalUserTableData};; let i=index " (click)="clickedRow(i)" [ngClass]="{'highLightRow':i==highlightRowindex}">
+                                        <tbody *ngIf="showTab=='users'" >   
+                                            <tr *ngFor="let user of userTableData| paginate: {itemsPerPage: pageSize, 
+                                                currentPage: pageNumber, totalItems:totalUserTableData};; let i=index " [ngClass]="{'highLightRow':user?.id==highlightRowindex}">
                                                 <td>{{((pageNumber + 1) * 10 + i + 1)-20}}</td>
-                                                <td>{{element.name}}</td>
-                                                <td>{{element.mobileNo1}}</td>
-                                                <td>{{element.subUserTypeName}}</td>
+                                                <td>{{user.name}}</td>
+                                                <td><a href="tel:{{user.mobileNo1}}" style="text-decoration: none;">{{user.mobileNo1}}</a></td>
+                                                <td>{{user.subUserTypeName}}</td>
                                                 <td >
-                                                    <mat-slide-toggle (change)="confirmationDialog(element.isBlock,'status', element)"  [(ngModel)]="element.isBlock"></mat-slide-toggle>
+                                                    <mat-slide-toggle (change)="confirmationDialog(user.isBlock,'status', user)"  [(ngModel)]="user.isBlock"></mat-slide-toggle>
                                                 </td>
                                                 <td>
                                                     <div class="d-flex">
-                                                        <button class="btn btn-light-main btn-icon me-2" (click)="addUpdateDialog('user', element)">
+                                                        <button class="btn btn-light-main btn-icon me-2" (click)="addUpdateDialog('user', user)">
                                                             <i class="fa-regular fa-pen-to-square"></i>
                                                         </button>
                                                     </div>
                                                 </td>
                                                 <td *ngIf="showTab=='users'">
-                                                    <mat-checkbox [(ngModel)]="element.checked" value=""
-                                                        (change)="selectUsers($event,element.id)"></mat-checkbox>
+                                                    <mat-checkbox [(ngModel)]="user.checked" value=""
+                                                        (change)="selectUsers($event,user.id)"></mat-checkbox>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -139,12 +133,8 @@
                                                 </td>
                                                 <td>
                                                     <div class="d-flex">
-                                                        <button class="btn btn-light-main btn-icon me-2"
-                                                            data-bs-toggle="modal" data-bs-target="#AddRoleModal">
+                                                        <button class="btn btn-light-main btn-icon me-2" (click)="addUpdateDialog('role', role)">
                                                             <i class="fa-regular fa-pen-to-square"></i>
-                                                        </button>
-                                                        <button class="btn bg-danger bg-opacity-10 text-danger">
-                                                            <i class="fa-solid fa-trash-can"></i>
                                                         </button>
                                                     </div>
                                                 </td>
@@ -154,13 +144,14 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <div *ngIf="userTableData.length==0 || roleTableData.length==0">
+                                    
+                                    <div *ngIf="(userTableData.length==0 && showTab=='users')|| roleTableData.length==0 && showTab=='role'">
                                         <div class="alert alert-danger text-center py-2">
                                             No data found
                                         </div>
                                     </div>
-                                    <pagination-controls  previousLabel="" nextLabel=""
-                                    (pageChange)="onPagintion($event)" class="text-end m-2">
+                                    <pagination-controls   previousLabel="" nextLabel=""
+                                    (pageChange)="onPagintion($event)" class="text-end m-2" >
                                 </pagination-controls>
                                 </div>
                             </div>
@@ -171,257 +162,3 @@
         </div>
     </div>
 </div>
-
-<!-- Modal for new user -->
-<!-- <ng-template #AddUserModal let-modal>
-
-        <form [formGroup]="userForm" (ngSubmit)="submitUser()">
-            <div class="modal-content">
-                <div class="modal-header bg-light-gradient text-dark">
-                    <p class="modal-title mb-0" id="exampleModalToggleLabel">Create User</p>
-                    <button type="button" class="btn-close" (click)="modalClose()" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <mat-form-field appearance="standard" class="w-100">
-                                <mat-label>Full Name</mat-label>
-                                <input matInput placeholder="Enter Full Name" formControlName="fName"
-                                    (keypress)="validationService.alphabetsWithSpaces($event)">
-                            </mat-form-field>
-                            <mat-error *ngIf="userformSubmitted && user['fName'].errors">
-                            </mat-error>
-                        </div>
-                        <div class="col-sm-6">
-                            <mat-form-field appearance="standard" class="w-100">
-                                <mat-label>Mobile Number</mat-label>
-                                <input matInput placeholder="Enter Mobile Number" formControlName="mobileNumber"
-                                    (keypress)="validationService.onlyDigits($event)" [maxLength]="10">
-                            </mat-form-field>
-                            <mat-error *ngIf="userformSubmitted && user['mobileNumber'].errors">
-                                <span class="text-danger"
-                                    *ngIf="userformSubmitted && user['mobileNumber'].hasError('pattern')">Enter valid
-                                    mobile Number</span>
-                            </mat-error>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <mat-form-field appearance="standard" class="w-100">
-                                <mat-label>Assign Vehicle</mat-label>
-                                <mat-select multiple formControlName="assignedVehicle">
-                                    <mat-option *ngFor="let vehicles of VehicleDtArr"
-                                        [value]="vehicles.vehicleRegistrationNo" [disabled]="((vehicles.userId != editData?.id  && editFlag==true) || editFlag==false) && vehicles.userId != 0  ">{{vehicles.vehicleRegistrationNo}}
-                                    </mat-option>
-                                   
-                                </mat-select>
-                
-                            </mat-form-field>
-                            <mat-error *ngIf="userformSubmitted && user['assignedVehicle'].errors"></mat-error>
-                            <div class="d-flex">
-                                <span class="vehicle-chips" *ngFor="let vehicles of user['assignedVehicle'].value">
-                                    {{vehicles}}
-                                    <button type="button" class="btn-close" (click)="removeSelectedValue(vehicles)"
-                                        aria-label="Close"></button>
-                                </span>
-                             
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <mat-form-field appearance="standard" class="w-10">
-                                    <mat-label>Assign Role</mat-label>
-                                    <mat-select formControlName="assignedRole">
-                                        <mat-option *ngFor="let role of roleDtArr" [value]="role.subUserTypeId">
-                                            {{role.subUserTypeName}}</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                                <button type="button" class="btn btn-outline-primary btn-sm ms-2" data-bs-toggle="modal"
-                                    data-bs-target="#AddRoleModal">
-                                    Add Role
-                                </button>
-                                <mat-error *ngIf="userformSubmitted && user['assignedRole'].errors"></mat-error>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="form-container w-100">
-                        <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-light-main"(click)="modalClose()">Cancel</button>
-                            <button type="submit" class="btn btn-main">{{editFlag==true ? 'Update':'Submit'}}</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
-
-
-  </ng-template> -->
-<!-- <div class="modal fade modal-lg" id="AddUserModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
-    tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <form [formGroup]="userForm" (ngSubmit)="submitUser()">
-            <div class="modal-content">
-                <div class="modal-header bg-light-gradient text-dark">
-                    <p class="modal-title mb-0" id="exampleModalToggleLabel">Create User</p>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <mat-form-field appearance="standard" class="w-100">
-                                <mat-label>Full Name</mat-label>
-                                <input matInput placeholder="Enter Full Name" formControlName="fName"
-                                    (keypress)="validationService.alphabetsWithSpaces($event)">
-                            </mat-form-field>
-                            <mat-error *ngIf="userformSubmitted && user['fName'].errors">
-                            </mat-error>
-                        </div>
-                        <div class="col-sm-6">
-                            <mat-form-field appearance="standard" class="w-100">
-                                <mat-label>Mobile Number</mat-label>
-                                <input matInput placeholder="Enter Mobile Number" formControlName="mobileNumber"
-                                    (keypress)="validationService.onlyDigits($event)">
-                            </mat-form-field>
-                            <mat-error *ngIf="userformSubmitted && user['mobileNumber'].errors">
-                                <span class="text-danger"
-                                    *ngIf="userformSubmitted && user['mobileNumber'].hasError('pattern')">Enter valid
-                                    mobile Number</span>
-                            </mat-error>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <mat-form-field appearance="standard" class="w-100">
-                                <mat-label>Assign Vehicle</mat-label>
-                                <mat-select multiple formControlName="assignedVehicle">
-                                    <mat-option *ngFor="let vehicles of VehicleDtArr"
-                                        [value]="vehicles.vehicleRegistrationNo">{{vehicles.vehicleRegistrationNo}}
-                                    </mat-option>
-                                </mat-select>
-                                <button mat-icon-button matSuffix mat-stroked-button>
-                                    {{user['assignedVehicle'].value? user['assignedVehicle'].value.length: 0}}
-                                </button>
-                            </mat-form-field>
-                            <mat-error *ngIf="userformSubmitted && user['assignedVehicle'].errors"></mat-error>
-                            <div class="d-flex">
-                                <span class="vehicle-chips" *ngFor="let vehicles of user['assignedVehicle'].value">
-                                    {{vehicles}}
-                                    <button type="button" class="btn-close" (click)="removeSelectedValue(vehicles)"
-                                        aria-label="Close"></button>
-                                </span>
-                                <span class="vehicle-chips">
-                                    MH12FT8523
-                                    <button type="button" class="btn-close" aria-label="Close"></button>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <mat-form-field appearance="standard" class="w-10">
-                                    <mat-label>Assign Role</mat-label>
-                                    <mat-select formControlName="assignedRole">
-                                        <mat-option *ngFor="let role of roleDtArr" [value]="role.subUserTypeId">
-                                            {{role.subUserTypeName}}</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                                <button class="btn btn-outline-primary btn-sm ms-2" data-bs-toggle="modal"
-                                    data-bs-target="#AddRoleModal">
-                                    Update Role
-                                </button>
-                                <mat-error *ngIf="userformSubmitted && user['assignedRole'].errors"></mat-error>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="form-container w-100">
-                        <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-light-main" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-main">Submit</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-</div> -->
-
-<!-- Modal for new role -->
-<ng-template #AddRoleModal let-modal>
-    <div class="modal-content">
-        <div class="modal-header bg-light-gradient text-dark">
-            <p class="modal-title mb-0" id="AddRoleModalLabel">Create User Role</p>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-            </button>
-        </div>
-        <div class="modal-body">
-            <div class="row justify-content-between">
-                <div class="col-sm-6">
-                    <mat-form-field appearance="standard" class="w-100">
-                        <mat-label>Role Name</mat-label>
-                        <input matInput placeholder="Enter Role Name">
-                    </mat-form-field>
-                </div>
-                <div class="col-sm-6">
-                    <mat-form-field appearance="standard" class="w-100">
-                        <mat-label>Assign Responsibilities</mat-label>
-                        <mat-select multiple>
-                            <!-- <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}
-                            </mat-option> -->
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <div class="form-container w-100">
-                <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-light-main" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-main">Submit</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</ng-template>
-<!-- <div class="modal fade" id="AddRoleModal" aria-hidden="true" aria-labelledby="AddRoleModalLabel" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-light-gradient text-dark">
-                <p class="modal-title mb-0" id="AddRoleModalLabel">Create User Role</p>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row justify-content-between">
-                    <div class="col-sm-12">
-                        <mat-form-field appearance="standard" class="w-100">
-                            <mat-label>Enter Role Name</mat-label>
-                            <input matInput placeholder="Enter Role Name">
-                        </mat-form-field>
-                    </div>
-                    <div class="col-sm-12">
-                        <mat-form-field appearance="standard" class="w-100">
-                            <mat-label>Toppings</mat-label>
-                            <mat-select multiple>
-                                <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <div class="form-container w-100">
-                    <div class="d-flex justify-content-between">
-                        <button type="button" class="btn btn-light-main" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-main">Submit</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->

@@ -459,6 +459,11 @@
                                             <tr mat-row *matRowDef="let row; columns: ['expandedDetail']"
                                                 class="example-detail-row"></tr>
                                         </table>
+                                        <div *ngIf="!vehicleNotificatinsData.length">
+                                            <div class="alert alert-danger text-center py-2">
+                                                No data found
+                                            </div>
+                                        </div>
 
                                     </div>
                                 </div>
