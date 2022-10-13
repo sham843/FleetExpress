@@ -86,7 +86,6 @@ export class ModalsComponent implements OnInit {
   }
   // --------------------------------------------------uploads-----------------------------------------------------------------
   profilePhoto(event: any) {
-
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
       reader.onload = (event: any) => {
