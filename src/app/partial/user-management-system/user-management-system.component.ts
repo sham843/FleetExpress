@@ -34,7 +34,7 @@ export class UserManagementSystemComponent implements OnInit {
   editFlag:boolean=false
   totalUserTableData: number=0;
   searchContent = new FormControl();
-  highlightRowindex !:number;
+  highlightRowindex !:number|string;
   pageNumber: number = 1;
   pageSize: number = 10;
   constructor(private apiCall:ApiCallService,
@@ -58,12 +58,8 @@ export class UserManagementSystemComponent implements OnInit {
   onPagintion(pageNo: any) {
     this.pageNumber = pageNo;
     this.selectedTableData=[];
-    this.selectAll=false;
     this.getUserTableData();
     this.getRoleTableData();
-  }
-  clickedRow(index:any){
-    this.highlightRowindex=index;
   }
   getUserTableData(){
     this.totalUserTableData=0;
@@ -233,6 +229,8 @@ export class UserManagementSystemComponent implements OnInit {
   }
 
   addUpdateDialog(status :string, selectedObj?:any) {
+    status=='user'?(this.selectAll || this.selectedTableData.length ? (this.uncheckAllUser(), this.selectedTableData = []):''):this.selectAllRoles || this.selectedRoleTableData.length ? (this.uncheckAllUser(), this.roleTableData = []):'';
+    this.highlightRowindex = selectedObj?.id ;
     let obj: any = ConfigService.dialogObj;
       obj['cardTitle'] = status=='user' ? (!selectedObj?'Create User':'Update User') : (!selectedObj?'Create Role':'Update Role');
       obj['seletedTab'] = status;
@@ -246,8 +244,22 @@ export class UserManagementSystemComponent implements OnInit {
     })
 
     dialog.afterClosed().subscribe(res => {
-      res == 'Yes'? this.getUserTableData():'' ;   
-     })
+      res == 'Yes'? this.getUserTableData():'' ; 
+      this.highlightRowindex='';
+     }) 
+     
+  }
+  uncheckAllUser(){
+    this.selectAll = false;
+    this.userTableData.map((ele:any)=>{
+      ele.checked = false
+    })
+  }
+  uncheckAllRole(){
+    this.selectAllRoles = false;
+    this.roleTableData.map((ele:any)=>{
+      ele.checked = false
+    })
   }
 
   ngOnDestroy() {

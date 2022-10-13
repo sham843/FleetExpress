@@ -82,7 +82,7 @@
         </div>
     </div>
 </div>
-<div class="form-container w-100">
+<div class="form-container w-100" *ngIf="this.dialogData['flag']=='shareLocation'" >
     <div class="d-flex justify-content-between">
         <button type="button" class="btn btn-light-main" type="button" mat-dialog-close (click)="onNoClick('No')" >Close</button>
         <button type="button" class="btn btn-main" cdkFocusInitial (click)="onNoClick('Yes')"type="submit">Share Location</button>

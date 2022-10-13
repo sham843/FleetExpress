@@ -67,7 +67,7 @@
                                                 </div>
                                                 <div class="col-sm-8">
                                                     <div class="input-group">
-                                                        <input type="text" class="form-control" placeholder="Search" [formControl]="searchContent">
+                                                        <input type="text" class="form-control" placeholder="Search"  [maxlength]="15" [formControl]="searchContent">
                                                         <div class="input-group-text" *ngIf="!searchContent.value"><i class="fa-solid fa-magnifying-glass"></i></div>
                                                         <div class="input-group-text" *ngIf="searchContent.value"><i class="fa fa-times" (click)="searchContent.reset()"></i></div>
                                                     </div>
@@ -101,9 +101,9 @@
 
                                             </tr>
                                         </thead>
-                                        <tbody *ngIf="showTab=='users'" >
+                                        <tbody *ngIf="showTab=='users'" >   
                                             <tr *ngFor="let user of userTableData| paginate: {itemsPerPage: pageSize, 
-                                                currentPage: pageNumber, totalItems:totalUserTableData};; let i=index " (click)="clickedRow(i)" [ngClass]="{'highLightRow':i==highlightRowindex}">
+                                                currentPage: pageNumber, totalItems:totalUserTableData};; let i=index " [ngClass]="{'highLightRow':user?.id==highlightRowindex}">
                                                 <td>{{((pageNumber + 1) * 10 + i + 1)-20}}</td>
                                                 <td>{{user.name}}</td>
                                                 <td><a href="tel:{{user.mobileNo1}}" style="text-decoration: none;">{{user.mobileNo1}}</a></td>
@@ -144,7 +144,8 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <div *ngIf="userTableData.length==0 || roleTableData.length==0">
+                                    
+                                    <div *ngIf="(userTableData.length==0 && showTab=='users')|| roleTableData.length==0 && showTab=='role'">
                                         <div class="alert alert-danger text-center py-2">
                                             No data found
                                         </div>
