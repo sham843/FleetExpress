@@ -21,7 +21,8 @@ export class ModalsComponent implements OnInit {
   remark = new FormControl('');
   driverRegForm!: FormGroup;
   maxDate = new Date();
-  profilePhotoupd: string | any = 'assets/images/user.jpg';
+  driverProfile: string | any = 'assets/images/user.jpg';
+  profilePhotoupd!: string;
   licenceDoc!: string;
   panDoc!: string;
   aadharDoc!: string;
@@ -31,9 +32,9 @@ export class ModalsComponent implements OnInit {
   aadharUpdFlag: boolean = false;
   licenceUpdFlag: boolean = false;
   buttonFlag: boolean = true;
-  addressFlag:boolean=false;
-  cardTitle!:string;
-  @ViewChild('closeModel') closeModel: any;
+  addressFlag: boolean = false;
+  cardTitle!: string;
+  @ViewChild('profileUpload') profileUpload: any;
   @ViewChild('panUpload') panUpload: any;
   @ViewChild('aadharUpload') aadharUpload: any;
   @ViewChild('licenceUpload') licenceUpload: any;
@@ -53,25 +54,21 @@ export class ModalsComponent implements OnInit {
     private commonMethods: CommonMethodsService) { }
 
   ngOnInit(): void {
-    this.dialogData = this.data ?this.data:'';
-  this.dialogData!=0? this.cardTitle='Edit Driver' :this.cardTitle='Add Driver';
+    this.dialogData = this.data ? this.data : '';
+    this.dialogData != 0 ? this.cardTitle = 'Edit Driver' : this.cardTitle = 'Add Driver';
     this.getFormControl();
   }
   get f() { return this.driverRegForm.controls };
   // --------------------------------------------------form controls------------------------------------------------------------------
   getFormControl() {
     this.driverRegForm = this.fb.group({
-      profilePhoto: [''],
       mobileNo: [this.dialogData ? this.dialogData?.mobileNo : '', Validators.compose([Validators.required, Validators.pattern('^[6-9][0-9]{9}$'), Validators.maxLength(10)])],
       firstName: [this.dialogData ? this.dialogData?.name.split(' ').shift() : '', Validators.compose([Validators.required, Validators.maxLength(15), Validators.pattern('[a-zA-Z][a-zA-Z ]+')])],
       lastName: [this.dialogData ? this.dialogData?.name.split(' ').pop() : '', Validators.compose([Validators.required, Validators.maxLength(15), Validators.pattern('[a-zA-Z][a-zA-Z ]+')])],
       dob: [this.dialogData ? new Date(this.dialogData.dob) : '', Validators.required],
       licenceNumber: [this.dialogData ? this.dialogData?.licenceNumber : '', Validators.compose([Validators.required, Validators.pattern('^[A-Z]{2}[0-9]{13}$'), Validators.maxLength(20), Validators.minLength(15)])],
-      licenceDoc: ['', Validators.required],
       aadharNumber: [this.dialogData ? this.dialogData?.aadharNumber : '', Validators.compose([Validators.required, Validators.pattern('^[0-9]{12}$'), Validators.maxLength(12), Validators.minLength(12)])],
-      aadharCardDoc: ['', Validators.required],
-      panNumber: [this.dialogData ? this.dialogData?.panNumber : '', Validators.compose([Validators.required, Validators.pattern('[A-Z]{3}[ABCFGHLJPTF]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}'), Validators.maxLength(10)])],
-      panCardDoc: ['', Validators.required],
+      panNumber: [this.dialogData ? this.dialogData?.panNumber : '', Validators.compose([Validators.required, Validators.pattern('[A-Z]{3}[ACHPTF]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}'), Validators.maxLength(10)])],
       presentAddress: [this.dialogData ? this.dialogData?.presentAddress : '', Validators.compose([Validators.required, Validators.maxLength(150)])],
       permanentAddress: [this.dialogData ? this.dialogData?.permanentAddress : '', Validators.compose([Validators.required, Validators.maxLength(150)])],
       flag: [this.dialogData ? 'u' : 'i'],
@@ -82,14 +79,21 @@ export class ModalsComponent implements OnInit {
       this.licenceDoc = this.dialogData?.licenceDoc;
       this.panDoc = this.dialogData?.panCardDoc;
       this.aadharDoc = this.dialogData?.aadharCardDoc;
-      this.profilePhotoupd = this.dialogData?.profilePhoto;
-    this.dialogData.presentAddress == this.dialogData.permanentAddress?this.addressFlag=true:this.addressFlag=false;
+      this.driverProfile =this.dialogData?.profilePhoto;
+      this.profilePhotoupd = this.dialogData?.profilePhoto?this.dialogData?.profilePhoto:this.driverProfile='assets/images/user.jpg';
+      this.dialogData.presentAddress == this.dialogData.permanentAddress ? this.addressFlag = true : this.addressFlag = false;
     }
-    
   }
-
-  //  --------------------------------------------------uploads-----------------------------------------------------------------
+  // --------------------------------------------------uploads-----------------------------------------------------------------
   profilePhoto(event: any) {
+
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+      reader.onload = (event: any) => {
+        this.driverProfile = event.target.result;
+      }
+      reader.readAsDataURL(event.target.files[0]);
+    }
     let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'driverProfile', "png,jpg,jpeg");
     documentUrl.subscribe({
       next: (ele: any) => {
@@ -117,29 +121,31 @@ export class ModalsComponent implements OnInit {
       })
   }
   clearDoc(flag?: any) {
-    flag == 'pan' ? (this.panUpload.nativeElement.value = null, this.panDoc = '') :
+    flag == 'profile' ? (this.profileUpload.nativeElement.value = '', this.profilePhotoupd = '',this.driverProfile='') :
+    flag == 'pan' ? (this.panUpload.nativeElement.value = '', this.panDoc = '') :
       flag == 'aadhar' ? (this.aadharUpload.nativeElement.value = '', this.aadharDoc = '') :
         (this.licenceUpload.nativeElement.value = '', this.licenceDoc = '');
+        this.driverProfile='assets/images/user.jpg';
   }
 
   checkDocumentUpd(flag: any) {
     if (flag == 'licence') {
-      if (this.driverRegForm.value.licenceDoc == '') {
+      if (this.licenceDoc == '') {
         this.commonMethods.snackBar("Please upload Driving licence", 1);
       }
     }
     else if (flag == 'aadhar') {
-      if (this.driverRegForm.value.aadharCardDoc == '') {
+      if (this.aadharDoc == '') {
         this.commonMethods.snackBar("Please upload Aadhar card", 1);
       }
     }
     else if (flag == 'pan') {
-      if (this.driverRegForm.value.panCardDoc == '') {
+      if (this.panDoc == '') {
         this.commonMethods.snackBar("Please upload Pan card", 1);
       }
     }
   }
-  
+
   // ----------------------------------------------address same or not--------------------------------------------------
   checkArress(event: any) {
     if (event.checked) {
@@ -151,28 +157,38 @@ export class ModalsComponent implements OnInit {
   }
   //  ------------------------------------------------------add driver-----------------------------------------------------------------
   onSubmit(formDirective: any) {
-    let formData = this.driverRegForm.value;
-    let licenceExpireDt=formData.licenceExpiryDate
-    formData.id = this.dialogData ? this.dialogData?.driverId : this.editId;
-    formData.middleName = '';
-    formData.licenceExpiryDate =licenceExpireDt.toISOString();
-    formData.dob = this.datepipe.transform(formData.dob, 'yyyy/MM/dd');
-    formData.createdBy = this.webStorage.getUserId();
-    formData.createdDate = this.date.toISOString();
-    formData.modifiedBy = 0;
-    formData.modifiedDate = this.date.toISOString();
-    formData.name = "";
-    formData.panCardDoc = this.panDoc;
-    formData.aadharCardDoc = this.aadharDoc || '';
-    formData.licenceDoc = this.licenceDoc || '';
-    formData.profilePhoto = this.profilePhotoupd != 'assets/images/Driver-profile.svg' ? this.profilePhotoupd : '';
+    if (this.driverRegForm.invalid) {
+      return;
+    }
+    else if(!this.licenceDoc || !this.aadharDoc || !this.panDoc){
+      this.licenceDoc == '' ? (this.commonMethods.snackBar("Please upload Driving licence", 1), this.driverRegForm.invalid) :
+      this.aadharDoc == '' ? this.commonMethods.snackBar("Please upload Aadhar card", 1) :
+      this.panDoc == '' ? this.commonMethods.snackBar("Please upload Pan card", 1) : '';
+    }
+    else {
+      let formData = this.driverRegForm.value;
+      let licenceExpireDt = formData.licenceExpiryDate
+      formData.id = this.dialogData ? this.dialogData?.driverId : this.editId;
+      formData.middleName = '';
+      formData.licenceExpiryDate = licenceExpireDt.toISOString();
+      formData.dob = this.datepipe.transform(formData.dob, 'yyyy/MM/dd');
+      formData.createdBy = this.webStorage.getUserId();
+      formData.createdDate = this.date.toISOString();
+      formData.modifiedBy = 0;
+      formData.modifiedDate = this.date.toISOString();
+      formData.name = "";
+      formData.panCardDoc = this.panDoc;
+      formData.aadharCardDoc = this.aadharDoc || '';
+      formData.licenceDoc = this.licenceDoc || '';
+      formData.profilePhoto = this.profilePhotoupd != 'assets/images/user.jpg' ? this.profilePhotoupd : '';
       this.spinner.show();
+      console.log("formData", formData)
       this.apiCall.setHttp('post', 'driver/save-update-deriver-details', true, formData, false, 'fleetExpressBaseUrl');
       this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
           this.spinner.hide();
           // this.closeModel.nativeElement.click();
-          this.commonMethods.snackBar(response.statusMessage, 1);
+          this.commonMethods.snackBar(response.statusMessage, 0);
           formDirective.resetForm();
           this.dialogRef.close('add');
         }
@@ -185,6 +201,7 @@ export class ModalsComponent implements OnInit {
           this.error.handelError(error.status);
         })
       this.spinner.hide();
+    }
   }
 
   onNoClick(flag: any): void {
