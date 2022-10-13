@@ -202,6 +202,57 @@ export class SharedService {
     sessionStorage.clear();
     this.commonMethods.routerLinkRedirect('login');
   }
+
+  getAddressBylatLong(pageNo: any, data: any, pageSize:any): Observable<any> { //pagination 
+    this.spinner.show();
+    let counter;
+    let lastIndex: any;
+    if (pageNo == 1) {
+      counter = 0
+      lastIndex = Number(counter) + pageSize;
+    }
+    else {
+      counter = Number(pageNo + "0") - pageSize;
+      lastIndex = pageNo + "0";
+    }
+    let getData: any = [];
+    let sliceArray = data.slice(Number(counter), Number(lastIndex));
+    sliceArray.map(async (x: any, i: any) => { //get address by lat & log
+      const addressByLatLong = await this.getAddress(x, i);
+      getData.push(addressByLatLong);
+    });
+    setTimeout(() => { this.spinner.hide(); }, 2000, true);
+    return getData;
+  }
+
+  getAddress(cr: any, i: any) { // get address by lat long
+    return new Promise((resolve) => {  //  return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        let geocoder: any = new google.maps.Geocoder;
+        var latlng = { lat: parseFloat(cr.latitude), lng: parseFloat(cr.longitude) };
+        geocoder === undefined && (geocoder = new google.maps.Geocoder())
+        geocoder.geocode({ 'location': latlng }, (results: any, status: any) => {
+          let tempObj: any = new Object();
+          tempObj = { ...cr }
+          Object.keys(cr).map(function (p) { tempObj[p] = cr[p]; });
+          if (status === 'OK') {
+            if (results[0]) {
+              var address = results.length === 0 ? "Unknown location" : results[0].formatted_address;
+              tempObj.address = address;
+              resolve(tempObj);
+            } else {
+              tempObj.address = "Unknown location";
+              resolve(tempObj);
+            }
+          } else {
+            tempObj.address = "Unknown location";
+            resolve(tempObj);
+          }
+        })
+      }, 200 * i)
+    });
+  }
+
   ngOnDestroy() {
     if(this.subscription){
       this.subscription.unsubscribe();

@@ -1,3 +1,4 @@
+import { MapsAPILoader } from '@agm/core';
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -8,6 +9,7 @@ import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { ExcelPdfDownloadedService } from 'src/app/services/excel-pdf-downloaded.service';
 import { MasterService } from 'src/app/services/master.service';
+import { SharedService } from 'src/app/services/shared.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
 
 interface timePeriodArray {
@@ -36,6 +38,9 @@ export class ReportsComponent implements OnInit {
   maxTodayDate !: Date |any;
   tabArrayData=new Array() ;
   selectedIndex !: number;
+  geoCoders:any;
+  pageNo :number=1;
+  pageSize :number=10;
   get f() { return this.reportForm.controls };
   constructor(private fb: FormBuilder, 
     private apiCall: ApiCallService,
@@ -46,9 +51,14 @@ export class ReportsComponent implements OnInit {
      private master:MasterService,
      private error:ErrorsService,
      public config:ConfigService,
+     private mapsAPILoader:MapsAPILoader,
+     private sharedService:SharedService
     ) { }
 
   ngOnInit(): void {
+    this.mapsAPILoader.load().then(() => {
+      this.geoCoders = new google.maps.Geocoder;
+    });
     this.getStoppageData();
     this.selectedTab('stoppage');
     this.getVehicleData();
@@ -189,10 +199,11 @@ export class ReportsComponent implements OnInit {
     const isVenicleNumber = (this.selectedTablabel == 'Summary Report' || this.selectedTablabel == 'Trip Report') ? true : false
     this.reportForm && reportData.fromDate && (str += "fromDate=" + new Date(reportData.fromDate).toISOString())
     this.reportForm && reportData.toDate && (str += "&toDate=" + new Date(reportData.toDate).toISOString())
-    this.reportForm && reportData.VehicleNumber && (str += (isVenicleNumber ? "&VehicleNumber=" : "&VehicleNo=") +
-      'MH12AC1111'//  reportData.VehicleNumber
-    )
+    this.reportForm && reportData.VehicleNumber && (str += (isVenicleNumber ? "&VehicleNumber=" : "&VehicleNo=") +reportData.VehicleNumber)
+
+     // 'MH12AC1111')
     return str;
+    //  reportData.VehicleNumber
   }
   SearchReport() {
     if (this.reportForm.invalid) {
@@ -206,11 +217,12 @@ export class ReportsComponent implements OnInit {
         case "Overspeed Report": url = 'reports/get-vehicle-details-for-overspeed'; break;
         case "Speed Range Report": url = 'reports/get-overspeed-report-speedrange'; break;
       }
-     
-      this.apiCall.setHttp('get', url + this.getQueryString() + '&UserId='+this.webStorage.getUserId()+'&VehicleOwnerId='+this.webStorage.getVehicleOwnerId(), true, false, false, 'fleetExpressBaseUrl');
+      this.apiCall.setHttp('get', url + this.getQueryString() + '&UserId='+this.webStorage.getUserId()+'&VehicleOwnerId='+this.webStorage.getVehicleOwnerId()+'&pageno='+this.pageNo+'&rowsperpage='+this.pageSize, true, false, false, 'fleetExpressBaseUrl');
       this.apiCall.getHttp().subscribe((responseData: any) => {
         if (responseData.statusCode === "200" || responseData.length > 0) {
-          this.reportResponseData = responseData.responseData;
+          let resp:any = this.sharedService.getAddressBylatLong(1, responseData.responseData.data, 10);
+          this.reportResponseData = resp;
+          console.log(this.reportResponseData)
         }
         else {
         this.commonMethods.snackBar(responseData.statusMessage,0);
