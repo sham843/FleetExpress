@@ -49,10 +49,12 @@
                 <div class="rounded" *ngFor="let item of allVehiclelData; let i=index">
                     <!-- *ngIf="item?.gpsStatus=='Offline'; else templateA" -->
                     <ng-container>
-                        <a class="d-flex vehicle p-3 bg-opacity-10 bg-danger mb-1 rounded" placement="top"
-                            routerLinkActive="active" [class.active]="selectedIndex === i">
+                        <a class="d-flex vehicle p-3 bg-opacity-10 mb-1 rounded bg-opacity-10" placement="top"
+                            routerLinkActive="active" [class.active]="selectedIndex === i" (click)="selectedIndex = i" [ngClass]="{'bg-danger':item?.gpsStatus=='Offline','bg-success':item?.gpsStatus=='Running','bg-warning':item?.gpsStatus=='Stopped','bg-primary':item?.gpsStatus=='Idle'}">
+                            
+
                             <div class="flex-shrink-0">
-                                <div class="bg-danger bg-opacity-25 text-danger rounded-circle vehicle-icon">
+                                <div class="bg-opacity-25  rounded-circle vehicle-icon" [ngClass]="{'text-danger':item?.gpsStatus=='Offline','text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
                                     <i class="fa-solid fa-car"></i>
                                 </div>
                             </div>
@@ -62,15 +64,15 @@
                                         placement="end">
                                         <p class="vehicle-no">{{item?.vehicleNo}} </p>
                                     </a>
-                                    <a class="text-danger" *ngIf="item?.gpsStatus!='Offline'" data-bs-toggle="offcanvas"
+                                    <a  *ngIf="item?.gpsStatus!='Offline'" (click)="vehicleNo = item?.vehicleNo" data-bs-toggle="offcanvas"
                                         data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom"
-                                        [ngClass]="{'text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
+                                        [ngClass]="{'text-danger':item?.gpsStatus=='Offline','text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
                                         <p class="vehicle-no">{{item?.vehicleNo}} </p>
                                     </a>
                                     <span class="text-dark veh-status">({{'ticket raised'}})</span>
                                     <a class="text-primary veh-status" data-bs-toggle="modal"
                                         data-bs-target="#MaintenanceviewModal"> View Details</a>
-                                    <span class="text-danger veh-status">
+                                    <span class="veh-status"  [ngClass]="{'text-danger':item?.gpsStatus=='Offline','text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
                                         <i class="fa-solid fa-circle me-2"></i>{{item?.gpsStatus}}
                                     </span>
                                 </div>
@@ -166,7 +168,8 @@
                     </div>
                 </div>
                 <div class="gmap_canvas">
-                    <agm-map [latitude]="23.7541318" [zoom]="6" [longitude]="80.3681253" class="rounded"></agm-map>
+                    <!-- [restriction]="countryRestriction"  -->
+                    <agm-map [latitude]="lat" [zoom]="5" [longitude]="long" class="rounded"></agm-map>
                 </div>
             </div>
             <div class="offcanvas offcanvas-bottom position-absolute shadow-lg border-0" data-bs-scroll="true"
@@ -179,13 +182,13 @@
                                 data-bs-target="#Itinerary-tab-pane" type="button" role="tab"
                                 aria-controls="Itinerary-tab-pane" aria-selected="true">Itinerary</button>
                         </li>
-                        <li class="nav-item" role="presentation">
+                        <li class="nav-item" role="presentation" (click)="getVehicleDetails()">
                             <button class="nav-link" id="Driver-information-tab" data-bs-toggle="tab"
                                 data-bs-target="#Driver-information-tab-pane" type="button" role="tab"
                                 aria-controls="Driver-information-tab-pane" aria-selected="false">Driver
                                 information</button>
                         </li>
-                        <li class="nav-item" role="presentation">
+                        <li class="nav-item" role="presentation"  (click)="getDriverDetails()">
                             <button class="nav-link" id="Vehicle-Details-tab" data-bs-toggle="tab"
                                 data-bs-target="#Vehicle-Details-tab-pane" type="button" role="tab"
                                 aria-controls="Vehicle-Details-tab-pane" aria-selected="false">Vehicle Details</button>
