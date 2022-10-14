@@ -63,6 +63,9 @@ export class LoginComponent implements OnInit {
           sessionStorage.setItem('loggedIn', 'true');
           localStorage.setItem('loggedInData', JSON.stringify(res));
           this.commonMethods.routerLinkRedirect('../dashboard');
+        }else{
+          this.spinner.hide();
+          this.commonMethods.snackBar(res.statusMessage,1);
         }
       },(error: any) => {
         this.error.handelError(error.status);
