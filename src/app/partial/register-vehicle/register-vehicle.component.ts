@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormControl } from '@angular/forms';
+// import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { debounceTime, distinctUntilChanged, filter, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged,Subscription } from 'rxjs';
 import { ConfirmationComponent } from 'src/app/dialogs/confirmation/confirmation.component';
 import { ModalsComponent } from 'src/app/dialogs/driver_modals/modals.component';
 import { ApiCallService } from 'src/app/services/api-call.service';
@@ -18,7 +19,7 @@ import { VehicleModalComponent } from './vehicle-modal/vehicle-modal.component';
   styleUrls: ['./register-vehicle.component.scss']
 })
 export class RegisterVehicleComponent implements OnInit {
-  searchVehicleForm!: FormGroup;
+  vehicleNo=new FormControl();
   vehicleData = new Array();
   paginationNo: number = 1;
   pageSize: number = 10;
@@ -30,9 +31,9 @@ export class RegisterVehicleComponent implements OnInit {
   driverData = new Array();
   selectAll!: boolean;
   highLightRow!:string;
+  vehicleDetails:any;
   checkedVehicle = new Array();
   constructor(public validation: ValidationService,
-    private fb: FormBuilder,
     private apiCall: ApiCallService,
     private spinner: NgxSpinnerService,
     private error: ErrorsService,
@@ -42,13 +43,11 @@ export class RegisterVehicleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getFormControl();
     this.getVehiclesData();
   }
   ngAfterViewInit() {
-    let formValue = this.searchVehicleForm.valueChanges;
+    let formValue = this.vehicleNo.valueChanges;
     formValue.pipe(
-      filter(() => this.searchVehicleForm.valid),
       debounceTime(1000),
       distinctUntilChanged())
       .subscribe(() => {
@@ -56,22 +55,18 @@ export class RegisterVehicleComponent implements OnInit {
         this.getVehiclesData();
       })
   }
-  // ----------------------------------------------------------------form-controls----------------------------------------------------------
-  getFormControl() {
-    this.searchVehicleForm = this.fb.group({
-      vehicleNo: ['']
-    })
-  }
+ 
   // --------------------------------------------get vehicle data--------------------------------------------------------------------
   getVehiclesData(flag?: any) {
     this.checkedVehicle = [];
     this.spinner.show();
-    let searchText = this.searchVehicleForm.value.vehicleNo || '';
+    let searchText = this.vehicleNo.value || '';
     this.apiCall.setHttp('get', 'vehicle/get-vehiclelists?searchtext=' + searchText + '&nopage=' + this.paginationNo, true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.vehicleData = response.responseData.responseData1;
+        !this.vehicleNo.value?this.vehicleDetails=response.responseData.responseData1:'';
         this.vehicleData.forEach((ele: any) => {
           ele.isBlock == 1 ? ele['isBlockFlag'] = true : ele['isBlockFlag'] = false;
         });
@@ -218,7 +213,7 @@ export class RegisterVehicleComponent implements OnInit {
       })
   }
   clearSearchData() {
-    this.searchVehicleForm.controls['vehicleNo'].setValue('');
+    this.vehicleNo.setValue('');
     this.getVehiclesData();
   }
   vehicleModal(label: string, vehicleData?: any){

@@ -208,8 +208,9 @@ export class ReportsComponent implements OnInit {
   SearchReport() {
     if (this.reportForm.invalid) {
       return;
-    } else {
-      var url: any
+    } else { 
+      this.reportResponseData=[];
+      var url: any ;
       switch (this.selectedTablabel) {
         case "Summary Report": url = 'reports/get-summary-report'; break;
         case "Trip Report": url = 'reports/get-trip-report-web'; break;
@@ -221,8 +222,7 @@ export class ReportsComponent implements OnInit {
       this.apiCall.getHttp().subscribe((responseData: any) => {
         if (responseData.statusCode === "200" || responseData.length > 0) {
           let resp:any = this.sharedService.getAddressBylatLong(1, responseData.responseData.data, 10);
-          this.reportResponseData = resp;
-          console.log(this.reportResponseData)
+          this.reportResponseData=resp;
         }
         else {
         this.commonMethods.snackBar(responseData.statusMessage,0);

@@ -1,6 +1,7 @@
 import { Component,OnDestroy,OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { interval, map, takeWhile } from 'rxjs';
 import { Subscription } from 'rxjs/internal/Subscription';
 
 import { ApiCallService } from 'src/app/services/api-call.service';
@@ -68,7 +69,7 @@ export class ForgetPasswordComponent implements OnInit,OnDestroy{
 
   // -------------------------------------------OTP-----------------------------------------------------------
   sendOTP() {
-    this.countDown();
+     this.countDown();
     let mobileNom = this.sendOTPForm.value.mobileNo || this.mobileNum;
     if (this.sendOTPForm.invalid) {
       this.spinner.hide();
@@ -94,8 +95,20 @@ export class ForgetPasswordComponent implements OnInit,OnDestroy{
     }
   }
   // -----------------------------------------Timer------------------------------------------------------------------------
-  countDown() {
-    this.timeLeft = 60;
+  private maxValue = 10;
+  public timers:any;
+  public a:any;
+    // countDown$ 
+  
+  
+   countDown() {
+    this.timers= interval(1000).pipe(
+      map(value => this.maxValue - value),
+      takeWhile(x => x >= 0)
+    );
+    this.a=(this.timers.toString());
+   console.log(this.a);
+   /*  this.timeLeft = 10;
     this.pauseTimer();
     this.timerFlag = true;
     this.interval = setInterval(() => {
@@ -103,14 +116,14 @@ export class ForgetPasswordComponent implements OnInit,OnDestroy{
         this.timeLeft--;
         this.timer = this.timeLeft;
       } else {
-        this.timeLeft = 60;
-        // this.pauseTimer();
+        this.timeLeft = 10;
+  
         this.timerFlag = false;
       }
     }, 1000)
-  }
+  } 
   pauseTimer() {
-    clearInterval(this.interval);
+    clearInterval(this.interval); */
   }
 
   // -----------------------------------------------------verify OTp------------------------------------------------------------
