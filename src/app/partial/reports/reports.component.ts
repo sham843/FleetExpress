@@ -23,11 +23,11 @@ interface timePeriodArray {
 })
 export class ReportsComponent implements OnInit {
   reportForm!: FormGroup;
-  maxEndDate= new Date();
-  vehicleList=new Array();
+  maxEndDate = new Date();
+  vehicleList = new Array();
   showTimePeriod: boolean = true;
   selectedTablabel!: string;
-  reportResponseData=new Array();
+  reportResponseData = new Array();
   currentDate = moment().toISOString();
   timePeriodArray: timePeriodArray[] = [
     { value: '1', viewValue: 'Today' },
@@ -35,25 +35,25 @@ export class ReportsComponent implements OnInit {
     { value: '3', viewValue: 'Weekly' },
     { value: '4', viewValue: 'Custom' },
   ];
-  maxTodayDate !: Date |any;
-  tabArrayData=new Array() ;
+  maxTodayDate !: Date | any;
+  tabArrayData = new Array();
   selectedIndex !: number;
-  geoCoders:any;
-  pageNo :number=1;
-  pageSize :number=10;
+  geoCoders: any;
+  pageNo: number = 1;
+  pageSize: number = 10;
   get f() { return this.reportForm.controls };
-  constructor(private fb: FormBuilder, 
+  constructor(private fb: FormBuilder,
     private apiCall: ApiCallService,
     private excelService: ExcelPdfDownloadedService,
-     private datepipe: DatePipe,
-     private webStorage:WebStorageService,
-     private commonMethods:CommonMethodsService,
-     private master:MasterService,
-     private error:ErrorsService,
-     public config:ConfigService,
-     private mapsAPILoader:MapsAPILoader,
-     private sharedService:SharedService
-    ) { }
+    private datepipe: DatePipe,
+    private webStorage: WebStorageService,
+    private commonMethods: CommonMethodsService,
+    private master: MasterService,
+    private error: ErrorsService,
+    public config: ConfigService,
+    private mapsAPILoader: MapsAPILoader,
+    private sharedService: SharedService
+  ) { }
 
   ngOnInit(): void {
     this.mapsAPILoader.load().then(() => {
@@ -138,15 +138,15 @@ export class ReportsComponent implements OnInit {
   }
 
   getVehicleData() {
-    let vhlData=this.master.getVehicleListData();
+    let vhlData = this.master.getVehicleListData();
     vhlData.subscribe({
-      next:(response: any) => {
+      next: (response: any) => {
         this.vehicleList = response;
       }
     }),
-    (error: any) => {
-      this.error.handelError(error.status);
-    }
+      (error: any) => {
+        this.error.handelError(error.status);
+      }
   }
   selectTimePeriod(value: any) {
     switch (value) {
@@ -194,23 +194,23 @@ export class ReportsComponent implements OnInit {
     }
   }
   getQueryString() {
-   const reportData = this.reportForm.value
+    const reportData = this.reportForm.value
     let str = "?";
     const isVenicleNumber = (this.selectedTablabel == 'Summary Report' || this.selectedTablabel == 'Trip Report') ? true : false
     this.reportForm && reportData.fromDate && (str += "fromDate=" + new Date(reportData.fromDate).toISOString())
     this.reportForm && reportData.toDate && (str += "&toDate=" + new Date(reportData.toDate).toISOString())
-    this.reportForm && reportData.VehicleNumber && (str += (isVenicleNumber ? "&VehicleNumber=" : "&VehicleNo=") +reportData.VehicleNumber)
+    this.reportForm && reportData.VehicleNumber && (str += (isVenicleNumber ? "&VehicleNumber=" : "&VehicleNo=") + reportData.VehicleNumber)
 
-     // 'MH12AC1111')
+    // 'MH12AC1111')
     return str;
     //  reportData.VehicleNumber
   }
   SearchReport() {
     if (this.reportForm.invalid) {
       return;
-    } else { 
-      this.reportResponseData=[];
-      var url: any ;
+    } else {
+      this.reportResponseData = [];
+      var url: any;
       switch (this.selectedTablabel) {
         case "Summary Report": url = 'reports/get-summary-report'; break;
         case "Trip Report": url = 'reports/get-trip-report-web'; break;
@@ -218,19 +218,19 @@ export class ReportsComponent implements OnInit {
         case "Overspeed Report": url = 'reports/get-vehicle-details-for-overspeed'; break;
         case "Speed Range Report": url = 'reports/get-overspeed-report-speedrange'; break;
       }
-      this.apiCall.setHttp('get', url + this.getQueryString() + '&UserId='+this.webStorage.getUserId()+'&VehicleOwnerId='+this.webStorage.getVehicleOwnerId()+'&pageno='+this.pageNo+'&rowsperpage='+this.pageSize, true, false, false, 'fleetExpressBaseUrl');
+      this.apiCall.setHttp('get', url + this.getQueryString() + '&UserId=' + this.webStorage.getUserId() + '&VehicleOwnerId=' + this.webStorage.getVehicleOwnerId() + '&pageno=' + this.pageNo + '&rowsperpage=' + this.pageSize, true, false, false, 'fleetExpressBaseUrl');
       this.apiCall.getHttp().subscribe((responseData: any) => {
         if (responseData.statusCode === "200" || responseData.length > 0) {
-          let resp:any = this.sharedService.getAddressBylatLong(1, responseData.responseData.data, 10);
-          this.reportResponseData=resp;
+          let resp: any = this.sharedService.getAddressBylatLong(1, responseData.responseData.data, 10);
+          this.reportResponseData = resp;
         }
         else {
-        this.commonMethods.snackBar(responseData.statusMessage,0);
+          this.commonMethods.snackBar(responseData.statusMessage, 0);
         }
       },
-      (error:any)=>{
-        this.error.handelError(error.status)
-      })
+        (error: any) => {
+          this.error.handelError(error.status)
+        })
     }
   }
   onDownloadPDF() {
@@ -240,14 +240,14 @@ export class ReportsComponent implements OnInit {
       if (this.reportForm.value.VehicleNumber == ele.vehicleNo) {
         vehicleName = ele.vehTypeName;
       }
-      this.reportForm.value['vehicleName']=vehicleName;
+      this.reportForm.value['vehicleName'] = vehicleName;
     });
     let resData = this.reportResponseData.map((item: any) => Object.assign({}, item));
-      data = resData.map((x: any) => {
-        x.deviceDateTime = this.datepipe.transform(x.deviceDateTime, 'dd-MM-YYYY hh:mm a')
-        return x
-      });
-   
+    data = resData.map((x: any) => {
+      x.deviceDateTime = this.datepipe.transform(x.deviceDateTime, 'dd-MM-YYYY hh:mm a')
+      return x
+    });
+
     resData = this.reportResponseData;
     let formDataObj: any = this.reportForm.value;
     let pageName = this.selectedTablabel;
@@ -255,21 +255,27 @@ export class ReportsComponent implements OnInit {
     this.excelService.downLoadPdf(data, pageName, formDataObj);
   }
   onDownloadExcel() {
-    let vehicleName:any;
+    let vehicleName: any;
     this.vehicleList.find((ele: any) => {
       if (this.reportForm.value.VehicleNumber == ele.vehicleNo) {
         vehicleName = ele.vehTypeName;
       }
-      this.reportForm.value['vehicleName']=vehicleName;
+      this.reportForm.value['vehicleName'] = vehicleName;
     });
-    let data=this.reportForm.value;
+    let data: any;
+    let resData = this.reportResponseData.map((item: any) => Object.assign({}, item));
+    data = resData.map((x: any) => {
+      x.deviceDateTime = this.datepipe.transform(x.deviceDateTime, 'dd-MM-YYYY hh:mm a')
+      return x
+    });
+    let formdata = this.reportForm.value;
     let pageName = this.selectedTablabel;
-    this.excelService.exportAsExcelFile(data,pageName);
+    this.excelService.exportAsExcelFile(data, formdata, pageName);
   }
-
+ 
 
 
   showTableData() {
-   
+
   }
 }

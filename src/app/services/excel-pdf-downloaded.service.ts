@@ -14,27 +14,14 @@ export class ExcelPdfDownloadedService {
   key: any;
   headersArray: any;
   constructor(private datepipe: DatePipe) { }
-
+  private numToAlpha(_num: number) {
+    let alpha = '';
+    return alpha;
+  }
   downLoadPdf(data: any, pageName: any, responseData: any) {
-    let conMulArray: any;
-    conMulArray = data.map((o: any) => Object.keys(o).map(k => o[k]));
-
-    let doc: any = new jsPDF();
     let header;
-
-    doc.setFontSize(9);
-    doc.setTextColor(0, 0, 0);
-    doc.text(5, 10, "From : " + this.datepipe.transform(responseData.fromDate, 'dd/MM/YYYY hh:mm a'));
-    doc.text(47, 10, "To : " + this.datepipe.transform(responseData.toDate, 'dd/MM/YYYY hh:mm a'));
-    doc.setFontSize(18);
-    doc.text(92, 10, pageName);
-    doc.setFontSize(9);
-    doc.text(185, 10, "Date" + this.datepipe.transform(new Date, 'dd/MM/YYYY'));
-    doc.line(5, 14, 560, 15);
-    doc.text(5, 18, "Vehicle No." + responseData.VehicleNumber + "(" + responseData.vehicleName + ")");
-
     if (pageName == "Speed Range Report") {
-      header = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
+      header = ["Sr No.", " Date","Speed(Km/h)","Address"];
       this.key = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
     }
     else if (pageName == "Overspeed Report") {
@@ -50,13 +37,33 @@ export class ExcelPdfDownloadedService {
     } else {
       header = ["SrNo.", " Driver Name", "tripDurationInMins", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
     }
-    doc.autoTable(header, conMulArray, {
-      startY: 22,
+    let result: any = data.map((obj: any) => {
+      let filterObj: any = {};
+      for (let i: any = 0; i < this.key.length; i++) {
+        filterObj[this.key[i]] = obj[this.key[i]];
+      }
+      return filterObj;
+    });
+    let conMulArray: any;
+    conMulArray = result.map((o: any) => Object.keys(o).map(k => o[k]));
+    let doc: any = new jsPDF();
+    doc.setFontSize(20);
+    doc.text(80, 10, pageName);
+    doc.setFontSize(9);
+    doc.setTextColor(0, 0, 0);
+    doc.text(5, 20, "From : " + this.datepipe.transform(responseData.fromDate, 'dd/MM/YYYY hh:mm a'));
+    doc.text(47, 20, "To : " + this.datepipe.transform(responseData.toDate, 'dd/MM/YYYY hh:mm a'));
+    doc.text(185, 20, "Date :" + this.datepipe.transform(new Date, 'dd/MM/YYYY'));
+    doc.line(5, 24, 560, 24);
+    doc.text(5, 29, "Vehicle No. :" + responseData.VehicleNumber + "(" + responseData.vehicleName + ")");
+    doc.autoTable(
+      header, conMulArray, {
+      startY: 35,
       margin: { horizontal: 7 },
     });
     doc.save("pdf");
   }
-  exportAsExcelFile(formData: any, pageName: any) {
+  exportAsExcelFile(data: any, formData: any, pageName: any) {
     if (pageName == "Speed Range Report") {
       this.key = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
       this.headersArray = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
@@ -71,22 +78,22 @@ export class ExcelPdfDownloadedService {
       this.headersArray = ['', 'travelledDistance', 'speed', 'startDateTime', 'startLatLong', 'endDateTime', 'endLatLong'];
     } else {
       this.key = ["SrNo.", " Driver Name", "tripDurationInMins", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
-
     }
+
     let keyCenterNo = ""
-    if (this.key.length == 2) {
-      keyCenterNo = "B"
+    if (this.key.length == 4) {
+      keyCenterNo = "C"
     } else {
       keyCenterNo = String.fromCharCode(Math.ceil(this.key.length / 2) + 64)
     }
     const header = this.key;
-    /*  let result: any = ((obj: any) => {
-       let filterObj: any = {};
-       for (let i: any = 0; i < this.headersArray.length; i++) {
-         filterObj[this.headersArray[i]] = obj[this.headersArray[i]];
-       }
-       return filterObj;
-     }); */
+    let result: any = data.map((obj: any) => {
+      let filterObj: any = {};
+      for (let i: any = 0; i < this.headersArray.length; i++) {
+        filterObj[this.headersArray[i]] = obj[this.headersArray[i]];
+      }
+      return filterObj;
+    });
     // Create workbook and worksheet
     const workbook = new ExcelJS.Workbook();
     workbook.creator = 'Snippet Coder';
@@ -119,10 +126,8 @@ export class ExcelPdfDownloadedService {
     } else {
       worksheet.addRow([]);
     }
-
-
+    
     const headerRow = worksheet.addRow(header);
-
     headerRow.eachCell((cell: any, index: any) => {
       cell.fill = {
         type: 'pattern',
@@ -142,17 +147,40 @@ export class ExcelPdfDownloadedService {
       };
       cell.font = { size: 12, bold: true }
       worksheet.getColumn(index).width = header[index - 1].length < 20 ? 20 : header[index - 1].length;
-
+      worksheet.getColumn(1).width = 10;
+      worksheet.getColumn(3).width = 10;
+      worksheet.getColumn(4).width = 50;
     });
-    workbook.xlsx.writeBuffer().then((data: ArrayBuffer) => {
-      const blob = new Blob([data], { type: EXCEL_TYPE });
-      FileSaver.saveAs(blob, pageName + EXCEL_EXTENSION);
-    });
-  }
 
+    //Add Data Conditional Formating
+ result.forEach((element: any) => {
+      const eachRow: any = [];
+      this.headersArray.forEach((column: any) => {
+        eachRow.push(element[column]);
+      })
 
-  private numToAlpha(_num: number) {
-    let alpha = '';
-    return alpha;
+// if (element.isDeleted === 'Y') {
+      const deletedRow = worksheet.addRow(eachRow);
+      deletedRow.eachCell((cell: any) => {
+        cell.font = {
+          align: 'left'
+        };
+        cell.alignment = {
+          vertical: 'middle', horizontal: 'right'
+        };
+        cell.border = {
+          top: { style: 'thin' },
+          left: { tyle: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
+        };
+      }); 
+    })
+
+      workbook.xlsx.writeBuffer().then((data: ArrayBuffer) => {
+        const blob = new Blob([data], { type: EXCEL_TYPE });
+        FileSaver.saveAs(blob, pageName + EXCEL_EXTENSION);
+      });
+    
   }
 }
