@@ -65,8 +65,8 @@
                                         placement="end">
                                         <p class="vehicle-no">{{item?.vehicleNo}} </p>
                                     </a>
-                                    <a *ngIf="item?.gpsStatus!='Offline'" (click)="vehicleNo = item?.vehicleNo"
-                                        (click)="openvechileTrackingDetailsSheet()"
+                                    <a *ngIf="item?.gpsStatus!='Offline'" (click)="vehicleNo = item?.vehicleNo" 
+                                     data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasExample"
                                         [ngClass]="{'text-danger':item?.gpsStatus=='Offline','text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
                                         <p class="vehicle-no">{{item?.vehicleNo}} </p>
                                     </a>
@@ -171,10 +171,11 @@
                 </div>
                 <div class="gmap_canvas">
                     <!-- [restriction]="countryRestriction"  -->
-                    <agm-map [latitude]="lat" [zoom]="5" [longitude]="long" class="rounded"></agm-map>
+                    <agm-map [latitude]="lat" [zoom]="12" [longitude]="long" class="rounded"  (mapReady)="onMapReady($event)" ></agm-map>
+                    
                 </div>
             </div>
-            <!-- <div class="offcanvas offcanvas-bottom position-absolute shadow-lg border-0" data-bs-scroll="true"
+            <div class="offcanvas offcanvas-bottom position-absolute shadow-lg border-0" data-bs-scroll="true"
                 data-bs-backdrop="false" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 <div class="offcanvas-body p-1">
@@ -184,13 +185,13 @@
                                 data-bs-target="#Itinerary-tab-pane" type="button" role="tab"
                                 aria-controls="Itinerary-tab-pane" aria-selected="true">Itinerary</button>
                         </li>
-                        <li class="nav-item" role="presentation" (click)="getVehicleDetails()">
+                        <li class="nav-item" role="presentation">
                             <button class="nav-link" id="Driver-information-tab" data-bs-toggle="tab"
                                 data-bs-target="#Driver-information-tab-pane" type="button" role="tab"
                                 aria-controls="Driver-information-tab-pane" aria-selected="false">Driver
                                 information</button>
                         </li>
-                        <li class="nav-item" role="presentation"  (click)="getDriverDetails()">
+                        <li class="nav-item" role="presentation">
                             <button class="nav-link" id="Vehicle-Details-tab" data-bs-toggle="tab"
                                 data-bs-target="#Vehicle-Details-tab-pane" type="button" role="tab"
                                 aria-controls="Vehicle-Details-tab-pane" aria-selected="false">Vehicle Details</button>
@@ -254,11 +255,10 @@
                                                         <span>REC</span>
                                                     </div>
                                                 </button>
-                                                <button class="btn" type="button"><i
+                                                <button class="btn" type="button" (click)="reset()"><i
                                                         class="fa-solid fa-rotate"></i></button>
-                                                <button class="btn" type="button" data-bs-toggle="modal"
-                                                    data-bs-target="#PlayRouteModal"><i
-                                                        class="fa-solid fa-play"></i></button>
+                                                <button class="btn" type="button" *ngIf="!playPauseBtnFlag" (click)="play();playPauseBtnFlag=true"><i class="fa-solid fa-play"></i></button>
+                                                <button class="btn" type="button" *ngIf="playPauseBtnFlag" (click)="pause();playPauseBtnFlag=false"><i class="fa-solid fa-pause"></i></button>
                                                 <button class="btn" type="button" [matMenuTriggerFor]="menu"><i
                                                         class="fa-solid fa-download"></i></button>
                                                 <mat-menu #menu="matMenu">
@@ -552,7 +552,7 @@
                         </div>
                     </div>
                 </div>
-            </div> -->
+            </div> 
         </div>
     </div>
 </div>
