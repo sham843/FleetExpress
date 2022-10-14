@@ -1,6 +1,6 @@
 //import { MapsAPILoader } from '@agm/core';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, AfterViewInit } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
@@ -19,7 +19,7 @@ declare var google: any;
   templateUrl: './tracking.component.html',
   styleUrls: ['./tracking.component.scss']
 })
-export class TrackingComponent implements OnInit {
+export class TrackingComponent implements OnInit, AfterViewInit {
   searchContent = new FormControl('');
   allVehiclelData = new Array();
   subscription !: Subscription;
@@ -40,15 +40,17 @@ export class TrackingComponent implements OnInit {
   startMarker!: string
   endMarker!: string;
   vehicleNo!: string;
-
-
+  playPauseBtnFlag: boolean = false;
+  recBtnFlag: boolean = false;
   timePeriodArray = [
     { value: '1', viewValue: 'Today' },
     { value: '2', viewValue: '24hr' },
     { value: '3', viewValue: 'Weekly' },
     { value: '4', viewValue: 'From-To' },
   ];
-
+  videoUrl!:string;
+  videoBtnClickFlag:boolean = false;
+  
   map: any;
   line: any;
   trackingData = new Array();
@@ -68,9 +70,9 @@ export class TrackingComponent implements OnInit {
     strictBounds: true
   };
 
-
   constructor(private apiCall: ApiCallService, private webStorage: WebStorageService, private mapsAPILoader: MapsAPILoader, private _bottomSheet: MatBottomSheet,
-    private error: ErrorsService, public dialog: MatDialog, private fb: FormBuilder, private httpClient: HttpClient, private config: ConfigService) { }
+    private error: ErrorsService, public dialog: MatDialog, private fb: FormBuilder, private httpClient: HttpClient, private config: ConfigService
+    ) { }
 
   ngOnInit(): void {
     this.lat = this.config.lat;
@@ -80,6 +82,7 @@ export class TrackingComponent implements OnInit {
     this.getItineraryForm();
   }
 
+
   mapCall() {
     this.mapsAPILoader.load().then(() => {
       new google.maps.Geocoder;
@@ -87,9 +90,9 @@ export class TrackingComponent implements OnInit {
     this.httpClient.get<any>("assets/tracking.json")?.subscribe({   // temp 
       next: (data: any) => {
         this.trackingData = data?.responseData;
-        // setTimeout(() => {
-        //   this.mockDirections();
-        // }, 1000);
+        setTimeout(() => {
+          this.mockDirections();
+        }, 1000);
       }
 
     });
@@ -99,6 +102,42 @@ export class TrackingComponent implements OnInit {
     this.searchContent.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
       this.getAllVehicleListData(false);
     });
+
+    //#region screen recorder fn start heare ---------------
+    const start: any = document.getElementById("start");
+    const stop: any = document.getElementById("stop");
+    const video: any = document.getElementById("video");
+
+
+    let recorder: any;
+    let stream: any;
+    async function startRecording() {
+      stream = await (navigator.mediaDevices as any).getDisplayMedia({
+        video: {
+          mediaSource: "screen",
+        }
+      });
+      recorder = new MediaRecorder(stream);
+
+      const chunks: any = [];
+      recorder.ondataavailable = (e: any) => chunks.push(e.data);
+      recorder.onstop = () => {
+        const completeBlob = new Blob(chunks, { type: chunks[0].type });
+        video.href =URL.createObjectURL(completeBlob);
+      };
+      recorder.start();
+    }
+
+    start?.addEventListener("click", () => {
+      startRecording();
+    });
+
+    stop?.addEventListener("click", () => {
+      recorder.stop();
+      stream.getVideoTracks()[0].stop();
+    });
+
+    //#endregion scrren recorder end Fn
   }
 
   getAllVehicleListData(flag: boolean) {
@@ -164,14 +203,14 @@ export class TrackingComponent implements OnInit {
   }
 
   //#region -------------------------------------------------------------- map fn strat heare  -----------------------------------------------//
+  onMapReady(map: any) {
+    this.map = map;
+  }
 
   mockDirections() {
-    this.locationArray = this.trackingData?.map((lldt: { latitude: any, longitude: any }) => {
-      new google.maps.LatLng(lldt?.latitude, lldt?.longitude)
-    });
-
+    this.locationArray = this.trackingData?.map((lldt: { latitude: any, longitude: any }) => new google.maps.LatLng(lldt?.latitude, lldt?.longitude));
     this.line = new google.maps.Polyline({
-      strokeOpacity: 0.5,
+      strokeOpacity: 1,
       path: [],
       map: this.map,
       strokeColor: '#26B86F',
@@ -180,10 +219,12 @@ export class TrackingComponent implements OnInit {
     this.locationArray.forEach((l: any) => this.line.getPath().push(l));
 
     let $this: any = this;
-    this.locationArray.forEach(function (lt: any) {
-      let clr = '#FBB917';
+
+    this.locationArray.forEach((lt: any) => {
+      let clr = '#2A1DCC';
       if ($this.InvoiceData?.length > 0) {
-        $this.InvoiceData.map(function (dlt: any) {
+        $this.InvoiceData.map((dlt: any) => {
+
           let d = new Date(lt.date);
           let d1 = new Date(dlt.validityFrom);
           let d2 = new Date(dlt.validityUpto);
@@ -195,13 +236,14 @@ export class TrackingComponent implements OnInit {
 
     this.lat = this.trackingData[0].latitude;
     this.long = this.trackingData[0].longitude;
+
     const start = this.locationArray[0];
     const end = this.locationArray[this.locationArray?.length - 1];
 
     const startMarker = new google.maps.Marker({
       position: start,
       map: this.map,
-      icon: "assets/images/start_pin.svg"
+      icon: "assets/images/start.png",
     });
 
     let smi = "<table class='text-start'><tbody>";
@@ -221,7 +263,9 @@ export class TrackingComponent implements OnInit {
     const endMarker = new google.maps.Marker({
       position: end,
       map: this.map,
-      icon: "assets/images/end_pin.svg",
+      icon: "assets/images/end.png",
+      imageWidth: 30, // image width of overlay
+      imageHeight: 30,
     });
 
     let emi = "<table class='text-start'><tbody>";
@@ -238,75 +282,31 @@ export class TrackingComponent implements OnInit {
       eminfo.open(this.map, endMarker);
     })
 
-    this.endMarker = new google.maps.Marker({ position: end, map: this.map, icon: "assets/images/e.png" }); //label: 'E'
-    this.startMarker = new google.maps.Marker({ position: start, map: this.map, icon: "assets/images/s.png" }); // label: 'S'
-
     let latlng = new google.maps.LatLng(this.lat, this.long);
     this.map?.panTo(latlng);
     this.marker && this.marker.setMap(null);
     this.initRoute();
   }
 
-  calcRoute() {
-    this.line = new google.maps.Polyline({
-      strokeOpacity: 0.5,
-      path: [],
-      map: this.map,
-    });
-
-    const start = new google.maps.LatLng(23.445367108452267, 87.30157282922659);
-    const end = new google.maps.LatLng(23.185180849461496, 87.15678626936689);
-
-    const request = {
-      origin: start,
-      destination: end,
-      travelMode: google.maps.TravelMode.BICYCLING,
-    };
-    this.directionsService = new google.maps.DirectionsService();
-    this.directionsService.route(request, (response: any, status: any) => {
-      // Empty response as API KEY EXPIRED
-
-      if (status == google.maps.DirectionsStatus.OK) {
-        var legs = response.routes[0].legs;
-        for (let i = 0; i < legs.length; i++) {
-          var steps = legs[i].steps;
-          for (let j = 0; j < steps.length; j++) {
-            var nextSegment = steps[j].path;
-            for (let k = 0; k < nextSegment.length; k++) {
-              this.line.getPath().push(nextSegment[k]);
-            }
-          }
-        }
-        this.initRoute();
-      }
-    });
-  }
-
   initRoute() {
     const route = this.line.getPath().getArray();
-    // options
+    // options 
     const options: TravelMarkerOptions = {
-      map: this.map, // map object
-      speed: 50, // default 10 , animation speed
+      map: this.map,  // map object
+      speed: 50,  // default 10 , animation speed
       interval: 10, // default 10, marker refresh time
       speedMultiplier: this.speedMultiplier,
       cameraOnMarker: true,
-      markerOptions: {
-        draggable: true,
-        title: 'Travel Marker',
-        animation: google.maps.Animation.DROP,
-        icon: {
-          url: 'assets/images/s.png',
-          // This marker is 20 pixels wide by 32 pixels high.
-          animation: google.maps.Animation.DROP,
-          // size: new google.maps.Size(256, 256),
-          scaledSize: new google.maps.Size(28, 28),
-          // The origin for this image is (0, 0).
-          origin: new google.maps.Point(0, 0),
-          // The anchor for this image is the base of the flagpole at (0, 32).
-          anchor: new google.maps.Point(17, 30),
-        },
-      },
+      markerType: 'overlay', // 'overlay',  // default: 'default'
+      overlayOptions: {
+        offsetX: 0, // default: 0, x-offset for overlay
+        offsetY: 0, // default: 0, y-offset for overlay
+        offsetAngle: 0, // default: 0, rotation-offset for overlay
+        imageUrl: 'assets/images/location_1.png', // image used for overlay
+        imageWidth: 30, // image width of overlay
+        imageHeight: 30, // image height of overlay
+        // scaledSize: new google.maps.Size(48, 48),
+      }
     };
 
     // define marker
