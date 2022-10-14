@@ -1,6 +1,6 @@
 //import { MapsAPILoader } from '@agm/core';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, AfterViewInit } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
@@ -19,7 +19,7 @@ declare var google: any;
   templateUrl: './tracking.component.html',
   styleUrls: ['./tracking.component.scss']
 })
-export class TrackingComponent implements OnInit {
+export class TrackingComponent implements OnInit, AfterViewInit {
   searchContent = new FormControl('');
   allVehiclelData = new Array();
   subscription !: Subscription;
@@ -41,14 +41,16 @@ export class TrackingComponent implements OnInit {
   endMarker!: string;
   vehicleNo!: string;
   playPauseBtnFlag: boolean = false;
-
+  recBtnFlag: boolean = false;
   timePeriodArray = [
     { value: '1', viewValue: 'Today' },
     { value: '2', viewValue: '24hr' },
     { value: '3', viewValue: 'Weekly' },
     { value: '4', viewValue: 'From-To' },
   ];
-
+  videoUrl!:string;
+  videoBtnClickFlag:boolean = false;
+  
   map: any;
   line: any;
   trackingData = new Array();
@@ -68,9 +70,9 @@ export class TrackingComponent implements OnInit {
     strictBounds: true
   };
 
-
   constructor(private apiCall: ApiCallService, private webStorage: WebStorageService, private mapsAPILoader: MapsAPILoader, private _bottomSheet: MatBottomSheet,
-    private error: ErrorsService, public dialog: MatDialog, private fb: FormBuilder, private httpClient: HttpClient, private config: ConfigService) { }
+    private error: ErrorsService, public dialog: MatDialog, private fb: FormBuilder, private httpClient: HttpClient, private config: ConfigService
+    ) { }
 
   ngOnInit(): void {
     this.lat = this.config.lat;
@@ -79,6 +81,7 @@ export class TrackingComponent implements OnInit {
     this.getAllVehicleListData(true);
     this.getItineraryForm();
   }
+
 
   mapCall() {
     this.mapsAPILoader.load().then(() => {
@@ -99,6 +102,42 @@ export class TrackingComponent implements OnInit {
     this.searchContent.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
       this.getAllVehicleListData(false);
     });
+
+    //#region screen recorder fn start heare ---------------
+    const start: any = document.getElementById("start");
+    const stop: any = document.getElementById("stop");
+    const video: any = document.getElementById("video");
+
+
+    let recorder: any;
+    let stream: any;
+    async function startRecording() {
+      stream = await (navigator.mediaDevices as any).getDisplayMedia({
+        video: {
+          mediaSource: "screen",
+        }
+      });
+      recorder = new MediaRecorder(stream);
+
+      const chunks: any = [];
+      recorder.ondataavailable = (e: any) => chunks.push(e.data);
+      recorder.onstop = () => {
+        const completeBlob = new Blob(chunks, { type: chunks[0].type });
+        video.href =URL.createObjectURL(completeBlob);
+      };
+      recorder.start();
+    }
+
+    start?.addEventListener("click", () => {
+      startRecording();
+    });
+
+    stop?.addEventListener("click", () => {
+      recorder.stop();
+      stream.getVideoTracks()[0].stop();
+    });
+
+    //#endregion scrren recorder end Fn
   }
 
   getAllVehicleListData(flag: boolean) {
@@ -204,7 +243,7 @@ export class TrackingComponent implements OnInit {
     const startMarker = new google.maps.Marker({
       position: start,
       map: this.map,
-      icon: "assets/images/location_start_and_end.png",
+      icon: "assets/images/start.png",
     });
 
     let smi = "<table class='text-start'><tbody>";
@@ -224,7 +263,7 @@ export class TrackingComponent implements OnInit {
     const endMarker = new google.maps.Marker({
       position: end,
       map: this.map,
-      icon: "assets/images/location_start_and_end.png",
+      icon: "assets/images/end.png",
       imageWidth: 30, // image width of overlay
       imageHeight: 30,
     });
@@ -309,48 +348,4 @@ export class TrackingComponent implements OnInit {
 
   //#endregion -------------------------------------------------------------- map fn end heare  -----------------------------------------------//
 
-
-  //#region  -- screen recorder fn start--
-
-  screenRecorder() {
-    const start: any = document.getElementById("start");
-    const stop: any = document.getElementById("stop");
-    const video: any = document.querySelector("video");
-    let recorder: any;
-    let stream: any;
-
-    async function startRecording() {
-      stream = await navigator.mediaDevices.getDisplayMedia({
-        video: {
-          // mediaSource: "screen" 
-          }
-      });
-      recorder = new MediaRecorder(stream);
-
-      const chunks: any = [];
-      recorder.ondataavailable = (e: any) => chunks.push(e.data);
-      recorder.onstop = () => {
-        const completeBlob = new Blob(chunks, { type: chunks[0].type });
-        video.src = URL.createObjectURL(completeBlob);
-      };
-
-      recorder.start();
-    }
-
-    start.addEventListener("click", () => {
-      start.setAttribute("disabled", true);
-      stop.removeAttribute("disabled");
-
-      startRecording();
-    });
-
-    stop.addEventListener("click", () => {
-      stop.setAttribute("disabled", true);
-      start.removeAttribute("disabled");
-
-      recorder.stop();
-      stream.getVideoTracks()[0].stop();
-    });
-  }
-  //#endregion -- screen recorder fn end--
 }

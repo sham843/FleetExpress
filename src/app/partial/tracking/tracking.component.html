@@ -65,8 +65,9 @@
                                         placement="end">
                                         <p class="vehicle-no">{{item?.vehicleNo}} </p>
                                     </a>
-                                    <a *ngIf="item?.gpsStatus!='Offline'" (click)="vehicleNo = item?.vehicleNo" 
-                                     data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasExample"
+                                    <a *ngIf="item?.gpsStatus!='Offline'" (click)="vehicleNo = item?.vehicleNo"
+                                        data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom"
+                                        aria-controls="offcanvasExample"
                                         [ngClass]="{'text-danger':item?.gpsStatus=='Offline','text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
                                         <p class="vehicle-no">{{item?.vehicleNo}} </p>
                                     </a>
@@ -171,13 +172,14 @@
                 </div>
                 <div class="gmap_canvas">
                     <!-- [restriction]="countryRestriction"  -->
-                    <agm-map [latitude]="lat" [zoom]="12" [longitude]="long" class="rounded"  (mapReady)="onMapReady($event)" ></agm-map>
-                    
+                    <agm-map [latitude]="lat" [zoom]="12" [longitude]="long" class="rounded" [ngClass]="{'agm-map-height-big':!vehicleNo, 'agm-map-height-small':vehicleNo}"
+                        (mapReady)="onMapReady($event)"></agm-map>
+
                 </div>
             </div>
             <div class="offcanvas offcanvas-bottom position-absolute shadow-lg border-0" data-bs-scroll="true"
                 data-bs-backdrop="false" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" (click)="vehicleNo=''"></button>
                 <div class="offcanvas-body p-1">
                     <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
@@ -228,8 +230,10 @@
                                     </div>
                                     <div class="col-sm">
                                         <form [formGroup]="itineraryForm">
-                                            <div class="d-flex justify-content-end align-items-center" id="itinerary-buttons">
-                                                <mat-form-field appearance="legacy" class="me-1" style="width:100px !important;">
+                                            <div class="d-flex justify-content-end align-items-center"
+                                                id="itinerary-buttons">
+                                                <mat-form-field appearance="legacy" class="me-1"
+                                                    style="width:100px !important;">
                                                     <mat-select formControlName="timePeriod" required>
                                                         <mat-option *ngFor="let item of timePeriodArray"
                                                             [value]="item.value">
@@ -237,31 +241,55 @@
                                                         </mat-option>
                                                     </mat-select>
                                                 </mat-form-field>
-                                                <mat-form-field appearance="legacy" *ngIf="itinerary['timePeriod']?.value=='4'"> 
+                                                <mat-form-field appearance="legacy"
+                                                    *ngIf="itinerary['timePeriod']?.value=='4'">
                                                     <mat-label>Enter From Date-To Date</mat-label>
                                                     <mat-date-range-input [rangePicker]="picker" [max]="todayDate">
                                                         <input matStartDate placeholder="From Date"
-                                                            formControlName="fromDate" autocomplete="off" [max]="todayDate">
-                                                        <input matEndDate placeholder="To Date"
-                                                            formControlName="toDate" autocomplete="off" [min]="itinerary['fromDate'].value ">
+                                                            formControlName="fromDate" autocomplete="off"
+                                                            [max]="todayDate">
+                                                        <input matEndDate placeholder="To Date" formControlName="toDate"
+                                                            autocomplete="off" [min]="itinerary['fromDate'].value ">
                                                     </mat-date-range-input>
                                                     <mat-datepicker-toggle matSuffix [for]="picker">
                                                     </mat-datepicker-toggle>
                                                     <mat-date-range-picker #picker></mat-date-range-picker>
                                                 </mat-form-field>
-                                                <button class="btn" type="button">
+                                                <button class="btn" type="button" id="start" [class.d-none]="recBtnFlag"
+                                                    (click)="recBtnFlag = true">
                                                     <div class="d-flex align-items-center">
                                                         <i class="fa-solid fa-circle me-1"></i>
                                                         <span>REC</span>
                                                     </div>
                                                 </button>
+
+                                                <button class="btn" type="button" id="stop" [class.d-none]="!recBtnFlag"
+                                                    (click)="recBtnFlag = false; videoBtnClickFlag = true">
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fa-solid fa-circle text-danger me-1"></i>
+                                                        <span>REC</span>
+                                                    </div>
+                                                </button>
+                                                <a mat-menu-item download href="" id="video"
+                                                    [class.d-none]="!videoBtnClickFlag">
+                                                    <div
+                                                        class="d-flex justify-content-between align-items-center text-primary">
+                                                        <span><small>Video &nbsp; </small></span> <i
+                                                            class="fa-solid fa-download"></i>
+                                                    </div>
+                                                </a>
                                                 <button class="btn" type="button" (click)="reset()"><i
                                                         class="fa-solid fa-rotate"></i></button>
-                                                <button class="btn" type="button" *ngIf="!playPauseBtnFlag" (click)="play();playPauseBtnFlag=true"><i class="fa-solid fa-play"></i></button>
-                                                <button class="btn" type="button" *ngIf="playPauseBtnFlag" (click)="pause();playPauseBtnFlag=false"><i class="fa-solid fa-pause"></i></button>
+                                                <button class="btn" type="button" *ngIf="!playPauseBtnFlag"
+                                                    (click)="play();playPauseBtnFlag=true"><i
+                                                        class="fa-solid fa-play"></i></button>
+                                                <button class="btn" type="button" *ngIf="playPauseBtnFlag"
+                                                    (click)="pause();playPauseBtnFlag=false"><i
+                                                        class="fa-solid fa-pause"></i></button>
                                                 <button class="btn" type="button" [matMenuTriggerFor]="menu"><i
                                                         class="fa-solid fa-download"></i></button>
                                                 <mat-menu #menu="matMenu">
+
                                                     <button mat-menu-item>
                                                         <div class="d-flex justify-content-between align-items-center">
                                                             <span>PDF</span>
@@ -552,7 +580,7 @@
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
         </div>
     </div>
 </div>

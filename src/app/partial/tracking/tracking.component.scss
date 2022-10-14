@@ -230,9 +230,13 @@
     color: #757575;
 }
 
-agm-map {
+.agm-map-height-small{
     height: 400px;
-  }
+}
+
+.agm-map-height-big{
+    height: 730px;
+}
   .call-driver{
     width: 30px;
     height: 30px;
