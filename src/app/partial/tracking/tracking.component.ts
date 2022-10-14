@@ -42,6 +42,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
   vehicleNo!: string;
   playPauseBtnFlag: boolean = false;
   recBtnFlag: boolean = false;
+  zoom:number = 12;
   timePeriodArray = [
     { value: '1', viewValue: 'Today' },
     { value: '2', viewValue: '24hr' },
@@ -50,7 +51,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
   ];
   videoUrl!:string;
   videoBtnClickFlag:boolean = false;
-  
+
   map: any;
   line: any;
   trackingData = new Array();
@@ -115,6 +116,8 @@ export class TrackingComponent implements OnInit, AfterViewInit {
       stream = await (navigator.mediaDevices as any).getDisplayMedia({
         video: {
           mediaSource: "screen",
+          video: true,
+          audio: true,
         }
       });
       recorder = new MediaRecorder(stream);

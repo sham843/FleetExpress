@@ -172,7 +172,7 @@
                 </div>
                 <div class="gmap_canvas">
                     <!-- [restriction]="countryRestriction"  -->
-                    <agm-map [latitude]="lat" [zoom]="12" [longitude]="long" class="rounded" [ngClass]="{'agm-map-height-big':!vehicleNo, 'agm-map-height-small':vehicleNo}"
+                    <agm-map [latitude]="lat" [zoom]="zoom" [longitude]="long" class="rounded" [ngClass]="{'agm-map-height-big':!vehicleNo, 'agm-map-height-small':vehicleNo}"
                         (mapReady)="onMapReady($event)"></agm-map>
 
                 </div>
