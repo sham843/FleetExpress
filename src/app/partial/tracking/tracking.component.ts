@@ -43,6 +43,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
   playPauseBtnFlag: boolean = false;
   recBtnFlag: boolean = false;
   zoom:number = 12;
+  selectedCanvasTab!:string;
   timePeriodArray = [
     { value: '1', viewValue: 'Today' },
     { value: '2', viewValue: '24hr' },
@@ -199,6 +200,39 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     })
   }
   get itinerary() { return this.itineraryForm.controls };
+  getVehicleDetails(){
+    this.vehicleDetailsData = []
+    this.apiCall.setHttp('get', 'vehicle/search-vehicle?Search=' + this.vehicleNo, true, false, false, 'fleetExpressBaseUrl');
+    this.subscription = this.apiCall.getHttp().subscribe({
+      next: (res: any) => {
+        if (res.statusCode === "200") {
+          this.vehicleDetailsData = res.responseData.responseData;
+        } else {
+          if (res.statusCode != "404") {
+            this.vehicleDetailsData = [];
+            this.error.handelError(res.statusCode)
+          }
+        }
+      }
+    },(error: any) => { this.error.handelError(error.status) });
+  }
+  getDriverDetails(){
+   console.log(this.vehicleNo) 
+    this.driverDetailsData = []
+    this.apiCall.setHttp('get', 'vehicle/get-driver-List?VehicleNo=MH12MK2246', true, false, false, 'fleetExpressBaseUrl');
+    this.subscription = this.apiCall.getHttp().subscribe({
+      next: (res: any) => {
+        if (res.statusCode === "200") {
+          this.driverDetailsData = res.responseData;
+        } else {
+          if (res.statusCode != "404") {
+            this.driverDetailsData = [];
+            this.error.handelError(res.statusCode)
+          }
+        }
+      }
+    },(error: any) => { this.error.handelError(error.status) });
+  }
   //-------------------------------------------------------------- bottom sheet method end heare --------------------------------------------//
 
   openvechileTrackingDetailsSheet(): void {
