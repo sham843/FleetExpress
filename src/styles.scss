@@ -1847,3 +1847,7 @@ input::-ms-clear {
 .mat-menu-panel mat-radio-button{
   font-family: 'Poppins', sans-serif !important;
 }
+
+.offcanvas-backdrop.show {
+  opacity: 0;
+}
