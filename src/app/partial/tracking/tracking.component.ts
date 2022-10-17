@@ -162,7 +162,6 @@ export class TrackingComponent implements OnInit, AfterViewInit {
         } else {
           this.allVehiclelData = [];
           this.allVehiclelDataClone = [];
-          // this.error.handelError(res.statusCode)
         }
       }
     }, (error: any) => { this.error.handelError(error.status) });
@@ -217,9 +216,8 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     },(error: any) => { this.error.handelError(error.status) });
   }
   getDriverDetails(){
-   console.log(this.vehicleNo) 
     this.driverDetailsData = []
-    this.apiCall.setHttp('get', 'vehicle/get-driver-List?VehicleNo=MH12MK2246', true, false, false, 'fleetExpressBaseUrl');
+    this.apiCall.setHttp('get', 'vehicle/get-driver-List?VehicleNo='+this.vehicleNo, true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
