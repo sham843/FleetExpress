@@ -68,6 +68,7 @@ export class LoginComponent implements OnInit {
           this.commonMethods.snackBar(res.statusMessage,1);
         }
       },(error: any) => {
+        this.spinner.hide();
         this.error.handelError(error.status);
     })
   }
