@@ -7,7 +7,8 @@
                 <div class="col-sm-4 border-end">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Search" [formControl]="searchContent"
-                            [maxLength]="15">
+                            [maxLength]="15" (keyup)="setnumber(searchContent.value)"
+                            (keypress)="validationService.noSpaces($event)">
                         <div class="input-group-text" *ngIf="!searchContent.value">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </div>

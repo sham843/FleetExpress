@@ -13,6 +13,7 @@ import { MapsAPILoader } from '@agm/core';
 import { ConfigService } from 'src/app/services/config.service';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { VehicleTrackingDetailsComponent } from './vehicle-tracking-details/vehicle-tracking-details.component';
+import { ValidationService } from 'src/app/services/validation.service';
 declare var google: any;
 @Component({
   selector: 'app-tracking',
@@ -73,7 +74,8 @@ export class TrackingComponent implements OnInit, AfterViewInit {
   };
 
   constructor(private apiCall: ApiCallService, private webStorage: WebStorageService, private mapsAPILoader: MapsAPILoader, private _bottomSheet: MatBottomSheet,
-    private error: ErrorsService, public dialog: MatDialog, private fb: FormBuilder, private httpClient: HttpClient, private config: ConfigService
+    private error: ErrorsService, public dialog: MatDialog, private fb: FormBuilder, private httpClient: HttpClient,
+    public validationService:ValidationService, private config: ConfigService
     ) { }
 
   ngOnInit(): void {
@@ -84,6 +86,9 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     this.getItineraryForm();
   }
 
+  setnumber(value:any){
+    this.searchContent.setValue(value.toUpperCase())
+  }
 
   mapCall() {
     this.mapsAPILoader.load().then(() => {
