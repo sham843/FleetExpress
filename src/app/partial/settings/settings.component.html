@@ -38,8 +38,8 @@
                                             <li class="list-group-item border-bottom">
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <span class="noti-title text-capitalize">{{alert?.alertType}}</span>
-                                                    <div class="d-flex w-75 justify-content-between align-items-center">
-                                                        <mat-slider [tickInterval]="getSliderTickInterval()" class="w-100" ></mat-slider>
+                                                    <div class="d-flex w-75 justify-content-between align-items-center ">
+                                                        <mat-slider [tickInterval]="getSliderTickInterval()" class="w-100 ms-2" ></mat-slider>
                                                         <span class="badge bg-extra-light text-dark p-2"><label>{{value}}
                                                                 {{alert?.alertType=='overspeed'?'kmph':'degree'}}</label></span>
                                                     </div>
