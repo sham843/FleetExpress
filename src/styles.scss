@@ -1824,7 +1824,9 @@ input::-ms-clear {
   right: -23px;
   top: -22px;
 }
-
+.ngx-pagination{
+  margin: 0 !important;
+}
 .ngx-pagination .current {
   padding: 0.1875rem 0.625rem;
   background: #32bbbb;
