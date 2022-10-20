@@ -197,9 +197,11 @@ getVehiclenotificationsData() {
     }
   }
 
-switchNotification(rowData:any){ 
+switchNotification(rowData:any, status:string){ 
   this.spinner.show();
-  this.apiCall.setHttp('PUT', 'notification/set-Visibity-Notification?alertype='+ rowData.alertType +'&Isnotification='+ rowData.isNotification , true, false, false, 'fleetExpressBaseUrl');
+  const url = (status=='alert'?'notification/set-Visibity-Notification?alertype='+ rowData.alertType +'&Isnotification='+ rowData.isNotification
+  :'notification/set-Visibity-Notification?alertype='+ rowData.alertType +'&Isvisible='+ rowData.isvisible+'&vehicleNo='+this.selectedVehicleNumber)
+  this.apiCall.setHttp('PUT', url, true, false, false, 'fleetExpressBaseUrl');
   // this.subscription = 
   this.apiCall.getHttp().subscribe({
     next: (res: any) => {

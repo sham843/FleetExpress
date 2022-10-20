@@ -45,7 +45,7 @@
                                                     </div>
                                                     <div class="form-check form-switch">
                                                         <mat-slide-toggle  [id]="alert?.alertType" [(ngModel)]="alert.isNotification" 
-                                                    (change)="switchNotification(alert)"></mat-slide-toggle>
+                                                        (change)="switchNotification(alert,'alert')"></mat-slide-toggle>
                                                     </div>
                                                 </div>
                                             </li>
@@ -56,7 +56,7 @@
                                                 <span class="noti-title  text-capitalize">{{alert?.alertType}}</span>
                                                 <div class="form-check form-switch">
                                                     <mat-slide-toggle [id]="alert?.alertType" [(ngModel)]="alert.isNotification"
-                                                        (change)="switchNotification(alert)"></mat-slide-toggle>
+                                                    (change)="switchNotification(alert,'alert')"></mat-slide-toggle>
                                                 </div>
                                             </li>
                                         </ng-template>
@@ -200,7 +200,7 @@
                                                         <div class="row">
                                                             <div class="col-sm-6" *ngFor="let alert of vehiclesAlertsData">
                                                                 <ul class="list-group list-group-flush" >
-                                                                    <ng-container *ngIf="alert?.alertType=='overspeed' || alert?.alertType=='tilt' ; else template">
+                                                                    <ng-container *ngIf="alert?.alertType=='overspeed' || alert?.alertType=='tilt' ; else templateVehicle">
                                                                         <li class="list-group-item border-bottom">
                                                                             <div class="d-flex justify-content-between align-items-center">
                                                                                 <span class="noti-title text-capitalize">{{alert?.alertType}}</span>
@@ -210,22 +210,20 @@
                                                                                             {{alert?.alertType=='overspeed'?'kmph':'degree'}}</label></span>
                                                                                 </div>
                                                                                 <div class="form-check form-switch">
-                                                                                    <mat-slide-toggle  [id]="alert?.alertType" [(ngModel)]="alert.isNotification" 
-                                                                               ></mat-slide-toggle>
-                                                                               <!-- (change)="switchNotification(alert)" -->
+                                                                                    <mat-slide-toggle  [id]="alert?.alertType+1" [(ngModel)]="alert.isVisible" 
+                                                                                    (change)="switchNotification(alert,'vehicleAlert')"></mat-slide-toggle>
                                                                                 </div>
                                                                             </div>
                                 
                                                                         </li>
                                                                     </ng-container>
-                                                                    <ng-template #template>
+                                                                    <ng-template #templateVehicle>
                                                                         <li class="list-group-item d-flex justify-content-between align-items-center border-bottom"
                                                                             *ngIf="!alert?.isVisibleToOfficer">
                                                                             <span class="noti-title  text-capitalize">{{alert?.alertType}}</span>
                                                                             <div class="form-check form-switch">
-                                                                                <mat-slide-toggle [id]="alert?.alertType" [(ngModel)]="alert.isNotification"
-                                                                                   ></mat-slide-toggle>
-                                                                                   <!-- (change)="switchNotification(alert)" -->
+                                                                                <mat-slide-toggle [id]="alert?.alertType+1" [(ngModel)]="alert.isVisible"
+                                                                                (change)="switchNotification(alert,'vehicleAlert')" ></mat-slide-toggle>
                                                                             </div>
                                                                         </li>
                                                                     </ng-template>
