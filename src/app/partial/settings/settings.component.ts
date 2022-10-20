@@ -33,10 +33,10 @@ export class SettingsComponent implements OnInit {
   showTicks:boolean = false;
   autoTicks:boolean = false;
   tickInterval:number = 1;
-  notificatinsData = new Array();
-  vehicleNotificatinsData= new Array();
+  notificationsData = new Array();
+  vehiclenotificationsData= new Array();
   subscription!: Subscription;
-  notificationForm!:FormGroup;
+  // notificationForm!:FormGroup;
   currentPage:number = 1;
   itemsPerPage:number = 10;
   pageSize !:number ;
@@ -44,8 +44,10 @@ export class SettingsComponent implements OnInit {
   searchContent = new FormControl();
   expandedElement: any;
   vehicleNotificationFlag:boolean=false;
-  totalVehicleNotificatinsData !:number;
+  totalVehicleNotificationsData !:number;
   highlightedRow!:number;
+  vehiclesAlertsData= new Array();
+  selectedVehicleNumber!:string;
   getSliderTickInterval(): number | 'auto' {
     if (this.showTicks) {
       return this.autoTicks ? 'auto' : this.tickInterval;
@@ -63,13 +65,13 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getChangePwd();
-    this.getNotificatinsData();
-    this.getVehicleNotificatinsData();
+    this.getnotificationsData();
+    this.getVehiclenotificationsData();
   }
   
   ngAfterViewInit(){
     this.searchContent.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(()=>{
-     this.getVehicleNotificatinsData();
+     this.getVehiclenotificationsData();
     });
  }
 getChangePwd(){
@@ -78,27 +80,27 @@ getChangePwd(){
     newPwd:['',[Validators.compose([Validators.required,Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$')])]],
     reTypePwd:['',[Validators.compose([Validators.required,Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$')])]]                                 
   })
-  this.notificationForm=this.fb.group({
-    BoxopenOff:[],
-    BoxopenOn:[],
-    GeofenceIn:[],
-    GeofenceOut:[],
-    IgnitionOff:[],
-    IgnitionOn:[],
-    PowerCut:[],
-    PowerConnected:[],
-    Lowbatteryremoved:[],
-    ConnectbacktomainBattery:[],
-    DisconnectBattery:[],
-    Lowbattery:[],  
-    OverSpeed:[],
-    Tilt:[]                              
-  })
+  // this.notificationForm=this.fb.group({
+  //   BoxopenOff:[],
+  //   BoxopenOn:[],
+  //   GeofenceIn:[],
+  //   GeofenceOut:[],
+  //   IgnitionOff:[],
+  //   IgnitionOn:[],
+  //   PowerCut:[],
+  //   PowerConnected:[],
+  //   Lowbatteryremoved:[],
+  //   ConnectbacktomainBattery:[],
+  //   DisconnectBattery:[],
+  //   Lowbattery:[],  
+  //   OverSpeed:[],
+  //   Tilt:[]                              
+  // })
 }
 public onPageChange(pageNum: number): void {
   this.pageNumber=pageNum;
   this.pageSize = this.itemsPerPage * (pageNum - 1);
-  this.getVehicleNotificatinsData();
+  this.getVehiclenotificationsData();
 }
 clickedRow(index:any){
   this.highlightedRow=index;
@@ -115,7 +117,6 @@ onChangePwd(){
     }else{
       this.spinner.show();
     this.apiCall.setHttp('get', 'login/change-password?UserId='+this.webStorage.getUserId()+'&NewPassword='+this.changePassForm.value.reTypePwd+'&OldPassword='+this.changePassForm.value.currentPwd, true, false, false, 'fleetExpressBaseUrl');
-      // this.subscription=
       this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
           this.spinner.hide();
@@ -130,9 +131,9 @@ onChangePwd(){
 get fpass(){
   return this.changePassForm.controls;
 }
-get f(){
-  return this.notificationForm.controls;
-}
+// get f(){
+//   return this.notificationForm.controls;
+// }
 showvehicleNotification(tabLabel:any){
   if(tabLabel=='VehicleNotifications'){
     this.vehicleNotificationFlag=true;
@@ -140,33 +141,12 @@ showvehicleNotification(tabLabel:any){
     this.vehicleNotificationFlag=false;
   }
 }
-getNotificatinsData() {
+getnotificationsData() {
   this.apiCall.setHttp('get', 'notification/get-alert-types', true, false, false, 'fleetExpressBaseUrl');
-  // this.subscription = 
   this.apiCall.getHttp().subscribe({
     next: (res: any) => {
       if (res.statusCode === "200") {
-        this.notificatinsData = res.responseData;
-        this.notificatinsData.sort(function (a, b) {
-          return a.sortOrder - b.sortOrder;
-        });
-        this.notificationForm.patchValue({
-          BoxopenOff:this.notificatinsData[0].isNotification,
-          BoxopenOn:this.notificatinsData[1].isNotification,
-          GeofenceIn:this.notificatinsData[4].isNotification,
-          GeofenceOut:this.notificatinsData[5].isNotification,
-          IgnitionOff:this.notificatinsData[7].isNotification,
-          IgnitionOn:this.notificatinsData[8].isNotification,
-          PowerCut:this.notificatinsData[11].isNotification,
-          PowerConnected:this.notificatinsData[10].isNotification,
-          Lowbatteryremoved:false,
-          ConnectbacktomainBattery:false,
-          DisconnectBattery:false,
-          Lowbattery:false,
-          OverSpeed:false,
-          Tilt:false,   
-        })
-
+        this.notificationsData = res.responseData;
       } else {
         if (res.statusCode != "404") {
           this.error.handelError(res.statusCode)
@@ -175,30 +155,53 @@ getNotificatinsData() {
     }
   },(error: any) => { this.error.handelError(error.status) });
 }
-getVehicleNotificatinsData() {
-  this.vehicleNotificatinsData=[]
+getVehiclenotificationsData() {
+  this.vehiclenotificationsData=[]
   this.apiCall.setHttp('get', 'notification/get-Alert-linking?NoPage='+(this.searchContent.value?0:1)+'&RowsPerPage=10&SearchText='+this.searchContent.value, true, false, false, 'fleetExpressBaseUrl');
   this.apiCall.getHttp().subscribe({
     next: (res: any) => {
       if (res.statusCode === "200") {
-        this.vehicleNotificatinsData = res.responseData.responseData1 ;
-        this.totalVehicleNotificatinsData=res.responseData.responseData2?.totalRecords
+        this.vehiclenotificationsData = res.responseData.responseData1 ;
+        this.totalVehicleNotificationsData=res.responseData.responseData2?.totalRecords
 
       } else {
         if (res.statusCode != "404") {
-          this.vehicleNotificatinsData=[];
+          this.vehiclenotificationsData=[];
           this.error.handelError(res.statusCode)
         }else  if (res.statusCode == "404"){
-            this.vehicleNotificatinsData=[];
+            this.vehiclenotificationsData=[];
             this.error.handelError(res.statusCode)
         }
       }
     }
   },(error: any) => { this.error.handelError(error.status) });
 }
-switchNotification(rowData:any){ 
+  getVehiclesAlertsData(vehicleNo: any) {
+    if (this.selectedVehicleNumber == vehicleNo) {
+        return;
+    } else {
+      this.selectedVehicleNumber = vehicleNo;
+      this.apiCall.setHttp('get', 'notification/get-vehicleWise-Notification-List?vehicleNo=' + vehicleNo, true, false, false, 'fleetExpressBaseUrl');
+      this.apiCall.getHttp().subscribe({
+        next: (res: any) => {
+          console.log(res)
+          if (res.statusCode === "200") {
+            this.vehiclesAlertsData = res.responseData.responseData1;
+          } else {
+            if (res.statusCode != "404") {
+              this.error.handelError(res.statusCode)
+            }
+          }
+        }
+      }, (error: any) => { this.error.handelError(error.status) });
+    }
+  }
+
+switchNotification(rowData:any, status:string){ 
   this.spinner.show();
-  this.apiCall.setHttp('PUT', 'notification/set-Visibity-Notification?alertype='+rowData.alertType+'&Isnotification='+ !rowData.isNotification , true, false, false, 'fleetExpressBaseUrl');
+  const url = (status=='alert'?'notification/set-Visibity-Notification?alertype='+ rowData.alertType +'&Isnotification='+ rowData.isNotification
+  :'notification/set-Visibity-Notification?alertype='+ rowData.alertType +'&Isvisible='+ rowData.isvisible+'&vehicleNo='+this.selectedVehicleNumber)
+  this.apiCall.setHttp('PUT', url, true, false, false, 'fleetExpressBaseUrl');
   // this.subscription = 
   this.apiCall.getHttp().subscribe({
     next: (res: any) => {
@@ -210,7 +213,7 @@ switchNotification(rowData:any){
           this.error.handelError(res.statusMessage)
         }
       }
-      this.getNotificatinsData();
+      this.getnotificationsData();
     }
   },(error: any) => { 
     this.spinner.hide();

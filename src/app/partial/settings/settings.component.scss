@@ -50,7 +50,7 @@ tr.example-detail-row {
   .example-element-row td {
     border-bottom-width: 0;
   }
-  
+ 
   .example-element-detail {
     overflow: hidden;
   }
@@ -58,3 +58,12 @@ tr.example-detail-row {
   .example-element-description-attribution {
     opacity: 0.5;
   }
+  .mat-slider-horizontal {
+    height: 28px !important;
+    margin-top: -20px !important;
+}
+
+div#pills-notifications .row .col-sm-6:last-child ul li,
+div#pills-notifications .row .col-sm-6:nth-last-child(2) ul li {
+  border-bottom: 0!important;
+}

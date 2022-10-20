@@ -7,7 +7,8 @@
                 <div class="col-sm-4 border-end">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Search" [formControl]="searchContent"
-                            [maxLength]="15">
+                            [maxLength]="15" (keyup)="setnumber(searchContent.value)"
+                            (keypress)="validationService.noSpaces($event)">
                         <div class="input-group-text" *ngIf="!searchContent.value">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </div>
@@ -65,7 +66,7 @@
                                         placement="end">
                                         <p class="vehicle-no">{{item?.vehicleNo}} </p>
                                     </a>
-                                    <a *ngIf="item?.gpsStatus!='Offline'" (click)="vehicleNo = item?.vehicleNo"
+                                    <a *ngIf="item?.gpsStatus!='Offline'" (click)="vehicleNo = item?.vehicleNo; selectedCanvasTab='Itinerary'"
                                         data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom"
                                         aria-controls="offcanvasExample"
                                         [ngClass]="{'text-danger':item?.gpsStatus=='Offline','text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
@@ -183,30 +184,30 @@
                 <div class="offcanvas-body p-1">
                     <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="Itinerary-tab" data-bs-toggle="tab"
-                                data-bs-target="#Itinerary-tab-pane" type="button" role="tab"
-                                aria-controls="Itinerary-tab-pane" aria-selected="true">Itinerary</button>
+                            <button class="nav-link " id="Itinerary-tab" data-bs-toggle="tab"
+                                data-bs-target="#Itinerary-tab-pane" type="button" role="tab" [ngClass]="{'active':selectedCanvasTab=='Itinerary'?true:false}"
+                                aria-controls="Itinerary-tab-pane" aria-selected="false" (click)="selectedCanvasTab='Itinerary'">Itinerary</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="Driver-information-tab" data-bs-toggle="tab"
-                                data-bs-target="#Driver-information-tab-pane" type="button" role="tab"
-                                aria-controls="Driver-information-tab-pane" aria-selected="false">Driver
+                            <button class="nav-link" id="Driver-information-tab" data-bs-toggle="tab" [ngClass]="{'active':selectedCanvasTab=='Driver'?true:false}"
+                                data-bs-target="#Driver-information-tab-pane" type="button" role="tab" (click)="getDriverDetails()"
+                                aria-controls="Driver-information-tab-pane" aria-selected="false"  (click)="selectedCanvasTab='Driver'">Driver
                                 information</button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="Vehicle-Details-tab" data-bs-toggle="tab"
-                                data-bs-target="#Vehicle-Details-tab-pane" type="button" role="tab"
-                                aria-controls="Vehicle-Details-tab-pane" aria-selected="false">Vehicle Details</button>
+                                data-bs-target="#Vehicle-Details-tab-pane" type="button" role="tab" (click)="getVehicleDetails()" [ngClass]="{'active':selectedCanvasTab=='Vehicle'?true:false}"
+                                aria-controls="Vehicle-Details-tab-pane" aria-selected="false"  (click)="selectedCanvasTab='Vehicle'">Vehicle Details</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="near-by-vehicles-tab" data-bs-toggle="tab"
+                            <button class="nav-link" id="near-by-vehicles-tab" data-bs-toggle="tab"[ngClass]="{'active':selectedCanvasTab=='NearBy'?true:false}"
                                 data-bs-target="#near-by-vehicles-tab-pane" type="button" role="tab"
-                                aria-controls="near-by-vehicles-tab-pane" aria-selected="false">Near By
+                                aria-controls="near-by-vehicles-tab-pane" aria-selected="false"  (click)="selectedCanvasTab='NearBy'">Near By
                                 Vehicles</button>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="Itinerary-tab-pane" role="tabpanel"
+                        <div class="tab-pane fade show" [ngClass]="{'active':selectedCanvasTab=='Itinerary'?true:false}" id="Itinerary-tab-pane" role="tabpanel"
                             aria-labelledby="Itinerary-tab" tabindex="0">
                             <div class="container">
                                 <div class="row align-items-center mb-3 justify-content-between">
@@ -422,7 +423,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="Driver-information-tab-pane" role="tabpanel"
+                        <div class="tab-pane fade" [ngClass]="{'active':selectedCanvasTab=='Driver'?true:false}" id="Driver-information-tab-pane" role="tabpanel"
                             aria-labelledby="Driver-information-tab" tabindex="0">
                             <div class="container">
                                 <div class="row driver-vehicle-info">
@@ -472,7 +473,7 @@
                             </div>
 
                         </div>
-                        <div class="tab-pane fade" id="Vehicle-Details-tab-pane" role="tabpanel"
+                        <div class="tab-pane fade" [ngClass]="{'active':selectedCanvasTab=='Vehicle'?true:false}" id="Vehicle-Details-tab-pane" role="tabpanel"
                             aria-labelledby="Vehicle-Details-tab" tabindex="0">
                             <div class="container">
                                 <div class="row driver-vehicle-info">
@@ -515,7 +516,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="near-by-vehicles-tab-pane" role="tabpanel"
+                        <div class="tab-pane fade" [ngClass]="{'active':selectedCanvasTab=='NearBy'?true:false}" id="near-by-vehicles-tab-pane" role="tabpanel"
                             aria-labelledby="near-by-vehicles-tab" tabindex="0">
                             <div class="container">
                                 <div class="row align-items-center mb-3" id="near-by-vehicles">
