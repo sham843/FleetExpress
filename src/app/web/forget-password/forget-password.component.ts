@@ -31,7 +31,7 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
   otpLoginUserId!: number;
   mobileNum!: number | string;
   checkOtp: any;
-  private maxValue = 59;
+  private maxValue = 10;
   public timers: any;
   public timerFlag:boolean=true;
   subscription: Subscription | any;
@@ -66,10 +66,9 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
   }
 
   // -------------------------------------------OTP-----------------------------------------------------------
-  sendOTP() {
-    this.countDown();
+  sendOTP(flag?:any) {
     let mobileNom = this.sendOTPForm.value.mobileNo || this.mobileNum;
-    if (this.sendOTPForm.invalid) {
+    if (this.sendOTPForm.invalid && flag!='resend') {
       this.spinner.hide();
     }
     else {
@@ -77,6 +76,7 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
       this.apiCall.setHttp('get', 'login/get-user-otp?MobileNo=' + mobileNom, false, false, false, 'fleetExpressBaseUrl');
       this.subscription = this.apiCall.getHttp().subscribe((res: any) => {
         if (res.statusCode == "200") {
+          this.countDown();
           this.checkOtp = res.responseData[0].otp;
           this.mobileNum = res.responseData[0].mobileNo;
           this.spinner.hide();
