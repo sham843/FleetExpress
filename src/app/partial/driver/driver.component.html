@@ -16,7 +16,7 @@
                 <div class="text-center justify-content-center">
                     <img src="../../../assets/images/No-Vehicle-Registered.svg" alt="">
                     <p class="my-3">No Driver Registered</p>
-                    <button class="btn btn-main" data-bs-toggle="modal" data-bs-target="#AddVehicleModal">
+                    <button class="btn btn-main" (click)="commonModule('add')">
                         Add Driver
                     </button>
                 </div>
@@ -88,7 +88,7 @@
                                 </td>
                                 <td><a href="tel:{{driver.mobileNo}}" style="text-decoration: none;">{{driver.mobileNo}}</a></td>
                                 <td>
-                                    <mat-slide-toggle [checked]="driver.isBlockFlag"
+                                    <mat-slide-toggle [checked]="driver.isBlockFlag" [color]="color"
                                         (change)="confirmationDialog($event.checked,'status',$event,driver)">
                                     </mat-slide-toggle>
                                 </td>
