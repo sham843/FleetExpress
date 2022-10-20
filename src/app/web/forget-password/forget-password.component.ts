@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { interval, map, takeWhile } from 'rxjs';
+// import { interval, map, takeWhile } from 'rxjs';
 import { Subscription } from 'rxjs/internal/Subscription';
 
 import { ApiCallService } from 'src/app/services/api-call.service';
@@ -9,6 +9,7 @@ import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { ValidationService } from 'src/app/services/validation.service';
+// import { clearInterval } from 'timers';
 
 @Component({
   selector: 'app-forget-password',
@@ -31,7 +32,7 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
   otpLoginUserId!: number;
   mobileNum!: number | string;
   checkOtp: any;
-  private maxValue = 59;
+  resendTimer !:number;
   public timers: any;
   public timerFlag:boolean=true;
   subscription: Subscription | any;
@@ -46,7 +47,7 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getformControlData();
-    this.countDown();
+    //this.countDown();
   }
   getformControlData() {
     this.sendOTPForm = this.fb.group({
@@ -67,7 +68,7 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
 
   // -------------------------------------------OTP-----------------------------------------------------------
   sendOTP() {
-    this.countDown();
+    //this.countDown();
     let mobileNom = this.sendOTPForm.value.mobileNo || this.mobileNum;
     if (this.sendOTPForm.invalid) {
       this.spinner.hide();
@@ -77,13 +78,14 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
       this.apiCall.setHttp('get', 'login/get-user-otp?MobileNo=' + mobileNom, false, false, false, 'fleetExpressBaseUrl');
       this.subscription = this.apiCall.getHttp().subscribe((res: any) => {
         if (res.statusCode == "200") {
+          this.countDown();
           this.checkOtp = res.responseData[0].otp;
           this.mobileNum = res.responseData[0].mobileNo;
           this.spinner.hide();
           this.generateOTPContain = false;
           this.OTPContainer = true;
           this.verifyOTPForm.reset();
-          this.sendOTPForm.reset();
+          // this.sendOTPForm.reset();
         }
       },
         (error: any) => {
@@ -95,15 +97,28 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
   // -----------------------------------------Timer------------------------------------------------------------------------
   public timerValue: any;
   countDown() {
-    this.timerFlag=true;
-    this.timers = interval(1000).pipe(
-      map(value => this.maxValue - value),
-      takeWhile(x => x >= 0)
-    );
-    this.timers.subscribe((res: any) => {
-      this.timerValue = res.toString().length != 2 ? '00.0' + res : '00.' + res;
-      this.timerValue=='00.00'?this.timerFlag=false:this.timerFlag=true;
-    })
+    this.resendTimer = 60;
+    const resendOtpInterval = setInterval(() => {
+      if (this.resendTimer < 1) {
+        clearInterval(resendOtpInterval);
+        this.timerFlag=false;
+      }
+      else {
+        this.timerFlag=true;
+        this.resendTimer= -- this.resendTimer;
+        this.timerValue = this.resendTimer.toString().length != 2 ? '00.0' + this.resendTimer : '00.' + this.resendTimer;
+        console.log( this.timerValue);
+        
+      }
+    }, 1000);
+    // this.timers = interval(1000).pipe(
+    //   map(value => this.maxValue - value),
+    //   takeWhile(x => x >= 0)
+    // );
+    // this.timers.subscribe((res: any) => {
+    //   this.timerValue = res.toString().length != 2 ? '00.0' + res : '00.' + res;
+    //   this.timerValue=='00.00'?this.timerFlag=false:this.timerFlag=true;
+    // })
   }
 
   // -----------------------------------------------------verify OTp------------------------------------------------------------
@@ -136,6 +151,7 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
           this.otpFlag = false;
           this.OTPContainer = false;
           this.passContainer = true;
+          this.sendOTPForm.reset();
         }
       },
         (error: any) => {
