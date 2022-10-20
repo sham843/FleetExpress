@@ -111,14 +111,6 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
         
       }
     }, 1000);
-    // this.timers = interval(1000).pipe(
-    //   map(value => this.maxValue - value),
-    //   takeWhile(x => x >= 0)
-    // );
-    // this.timers.subscribe((res: any) => {
-    //   this.timerValue = res.toString().length != 2 ? '00.0' + res : '00.' + res;
-    //   this.timerValue=='00.00'?this.timerFlag=false:this.timerFlag=true;
-    // })
   }
 
   // -----------------------------------------------------verify OTp------------------------------------------------------------

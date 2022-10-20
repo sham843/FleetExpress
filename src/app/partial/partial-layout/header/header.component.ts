@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { OverlayContainer } from '@angular/cdk/overlay';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from 'src/app/dialogs/confirmation/confirmation.component';
 import { ConfigService } from 'src/app/services/config.service';
@@ -11,11 +12,22 @@ import { SidebarService } from '../sidebar/sidebar.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-
+  @HostBinding('class') className = '';
   constructor(public sidebarservice: SidebarService,
     private sharedService:SharedService,
     private dialog:MatDialog,
-    private config:ConfigService) { }
+    private config:ConfigService,
+    private overlay:OverlayContainer) { }
+
+    themeChange(darkMode:any){
+      const darkClassName = 'darkMode';
+    this.className = darkMode=='dark' ? darkClassName : '';
+    if (darkMode) {
+      this.overlay.getContainerElement().classList.add(darkClassName);
+    } else {
+      this.overlay.getContainerElement().classList.remove(darkClassName);
+    }
+    }
   toggleSidebar() {
     this.sidebarservice.setSidebarState(!this.sidebarservice.getSidebarState());
   }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ThemePalette } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
@@ -36,6 +37,7 @@ export class DriverComponent implements OnInit {
   deleteBtn: boolean = false;
   selectAll!: boolean;
   checkdata = new Array();
+  color: ThemePalette = 'accent';
   driverName=new FormControl('');
   constructor(
     public validation: ValidationService,
@@ -74,6 +76,7 @@ export class DriverComponent implements OnInit {
       if (res.statusCode === "200") {
         this.driverDetails = res.responseData.responseData1;
         !this.driverName.value ? this.checkdata = res.responseData.responseData1 : '';
+        console.log(this.checkdata)
         this.spinner.hide();
         this.driverDetails.forEach((ele: any) => {
           ele['isBlockFlag'] = false;

@@ -15,7 +15,7 @@ const routes: Routes = [
     children: [
       { path: '', loadChildren: () => import('./web/web-layout/web-layout.module').then(m => m.WebLayoutModule),canActivate:[LoggedInAuthGuard]},
       {path:'login',loadChildren:()=>import('./web/login/login.module').then(m=>m.LoginModule) ,canActivate:[LoggedInAuthGuard]},
-      {path:'forget-password',loadChildren:()=>import('./web/forget-password/forget-password.module').then(m=>m.ForgetPasswordModule) ,canActivate:[LoggedInAuthGuard]}
+      {path:'forgot-password',loadChildren:()=>import('./web/forget-password/forget-password.module').then(m=>m.ForgetPasswordModule) ,canActivate:[LoggedInAuthGuard]}
         ]
   },
   {
