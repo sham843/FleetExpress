@@ -1826,10 +1826,18 @@ input::-ms-clear {
 }
 .ngx-pagination{
   margin: 0 !important;
+  margin-right: 10px !important;
+}
+.ngx-pagination li{
+  font-size: 0.85rem;
+}
+.ngx-pagination li a{
+  text-decoration: none !important;
 }
 .ngx-pagination .current {
   padding: 0.1875rem 0.625rem;
-  background: #32bbbb;
+  background: var(--main-gradient) !important;
+  color: #fff !important;
 }
 
 .ngx-pagination li {
