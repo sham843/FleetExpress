@@ -8,10 +8,12 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AgmCoreModule } from '@agm/core';
 import { ConfigService } from 'src/app/services/config.service';
+import { ViewReportComponent } from './view-report/view-report.component';
 
 @NgModule({
   declarations: [
-    ReportsComponent
+    ReportsComponent,
+    ViewReportComponent
   ],
   imports: [
     CommonModule,

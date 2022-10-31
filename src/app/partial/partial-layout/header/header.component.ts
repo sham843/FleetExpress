@@ -1,5 +1,5 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, HostBinding, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit, Renderer2 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from 'src/app/dialogs/confirmation/confirmation.component';
 import { ConfigService } from 'src/app/services/config.service';
@@ -13,21 +13,24 @@ import { SidebarService } from '../sidebar/sidebar.service';
 })
 export class HeaderComponent implements OnInit {
   @HostBinding('class') className = '';
+  themeColor: any = 'light';
   constructor(public sidebarservice: SidebarService,
-    private sharedService:SharedService,
-    private dialog:MatDialog,
-    private config:ConfigService,
-    private overlay:OverlayContainer) { }
+    private sharedService: SharedService,
+    private dialog: MatDialog,
+    private config: ConfigService,
+    private overlay: OverlayContainer,
+    private renderer: Renderer2) { }
 
-    themeChange(darkMode:any){
-      const darkClassName = 'darkMode';
-    this.className = darkMode=='dark' ? darkClassName : '';
+  themeChange(darkMode: any) {
+    this.sharedService.setTheme(darkMode);
+    const darkClassName = 'darkMode';
+    this.className = darkMode == 'dark' ? darkClassName : '';
     if (darkMode) {
       this.overlay.getContainerElement().classList.add(darkClassName);
     } else {
       this.overlay.getContainerElement().classList.remove(darkClassName);
     }
-    }
+  }
   toggleSidebar() {
     this.sidebarservice.setSidebarState(!this.sidebarservice.getSidebarState());
   }
@@ -43,6 +46,11 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.sharedService.getTheme().subscribe(res => {
+      res == 'light' ? (this.renderer.addClass(document.body, 'lightTheme'), this.renderer.removeClass(document.body, 'darkTheme')) :
+        (this.renderer.addClass(document.body, 'darkTheme'), this.renderer.removeClass(document.body, 'lightTheme'));
+    }
+    );
   }
   confirmationDialog(flag: boolean, label: string) {
     let obj: any = ConfigService.dialogObj;
@@ -58,7 +66,7 @@ export class HeaderComponent implements OnInit {
       disableClose: this.config.disableCloseBtnFlag,
     })
     dialog.afterClosed().subscribe(res => {
-        res == 'Yes' ?  this.sharedService.logOut():'';
+      res == 'Yes' ? this.sharedService.logOut() : '';
     }
     )
   }

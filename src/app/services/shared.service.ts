@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { ApiCallService } from './api-call.service';
 import { CommonMethodsService } from './common-methods.service';
 import { ErrorsService } from './errors.service';
@@ -11,110 +11,93 @@ import { ErrorsService } from './errors.service';
 export class SharedService {
   codecareerPage!: string;
   subscription!: Subscription;
-  alertTypeArray=[
+  alertTypeArray = [
     {
       "alertType": "etp-missing-tracking",
-      "color":"pink"
+      "color": "pink"
     },
     {
       "alertType": "tracking-not-found-etp",
-      "color":"light-red"
+      "color": "light-red"
     },
     {
       "alertType": "harsh-acceleration",
-      "color":"cyan"
+      "color": "cyan"
     },
     {
       "alertType": "etp-destination-not-reached",
-      "color":"blue-green"
+      "color": "blue-green"
     },
     {
       "alertType": "tracking-not-consistent-etp",
-      "color":"olive"
+      "color": "olive"
     },
     {
       "alertType": "power-connected",
-      "color":"dark-voilet"
+      "color": "dark-voilet"
     },
     {
       "alertType": "boxopen-on",
-      "color":"maroon"
+      "color": "maroon"
     },
     {
       "alertType": "geo-in",
-      "color":"magenta"
+      "color": "magenta"
     },
     {
       "alertType": "ignition-on",
-      "color":"green"
+      "color": "green"
     },
     {
       "alertType": "ignition-off",
-      "color":"red"
+      "color": "red"
     },
     {
       "alertType": "overspeed",
-      "color":"yellow"
+      "color": "yellow"
     },
     {
       "alertType": "etp-double-trips",
-      "color":"sky-blue"
+      "color": "sky-blue"
     },
     {
       "alertType": "geo-out",
-      "color":"voilet"
+      "color": "voilet"
     },
     {
       "alertType": "boxopen-off",
-      "color":"dark-pink"
+      "color": "dark-pink"
     },
     {
       "alertType": "etp-validity-finish",
-      "color":"dark-cyan"
+      "color": "dark-cyan"
     },
     {
       "alertType": "power-cut",
-      "color":"orange"
+      "color": "orange"
     },
     {
       "alertType": "etp-destination-reached",
-      "color":"brinjal"
+      "color": "brinjal"
     }
   ];
-  constructor(private commonMethods:CommonMethodsService,
-    private error:ErrorsService,
-    private apiCall:ApiCallService,
-    private spinner: NgxSpinnerService,
-) {
+
+  private theme = new BehaviorSubject('light');
+  getTheme() {
+    return this.theme.asObservable();
   }
-  /* createCaptchaCarrerPage() {
-    //clear the contents of captcha div first
-    let id: any = document.getElementById('captcha');
-    id.innerHTML = "";
-    var charsArray ="0123456789";
-    var lengthOtp = 4;
-    var captcha = [];
-    for (var i = 0; i < lengthOtp; i++) {
-      var index = Math.floor(Math.random() * charsArray.length + 1);
-      if (captcha.indexOf(charsArray[index]) == -1)
-        captcha.push(charsArray[index]);
-      else i--;
-    }
-    var canv = document.createElement("canvas");
-    canv.id = "captcha1";
-    canv.width = 120;
-    canv.height = 50;
-    var ctx: any = canv.getContext("2d");
-    ctx.font = "23px Times New Roman";
-    ctx.fillText(captcha.join(""), 0, 32);
-    this.codecareerPage = captcha.join("");
-    let appendChild: any = document.getElementById("captcha");
-    appendChild.appendChild(canv);
+  setTheme(color: any) {
+    this.theme.next(color);
   }
 
-  checkvalidateCaptcha() {
-    return this.codecareerPage;
-  } */
+
+  constructor(private commonMethods: CommonMethodsService,
+    private error: ErrorsService,
+    private apiCall: ApiCallService,
+    private spinner: NgxSpinnerService,
+  ) {
+  }
+
   uploadDocuments(event?: any, allowedDocTypes?: any) {
     return new Observable(obj => {
       let selResult = event != '' && event != undefined ? event.target.value.split('.') : '';
@@ -183,7 +166,7 @@ export class SharedService {
                   obj.next(res);
                 }
                 else {
-                  this.commonMethods.checkDataType(res.statusMessage) == false ? this.error.handelError(res.statusCode) :this.commonMethods.snackBar(res.statusMessage, 1);
+                  this.commonMethods.checkDataType(res.statusMessage) == false ? this.error.handelError(res.statusCode) : this.commonMethods.snackBar(res.statusMessage, 1);
                 }
               },
             })
@@ -203,7 +186,7 @@ export class SharedService {
     this.commonMethods.routerLinkRedirect('login');
   }
 
-  getAddressBylatLong(pageNo: any, data: any, pageSize:any): Observable<any> { //pagination 
+  getAddressBylatLong(pageNo: any, data: any, pageSize: any): Observable<any> { //pagination 
     this.spinner.show();
     let counter;
     let lastIndex: any;
@@ -255,12 +238,11 @@ export class SharedService {
   }
 
   ngOnDestroy() {
-    if(this.subscription){
+    if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  
 }
 
 

@@ -2,6 +2,7 @@ import { MapsAPILoader } from '@agm/core';
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
@@ -11,6 +12,7 @@ import { ExcelPdfDownloadedService } from 'src/app/services/excel-pdf-downloaded
 import { MasterService } from 'src/app/services/master.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
+import { ViewReportComponent } from './view-report/view-report.component';
 
 interface timePeriodArray {
   value: string;
@@ -54,7 +56,8 @@ export class ReportsComponent implements OnInit {
     private error: ErrorsService,
     public config: ConfigService,
     private mapsAPILoader: MapsAPILoader,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private dialog:MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -237,7 +240,7 @@ export class ReportsComponent implements OnInit {
   }
   onDownloadPDF() {
     let vehicleName: any;
-    let data;
+    let datas;
     this.vehicleList.find((ele: any) => {
       if (this.reportForm.value.VehicleNumber == ele.vehicleNo) {
         vehicleName = ele.vehTypeName;
@@ -245,7 +248,7 @@ export class ReportsComponent implements OnInit {
       this.reportForm.value['vehicleName'] = vehicleName;
     });
     let resData = this.reportResponseData.map((item: any) => Object.assign({}, item));
-    data = resData.map((x: any) => {
+    datas = resData.map((x: any) => {
       x.deviceDateTime = this.datepipe.transform(x.deviceDateTime, 'dd-MM-YYYY hh:mm a')
       return x
     });
@@ -270,7 +273,7 @@ export class ReportsComponent implements OnInit {
     } else {
       this.header = ["SrNo.", " Driver Name", "tripDurationInMins", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
     }
-    this.excelService.downLoadPdf(data, pageName, formDataObj,this.header,this.key);
+    this.excelService.downLoadPdf(datas, pageName, formDataObj,this.header,this.key);
   }
   onDownloadExcel() {
     let vehicleName: any;
@@ -308,7 +311,58 @@ export class ReportsComponent implements OnInit {
     }
     this.excelService.exportAsExcelFile(data, formdata, pageName,this.header,this.key);
   }
- 
+
+  viewReport() {
+    let vehicleName: any;
+    let datas;
+    this.vehicleList.find((ele: any) => {
+      if (this.reportForm.value.VehicleNumber == ele.vehicleNo) {
+        vehicleName = ele.vehTypeName;
+      }
+      this.reportForm.value['vehicleName'] = vehicleName;
+    });
+    let resData = this.reportResponseData.map((item: any) => Object.assign({}, item));
+    datas = resData.map((x: any) => {
+      x.deviceDateTime = this.datepipe.transform(x.deviceDateTime, 'dd-MM-YYYY hh:mm a')
+      return x
+    });
+
+    resData = this.reportResponseData;
+    let formDataObj: any = this.reportForm.value;
+    let pageName = this.selectedTablabel;
+   /*  if (pageName == "Speed Range Report") {
+      this.header = ["Sr No.", " Date","Speed(Km/h)","Address"];
+      this.key = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
+    }
+    else if (pageName == "Overspeed Report") {
+      this.header = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
+      this.key = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
+    }
+    else if (pageName == "Address Report") {
+      this.header = ["Sr No.", " Date", "Address"];
+    }
+    else if (pageName == "Trip Report") {
+      this.header = ["Sr No.", " Distance", "Duration", "Start Date", "Start Address", "End Date", "End Address"];
+      this.key = ['', 'travelledDistance', 'speed', 'startDateTime', 'startLatLong', 'endDateTime', 'endLatLong'];
+    } else {
+      this.header = ["SrNo.", " Driver Name", "tripDurationInMins", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
+    } */
+  
+   let obj: any;
+   obj=formDataObj;
+   obj.pageNames=pageName;
+   obj.data=datas;
+    const dialog = this.dialog.open(ViewReportComponent, {
+      width: '900px',
+      data: obj,
+      disableClose: this.config.disableCloseBtnFlag,
+    })
+
+    dialog.afterClosed().subscribe(() => {
+     
+    }
+    )
+  }
 
 
   showTableData() {
