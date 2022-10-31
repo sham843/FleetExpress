@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { SidebarService } from './sidebar.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -16,11 +17,15 @@ import { SidebarService } from './sidebar.service';
 })
 export class SidebarComponent implements OnInit {
   menus:any = [];
-  constructor(public sidebarservice: SidebarService) {
+  lightIcon:any='light';
+  constructor(public sidebarservice: SidebarService, public sharedService: SharedService) {
     this.menus = sidebarservice.getMenuList();
    }
 
   ngOnInit(): void {
+    this.sharedService.getTheme().subscribe((res:any)=>{
+      this.lightIcon=res;
+    })
   }
   getSideBarState() {
     return this.sidebarservice.getSidebarState();
