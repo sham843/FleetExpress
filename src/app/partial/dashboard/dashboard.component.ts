@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { MapsAPILoader } from '@agm/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as moment from 'moment';
 import {
   ApexAxisChartSeries,
@@ -8,11 +9,11 @@ import {
   ApexXAxis,
   ApexPlotOptions
 } from "ng-apexcharts";
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { ApiCallService } from 'src/app/services/api-call.service';
+import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
-
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -50,8 +51,20 @@ export class DashboardComponent implements OnInit {
   currentdate=new Date();
   alertTypeArray:any;
   powerCutData=new Array();
+  lat!: number;
+  long!: number;
+  zoom:number = 4;
+  subscription!:Subscription;
+  @ViewChild('search')
+  public searchElementRef !: ElementRef  ;
+  geoCoder:any;
+  markers:any;
+  allVehiclelData=new Array();
+  map:any;
+  currentDate=new Date();
+  icon = { url: '../../assets/images/location.png', scaledSize: {height: 15, width: 20}}
   constructor(private webStorage: WebStorageService, private apiCall:ApiCallService,
-    private error:ErrorsService) {
+    private error:ErrorsService ,private mapsAPILoader: MapsAPILoader, public config: ConfigService) {
     this.VehiclesLastUpdatedbarChartOptions = {
       series: [],
       chart: {
@@ -116,6 +129,8 @@ export class DashboardComponent implements OnInit {
     this.getPOIAlertData();
     this.getOverSpeedPowerCutData();
     this.getSIMRenewalReminderData();
+    this.mapCall();
+    this.getAllVehicleListData();
   }
   thresholdConfig = {
     '0': {color: 'green'},
@@ -172,14 +187,15 @@ export class DashboardComponent implements OnInit {
           'gaugeThick' : 15,
           'guageCap':  'round'
         }
+        
         this.getBarChartData(this.vehiclesMoving);
       }
       else {
-        (error: any) => {
-          this.error.handelError(error.status);
+          this.getBarChartData(this.config.vehicleArray);
+          this.fastestVehicleObj=this.config.staticVehicleDataObj;
+          this.avarageSpeedObj=this.config.staticVehicleDataObj;
       }
-      }
-    },(error: any) => {
+    },(error:any) => {
       this.error.handelError(error.status);
   })
   }
@@ -189,10 +205,11 @@ export class DashboardComponent implements OnInit {
     this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
         this.vehicleStatusData = responseData.responseData;
+        console.log(this.vehicleStatusData)
         this.getpieChartData(this.vehicleStatusData);
       }
       else {
-        this.error.handelError(responseData.statusCode);
+        // this.error.handelError(responseData.statusCode);
       }
     },(error: any) => {
       this.error.handelError(error.status);
@@ -252,6 +269,18 @@ export class DashboardComponent implements OnInit {
       this.error.handelError(error.status);
   })
   }
+  getAllVehicleListData() {
+    this.apiCall.setHttp('get', 'tracking/get-vehicles-current-location?UserId=' + this.webStorage.getUserId() + '&VehicleNo=&GpsStatus=', true, false, false, 'fleetExpressBaseUrl');
+    this.subscription = this.apiCall.getHttp().subscribe({
+      next: (res: any) => {
+        if (res.statusCode === "200") {
+          this.allVehiclelData = res.responseData;
+        } else {
+          this.allVehiclelData = [];
+        }
+      }
+    }, (error: any) => { this.error.handelError(error.status) });
+  }
   getBarChartData(items: any) {
     this.VehiclesLastUpdatedbarChartOptions.xaxis = {};
     this.VehiclesLastUpdatedbarChartOptions.series = [];
@@ -283,5 +312,13 @@ export class DashboardComponent implements OnInit {
     series[3] = items.offlineVehicles|0;
     this.FleetStatusPieChartOption.series = series;
     this.pieChartDisplay = true;
+  }
+  onMapReady(map: any) {
+    this.map = map;
+  }
+  mapCall() {
+    this.mapsAPILoader.load().then(() => {
+      new google.maps.Geocoder;
+    });
   }
 }
