@@ -7,7 +7,7 @@ import { SidebarService } from './sidebar/sidebar.service';
   styleUrls: ['./partial-layout.component.scss']
 })
 export class PartialLayoutComponent implements OnInit {
-
+  theme:any;
   constructor(public sidebarservice: SidebarService) { }
   toggleSidebar() {
     this.sidebarservice.setSidebarState(!this.sidebarservice.getSidebarState());
@@ -23,6 +23,8 @@ export class PartialLayoutComponent implements OnInit {
     this.sidebarservice.setSidebarState(true);
   }
   ngOnInit(): void {
+    this.theme=sessionStorage.getItem('darkmode');
+    console.log(this.theme)
   }
 
 }

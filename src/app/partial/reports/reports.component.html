@@ -104,11 +104,10 @@
                                 </div>
                                 <div class="d-flex justify-content-end">
                                     <button class="btn btn-main">Search</button>
-                                    <button type="button" class="btn btn-outline-secondary mx-2" (click)="showTableData()" [disabled]="!this.reportResponseData.length">
+                                    <button type="button" class="btn btn-outline-secondary mx-2" (click)="showTableData()" (click)="viewReport()">
                                         <i class="fa-solid fa-eye"></i>
                                     </button>
-                                    {{this.reportResponseData.length}}
-                                    <button type="button" class="btn btn-outline-secondary" [matMenuTriggerFor]="menu" [disabled]="!this.reportResponseData.length">
+                                    <button type="button" class="btn btn-outline-secondary" [matMenuTriggerFor]="menu" >
                                         <i class="fa-solid fa-download"></i>
                                     </button>
                                     <mat-menu #menu="matMenu" >
