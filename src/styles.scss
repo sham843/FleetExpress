@@ -1863,9 +1863,58 @@ input::-ms-clear {
   opacity: 0;
 }
 
- .lightTheme{
-  background-color: rgb(226, 164, 164);
-}
+//  .lightTheme{
+//   background-color: rgb(226, 164, 164);
+// }
 .darkTheme{
-  background-color: #92bda9;
+  background-color: #151521;
 } 
+.darkTheme .page-heading{
+  color: #fff;
+} 
+.darkTheme .navbar .dropdown-menu,
+.darkTheme .card{
+  background-color: #1E1E2D;
+} 
+.darkTheme .navbar .dropdown-menu .dropdown-item{
+  color: #fff;
+} 
+.darkTheme .navbar .dropdown-menu .dropdown-item:active,
+.darkTheme .navbar .dropdown-menu .dropdown-item:focus,
+.darkTheme .navbar .dropdown-menu .dropdown-item:hover{
+  background-color: #000;
+} 
+.darkTheme .card .card-header{
+  color: #fff;
+} 
+.darkTheme #dash-stats p{
+  color: #fff;
+} 
+.darkTheme #dash-stats small{
+  color: #959EBC;
+} 
+.darkTheme .apexcharts-legend-text{
+  color: #FFFFFF !important;
+} 
+.darkTheme .sidebar .sidebar-content a{
+  border-left: 3px solid #151521 !important;
+} 
+.darkTheme .sidebar .sidebar-content a.active, 
+.darkTheme .sidebar .sidebar-content a:hover{
+  border-left: 3px solid var(--main-color) !important;
+} 
+.darkTheme footer{
+  color:#8585A4 ;
+}
+.darkTheme .navbar .btn .material-icons{
+  color:#fff ;
+}
+.darkTheme #dash-stats .due-overdue {
+  background-color: #323232 !important;
+}
+.darkTheme #dash-stats .due {  
+  background-image: url('./assets/images/Dashboard/Reminder-Due.svg');
+}
+.darkTheme #dash-stats .overdue {
+  background-image: url('./assets/images/Dashboard/Reminder-overdue.svg');
+}
