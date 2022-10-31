@@ -31,8 +31,8 @@ export class ReportsComponent implements OnInit {
   selectedTablabel!: string;
   reportResponseData = new Array();
   currentDate = moment().toISOString();
-  header:any;
- key:any;
+  header: any;
+  key: any;
   timePeriodArray: timePeriodArray[] = [
     { value: '1', viewValue: 'Today' },
     { value: '2', viewValue: '24hr' },
@@ -57,7 +57,7 @@ export class ReportsComponent implements OnInit {
     public config: ConfigService,
     private mapsAPILoader: MapsAPILoader,
     private sharedService: SharedService,
-    private dialog:MatDialog
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -257,7 +257,7 @@ export class ReportsComponent implements OnInit {
     let formDataObj: any = this.reportForm.value;
     let pageName = this.selectedTablabel;
     if (pageName == "Speed Range Report") {
-      this.header = ["Sr No.", " Date","Speed(Km/h)","Address"];
+      this.header = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
       this.key = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
     }
     else if (pageName == "Overspeed Report") {
@@ -273,7 +273,7 @@ export class ReportsComponent implements OnInit {
     } else {
       this.header = ["SrNo.", " Driver Name", "tripDurationInMins", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
     }
-    this.excelService.downLoadPdf(datas, pageName, formDataObj,this.header,this.key);
+    this.excelService.downLoadPdf(datas, pageName, formDataObj, this.header, this.key);
   }
   onDownloadExcel() {
     let vehicleName: any;
@@ -291,9 +291,9 @@ export class ReportsComponent implements OnInit {
     });
     let formdata = this.reportForm.value;
     let pageName = this.selectedTablabel;
-    
+
     if (pageName == "Speed Range Report") {
-      this.header = ["Sr No.", " Date","Speed(Km/h)","Address"];
+      this.header = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
       this.key = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
     }
     else if (pageName == "Overspeed Report") {
@@ -309,7 +309,7 @@ export class ReportsComponent implements OnInit {
     } else {
       this.header = ["SrNo.", " Driver Name", "tripDurationInMins", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
     }
-    this.excelService.exportAsExcelFile(data, formdata, pageName,this.header,this.key);
+    this.excelService.exportAsExcelFile(data, formdata, pageName, this.header, this.key);
   }
 
   viewReport() {
@@ -326,46 +326,20 @@ export class ReportsComponent implements OnInit {
       x.deviceDateTime = this.datepipe.transform(x.deviceDateTime, 'dd-MM-YYYY hh:mm a')
       return x
     });
-
     resData = this.reportResponseData;
-    let formDataObj: any = this.reportForm.value;
     let pageName = this.selectedTablabel;
-   /*  if (pageName == "Speed Range Report") {
-      this.header = ["Sr No.", " Date","Speed(Km/h)","Address"];
-      this.key = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
-    }
-    else if (pageName == "Overspeed Report") {
-      this.header = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
-      this.key = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
-    }
-    else if (pageName == "Address Report") {
-      this.header = ["Sr No.", " Date", "Address"];
-    }
-    else if (pageName == "Trip Report") {
-      this.header = ["Sr No.", " Distance", "Duration", "Start Date", "Start Address", "End Date", "End Address"];
-      this.key = ['', 'travelledDistance', 'speed', 'startDateTime', 'startLatLong', 'endDateTime', 'endLatLong'];
-    } else {
-      this.header = ["SrNo.", " Driver Name", "tripDurationInMins", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
-    } */
-  
-   let obj: any;
-   obj=formDataObj;
-   obj.pageNames=pageName;
-   obj.data=datas;
+
+    let obj: any;
+    obj = this.reportForm.value;
+    obj.pageNames = pageName;
+    obj.data = datas;
     const dialog = this.dialog.open(ViewReportComponent, {
       width: '900px',
       data: obj,
       disableClose: this.config.disableCloseBtnFlag,
     })
-
     dialog.afterClosed().subscribe(() => {
-     
     }
     )
-  }
-
-
-  showTableData() {
-
   }
 }

@@ -17,7 +17,7 @@ export class ExcelPdfDownloadedService {
     return alpha;
   }
   downLoadPdf(data: any, pageName: any, responseData: any,header:any,key:any) {
-   
+    console.log(responseData)
     let result: any = data.map((obj: any) => {
       let filterObj: any = {};
       for (let i: any = 0; i < key.length; i++) {
@@ -31,7 +31,7 @@ export class ExcelPdfDownloadedService {
     doc.setFontSize(20);
     doc.text(80, 10, pageName);
     doc.setFontSize(9);
-    doc.setTextColor(0, 0, 0);
+    doc.setTextColor(0, 0, 0);   
     doc.text(5, 20, "From : " + this.datepipe.transform(responseData.fromDate, 'dd/MM/YYYY hh:mm a'));
     doc.text(47, 20, "To : " + this.datepipe.transform(responseData.toDate, 'dd/MM/YYYY hh:mm a'));
     doc.text(185, 20, "Date :" + this.datepipe.transform(new Date, 'dd/MM/YYYY'));
