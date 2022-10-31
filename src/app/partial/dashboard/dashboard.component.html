@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between align-items-center">
-    <p class="fw-bold small mb-2">Dashboard</p>
+    <p class="fw-bold small mb-2 page-heading">Dashboard</p>
     <!-- <p class="small mb-2">Date :
         {{ currentdate | date: 'dd-MM-yyyy'}}
     </p> -->
@@ -19,9 +19,16 @@
             </div>
         </div>
         <div class="card plain-card mb-3">
-            <div class="card-header">Live Tracking</div>
-            <div class="card-body">
-                asdf
+            <div class="card-header">Live Tracking</div>    
+            <div class="card-body" [routerLink]="['/tracking']">
+              <agm-map [latitude]="this.config.lat" [zoom]="zoom" [longitude]="this.config.long" class="rounded"
+                        (mapReady)="onMapReady($event)">
+                        <agm-marker 
+                        *ngFor="let m of allVehiclelData; let i = index"
+                        [latitude]="m.latitude"
+                        [longitude]="m.longitude"
+                        [iconUrl]="$any(icon)">
+                    </agm-marker></agm-map>
             </div>
         </div>
     </div>
@@ -72,12 +79,18 @@
                     <div class="card-body text-center">
                         <div class="row">
                             <div class="col-6">
-                                <img src="assets/images/Dashboard/Reminder-Due.svg">
+                                <div class="due-overdue">
+                                    <img src="assets/images/Dashboard/Reminder-Due.svg">
+                                </div>
+                                <!-- <img src="assets/images/Dashboard/Reminder-Due.svg" class="due-overdue"> -->
                                 <small>Due</small>
                                 <h3>{{SIMRenewalReminderData[0]?.due||0}}</h3>
                             </div>
                             <div class="col-6">
-                                <img src="assets/images/Dashboard/Reminder-overdue.svg">
+                                <div class="due-overdue">
+                                    <img src="assets/images/Dashboard/Reminder-overdue.svg">
+                                </div>
+                                <!-- <img src="assets/images/Dashboard/Reminder-overdue.svg" class="due-overdue"> -->
                                 <small>Overdue</small>
                                 <h3>{{SIMRenewalReminderData[0]?.overDue||0}}</h3>
                             </div>
@@ -93,7 +106,7 @@
                             [label]="avarageSpeedObj?.gaugeLabel" [append]="avarageSpeedObj?.gaugeAppendText"
                             [thick]="avarageSpeedObj?.gaugeThick" [animate]="true" [cap]="avarageSpeedObj?.guageCap" [markers]="markerConfig">
                         </ngx-gauge>
-                        <div class="fw-bold">{{'Vehicles Moving : '+vehiclesMoving.length}}</div>
+                        <div class="fw-bold">{{'Vehicles Moving : '+ (vehiclesMoving.length?vehiclesMoving.length:'5')}}</div>
                     </div>
                 </div>
             </div>
@@ -106,8 +119,8 @@
                             [thick]="fastestVehicleObj?.gaugeThick" [animate]="true" [cap]="fastestVehicleObj?.guageCap" [markers]="markerConfig">
                         </ngx-gauge>
 
-                        <div class="fw-bold">{{'Vehicle No. : '+ maxSpeedObj?.vehicleNo}}</div>
-                        <div class="fw-normal">{{'At : '+ maxSpeedObj?.deviceDatetime | date: 'dd-MM-yyyy hh:mm:ss a'}}
+                        <div class="fw-bold">{{'Vehicle No. : '+ (maxSpeedObj.length? maxSpeedObj?.vehicleNo:'PP22PP2222')}}</div>
+                        <div class="fw-normal">At :  {{maxSpeedObj.length?(maxSpeedObj?.deviceDatetime | date: 'dd-MM-yyyy hh:mm:ss a'): currentDate| date: 'dd-MM-yyyy hh:mm:ss a'}}
                         </div>
                     </div>
 
@@ -124,16 +137,6 @@
                     [dataLabels]="VehiclesLastUpdatedbarChartOptions.dataLabels"
                     [plotOptions]="VehiclesLastUpdatedbarChartOptions.plotOptions"
                     [xaxis]="VehiclesLastUpdatedbarChartOptions.xaxis"></apx-chart>
-
             </div>
-            <!-- <div class="card plain-card">
-            <div class="card-header">sadf</div>
-            <div class="card-body">
-                asdf
-                <div class="card-body">
-                    <button mat-raised-button (click)="openDialog()">Pick one</button>
-                </div>
-            </div>
-        </div> -->
         </div>
     </div>
