@@ -17,7 +17,7 @@ export class ConfigService {
 
   //------------------------------------------ Maps Settings  starte heare -------------------------------------------//
 
-  lat =20.879865;
+  lat = 20.879865;
 
   long = 78.905043;
 
@@ -36,16 +36,60 @@ export class ConfigService {
   //--------------------------------------- dialog Data obj start heare ------------------------------------------//
 
   static dialogObj: object = {
-    p1:'',
-    p2:'',
-    cardTitle:'',
-    successBtnText:'',
-    cancelBtnText:'',
-    dialogIconClose:'',
-    inputType:false,
-    inputTypeLable:''
+    p1: '',
+    p2: '',
+    cardTitle: '',
+    successBtnText: '',
+    cancelBtnText: '',
+    dialogIconClose: '',
+    inputType: false,
+    inputTypeLable: ''
   }
-  
+
   // state
-  stateIdSelected = 1
+  stateIdSelected = 1;
+
+
+  //static vehicle Array
+  vehicleArray = [
+    {
+      "rowNumber": 1,
+      "vehicleNo": "PP22PP2222",
+      "speed":80,
+      "deviceDatetime" :  "2022-01-01T10:15:50+05:30"
+    },
+    {
+      "rowNumber": 2,
+      "vehicleNo": "ZZ22ZZ2222",
+      "speed":80,
+      "deviceDatetime" :  "2022-01-01T10:15:50+05:30"
+    },
+    {
+      "rowNumber": 3,
+      "vehicleNo": "JK55JK5555",
+      "speed":80,
+      "deviceDatetime" :  "2022-01-01T10:15:50+05:30"
+    },
+    {
+      "rowNumber": 4,
+      "vehicleNo": "GH12SC8000",
+      "speed":80,
+      "deviceDatetime" :  "2022-01-01T10:15:50+05:30"
+    },
+    {
+      "rowNumber": 5,
+      "vehicleNo": "MH12SH2595",
+      "speed":80,
+      "deviceDatetime" :  "2022-01-01T10:15:50+05:30"
+    },
+  ]
+
+  staticVehicleDataObj={
+    'gaugeType': "arch",
+    'gaugeValue' :80,
+    'gaugeLabel' : "Speed",
+    'gaugeAppendText' : "km/hr",
+    'gaugeThick' : 15,
+    'guageCap':  'round'
+  }
 }

@@ -19,9 +19,16 @@
             </div>
         </div>
         <div class="card plain-card mb-3">
-            <div class="card-header">Live Tracking</div>
-            <div class="card-body">
-                asdf
+            <div class="card-header">Live Tracking</div>    
+            <div class="card-body" [routerLink]="['/tracking']">
+              <agm-map [latitude]="this.config.lat" [zoom]="zoom" [longitude]="this.config.long" class="rounded"
+                        (mapReady)="onMapReady($event)">
+                        <agm-marker 
+                        *ngFor="let m of allVehiclelData; let i = index"
+                        [latitude]="m.latitude"
+                        [longitude]="m.longitude"
+                        [iconUrl]="$any(icon)">
+                    </agm-marker></agm-map>
             </div>
         </div>
     </div>
@@ -99,7 +106,7 @@
                             [label]="avarageSpeedObj?.gaugeLabel" [append]="avarageSpeedObj?.gaugeAppendText"
                             [thick]="avarageSpeedObj?.gaugeThick" [animate]="true" [cap]="avarageSpeedObj?.guageCap" [markers]="markerConfig">
                         </ngx-gauge>
-                        <div class="fw-bold">{{'Vehicles Moving : '+vehiclesMoving.length}}</div>
+                        <div class="fw-bold">{{'Vehicles Moving : '+ (vehiclesMoving.length?vehiclesMoving.length:'5')}}</div>
                     </div>
                 </div>
             </div>
@@ -112,8 +119,8 @@
                             [thick]="fastestVehicleObj?.gaugeThick" [animate]="true" [cap]="fastestVehicleObj?.guageCap" [markers]="markerConfig">
                         </ngx-gauge>
 
-                        <div class="fw-bold">{{'Vehicle No. : '+ maxSpeedObj?.vehicleNo}}</div>
-                        <div class="fw-normal">{{'At : '+ maxSpeedObj?.deviceDatetime | date: 'dd-MM-yyyy hh:mm:ss a'}}
+                        <div class="fw-bold">{{'Vehicle No. : '+ (maxSpeedObj.length? maxSpeedObj?.vehicleNo:'PP22PP2222')}}</div>
+                        <div class="fw-normal">At :  {{maxSpeedObj.length?(maxSpeedObj?.deviceDatetime | date: 'dd-MM-yyyy hh:mm:ss a'): currentDate| date: 'dd-MM-yyyy hh:mm:ss a'}}
                         </div>
                     </div>
 
@@ -130,16 +137,6 @@
                     [dataLabels]="VehiclesLastUpdatedbarChartOptions.dataLabels"
                     [plotOptions]="VehiclesLastUpdatedbarChartOptions.plotOptions"
                     [xaxis]="VehiclesLastUpdatedbarChartOptions.xaxis"></apx-chart>
-
             </div>
-            <!-- <div class="card plain-card">
-            <div class="card-header">sadf</div>
-            <div class="card-body">
-                asdf
-                <div class="card-body">
-                    <button mat-raised-button (click)="openDialog()">Pick one</button>
-                </div>
-            </div>
-        </div> -->
         </div>
     </div>
