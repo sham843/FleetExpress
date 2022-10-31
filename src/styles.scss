@@ -1934,7 +1934,12 @@ input::-ms-clear {
   filter: invert(1) !important;
 }
 .darkTheme .display-bar{
-  background-color: #1E1E2D !important;
+  background: #1E1E2D !important;
+}
+.darkTheme #filters .input-group-text, 
+.darkTheme #filters .input-group .form-control, 
+.darkTheme #filters .btn{
+  background-color: rgb(255, 255, 255, 0.06) !important;
 }
 
 
