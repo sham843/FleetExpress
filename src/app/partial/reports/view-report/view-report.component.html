@@ -1,35 +1,84 @@
-<!-- VehicleNumber
-: 
-"MH12AC1111"
-data
-: 
-(10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
-fromDate
-: 
-Wed Oct 12 2022 14:46:59 GMT+0530 (India Standard Time) {}
-pageNames
-: 
-"Speed Range Report"
-timePeriod
-: 
-"4"
-toDate
-: 
-"2022-10-18T09:17:03.000Z"
-vehicleName
-: 
-undefined -->
-
-
 <div class="container">
-   <div class="row">
-    <div class="col-sm-12">
-        <h3 class="text-center">{{this.dialogData.pageNames}}</h3>
-    </div>
-  <div class="row">
-    <div class="col-sm-4">
-        From : {{this.fromDate}}
-    </div>
+  <div style="text-align:end;">
+    <button type="button" class="btn-danger" mat-icon-button mat-dialog-close (click)="onNoClick('No')"><i
+        class="fas fa-times"></i></button>
   </div>
-   </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="text-center">{{this.dialogData.pageNames}}</h3>
+        </div>
+    </div>
+  
+    <div class="row mt-2">
+        <div class="col-sm-2 view">
+            From : {{this.fromDate}}
+        </div>
+        <div class="col-sm-2 view">
+            To : {{this.toDate}}
+        </div>
+        <div class="col-sm-8 text-end view">
+            Date : {{currentDate}}
+        </div>
+    </div>
+    <hr style="height:1.5px;color:black">
+    <div class="row">
+        <div class="col-sm-12 view">
+            Vehicle No : {{this.dialogData.VehicleNumber}}({{this.dialogData.vehicleName}})
+        </div>
+    </div>
+    <mat-table #table [dataSource]="dataSource">
+        <ng-container matColumnDef="rowNumber">
+          <mat-header-cell *matHeaderCellDef class="mxw-100">Sr No. </mat-header-cell>
+          <mat-cell *matCellDef="let element" class="mxw-100"> {{element.rowNumber}} </mat-cell>
+        </ng-container>
+      
+        <ng-container matColumnDef="deviceDateTime">
+          <mat-header-cell *matHeaderCellDef  class="mxw-150"> Date </mat-header-cell>
+          <mat-cell *matCellDef="let element" class="mxw-150"> {{element.deviceDateTime}} </mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="speed">
+          <mat-header-cell *matHeaderCellDef class="mxw-100 text-center"> Speed(Km/h) </mat-header-cell>
+          <mat-cell *matCellDef="let element" class="mxw-100 "> <div class="text-center w-100">{{element.speed}}</div> </mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="address">
+          <mat-header-cell *matHeaderCellDef> Address </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.address}} </mat-cell>
+        </ng-container>
+    
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+
+
+      <div class="row mt-3">
+        <div class="col-sm-12 ">
+            <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-light-main" (click)="onNoClick('No')">Cancel</button>
+
+                <button type="button" class="btn btn-outline-secondary" [matMenuTriggerFor]="menu" >
+                    <i class="fa-solid fa-download"></i>
+                </button>
+                <mat-menu #menu="matMenu" >
+                    <button mat-menu-item (click)="onDownloadPDF()">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>PDF</span>
+                            <span class="text-danger"><i class="fa-solid fa-file-pdf"></i></span>
+                        </div>
+                    </button>
+                    <button mat-menu-item (click)="onDownloadExcel()">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>Excel</span>
+                            <span class="text-success"><i class="fa-solid fa-file-excel"></i></span>
+                        </div>
+                    </button>
+                </mat-menu>
+            </div>
+
+           <!-- <div class="text-end">
+            
+           </div> -->
+        </div>
+      </div>
 </div>
