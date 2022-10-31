@@ -75,7 +75,7 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-4 text-end">
-                                            <button *ngIf="selectedTableData.length" class="btn btn-add" (click)="confirmationDialog(true, 'delete')">
+                                            <button [disabled]="!selectedTableData.length" class="btn btn-danger rounded-circle me-3" (click)="confirmationDialog(true, 'delete')">
                                                 <i class="fa-solid fa-trash-can"></i>
                                             </button>
                                             <button *ngIf="showTab=='users'" class="btn btn-add" (click)="addUpdateDialog('user')">
