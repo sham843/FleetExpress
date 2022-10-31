@@ -85,29 +85,33 @@
                         <div class="card-header pb-0">
                             <div class="row justify-content-between align-items-center">
                                 <div class="col-sm-8">
-                                    <div class="row align-items-center">
-                                        <div class="col-sm-auto">
-                                            Payment List
+                                    <form  [formGroup]="paymentHisroryFormData">
+                                        <div class="row align-items-center">
+                                            <div class="col-sm-auto">
+                                                Payment List
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <!-- <input type="date" class="form-control" placeholder="From Date"> -->
+                                                <mat-form-field appearance="legacy" class="w-100">
+                                                    <mat-label>From Date</mat-label>
+                                                    <input matInput [matDatepicker]="fromdate" [max]="currentDate" formControlName="fromDate">
+                                                    <mat-datepicker-toggle matSuffix [for]="fromdate"></mat-datepicker-toggle>
+                                                    <mat-datepicker #fromdate></mat-datepicker>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <!-- <input type="date" class="form-control" placeholder="To Date"> -->
+                                                <mat-form-field appearance="legacy" class="w-100">
+                                                    <mat-label>To Date</mat-label>
+                                                    <input matInput [matDatepicker]="todate" [max]="currentDate" formControlName="toDate" 
+                                                    [readonly]="!paymentHisrory['fromDate'].value" [min]="paymentHisrory['fromDate'].value"
+                                                    (dateChange)="getPaymentHistory()" >
+                                                    <mat-datepicker-toggle matSuffix [for]="todate" ></mat-datepicker-toggle>
+                                                    <mat-datepicker #todate [disabled]="!paymentHisrory['fromDate'].value"></mat-datepicker>
+                                                </mat-form-field>
+                                            </div>
                                         </div>
-                                        <div class="col-sm-3">
-                                            <!-- <input type="date" class="form-control" placeholder="From Date"> -->
-                                            <mat-form-field appearance="legacy" class="w-100">
-                                                <mat-label>From Date</mat-label>
-                                                <input matInput [matDatepicker]="fromdate">
-                                                <mat-datepicker-toggle matSuffix [for]="fromdate"></mat-datepicker-toggle>
-                                                <mat-datepicker #fromdate></mat-datepicker>
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <!-- <input type="date" class="form-control" placeholder="To Date"> -->
-                                            <mat-form-field appearance="legacy" class="w-100">
-                                                <mat-label>To Date</mat-label>
-                                                <input matInput [matDatepicker]="todate">
-                                                <mat-datepicker-toggle matSuffix [for]="todate"></mat-datepicker-toggle>
-                                                <mat-datepicker #todate></mat-datepicker>
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
+                                    </form>
                                 </div>
                                 <div class="col-sm-4 text-end">
                                     <button class="btn btn-outline-secondary btn-sm" [matMenuTriggerFor]="menu">
@@ -145,8 +149,21 @@
                                         <th></th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
+                                <tbody >
+                                    <tr *ngFor="let item of paymentHistoryDetails; let i=index">
+                                        <td>{{item?.rowNumber}}</td>
+                                        <td>{{item?.transactionId}}</td>
+                                        <td>{{item?.firstName}}</td>
+                                        <td>{{item?.noOfVehicle}}</td>
+                                        <td>{{item?.vehicleRegistrationNo}}</td>
+                                        <td>{{item?.paymentDate}}</td>
+                                        <td>₹ {{item?.amount}}</td>
+                                        <td>
+                                            <span class="text-success">{{item?.status}}</span>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <!-- <tr>
                                         <td>1</td>
                                         <td>TXKFLRIGBNE1234566</td>
                                         <td>Nilesh Rajashi</td>
@@ -188,7 +205,7 @@
                                                 <i class="fa-solid fa-rotate"></i>
                                             </button>
                                         </td>
-                                    </tr>
+                                    </tr> -->
                                 </tbody>
                             </table>
                         </div>

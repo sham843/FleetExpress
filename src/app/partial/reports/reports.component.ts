@@ -29,6 +29,8 @@ export class ReportsComponent implements OnInit {
   selectedTablabel!: string;
   reportResponseData = new Array();
   currentDate = moment().toISOString();
+  header:any;
+ key:any;
   timePeriodArray: timePeriodArray[] = [
     { value: '1', viewValue: 'Today' },
     { value: '2', viewValue: '24hr' },
@@ -251,8 +253,24 @@ export class ReportsComponent implements OnInit {
     resData = this.reportResponseData;
     let formDataObj: any = this.reportForm.value;
     let pageName = this.selectedTablabel;
-
-    this.excelService.downLoadPdf(data, pageName, formDataObj);
+    if (pageName == "Speed Range Report") {
+      this.header = ["Sr No.", " Date","Speed(Km/h)","Address"];
+      this.key = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
+    }
+    else if (pageName == "Overspeed Report") {
+      this.header = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
+      this.key = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
+    }
+    else if (pageName == "Address Report") {
+      this.header = ["Sr No.", " Date", "Address"];
+    }
+    else if (pageName == "Trip Report") {
+      this.header = ["Sr No.", " Distance", "Duration", "Start Date", "Start Address", "End Date", "End Address"];
+      this.key = ['', 'travelledDistance', 'speed', 'startDateTime', 'startLatLong', 'endDateTime', 'endLatLong'];
+    } else {
+      this.header = ["SrNo.", " Driver Name", "tripDurationInMins", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
+    }
+    this.excelService.downLoadPdf(data, pageName, formDataObj,this.header,this.key);
   }
   onDownloadExcel() {
     let vehicleName: any;
@@ -270,7 +288,25 @@ export class ReportsComponent implements OnInit {
     });
     let formdata = this.reportForm.value;
     let pageName = this.selectedTablabel;
-    this.excelService.exportAsExcelFile(data, formdata, pageName);
+    
+    if (pageName == "Speed Range Report") {
+      this.header = ["Sr No.", " Date","Speed(Km/h)","Address"];
+      this.key = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
+    }
+    else if (pageName == "Overspeed Report") {
+      this.header = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
+      this.key = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
+    }
+    else if (pageName == "Address Report") {
+      this.header = ["Sr No.", " Date", "Address"];
+    }
+    else if (pageName == "Trip Report") {
+      this.header = ["Sr No.", " Distance", "Duration", "Start Date", "Start Address", "End Date", "End Address"];
+      this.key = ['', 'travelledDistance', 'speed', 'startDateTime', 'startLatLong', 'endDateTime', 'endLatLong'];
+    } else {
+      this.header = ["SrNo.", " Driver Name", "tripDurationInMins", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
+    }
+    this.excelService.exportAsExcelFile(data, formdata, pageName,this.header,this.key);
   }
  
 

@@ -11,36 +11,17 @@ import 'jspdf-autotable';
 })
 export class ExcelPdfDownloadedService {
   dataToExportExel: any[] = [];
-  key: any;
-  headersArray: any;
   constructor(private datepipe: DatePipe) { }
   private numToAlpha(_num: number) {
     let alpha = '';
     return alpha;
   }
-  downLoadPdf(data: any, pageName: any, responseData: any) {
-    let header;
-    if (pageName == "Speed Range Report") {
-      header = ["Sr No.", " Date","Speed(Km/h)","Address"];
-      this.key = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
-    }
-    else if (pageName == "Overspeed Report") {
-      header = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
-      this.key = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
-    }
-    else if (pageName == "Address Report") {
-      header = ["Sr No.", " Date", "Address"];
-    }
-    else if (pageName == "Trip Report") {
-      header = ["Sr No.", " Distance", "Duration", "Start Date", "Start Address", "End Date", "End Address"];
-      this.key = ['', 'travelledDistance', 'speed', 'startDateTime', 'startLatLong', 'endDateTime', 'endLatLong'];
-    } else {
-      header = ["SrNo.", " Driver Name", "tripDurationInMins", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
-    }
+  downLoadPdf(data: any, pageName: any, responseData: any,header:any,key:any) {
+   
     let result: any = data.map((obj: any) => {
       let filterObj: any = {};
-      for (let i: any = 0; i < this.key.length; i++) {
-        filterObj[this.key[i]] = obj[this.key[i]];
+      for (let i: any = 0; i < key.length; i++) {
+        filterObj[key[i]] = obj[key[i]];
       }
       return filterObj;
     });
@@ -63,34 +44,19 @@ export class ExcelPdfDownloadedService {
     });
     doc.save("pdf");
   }
-  exportAsExcelFile(data: any, formData: any, pageName: any) {
-    if (pageName == "Speed Range Report") {
-      this.key = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
-      this.headersArray = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
-    } else if (pageName == "Overspeed Report") {
-      this.key = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
-      this.headersArray = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
-    } else if (pageName == "Address Report") {
-      this.key = ["Sr No.", " Date", "Address"];
-      this.headersArray = ['srNo', 'deviceDateTime', 'speed', 'address'];
-    } else if (pageName == "Trip Report") {
-      this.key = ["Sr No.", " Distance", "Duration", "Start Date", "Start Address", "End Date", "End Address"];
-      this.headersArray = ['', 'travelledDistance', 'speed', 'startDateTime', 'startLatLong', 'endDateTime', 'endLatLong'];
-    } else {
-      this.key = ["SrNo.", " Driver Name", "tripDurationInMins", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
-    }
+  exportAsExcelFile(data: any, formData: any, pageName: any,key:any,headersArray:any) {
 
     let keyCenterNo = ""
-    if (this.key.length == 4) {
+    if (key.length == 4) {
       keyCenterNo = "C"
     } else {
-      keyCenterNo = String.fromCharCode(Math.ceil(this.key.length / 2) + 64)
+      keyCenterNo = String.fromCharCode(Math.ceil(key.length / 2) + 64)
     }
-    const header = this.key;
+    const header = key;
     let result: any = data.map((obj: any) => {
       let filterObj: any = {};
-      for (let i: any = 0; i < this.headersArray.length; i++) {
-        filterObj[this.headersArray[i]] = obj[this.headersArray[i]];
+      for (let i: any = 0; i < headersArray.length; i++) {
+        filterObj[headersArray[i]] = obj[headersArray[i]];
       }
       return filterObj;
     });
@@ -155,7 +121,7 @@ export class ExcelPdfDownloadedService {
     //Add Data Conditional Formating
  result.forEach((element: any) => {
       const eachRow: any = [];
-      this.headersArray.forEach((column: any) => {
+      headersArray.forEach((column: any) => {
         eachRow.push(element[column]);
       })
 
