@@ -7,14 +7,19 @@
     <form [formGroup]="registerVehicleForm" #formDirective="ngForm" (ngSubmit)="saveVehicleDetails(formDirective)">
         <div class="row">
             <div class="col-sm-3">
-                <div class="position-relative">
+                <div class="position-relative">   
                     <img src={{vehiclePhoto}} class="vehicle-image">
+                    <input type="file" name="myfile" formControlName="vehiclePhoto" #updVehiclePhoto
+                            (change)="vehiclePhotoUpd($event)" accept=".png,.jpg,.jpeg" style="display:none"/>
                     <div class="vehicle-buttons d-flex flex-column upload-btn-wrapper">
-                        <button class="btn bg-light text-primary" (click)="updVehiclePhoto.click()">
+                        <button type="button" class="btn bg-light text-primary" *ngIf="!this.profilePhotoImg?.length" (click)="updVehiclePhoto.click()">
                             <i class="fa-solid fa-plus"></i>
                         </button>
-                        <input type="file" name="myfile" formControlName="vehiclePhoto" #updVehiclePhoto
-                            (change)="vehiclePhotoUpd($event)" accept=".png,.jpg,.jpeg" />
+                    
+                    <button type="button" *ngIf="this.profilePhotoImg?.length" class="border border-0 btn bg-light text-primary"
+                         (click)="clearDoc('profile')">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
                     </div>
                 </div>
             </div>
@@ -213,7 +218,6 @@
                                     <span class="text-danger" *ngIf="f['permitNo'].hasError('required')">National permit
                                         number is
                                         required</span>
-                                    <!-- <span class="text-danger" *ngIf="f['permitNo'].hasError('pattern')">Enter valid national permit number </span> -->
                                 </mat-error>
                             </mat-form-field>
                             <div>

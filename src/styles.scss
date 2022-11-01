@@ -1942,13 +1942,6 @@ input::-ms-clear {
   background-color: rgb(255, 255, 255, 0.06) !important;
 }
 
-
-
-
-
-
-
-
 .scrollbar {
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: -ms-autohiding-scrollbar;
@@ -1961,7 +1954,7 @@ input::-ms-clear {
   visibility: visible;
 }
 .scrollbar::-webkit-scrollbar {
-  -webkit-appearance: none;
+  // -webkit-appearance: none;
   background-color: transparent;
   height: 0.375rem;
   visibility: hidden;

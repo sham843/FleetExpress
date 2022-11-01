@@ -79,8 +79,8 @@ export class ModalsComponent implements OnInit {
       this.licenceDoc = this.dialogData?.licenceDoc;
       this.panDoc = this.dialogData?.panCardDoc;
       this.aadharDoc = this.dialogData?.aadharCardDoc;
-      this.driverProfile =this.dialogData?.profilePhoto;
-      this.profilePhotoupd = this.dialogData?.profilePhoto?this.dialogData?.profilePhoto:this.driverProfile='assets/images/user.jpg';
+      this.driverProfile = this.dialogData?.profilePhoto;
+      this.profilePhotoupd = this.dialogData?.profilePhoto ? this.dialogData?.profilePhoto : this.driverProfile = 'assets/images/user.jpg';
       this.dialogData.presentAddress == this.dialogData.permanentAddress ? this.addressFlag = true : this.addressFlag = false;
     }
   }
@@ -120,26 +120,26 @@ export class ModalsComponent implements OnInit {
       })
   }
   clearDoc(flag?: any) {
-    flag == 'profile' ? (this.profileUpload.nativeElement.value = '', this.profilePhotoupd = '',this.driverProfile='') :
-    flag == 'pan' ? (this.panUpload.nativeElement.value = '', this.panDoc = '') :
-      flag == 'aadhar' ? (this.aadharUpload.nativeElement.value = '', this.aadharDoc = '') :
-        (this.licenceUpload.nativeElement.value = '', this.licenceDoc = '');
-        this.driverProfile='assets/images/user.jpg';
+      flag == 'pan' ? (this.panUpload.nativeElement.value = '', this.panDoc = '') :
+        flag == 'aadhar' ? (this.aadharUpload.nativeElement.value = '', this.aadharDoc = '') :
+        flag == 'profile' ? (this.profileUpload.nativeElement.value = '', this.profilePhotoupd = '', this.driverProfile = 'assets/images/user.jpg'):
+          (this.licenceUpload.nativeElement.value = '', this.licenceDoc = '');
+    // this.driverProfile = 'assets/images/user.jpg';
   }
 
   checkDocumentUpd(flag: any) {
     if (flag == 'licence') {
-      if (this.licenceDoc == '') {
+      if (!this.licenceDoc) {
         this.commonMethods.snackBar("Please upload Driving licence", 1);
       }
     }
     else if (flag == 'aadhar') {
-      if (this.aadharDoc == '') {
+      if (!this.aadharDoc) {
         this.commonMethods.snackBar("Please upload Aadhar card", 1);
       }
     }
     else if (flag == 'pan') {
-      if (this.panDoc == '') {
+      if (!this.panDoc) {
         this.commonMethods.snackBar("Please upload Pan card", 1);
       }
     }
@@ -157,12 +157,13 @@ export class ModalsComponent implements OnInit {
   //  ------------------------------------------------------add driver-----------------------------------------------------------------
   onSubmit(formDirective: any) {
     if (this.driverRegForm.invalid) {
+      console.log('invalid');
       return;
     }
-    else if(!this.licenceDoc || !this.aadharDoc || !this.panDoc){
+    else if (!this.licenceDoc || !this.aadharDoc || !this.panDoc) {
       this.licenceDoc == '' ? (this.commonMethods.snackBar("Please upload Driving licence", 1), this.driverRegForm.invalid) :
-      this.aadharDoc == '' ? this.commonMethods.snackBar("Please upload Aadhar card", 1) :
-      this.panDoc == '' ? this.commonMethods.snackBar("Please upload Pan card", 1) : '';
+        this.aadharDoc == '' ? this.commonMethods.snackBar("Please upload Aadhar card", 1) :
+          this.panDoc == '' ? this.commonMethods.snackBar("Please upload Pan card", 1) : '';
     }
     else {
       let formData = this.driverRegForm.value;

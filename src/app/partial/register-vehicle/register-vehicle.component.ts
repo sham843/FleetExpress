@@ -67,6 +67,7 @@ export class RegisterVehicleComponent implements OnInit {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.vehicleData = response.responseData.responseData1;
+        console.log(this.vehicleData);
         !this.vehicleNo.value ? this.vehicleDetails = response.responseData.responseData1 : '';
         this.vehicleData.forEach((ele: any) => {
           ele.isBlock == 1 ? ele['isBlockFlag'] = true : ele['isBlockFlag'] = false;
@@ -127,6 +128,7 @@ export class RegisterVehicleComponent implements OnInit {
           })
           dialog.afterClosed().subscribe(res => {
             if (res == 'Yes') {
+
             }
           })
         }
@@ -240,9 +242,9 @@ export class RegisterVehicleComponent implements OnInit {
 
   // -----------------------------------modal ----------------------------------------------------------------------------
   vehicleModal(label: string, vehicleData?: any) {
-    this.selectAll || this.vehicleData ? (this.uncheckVehicle(), this.vehicleData = []) : '';
+    this.selectAll || this.vehicleData ? (this.uncheckVehicle()) : '';
     let obj: any;
-    label == 'edit' ? (obj = vehicleData, this.highLightRow = vehicleData?.driverId) : obj = '';
+    label == 'edit' ? (obj = vehicleData, this.highLightRow = vehicleData?.vehicleId) : obj = '';
     const dialog = this.dialog.open(VehicleModalComponent, {
       width: '900px',
       data: obj,
@@ -251,7 +253,9 @@ export class RegisterVehicleComponent implements OnInit {
 
     dialog.afterClosed().subscribe(res => {
       this.highLightRow = '';
-      if (res == 'add') {
+       this.getVehiclesData();
+       console.log("After close model",res)
+      if(res=='Yes'){
         this.getVehiclesData();
       }
     }

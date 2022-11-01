@@ -1,0 +1,30 @@
+.vehicle-image{
+    width: 158px;
+    height: 158px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position:middle;
+}
+
+.vehicle-buttons{
+    position: absolute;
+    bottom: 8px;
+    border-radius: 50%;
+    right: 44px;
+    box-shadow: 0px 0px 4px #3999e9;
+}
+.vehicle-buttons .btn{
+    border-radius: 50%;
+    height: 32px;
+    width: 32px;
+    line-height: 16px;
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 0;
+}
+.table-padding-0 td{
+    padding-block: 0;
+}
+.input-group{
+    width: auto;
+}

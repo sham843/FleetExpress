@@ -18,11 +18,12 @@ export class ConfirmationComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<ConfirmationComponent>,
     public CommonMethod: CommonMethodsService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private apiCall:ApiCallService,
+    private apiCall:ApiCallService,  
     private error:ErrorsService) { }
 
   ngOnInit(): void {
     this.dialogData = this.data;
+    debugger
     this.dialogData.cardTitle== 'Assign Driver'?this.getDriverData():'';
   }
 // --------------------------------------get Driver Data------------------------------------------------------------------
