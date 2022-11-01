@@ -25,7 +25,7 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.sharedService.getTheme().subscribe((res: any) => {
-      res ? (console.log("service", this.lightIcon), this.lightIcon = res) : (console.log("local", localStorage.getItem('themeColor')), this.lightIcon = localStorage.getItem('themeColor'));
+      res ? this.lightIcon = res : this.lightIcon = localStorage.getItem('themeColor');
     })
   }
   getSideBarState() {

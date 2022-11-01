@@ -78,7 +78,6 @@ export class PaymentComponent implements OnInit {
   }
 
   selectedElements(event: any, id: any){
-    console.log()
     for(var i = 0 ; i < this.paymentDetails.length; i++){
       if(id != 0) {
         this.selectAll = false;

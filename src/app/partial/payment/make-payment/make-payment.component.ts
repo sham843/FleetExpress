@@ -36,7 +36,6 @@ export class MakePaymentComponent implements OnInit {
   }
 
   onSubmit(){
-console.log(this.paymentForm.value)
   }
 
 }

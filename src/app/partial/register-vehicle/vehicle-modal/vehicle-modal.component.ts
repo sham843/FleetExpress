@@ -57,7 +57,6 @@ export class VehicleModalComponent implements OnInit {
     this.dialogData = this.data;
     this.dialogData != 0 ? this.cardTitle = 'Edit Vehicle' : this.cardTitle = 'Add Vehicle';
     this.getFormControl();
-    console.log(this.dialogData);
   }
   getFormControl() {
     this.registerVehicleForm = this.fb.group({
@@ -70,7 +69,7 @@ export class VehicleModalComponent implements OnInit {
       engineNo: [this.dialogData ? this.dialogData.engineNo : '', [Validators.compose([Validators.required, Validators.pattern('[a-zA-Z0-9_]{17}')])]],
       insuranceExDate: [this.dialogData ? this.dialogData.insuranceExpiryDate : '', Validators.required],
       registerNo: [this.dialogData ? this.dialogData.registrationCertificate : ''],
-      pollutionExDate: [this.dialogData ? this.dialogData.pollutionExpiryDate : '', Validators.required],
+      pollutionExDate: [this.dialogData ? new Date(this.dialogData.pollutionExpiryDate) : '', Validators.required],
       fitnessExDate: [this.dialogData ? this.dialogData.fitnessExpiryDate : ''],
       permitNo: [this.dialogData ? this.dialogData.nationalPermit : '', [Validators.compose([Validators.required])]]
     })
@@ -83,6 +82,7 @@ export class VehicleModalComponent implements OnInit {
       this.nationalDoc=this.dialogData?this.dialogData.nationalPermitDoc:'';
       this.profilePhotoImg=this.dialogData?this.dialogData.profilePhoto:'';
     }
+    this.vehiclePhoto=this.profilePhotoImg;
   }
 
   get f() { return this.registerVehicleForm.controls; }
@@ -211,6 +211,7 @@ export class VehicleModalComponent implements OnInit {
       "profilePhoto": this.profilePhotoImg
     }
     if (this.registerVehicleForm.invalid) {
+      console.log(this.registerVehicleForm.value)
       return
     }
     else {
@@ -221,6 +222,7 @@ export class VehicleModalComponent implements OnInit {
         if (response.statusCode == "200") {
           this.spinner.hide();
           formDirective.resetForm();
+          this.dialogRef.close('');
           this.commonMethods.snackBar(response.statusMessage, 0)
         }
       }, (error: any) => {

@@ -157,7 +157,6 @@ export class ModalsComponent implements OnInit {
   //  ------------------------------------------------------add driver-----------------------------------------------------------------
   onSubmit(formDirective: any) {
     if (this.driverRegForm.invalid) {
-      console.log('invalid');
       return;
     }
     else if (!this.licenceDoc || !this.aadharDoc || !this.panDoc) {

@@ -76,7 +76,6 @@ export class DriverComponent implements OnInit {
       if (res.statusCode === "200") {
         this.driverDetails = res.responseData.responseData1;
         !this.driverName.value ? this.checkdata = res.responseData.responseData1 : '';
-        console.log(this.checkdata)
         this.spinner.hide();
         this.driverDetails.forEach((ele: any) => {
           ele['isBlockFlag'] = false;

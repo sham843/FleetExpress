@@ -67,7 +67,6 @@ export class RegisterVehicleComponent implements OnInit {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.vehicleData = response.responseData.responseData1;
-        console.log(this.vehicleData);
         !this.vehicleNo.value ? this.vehicleDetails = response.responseData.responseData1 : '';
         this.vehicleData.forEach((ele: any) => {
           ele.isBlock == 1 ? ele['isBlockFlag'] = true : ele['isBlockFlag'] = false;
@@ -97,7 +96,7 @@ export class RegisterVehicleComponent implements OnInit {
     } else if (label == 'assign') {  //Assign vehicle
       obj['v1'] = editData?.vehicleNo;
       obj['p1'] = flag ? '' : 'Are you sure you want to unassign driver?';
-      obj['cconfirmationDialogardTitle'] = flag ? 'Assign Driver' : 'Unassign Driver';
+      obj['cardTitle'] = flag ? 'Assign Driver' : 'Unassign Driver';
       obj['successBtnText'] = flag ? 'Assign' : 'Unassign';
       obj['cancelBtnText'] = 'Cancel';
     } else if (label == 'delete') {  //Delete vehiclen
@@ -254,7 +253,6 @@ export class RegisterVehicleComponent implements OnInit {
     dialog.afterClosed().subscribe(res => {
       this.highLightRow = '';
        this.getVehiclesData();
-       console.log("After close model",res)
       if(res=='Yes'){
         this.getVehiclesData();
       }

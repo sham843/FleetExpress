@@ -184,7 +184,6 @@ getVehiclenotificationsData() {
       this.apiCall.setHttp('get', 'notification/get-vehicleWise-Notification-List?vehicleNo=' + vehicleNo, true, false, false, 'fleetExpressBaseUrl');
       this.apiCall.getHttp().subscribe({
         next: (res: any) => {
-          console.log(res)
           if (res.statusCode === "200") {
             this.vehiclesAlertsData = res.responseData.responseData1;
           } else {

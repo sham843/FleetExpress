@@ -23,7 +23,7 @@ export class ConfirmationComponent implements OnInit {
 
   ngOnInit(): void {
     this.dialogData = this.data;
-    debugger
+    console.log("title",this.dialogData.cardTitle)
     this.dialogData.cardTitle== 'Assign Driver'?this.getDriverData():'';
   }
 // --------------------------------------get Driver Data------------------------------------------------------------------
