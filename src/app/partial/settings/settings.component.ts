@@ -105,7 +105,7 @@ public onPageChange(pageNum: number): void {
 clickedRow(index:any){
   this.highlightedRow=index;
 }
-onChangePwd(){
+onChangePassword(){
   this.submitted=true;
   if(this.changePassForm.invalid){
     return;

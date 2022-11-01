@@ -65,13 +65,19 @@ export class HeaderComponent implements OnInit {
       obj['successBtnText'] = flag ? 'Logout' : '';
       obj['cancelBtnText'] = 'Cancel';
     }
+    else{
+      obj['p1'] = flag ? '' : '';
+      obj['cardTitle'] = flag ? 'Change Password' : '';
+      obj['successBtnText'] = flag ? 'Submit' : '';
+      obj['cancelBtnText'] = 'Cancel';
+    }
     const dialog = this.dialog.open(ConfirmationComponent, {
       width: this.config.dialogBoxWidth[0],
       data: obj,
       disableClose: this.config.disableCloseBtnFlag,
     })
     dialog.afterClosed().subscribe(res => {
-      res == 'Yes' ? this.sharedService.logOut() : '';
+      (res == 'Yes' && label == 'status') ? this.sharedService.logOut() :'';
     }
     )
   }

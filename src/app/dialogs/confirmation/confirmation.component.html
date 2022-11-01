@@ -20,7 +20,7 @@
                             <textarea matInput ngDefaultControl [formControl]="remark" rows="4"> </textarea>
                         </mat-form-field>
                     </div>
-<!-----------------------------------------------------------------Assign driver modal ---------------------------------------->
+                    <!-----------------------------------------------------------------Assign driver modal ---------------------------------------->
 
                     <ng-container *ngIf="dialogData.cardTitle== 'Assign Driver'">
                         <div class="row gx-2 align-items-center mt-4 mb-3">
@@ -38,15 +38,88 @@
                                 <mat-form-field appearance="legacy" class="w-100">
                                     <mat-label>Select Driver Name</mat-label>
                                     <mat-select [formControl]="driverName">
-                                        <mat-option *ngFor="let driver of driverData" [value]="driver.driverId" [disabled]="driver.isAssigned==1">
-                                            {{driver.name}} 
+                                        <mat-option *ngFor="let driver of driverData" [value]="driver.driverId"
+                                            [disabled]="driver.isAssigned==1">
+                                            {{driver.name}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
                         </div>
                     </ng-container>
-<!----------------------------------------------------------------------End assign driver modal-------------------------------  -->
+                    <!----------------------------------------------------------------------End assign driver modal---------------------------------->
+                    <!----------------------------------------------------------------------start chnage password modal------------------------------->
+                    <ng-container *ngIf="dialogData.cardTitle== 'Change Password'">
+                             <form [formGroup]="changePassForm">
+                                    <div class="col-sm-12 form-container">
+                                        <mat-form-field [appearance]="config.matFormField" class="w-100 form-group">
+                                            <mat-label>Current password</mat-label>
+                                            <input matInput [type]="CurrentPasswordHide ? 'password' : 'text'"
+                                                autocomplete="nope" formControlName="currentPwd"
+                                                [ngClass]="{ 'is-invalid':fpass['currentPwd'].errors }">
+                                            <button type="button" mat-icon-button matSuffix
+                                                (click)="CurrentPasswordHide = !CurrentPasswordHide"
+                                                [attr.aria-label]="'Hide password'"
+                                                [attr.aria-pressed]="CurrentPasswordHide">
+                                                <mat-icon>{{CurrentPasswordHide ? 'visibility_off' : 'visibility'}}
+                                                </mat-icon>
+                                            </button>
+                                            <mat-error>
+                                                <span *ngIf="fpass['currentPwd'].errors?.['required']"
+                                                    class="text-danger">Current Password is required</span>
+                                                <span *ngIf="fpass['currentPwd'].errors?.['pattern']"
+                                                    class="text-danger">Current Password is invalid format</span>
+                                            </mat-error>
+                                        </mat-form-field>
+
+                                        <mat-form-field [appearance]="config.matFormField" class="w-100 form-group">
+                                            <mat-label>New password</mat-label>
+                                            <input matInput [type]="newPasswordHide ? 'password' : 'text'"
+                                                formControlName="newPwd"
+                                                [ngClass]="{ 'is-invalid':fpass['newPwd'].errors }">
+                                            <button type="button" mat-icon-button matSuffix
+                                                (click)="newPasswordHide = !newPasswordHide"
+                                                [attr.aria-label]="'Hide password'"
+                                                [attr.aria-pressed]="newPasswordHide">
+                                                <mat-icon>{{newPasswordHide ? 'visibility_off' : 'visibility'}}
+                                                </mat-icon>
+                                            </button>
+                                            <mat-error>
+                                                <span *ngIf="fpass['newPwd'].errors?.['required']"
+                                                    class="text-danger">New
+                                                    Password is required</span>
+                                                <span *ngIf="fpass['newPwd'].errors?.['pattern']"
+                                                    class="text-danger">New
+                                                    Password is invalid format</span>
+                                            </mat-error>
+                                        </mat-form-field>
+
+                                        <mat-form-field [appearance]="config.matFormField" class="w-100 form-group">
+                                            <mat-label>Retype password</mat-label>
+                                            <input matInput [type]="retypePasswordHide ? 'password' : 'text'"
+                                                formControlName="reTypePwd"
+                                                [ngClass]="{'is-invalid':fpass['reTypePwd'].errors}">
+                                            <button type="button" mat-icon-button matSuffix
+                                                (click)="retypePasswordHide = !retypePasswordHide"
+                                                [attr.aria-label]="'Hide password'"
+                                                [attr.aria-pressed]="retypePasswordHide">
+                                                <mat-icon>{{retypePasswordHide ? 'visibility_off' : 'visibility'}}
+                                                </mat-icon>
+                                            </button>
+                                            <mat-error>
+                                                <span *ngIf="fpass['reTypePwd'].errors?.['required']"
+                                                    class="text-danger">ReType Password is required</span>
+                                                <span *ngIf="fpass['reTypePwd'].errors?.['pattern']"
+                                                    class="text-danger">New
+                                                    Password is invalid format</span>
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </form> 
+                    </ng-container>
+
+                    <!-----------------------------------------------------------------------End change password modal-------------------------------->
+
                     <div class="row">
                         <div class="d-flex justify-content-between">
                             <button type="button" class="me-2 btn-light-main btn" type="button" mat-dialog-close
