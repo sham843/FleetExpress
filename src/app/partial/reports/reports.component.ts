@@ -76,6 +76,12 @@ export class ReportsComponent implements OnInit {
   }
   selectedTab(tab: any) {
     this.tabArrayData = [];
+    this.reportForm.patchValue({
+      fromDate: '',
+      toDate: '',
+      VehicleNumber: '', 
+      timePeriod: ''
+    });
     switch (tab) {
       case 'stoppage': this.tabArrayData = [{
         label: 'Stopage Report',
@@ -127,6 +133,7 @@ export class ReportsComponent implements OnInit {
       ]; this.setIndex(0, 'Overspeed Report');
         break;
     }
+    
   }
   setIndex(index: number, label: any) {
     this.selectedTablabel = label;

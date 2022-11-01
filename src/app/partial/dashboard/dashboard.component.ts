@@ -62,6 +62,7 @@ export class DashboardComponent implements OnInit {
   allVehiclelData=new Array();
   map:any;
   currentDate=new Date();
+  interval:any
   icon = { url: '../../assets/images/location.png', scaledSize: {height: 15, width: 20}}
   constructor(private webStorage: WebStorageService, private apiCall:ApiCallService,
     private error:ErrorsService ,private mapsAPILoader: MapsAPILoader, public config: ConfigService) {
@@ -131,6 +132,15 @@ export class DashboardComponent implements OnInit {
     this.getSIMRenewalReminderData();
     this.mapCall();
     this.getAllVehicleListData();
+    this.interval = setInterval(() => { 
+      this.getvehicleStatusData();
+      this.getvehicleAllData();
+      this.getPOIAlertData();
+      this.getOverSpeedPowerCutData();
+      this.getSIMRenewalReminderData();
+      this.mapCall();
+      this.getAllVehicleListData();
+  }, 60000);
   }
   thresholdConfig = {
     '0': {color: 'green'},
@@ -321,4 +331,8 @@ export class DashboardComponent implements OnInit {
       new google.maps.Geocoder;
     });
   }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+    clearInterval(this.interval);
+}
 }
