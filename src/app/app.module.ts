@@ -22,6 +22,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmationComponent } from './dialogs/confirmation/confirmation.component';
 import { ModalsComponent } from './dialogs/driver_modals/modals.component';
 import { AddUpdateUserComponent } from './partial/user-management-system/add-update-user/add-update-user.component';
+import { MakePaymentComponent } from './partial/payment/make-payment/make-payment.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -37,7 +38,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PageNotFoundComponent,
     ConfirmationComponent,
     ModalsComponent,
-    AddUpdateUserComponent
+    AddUpdateUserComponent,
+    MakePaymentComponent
   ],
   imports: [
     BrowserModule,

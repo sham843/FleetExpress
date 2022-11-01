@@ -46,27 +46,28 @@
                                         <th>VEHICLES.NO</th>
                                         <th>NAME</th>
                                         <th>MOBILE NO.</th>
-                                        <th>RATE</th>
-                                        <th>BASIC AMOUNT</th>
-                                        <th>GST(18%)</th>
-                                        <th>TRANSACTION COST (2.04%)</th>
-                                        <th>TOTAL AMOUNT</th>
-                                        <th><mat-checkbox class="example-margin"></mat-checkbox> SELECT PAYMENT </th>
+                                        <th>RATE (₹/Vehicle)</th>
+                                        <th>BASIC AMOUNT  (₹)</th>
+                                        <th>GST({{paymentRateDetails[0]?.gst}}%)</th>
+                                        <th>TRANSACTION COST ({{paymentRateDetails[0]?.transactionPercentage}}%)</th>
+                                        <th>TOTAL AMOUNT (₹)</th>
+                                        <th><mat-checkbox class="example-margin" (change)='selectedElements($event,0)' value="" [(ngModel)]="selectAll"></mat-checkbox> SELECT PAYMENT </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>mh 12 yt 1234</td>
-                                        <td>aABC</td>
-                                        <td>8669264767</td>
-                                        <td>₹ 3000/Vehicle</td>
-                                        <td>₹ 3,000.00</td>
-                                        <td>₹ 540.00</td>
-                                        <td>₹ 72.22</td>
-                                        <td>₹ 3,612.22</td>
+                                    <tr *ngFor="let item of paymentDetails">
+                                        <td>{{item?.rowNumber}}</td>
+                                        <td>{{item?.vehicleNo}}</td>
+                                        <td>{{item?.name}}</td>
+                                        <td>{{item?.mobileno1}}</td>
+                                        <td>{{item?.rate}}</td>
+                                        <td>{{item?.BasicAmount}}</td>
+                                        <td>{{item?.gSTAmount}}</td>
+                                        <td>{{item?.transactionConst}}</td>
+                                        <td>{{item?.totalAmount}}</td>
                                         <td>
-                                            <mat-checkbox class="example-margin"></mat-checkbox>
+                                            <mat-checkbox class="example-margin" [(ngModel)]="item.checked" value=""
+                                            (change)="selectedElements($event,item.id)"></mat-checkbox>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -74,8 +75,7 @@
                         </div>
                     </div>
                     <div class="form-container text-end m-3">
-                        <button class="btn btn-main" data-bs-toggle="modal"
-                            data-bs-target="#MakePaymentModal">
+                        <button [ngClass]="{'btn btn-main':selectedTableData.length , 'btn btn-primary': !selectedTableData.length}" (click)="openPaymentDia()" [disabled]="!selectedTableData.length">
                             Make Payment
                         </button>
                     </div>
@@ -157,7 +157,7 @@
                                         <td>{{item?.noOfVehicle}}</td>
                                         <td>{{item?.vehicleRegistrationNo}}</td>
                                         <td>{{item?.paymentDate}}</td>
-                                        <td>₹ {{item?.amount}}</td>
+                                        <td>₹{{item?.amount}}</td>
                                         <td>
                                             <span class="text-success">{{item?.status}}</span>
                                         </td>

@@ -1,0 +1,73 @@
+<div class="position-relative mb-3">
+    <h5 mat-dialog-title class="mb-0">{{'Make Payment'}}</h5>
+    <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick(formDirective)"><i
+            class="fas fa-times"></i></button>
+</div>
+
+
+<div>
+    <form [formGroup]="paymentForm" #formDirective="ngForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+            <strong>Vehicles : MH 12 YT 3462</strong>
+            <div class="row justify-content-between">
+                <div class="col-sm-6">
+                    <mat-form-field appearance="standard" class="w-100">
+                        <mat-label>Enter Owner Name</mat-label>
+                        <input matInput placeholder="Enter Owner Name" (keyPress)="this.validationService.alphabetsWithSpaces($event)"
+                         formControlName="fName">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-6">
+                    <mat-form-field appearance="standard" class="w-100">
+                        <mat-label>Enter Mobile Number</mat-label>
+                        <input matInput placeholder="Enter Mobile Number"  formControlName="mobileNumber"
+                        (keyPress)="this.validationService.onlyDigits($event)">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row justify-content-between">
+                <div class="col-sm-6">
+                    <mat-form-field appearance="standard" class="w-100">
+                        <mat-label>Enter Email id</mat-label>
+                        <input matInput placeholder="Email id"  formControlName="emailId"
+                        (keyPress)="this.validationService.alphaNumericWithSpacesAndSpecChars($event)">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-6">
+                    <mat-form-field appearance="standard" class="w-100">
+                        <mat-label>Enter GSTIN</mat-label>
+                        <input matInput placeholder="GSTIN"  formControlName="gSTNo"
+                        (keyPress)="this.validationService.alphabetsWithSpaces($event)"> 
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row justify-content-between gx-2 mb-0">
+                <div class="col-sm">
+                    <small class="text-muted">Basic Amount (₹) :</small>
+                    <p>{{(dialogData?.basicTotal).toFixed(2)}}</p>
+                </div>
+                <div class="col-sm">
+                    <small class="text-muted">GST ({{dialogData?.otherDetails?.gst}}%) :</small>
+                    <p>{{(dialogData?.gstTotal).toFixed(2)}}</p>
+                </div>
+                <div class="col-sm">
+                    <small class="text-muted">Transaction Cost ({{dialogData?.otherDetails?.transactionPercentage}}%) :</small>
+                    <p>{{(dialogData?.transactionCostTotal).toFixed(2)}}</p>
+                </div>
+                <div class="col-sm">
+                    <small class="text-muted">Total Amount :</small>
+                    <p>{{(dialogData?.amountTotal).toFixed(2)}}</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <div class="form-container w-100">
+                <div class="d-flex justify-content-between">
+                    <button type="button">Cancel</button>
+                    <button type="button" class="btn btn-main">Make Payment</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
