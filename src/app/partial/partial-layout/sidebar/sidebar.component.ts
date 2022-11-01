@@ -17,12 +17,13 @@ import { SharedService } from 'src/app/services/shared.service';
 })
 export class SidebarComponent implements OnInit {
   menus:any = [];
-  lightIcon:any='light';
+  lightIcon:any;
   constructor(public sidebarservice: SidebarService, public sharedService: SharedService) {
     this.menus = sidebarservice.getMenuList();
    }
 
   ngOnInit(): void {
+    this.lightIcon='light';
     this.sharedService.getTheme().subscribe((res:any)=>{
       this.lightIcon=res;
     })
