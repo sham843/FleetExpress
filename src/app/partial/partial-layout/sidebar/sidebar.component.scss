@@ -127,7 +127,7 @@
 }
 /*------------------------------default theme---------------------------------*/
 .sidebar {
-  background-color: #1d1d1d;
+  background-color: #fff;
 }
 .sidebar .sidebar-header > a, .sidebar .sidebar-menu ul li a, .sidebar #close-sidebar {
   color: #bdbdbd;
@@ -150,18 +150,18 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  color: #353535;
+  color: #fff;
 }
-.sidebar.sidebar-bg:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: #fff;
-  color: #353535;
-}
+// .sidebar.sidebar-bg:before {
+//   content: '';
+//   position: absolute;
+//   top: 0;
+//   right: 0;
+//   bottom: 0;
+//   left: 0;
+//   background-color: #fff;
+//   color: #353535;
+// }
 .sidebar.sidebar-bg .sidebar-header > a, .sidebar.sidebar-bg .sidebar-menu ul li a, .sidebar.sidebar-bg #close-sidebar {
   color: #353535;
 }

@@ -1874,6 +1874,13 @@ input::-ms-clear {
 .darkTheme{
   background-color: #151521;
 } 
+.darkTheme .sidebar.sidebar-bg,
+.darkTheme .sidebar{
+  background-color: #1E1E2D;
+}
+.darkTheme .sidebar.sidebar-bg .sidebar-menu ul li a{
+  color: #fff !important;
+}
 .darkTheme .page-heading{
   color: #fff;
 } 
