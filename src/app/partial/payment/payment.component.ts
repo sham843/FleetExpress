@@ -57,7 +57,6 @@ export class PaymentComponent implements OnInit {
             x.totalAmount= (parseFloat(x.BasicAmount) +  parseFloat(x.gSTAmount) + parseFloat(x.transactionConst)).toFixed(2)
           })
           this.paymentDetails = res.responseData;
-          console.log(this.paymentRateDetails)
         } else {
           this.paymentDetails = [];
         }
