@@ -24,7 +24,7 @@
                         (keyPress)="this.validationService.onlyDigits($event)" [maxlength]="10">
                     </mat-form-field>
                     <mat-error *ngIf="f['mobileNumber'].errors">
-                        <span *ngIf="f['mobileNumber'].hasError('pattern')" class="text-danger">Please enter valid
+                        <span *ngIf="submitted && f['mobileNumber'].hasError('pattern')" class="text-danger">Please enter valid
                         mobile numbers</span>
                     </mat-error>
                 </div>
