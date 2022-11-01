@@ -25,10 +25,10 @@ export class MakePaymentComponent implements OnInit {
   }
   getformControls(){
     this.paymentForm = this.fb.group({
-      fName: ['', Validators.required],
-      mobileNumber: ['', [Validators.required, Validators.pattern('^[6-9][0-9]{9}$')]],
-      emailId: ['', [Validators.required, Validators.pattern('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')]],
-      gSTNo: ['', [Validators.required, Validators.pattern('^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$')]],
+      fName: [this.dialogData?.data[0]?.name, Validators.required],
+      mobileNumber: [this.dialogData?.data[0]?.mobileno1, [ Validators.pattern('^[6-9][0-9]{9}$')]],
+      emailId: [this.dialogData?.data[0]?.emailId, [Validators.pattern('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')]],
+      gSTNo: [this.dialogData?.data[0]?.gstno, [Validators.pattern('^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$')]],
     })
   }
   onNoClick(flag: any): void {

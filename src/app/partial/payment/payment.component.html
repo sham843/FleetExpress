@@ -75,7 +75,7 @@
                         </div>
                     </div>
                     <div class="form-container text-end m-3">
-                        <button [ngClass]="{'btn btn-main':selectedTableData.length , 'btn btn-primary': !selectedTableData.length}" (click)="openPaymentDia()" [disabled]="!selectedTableData.length">
+                        <button class="btn btn-main" (click)="openPaymentDia()" [disabled]="!selectedTableData.length">
                             Make Payment
                         </button>
                     </div>

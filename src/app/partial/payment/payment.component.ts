@@ -96,13 +96,13 @@ export class PaymentComponent implements OnInit {
    
   }
   openPaymentDia(){
-    console.log(this.selectedTableData)
     let obj:any ={
       basicTotal:0 ,
       gstTotal:0 ,
       transactionCostTotal:0 ,
       amountTotal:0 ,
-      otherDetails:this.paymentRateDetails[0]
+      otherDetails:this.paymentRateDetails[0],
+      data:this.selectedTableData
     }
     for(let i=0;i< this.selectedTableData.length; i++){
       obj.basicTotal=obj.basicTotal+ parseFloat(this.selectedTableData[i].BasicAmount);
@@ -110,7 +110,6 @@ export class PaymentComponent implements OnInit {
       obj.transactionCostTotal=obj.transactionCostTotal + parseFloat(this.selectedTableData[i].transactionConst);
       obj.amountTotal=obj.amountTotal + parseFloat(this.selectedTableData[i].totalAmount);
     }
-    console.log(obj)
     const dialog = this.dialog.open(MakePaymentComponent, {
       width: this.configService.dialogBoxWidth[2],
       data: obj,
