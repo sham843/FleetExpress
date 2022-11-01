@@ -1936,10 +1936,67 @@ input::-ms-clear {
 .darkTheme .display-bar{
   background: #1E1E2D !important;
 }
+.darkTheme .form-control,
 .darkTheme #filters .input-group-text, 
 .darkTheme #filters .input-group .form-control, 
 .darkTheme #filters .btn{
   background-color: rgb(255, 255, 255, 0.06) !important;
+}
+.darkTheme .vehicle{
+  color: #fff !important;
+}
+.darkTheme .vehicle .vehicle-location small{
+  color: #aaa !important;
+}
+.darkTheme .mat-datepicker-content .mat-calendar,
+.darkTheme .mat-select-panel,
+.darkTheme .offcanvas-body,
+.darkTheme .mat-dialog-container{
+  background-color: #1E1E2D;
+  color: #fff !important;
+}
+.darkTheme .mat-form-field-appearance-legacy .mat-form-field-underline,
+.darkTheme .mat-form-field-appearance-standard .mat-form-field-underline{
+  background-color: #fff !important;
+}
+.darkTheme .mat-form-field-empty.mat-form-field-label,
+.darkTheme .mat-input-element,
+.darkTheme .mat-button-wrapper,
+.darkTheme input{
+  color: #fff !important;
+}
+.darkTheme .mat-radio-outer-circle {
+  border-color: rgb(255, 255, 255);
+}
+
+.darkTheme .mat-calendar-previous-button::after, 
+.darkTheme .mat-calendar-next-button::after,
+.darkTheme .mat-calendar-table,
+.darkTheme .mat-calendar-table-header, 
+.darkTheme .mat-calendar-body-label,
+.darkTheme .mat-calendar-body-label,
+.darkTheme .mat-calendar-body-cell-content,
+.darkTheme .mat-option-text,
+.darkTheme .dashboard-table td,
+.darkTheme .mat-select-arrow,
+.darkTheme .mat-select-value,
+.darkTheme .itinerary-details .veh-time,
+.darkTheme #myTab .nav-link{
+  color: #fff !important;
+}
+.darkTheme #itinerary-buttons .btn{
+  border-color: #fff !important;
+  color: #fff !important;
+}
+.darkTheme .text-muted{
+  color: #aaa !important;
+}
+.darkTheme .dashboard-table th{
+  background-color:#111;
+}
+.darkTheme .mat-select-panel{
+  background-color: #1E1E2D;
+  color: #fff !important;
 }
 
 

@@ -12,7 +12,7 @@
                         <input type="text" class="form-control" placeholder="Search" [formControl]="searchContent"
                             [maxLength]="15" (keyup)="setnumber(searchContent.value)"
                             (keypress)="validationService.noSpaces($event)">
-                        
+
                         <!-- <div class="input-group-text" *ngIf="searchContent.value"><i class="fa fa-times"
                                 (click)="searchContent.reset()"></i>
                         </div> -->
@@ -20,8 +20,7 @@
                 </div>
                 <div class="col-sm-2 border-end">
                     <div class="d-flex align-items-center justify-content-between">
-                        <button type="button" class="btn btn-light"
-                            (click)="clickOnTrackingTab('TotalVehicles')">
+                        <button type="button" class="btn btn-light" (click)="clickOnTrackingTab('TotalVehicles')">
                             Total Vehicles <span class="badge ms-3">{{allVehiclelDataClone.length}}</span>
                         </button>
                     </div>
@@ -46,539 +45,568 @@
 </div>
 
 <div class="tracking-height">
-<div class="row">
-    <div class="col-sm-4">
-        <div class="card border-0 rounded">
-            <div class="card-body fixed-height rounded" *ngIf="allVehiclelData.length">
-                <div class="rounded" *ngFor="let item of allVehiclelData; let i=index">
-                    <ng-container>
-                        <a class="d-flex vehicle p-3 bg-opacity-10 mb-1 rounded bg-opacity-10" placement="top"
-                            routerLinkActive="active" [class.active]="selectedIndex === i" (click)="selectedIndex = i"
-                            [ngClass]="{'bg-danger':item?.gpsStatus=='Offline','bg-success':item?.gpsStatus=='Running','bg-warning':item?.gpsStatus=='Stopped','bg-primary':item?.gpsStatus=='Idle'}">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card border-0 rounded">
+                <div class="card-body fixed-height rounded" *ngIf="allVehiclelData.length">
+                    <div class="rounded" *ngFor="let item of allVehiclelData; let i=index">
+                        <ng-container>
+                            <a class="d-flex vehicle p-3 bg-opacity-10 mb-1 rounded bg-opacity-10" placement="top"
+                                routerLinkActive="active" [class.active]="selectedIndex === i"
+                                (click)="selectedIndex = i"
+                                [ngClass]="{'bg-danger':item?.gpsStatus=='Offline','bg-success':item?.gpsStatus=='Running','bg-warning':item?.gpsStatus=='Stopped','bg-primary':item?.gpsStatus=='Idle'}">
 
 
+                                <div class="flex-shrink-0">
+                                    <div class="bg-opacity-25  rounded-circle vehicle-icon"
+                                        [ngClass]="{'text-danger':item?.gpsStatus=='Offline','text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
+                                        <i class="fa-solid fa-car"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    <div class="d-flex justify-content-between align-items-center my-2">
+                                        <a class="text-danger" *ngIf="item?.gpsStatus=='Offline'"
+                                            [ngbPopover]="popContent" placement="end">
+                                            <p class="vehicle-no">{{item?.vehicleNo}} </p>
+                                        </a>
+                                        <a *ngIf="item?.gpsStatus!='Offline'"
+                                            (click)="vehicleNo = item?.vehicleNo; selectedCanvasTab='Itinerary'"
+                                            data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom"
+                                            aria-controls="offcanvasExample"
+                                            [ngClass]="{'text-danger':item?.gpsStatus=='Offline','text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
+                                            <p class="vehicle-no">{{item?.vehicleNo}} </p>
+                                        </a>
+                                        <span class="veh-status">({{'Ticket Raised'}})</span>
+                                        <a class="text-primary veh-status"> View Details</a>
+                                        <span class="veh-status"
+                                            [ngClass]="{'text-danger':item?.gpsStatus=='Offline','text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
+                                            <i class="fa-solid fa-circle me-2"></i>{{item?.gpsStatus}}
+                                        </span>
+                                    </div>
+                                    <div class="d-flex align-items-start">
+                                        <img src="assets/images/Tracking/location-vehicle.svg" class="me-2 mt-1">
+                                        <div class="vehicle-location">
+                                            <p>Yavatmal District Maharashtra</p>
+                                            <small> {{ item?.deviceDatetime | date:'dd MMM yyyy hh:mm a'}}</small>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-start mb-2">
+                                        <img src="assets/images/Tracking/info-vehicle.svg" class="me-2 mt-1">
+                                        <div class="vehicle-running">
+                                            35 kmph | Running since : 3 days : 5 hrs | 480 km today
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="vehicle-status">
+                                            <div class="d-flex">
+                                                <span><img src="assets/images/Tracking/battery.svg" class="me-1">
+                                                    --</span>
+                                                <span class="mx-3"><img src="assets/images/Tracking/network.svg"
+                                                        class="me-1">
+                                                    --</span>
+                                                <span><img src="assets/images/Tracking/ON-vehicle.svg" class="me-1">
+                                                    --</span>
+                                            </div>
+                                        </div>
+                                        <div class="share-call">
+                                            <a class="me-3" (click)="openTicketRaisedDialog(item,'shareLocation')"><img
+                                                    src="assets/images/Tracking/share.svg"></a>
+                                            <a><img src="assets/images/Tracking/call-vehicle.svg"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </ng-container>
+                        <ng-template #popContent class="bg-danger">
+                            <p>GPS Wire Cut. Is the vehicle in maintenance?</p>
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-sm btn-outline-danger text-dark"
+                                    (click)="openTicketRaisedDialog(item,'compliant')">No</button>
+                                <button class="btn btn-sm btn-outline-danger text-dark"
+                                    (click)="openTicketRaisedDialog(item,'maintenance')">Yes</button>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+                <div *ngIf="(selectedTab=='Running'? !allRunningVehiclelData.length:selectedTab=='Stopped'? !allStoppedVehiclelData.length:selectedTab=='Idle'?!allIdleVehiclelData.length:selectedTab=='Offline'?!allOfflineVehiclelData.length:!allVehiclelData.length)|| !allVehiclelData.length "
+                    class="card-body fixed-height p-1">
+                    <div class="alert alert-danger text-center py-2"> No data found</div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="card card-body p-0 rounded">
+                <div class="position-relative">
+                    <div class="distance-details d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
                             <div class="flex-shrink-0">
-                                <div class="bg-opacity-25  rounded-circle vehicle-icon"
-                                    [ngClass]="{'text-danger':item?.gpsStatus=='Offline','text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
-                                    <i class="fa-solid fa-car"></i>
-                                </div>
+                                <img src="assets/images/Tracking/Current-Location.svg" alt="Current Location">
                             </div>
-                            <div class="flex-grow-1 ms-2">
-                                <div class="d-flex justify-content-between align-items-center my-2">
-                                    <a class="text-danger" *ngIf="item?.gpsStatus=='Offline'" [ngbPopover]="popContent"
-                                        placement="end">
-                                        <p class="vehicle-no">{{item?.vehicleNo}} </p>
-                                    </a>
-                                    <a *ngIf="item?.gpsStatus!='Offline'" (click)="vehicleNo = item?.vehicleNo; selectedCanvasTab='Itinerary'"
-                                        data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom"
-                                        aria-controls="offcanvasExample"
-                                        [ngClass]="{'text-danger':item?.gpsStatus=='Offline','text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
-                                        <p class="vehicle-no">{{item?.vehicleNo}} </p>
-                                    </a>
-                                    <span class="text-dark veh-status">({{'Ticket Raised'}})</span>
-                                    <a class="text-primary veh-status"> View Details</a>
-                                    <span class="veh-status"
-                                        [ngClass]="{'text-danger':item?.gpsStatus=='Offline','text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
-                                        <i class="fa-solid fa-circle me-2"></i>{{item?.gpsStatus}}
-                                    </span>
-                                </div>
-                                <div class="d-flex align-items-start">
-                                    <img src="assets/images/Tracking/location-vehicle.svg" class="me-2 mt-1">
-                                    <div class="vehicle-location">
-                                        <p>Yavatmal District Maharashtra</p>
-                                        <small> {{ item?.deviceDatetime | date:'dd MMM yyyy hh:mm a'}}</small>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-start mb-2">
-                                    <img src="assets/images/Tracking/info-vehicle.svg" class="me-2 mt-1">
-                                    <div class="vehicle-running">
-                                        35 kmph | Running since : 3 days : 5 hrs | 480 km today
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="vehicle-status">
-                                        <div class="d-flex">
-                                            <span><img src="assets/images/Tracking/battery.svg" class="me-1"> --</span>
-                                            <span class="mx-3"><img src="assets/images/Tracking/network.svg"
-                                                    class="me-1">
-                                                --</span>
-                                            <span><img src="assets/images/Tracking/ON-vehicle.svg" class="me-1">
-                                                --</span>
-                                        </div>
-                                    </div>
-                                    <div class="share-call">
-                                        <a class="me-3" (click)="openTicketRaisedDialog(item,'shareLocation')"><img
-                                                src="assets/images/Tracking/share.svg"></a>
-                                        <a><img src="assets/images/Tracking/call-vehicle.svg"></a>
-                                    </div>
-                                </div>
+                            <div class="flex-grow-1 ms-3">
+                                <p>Current Location</p>
+                                <small>Route I - 75</small>
                             </div>
-                        </a>
-                    </ng-container>
-                    <ng-template #popContent class="bg-danger">
-                        <p>GPS Wire Cut. Is the vehicle in maintenance?</p>
-                        <div class="d-flex justify-content-end">
-                            <button class="btn btn-sm btn-outline-danger text-dark"
-                                (click)="openTicketRaisedDialog(item,'compliant')">No</button>
-                            <button class="btn btn-sm btn-outline-danger text-dark"
-                                (click)="openTicketRaisedDialog(item,'maintenance')">Yes</button>
                         </div>
-                    </ng-template>
-                </div>
-            </div>
-            <div *ngIf="(selectedTab=='Running'? !allRunningVehiclelData.length:selectedTab=='Stopped'? !allStoppedVehiclelData.length:selectedTab=='Idle'?!allIdleVehiclelData.length:selectedTab=='Offline'?!allOfflineVehiclelData.length:!allVehiclelData.length)|| !allVehiclelData.length "
-                class="card-body fixed-height p-1">
-                <div class="alert alert-danger text-center py-2"> No data found</div>
-            </div>
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                <img src="assets/images/Tracking/Last-stop.svg" alt="Last Stop">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <p>Last stop</p>
+                                <small>6h ago</small>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                <img src="assets/images/Tracking/Distance.svg" alt="Distance">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <p>Distance</p>
+                                <small>120/80</small>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                <img src="assets/images/Tracking/Current-Speed.svg" alt="Current Speed">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <p>Current Speed</p>
+                                <small>76 mph</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gmap_canvas">
+                        <!-- [restriction]="countryRestriction"  -->
+                        <agm-map [latitude]="lat" [zoom]="zoom" [longitude]="long" class="rounded"
+                            [ngClass]="{'agm-map-height-big':!vehicleNo, 'agm-map-height-small':vehicleNo}"
+                            (mapReady)="onMapReady($event)"></agm-map>
 
-        </div>
-    </div>
-    <div class="col-sm-8">
-        <div class="card card-body p-0 rounded">
-            <div class="position-relative">
-                <div class="distance-details d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <img src="assets/images/Tracking/Current-Location.svg" alt="Current Location">
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <p>Current Location</p>
-                            <small>Route I - 75</small>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <img src="assets/images/Tracking/Last-stop.svg" alt="Last Stop">
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <p>Last stop</p>
-                            <small>6h ago</small>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <img src="assets/images/Tracking/Distance.svg" alt="Distance">
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <p>Distance</p>
-                            <small>120/80</small>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <img src="assets/images/Tracking/Current-Speed.svg" alt="Current Speed">
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <p>Current Speed</p>
-                            <small>76 mph</small>
-                        </div>
                     </div>
                 </div>
-                <div class="gmap_canvas">
-                    <!-- [restriction]="countryRestriction"  -->
-                    <agm-map [latitude]="lat" [zoom]="zoom" [longitude]="long" class="rounded" [ngClass]="{'agm-map-height-big':!vehicleNo, 'agm-map-height-small':vehicleNo}"
-                        (mapReady)="onMapReady($event)"></agm-map>
-
-                </div>
-            </div>
-            <div class="offcanvas offcanvas-bottom position-absolute shadow-lg border-0" data-bs-scroll="true"  
-                 tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel" data-bs-backdrop="true">
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="open" (click)="vehicleNo=''"></button>
-                <div class="offcanvas-body p-1">
-                    <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link " id="Itinerary-tab" data-bs-toggle="tab"
-                                data-bs-target="#Itinerary-tab-pane" type="button" role="tab" [ngClass]="{'active':selectedCanvasTab=='Itinerary'?true:false}"
-                                aria-controls="Itinerary-tab-pane" aria-selected="false" (click)="selectedCanvasTab='Itinerary'">Itinerary</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="Driver-information-tab" data-bs-toggle="tab" [ngClass]="{'active':selectedCanvasTab=='Driver'?true:false}"
-                                data-bs-target="#Driver-information-tab-pane" type="button" role="tab" (click)="getDriverDetails()"
-                                aria-controls="Driver-information-tab-pane" aria-selected="false"  (click)="selectedCanvasTab='Driver'">Driver
-                                information</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="Vehicle-Details-tab" data-bs-toggle="tab"
-                                data-bs-target="#Vehicle-Details-tab-pane" type="button" role="tab" (click)="getVehicleDetails()" [ngClass]="{'active':selectedCanvasTab=='Vehicle'?true:false}"
-                                aria-controls="Vehicle-Details-tab-pane" aria-selected="false"  (click)="selectedCanvasTab='Vehicle'">Vehicle Details</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="near-by-vehicles-tab" data-bs-toggle="tab"[ngClass]="{'active':selectedCanvasTab=='NearBy'?true:false}"
-                                data-bs-target="#near-by-vehicles-tab-pane" type="button" role="tab"
-                                aria-controls="near-by-vehicles-tab-pane" aria-selected="false"  (click)="selectedCanvasTab='NearBy'">Near By
-                                Vehicles</button>
-                        </li>
-                    </ul>
-                    <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show" [ngClass]="{'active':selectedCanvasTab=='Itinerary'?true:false}" id="Itinerary-tab-pane" role="tabpanel"
-                            aria-labelledby="Itinerary-tab" tabindex="0">
-                            <div class="container">
-                                <div class="row align-items-center mb-3 justify-content-between">
-                                    <div class="col-sm-auto">
-                                        <div class="d-flex">
-                                            <div class="itinerary-details">
-                                                <p class="text-main">All</p>
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <div class="veh-time">17 hrs : 8 main</div>
-                                                    <div class="veh-stops"> 0.49 km</div>
+                <div class="offcanvas offcanvas-bottom position-absolute shadow-lg border-0" data-bs-scroll="true"
+                    tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel" data-bs-backdrop="true">
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="open"
+                        (click)="vehicleNo=''"></button>
+                    <div class="offcanvas-body p-1">
+                        <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link " id="Itinerary-tab" data-bs-toggle="tab"
+                                    data-bs-target="#Itinerary-tab-pane" type="button" role="tab"
+                                    [ngClass]="{'active':selectedCanvasTab=='Itinerary'?true:false}"
+                                    aria-controls="Itinerary-tab-pane" aria-selected="false"
+                                    (click)="selectedCanvasTab='Itinerary'">Itinerary</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="Driver-information-tab" data-bs-toggle="tab"
+                                    [ngClass]="{'active':selectedCanvasTab=='Driver'?true:false}"
+                                    data-bs-target="#Driver-information-tab-pane" type="button" role="tab"
+                                    (click)="getDriverDetails()" aria-controls="Driver-information-tab-pane"
+                                    aria-selected="false" (click)="selectedCanvasTab='Driver'">Driver
+                                    information</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="Vehicle-Details-tab" data-bs-toggle="tab"
+                                    data-bs-target="#Vehicle-Details-tab-pane" type="button" role="tab"
+                                    (click)="getVehicleDetails()"
+                                    [ngClass]="{'active':selectedCanvasTab=='Vehicle'?true:false}"
+                                    aria-controls="Vehicle-Details-tab-pane" aria-selected="false"
+                                    (click)="selectedCanvasTab='Vehicle'">Vehicle Details</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="near-by-vehicles-tab" data-bs-toggle="tab"
+                                    [ngClass]="{'active':selectedCanvasTab=='NearBy'?true:false}"
+                                    data-bs-target="#near-by-vehicles-tab-pane" type="button" role="tab"
+                                    aria-controls="near-by-vehicles-tab-pane" aria-selected="false"
+                                    (click)="selectedCanvasTab='NearBy'">Near By
+                                    Vehicles</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show"
+                                [ngClass]="{'active':selectedCanvasTab=='Itinerary'?true:false}" id="Itinerary-tab-pane"
+                                role="tabpanel" aria-labelledby="Itinerary-tab" tabindex="0">
+                                <div class="container">
+                                    <div class="row align-items-center mb-3 justify-content-between">
+                                        <div class="col-sm-auto">
+                                            <div class="d-flex">
+                                                <div class="itinerary-details">
+                                                    <p class="text-main">All</p>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <div class="veh-time">17 hrs : 8 main</div>
+                                                        <div class="veh-stops"> 0.49 km</div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="itinerary-details">
-                                                <p class="text-muted">Stopped</p>
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <div class="veh-time">16 hrs :29 min</div>
-                                                    <div class="veh-stops">3 stops</div>
+                                                <div class="itinerary-details">
+                                                    <p class="text-muted">Stopped</p>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <div class="veh-time">16 hrs :29 min</div>
+                                                        <div class="veh-stops">3 stops</div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-sm">
-                                        <form [formGroup]="itineraryForm">
-                                            <div class="d-flex justify-content-end align-items-center"
-                                                id="itinerary-buttons">
-                                                <mat-form-field appearance="legacy" class="me-1"
-                                                    style="width:100px !important;">
-                                                    <mat-select formControlName="timePeriod" required>
-                                                        <mat-option *ngFor="let item of timePeriodArray"
-                                                            [value]="item.value">
-                                                            {{item.viewValue}}
-                                                        </mat-option>
-                                                    </mat-select>
-                                                </mat-form-field>
-                                                <mat-form-field appearance="legacy"
-                                                    *ngIf="itinerary['timePeriod']?.value=='4'">
-                                                    <mat-label>Enter From Date-To Date</mat-label>
-                                                    <mat-date-range-input [rangePicker]="picker" [max]="todayDate">
-                                                        <input matStartDate placeholder="From Date"
-                                                            formControlName="fromDate" autocomplete="off"
-                                                            [max]="todayDate">
-                                                        <input matEndDate placeholder="To Date" formControlName="toDate"
-                                                            autocomplete="off" [min]="itinerary['fromDate'].value ">
-                                                    </mat-date-range-input>
-                                                    <mat-datepicker-toggle matSuffix [for]="picker">
-                                                    </mat-datepicker-toggle>
-                                                    <mat-date-range-picker #picker></mat-date-range-picker>
-                                                </mat-form-field>
-                                                <button class="btn" type="button" id="start" [class.d-none]="recBtnFlag"
-                                                    (click)="recBtnFlag = true">
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="fa-solid fa-circle me-1"></i>
-                                                        <span>REC</span>
-                                                    </div>
-                                                </button>
+                                        <div class="col-sm">
+                                            <form [formGroup]="itineraryForm">
+                                                <div class="d-flex justify-content-end align-items-center"
+                                                    id="itinerary-buttons">
+                                                    <mat-form-field appearance="legacy" class="me-1"
+                                                        style="width:100px !important;">
+                                                        <mat-select formControlName="timePeriod" required>
+                                                            <mat-option *ngFor="let item of timePeriodArray"
+                                                                [value]="item.value">
+                                                                {{item.viewValue}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                    <mat-form-field appearance="legacy"
+                                                        *ngIf="itinerary['timePeriod']?.value=='4'">
+                                                        <mat-label>Enter From Date-To Date</mat-label>
+                                                        <mat-date-range-input [rangePicker]="picker" [max]="todayDate">
+                                                            <input matStartDate placeholder="From Date"
+                                                                formControlName="fromDate" autocomplete="off"
+                                                                [max]="todayDate">
+                                                            <input matEndDate placeholder="To Date"
+                                                                formControlName="toDate" autocomplete="off"
+                                                                [min]="itinerary['fromDate'].value ">
+                                                        </mat-date-range-input>
+                                                        <mat-datepicker-toggle matSuffix [for]="picker">
+                                                        </mat-datepicker-toggle>
+                                                        <mat-date-range-picker #picker></mat-date-range-picker>
+                                                    </mat-form-field>
+                                                    <button class="btn" type="button" id="start"
+                                                        [class.d-none]="recBtnFlag" (click)="recBtnFlag = true">
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="fa-solid fa-circle me-1"></i>
+                                                            <span>REC</span>
+                                                        </div>
+                                                    </button>
 
-                                                <button class="btn" type="button" id="stop" [class.d-none]="!recBtnFlag"
-                                                    (click)="recBtnFlag = false; videoBtnClickFlag = true">
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="fa-solid fa-circle text-danger me-1"></i>
-                                                        <span>REC</span>
-                                                    </div>
-                                                </button>
-                                                <a type="button" mat-menu-item download href="" id="video"
-                                                    [class.d-none]="!videoBtnClickFlag">
-                                                    <div
-                                                        class="d-flex justify-content-between align-items-center text-primary">
-                                                        <span><small>Video &nbsp; </small></span> <i
-                                                            class="fa-solid fa-download"></i>
-                                                    </div>
+                                                    <button class="btn" type="button" id="stop"
+                                                        [class.d-none]="!recBtnFlag"
+                                                        (click)="recBtnFlag = false; videoBtnClickFlag = true">
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="fa-solid fa-circle text-danger me-1"></i>
+                                                            <span>REC</span>
+                                                        </div>
+                                                    </button>
+                                                    <a type="button" mat-menu-item download href="" id="video"
+                                                        [class.d-none]="!videoBtnClickFlag">
+                                                        <div
+                                                            class="d-flex justify-content-between align-items-center text-primary">
+                                                            <span><small>Video &nbsp; </small></span> <i
+                                                                class="fa-solid fa-download"></i>
+                                                        </div>
+                                                    </a>
+                                                    <button class="btn" type="button" (click)="reset()"><i
+                                                            class="fa-solid fa-rotate"></i></button>
+                                                    <button class="btn" type="button" *ngIf="!playPauseBtnFlag"
+                                                        (click)="play();playPauseBtnFlag=true"><i
+                                                            class="fa-solid fa-play"></i></button>
+                                                    <button class="btn" type="button" *ngIf="playPauseBtnFlag"
+                                                        (click)="pause();playPauseBtnFlag=false"><i
+                                                            class="fa-solid fa-pause"></i></button>
+                                                    <button class="btn" type="button" [matMenuTriggerFor]="menu"><i
+                                                            class="fa-solid fa-download"></i></button>
+                                                    <mat-menu #menu="matMenu">
+
+                                                        <button mat-menu-item>
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center">
+                                                                <span>PDF</span>
+                                                                <span class="text-danger"><i
+                                                                        class="fa-solid fa-file-pdf"></i></span>
+                                                            </div>
+                                                        </button>
+                                                        <button mat-menu-item>
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center">
+                                                                <span>Excel</span>
+                                                                <span class="text-success"><i
+                                                                        class="fa-solid fa-file-excel"></i></span>
+                                                            </div>
+                                                        </button>
+                                                    </mat-menu>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="fixed-height-table">
+                                        <table class="table dashboard-table mb-0">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <span class="text-primary"><i
+                                                                class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs
+                                                            :
+                                                            21 min</span>
+                                                    </td>
+                                                    <td>
+                                                        <span>Harjuna Post Office, Harjuna, Yavatmal,
+                                                            District, Maharashtra, 445002, India</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="text-muted">
+                                                            <i class="fa-regular fa-floppy-disk"></i>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="text-muted">
+                                                            25 Jul 2022, 16:37
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span class="text-danger"><i
+                                                                class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs
+                                                            :
+                                                            21 min</span>
+                                                    </td>
+                                                    <td>
+                                                        <span>Harjuna Post Office, Harjuna, Yavatmal,
+                                                            District, Maharashtra, 445002, India</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="text-muted">
+                                                            <i class="fa-regular fa-floppy-disk"></i>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="text-muted">
+                                                            25 Jul 2022, 16:37
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span class="text-success"><i
+                                                                class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs
+                                                            :
+                                                            21 min</span>
+                                                    </td>
+                                                    <td>
+                                                        <span>Harjuna Post Office, Harjuna, Yavatmal,
+                                                            District, Maharashtra, 445002, India</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="text-muted">
+                                                            <i class="fa-regular fa-floppy-disk"></i>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="text-muted">
+                                                            25 Jul 2022, 16:37
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span class="text-warning"><i
+                                                                class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs
+                                                            :
+                                                            21 min</span>
+                                                    </td>
+                                                    <td>
+                                                        <span>Harjuna Post Office, Harjuna, Yavatmal,
+                                                            District, Maharashtra, 445002, India</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="text-muted">
+                                                            <i class="fa-regular fa-floppy-disk"></i>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="text-muted">
+                                                            25 Jul 2022, 16:37
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span class="text-warning"><i
+                                                                class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs
+                                                            :
+                                                            21 min</span>
+                                                    </td>
+                                                    <td>
+                                                        <span>Harjuna Post Office, Harjuna, Yavatmal,
+                                                            District, Maharashtra, 445002, India</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="text-muted">
+                                                            <i class="fa-regular fa-floppy-disk"></i>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="text-muted">
+                                                            25 Jul 2022, 16:37
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" [ngClass]="{'active':selectedCanvasTab=='Driver'?true:false}"
+                                id="Driver-information-tab-pane" role="tabpanel"
+                                aria-labelledby="Driver-information-tab" tabindex="0">
+                                <div class="container">
+                                    <div class="row driver-vehicle-info">
+                                        <div class="col-sm-2 text-center">
+                                            <img src="assets/images/Driver-profile.svg">
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <div class="d-flex mb-4 align-items-center">
+                                                <div class="driver-name me-3">
+                                                    <p>{{driverDetailsData[0]?.name }}</p>
+                                                    <small>{{driverDetailsData[0]?.mobileNo }}</small>
+                                                </div>
+                                                <a class="call-driver bg-success"
+                                                    [href]="'tel:'+ driverDetailsData[0]?.mobileNo">
+                                                    <i class="fa-solid fa-phone"></i>
                                                 </a>
-                                                <button class="btn" type="button" (click)="reset()"><i
-                                                        class="fa-solid fa-rotate"></i></button>
-                                                <button class="btn" type="button" *ngIf="!playPauseBtnFlag"
-                                                    (click)="play();playPauseBtnFlag=true"><i
-                                                        class="fa-solid fa-play"></i></button>
-                                                <button class="btn" type="button" *ngIf="playPauseBtnFlag"
-                                                    (click)="pause();playPauseBtnFlag=false"><i
-                                                        class="fa-solid fa-pause"></i></button>
-                                                <button class="btn" type="button" [matMenuTriggerFor]="menu"><i
-                                                        class="fa-solid fa-download"></i></button>
-                                                <mat-menu #menu="matMenu">
+                                            </div>
+                                            <div class="row driver-info">
+                                                <div class="col-sm">
+                                                    <small>Aadhar Card No.</small>
+                                                    <p>{{driverDetailsData[0]?.aadharNumber }}</p>
+                                                    <a *ngIf="driverDetailsData[0]?.aadharCardDoc"
+                                                        [href]="driverDetailsData[0]?.aadharCardDoc" target="_blank"><i
+                                                            class="fa-solid fa-file-pdf"></i></a>
+                                                </div>
+                                                <div class="col-sm">
+                                                    <small>PAN Card No.</small>
+                                                    <p>{{driverDetailsData[0]?.panNumber }}</p>
+                                                    <a *ngIf="driverDetailsData[0]?.panCardDoc"
+                                                        [href]="driverDetailsData[0]?.panCardDoc" target="_blank"><i
+                                                            class="fa-solid fa-file-pdf"></i></a>
+                                                </div>
+                                                <div class="col-sm">
+                                                    <small>License No.</small>
+                                                    <p>{{driverDetailsData[0]?.licenceNumber }}</p>
+                                                    <a *ngIf="driverDetailsData[0]?.licenceDoc"
+                                                        [href]="driverDetailsData[0]?.licenceDoc" target="_blank"><i
+                                                            class="fa-solid fa-file-pdf"></i></a>
+                                                </div>
+                                                <div class="col-sm">
+                                                    <small>License Expiry</small>
+                                                    <p>{{driverDetailsData[0]?.licenceExpiryDate | date:'dd-MM-yyyy' }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                                    <button mat-menu-item>
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <span>PDF</span>
-                                                            <span class="text-danger"><i
-                                                                    class="fa-solid fa-file-pdf"></i></span>
+                            </div>
+                            <div class="tab-pane fade" [ngClass]="{'active':selectedCanvasTab=='Vehicle'?true:false}"
+                                id="Vehicle-Details-tab-pane" role="tabpanel" aria-labelledby="Vehicle-Details-tab"
+                                tabindex="0">
+                                <div class="container">
+                                    <div class="row driver-vehicle-info">
+                                        <div class="col-sm-2 text-center">
+                                            <img src="assets/images/Driver-profile.svg">
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <div class="d-flex mb-4">
+                                                <div class="driver-name">
+                                                    <p>{{vehicleDetailsData[0]?.regNo}}</p>
+                                                    <small>{{vehicleDetailsData[0]?.vehicleMake}}
+                                                        {{vehicleDetailsData[0]?.vehicleMake}}
+
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <div class="row driver-info">
+                                                <div class="col-sm">
+                                                    <small>Owner Name</small>
+                                                    <p>{{vehicleDetailsData[0]?.ownerName}}</p>
+                                                </div>
+                                                <div class="col-sm">
+                                                    <small>Chassis No.</small>
+                                                    <p>{{vehicleDetailsData[0]?.vehicleChassisNo}}</p>
+                                                </div>
+                                                <div class="col-sm">
+                                                    <small>Engine No.</small>
+                                                    <p>{{vehicleDetailsData[0]?.vehicleEngineNo}}</p>
+                                                </div>
+                                                <div class="col-sm">
+                                                    <small>Fuel Type</small>
+                                                    <p>{{vehicleDetailsData[0]?.fuelType }}</p>
+                                                </div>
+                                                <div class="col-sm">
+                                                    <small>Insurance Date</small>
+                                                    <p>{{vehicleDetailsData[0]?.insuranceExpiryDate}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" [ngClass]="{'active':selectedCanvasTab=='NearBy'?true:false}"
+                                id="near-by-vehicles-tab-pane" role="tabpanel" aria-labelledby="near-by-vehicles-tab"
+                                tabindex="0">
+                                <div class="container">
+                                    <div class="row align-items-center mb-3" id="near-by-vehicles">
+                                        <div class="col-sm-auto">
+                                            <p>Search Nearby Vehicles</p>
+                                        </div>
+                                        <div class="col-sm-auto">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                    id="flexSwitchCheckDefault">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-auto">
+                                            <p>Enter Radius :</p>
+                                        </div>
+                                        <div class="col-sm-auto">
+                                            <input class="form-control border-primary" type="text"
+                                                placeholder="Enter Radius in KM">
+                                        </div>
+                                    </div>
+                                    <div class="fixed-height-table">
+                                        <table class="table dashboard-table mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>VEHICLE NUMBER</th>
+                                                    <th>CURRENT LOCATION</th>
+                                                    <th>DISTANCE</th>
+                                                    <th>LAST DATA RECEIVED</th>
+                                                    <th>VEHICLE STATUS</th>
+                                                    <th>ACTION</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>MH 09 HS 4028</td>
+                                                    <td>Yavatmal District Maharashtra</td>
+                                                    <td>02 km</td>
+                                                    <td>26-08-2022 4:25 PM</td>
+                                                    <td>
+                                                        <div class="d-flex">
+                                                            <span class="text-success me-2"><i
+                                                                    class="fa-solid fa-circle"></i></span>
+                                                            <span>Running</span>
                                                         </div>
-                                                    </button>
-                                                    <button mat-menu-item>
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <span>Excel</span>
-                                                            <span class="text-success"><i
-                                                                    class="fa-solid fa-file-excel"></i></span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex">
+                                                            <button class="btn btn-light-main text-main me-2 btn-icon">
+                                                                <i class="fa-solid fa-phone-volume"></i>
+                                                            </button>
+                                                            <button
+                                                                class="btn bg-success bg-opacity-10 text-success btn-icon">
+                                                                <i class="fa-solid fa-route"></i>
+                                                            </button>
                                                         </div>
-                                                    </button>
-                                                </mat-menu>
-                                            </div>
-                                        </form>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                </div>
-                                <div class="fixed-height-table">
-                                    <table class="table dashboard-table mb-0">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <span class="text-primary"><i
-                                                            class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs :
-                                                        21 min</span>
-                                                </td>
-                                                <td>
-                                                    <span class="text-dark">Harjuna Post Office, Harjuna, Yavatmal,
-                                                        District, Maharashtra, 445002, India</span>
-                                                </td>
-                                                <td>
-                                                    <span class="text-muted">
-                                                        <i class="fa-regular fa-floppy-disk"></i>
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span class="text-muted">
-                                                        25 Jul 2022, 16:37
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span class="text-danger"><i
-                                                            class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs :
-                                                        21 min</span>
-                                                </td>
-                                                <td>
-                                                    <span class="text-dark">Harjuna Post Office, Harjuna, Yavatmal,
-                                                        District, Maharashtra, 445002, India</span>
-                                                </td>
-                                                <td>
-                                                    <span class="text-muted">
-                                                        <i class="fa-regular fa-floppy-disk"></i>
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span class="text-muted">
-                                                        25 Jul 2022, 16:37
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span class="text-success"><i
-                                                            class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs :
-                                                        21 min</span>
-                                                </td>
-                                                <td>
-                                                    <span class="text-dark">Harjuna Post Office, Harjuna, Yavatmal,
-                                                        District, Maharashtra, 445002, India</span>
-                                                </td>
-                                                <td>
-                                                    <span class="text-muted">
-                                                        <i class="fa-regular fa-floppy-disk"></i>
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span class="text-muted">
-                                                        25 Jul 2022, 16:37
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span class="text-warning"><i
-                                                            class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs :
-                                                        21 min</span>
-                                                </td>
-                                                <td>
-                                                    <span class="text-dark">Harjuna Post Office, Harjuna, Yavatmal,
-                                                        District, Maharashtra, 445002, India</span>
-                                                </td>
-                                                <td>
-                                                    <span class="text-muted">
-                                                        <i class="fa-regular fa-floppy-disk"></i>
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span class="text-muted">
-                                                        25 Jul 2022, 16:37
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span class="text-warning"><i
-                                                            class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs :
-                                                        21 min</span>
-                                                </td>
-                                                <td>
-                                                    <span class="text-dark">Harjuna Post Office, Harjuna, Yavatmal,
-                                                        District, Maharashtra, 445002, India</span>
-                                                </td>
-                                                <td>
-                                                    <span class="text-muted">
-                                                        <i class="fa-regular fa-floppy-disk"></i>
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span class="text-muted">
-                                                        25 Jul 2022, 16:37
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" [ngClass]="{'active':selectedCanvasTab=='Driver'?true:false}" id="Driver-information-tab-pane" role="tabpanel"
-                            aria-labelledby="Driver-information-tab" tabindex="0">
-                            <div class="container">
-                                <div class="row driver-vehicle-info">
-                                    <div class="col-sm-2 text-center">
-                                        <img src="assets/images/Driver-profile.svg">
-                                    </div>
-                                    <div class="col-sm-10">
-                                        <div class="d-flex mb-4 align-items-center">
-                                            <div class="driver-name me-3">
-                                                <p>{{driverDetailsData[0]?.name }}</p>
-                                                <small>{{driverDetailsData[0]?.mobileNo }}</small>
-                                            </div>
-                                            <a class="call-driver bg-success"
-                                                [href]="'tel:'+ driverDetailsData[0]?.mobileNo">
-                                                <i class="fa-solid fa-phone"></i>
-                                            </a>
-                                        </div>
-                                        <div class="row driver-info">
-                                            <div class="col-sm">
-                                                <small>Aadhar Card No.</small>
-                                                <p>{{driverDetailsData[0]?.aadharNumber }}</p>
-                                                <a *ngIf="driverDetailsData[0]?.aadharCardDoc"
-                                                    [href]="driverDetailsData[0]?.aadharCardDoc" target="_blank"><i
-                                                        class="fa-solid fa-file-pdf"></i></a>
-                                            </div>
-                                            <div class="col-sm">
-                                                <small>PAN Card No.</small>
-                                                <p>{{driverDetailsData[0]?.panNumber }}</p>
-                                                <a *ngIf="driverDetailsData[0]?.panCardDoc"
-                                                    [href]="driverDetailsData[0]?.panCardDoc" target="_blank"><i
-                                                        class="fa-solid fa-file-pdf"></i></a>
-                                            </div>
-                                            <div class="col-sm">
-                                                <small>License No.</small>
-                                                <p>{{driverDetailsData[0]?.licenceNumber }}</p>
-                                                <a *ngIf="driverDetailsData[0]?.licenceDoc"
-                                                    [href]="driverDetailsData[0]?.licenceDoc" target="_blank"><i
-                                                        class="fa-solid fa-file-pdf"></i></a>
-                                            </div>
-                                            <div class="col-sm">
-                                                <small>License Expiry</small>
-                                                <p>{{driverDetailsData[0]?.licenceExpiryDate | date:'dd-MM-yyyy' }}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="tab-pane fade" [ngClass]="{'active':selectedCanvasTab=='Vehicle'?true:false}" id="Vehicle-Details-tab-pane" role="tabpanel"
-                            aria-labelledby="Vehicle-Details-tab" tabindex="0">
-                            <div class="container">
-                                <div class="row driver-vehicle-info">
-                                    <div class="col-sm-2 text-center">
-                                        <img src="assets/images/Driver-profile.svg">
-                                    </div>
-                                    <div class="col-sm-10">
-                                        <div class="d-flex mb-4">
-                                            <div class="driver-name">
-                                                <p>{{vehicleDetailsData[0]?.regNo}}</p>
-                                                <small>{{vehicleDetailsData[0]?.vehicleMake}}
-                                                    {{vehicleDetailsData[0]?.vehicleMake}}
-
-                                                </small>
-                                            </div>
-                                        </div>
-                                        <div class="row driver-info">
-                                            <div class="col-sm">
-                                                <small>Owner Name</small>
-                                                <p>{{vehicleDetailsData[0]?.ownerName}}</p>
-                                            </div>
-                                            <div class="col-sm">
-                                                <small>Chassis No.</small>
-                                                <p>{{vehicleDetailsData[0]?.vehicleChassisNo}}</p>
-                                            </div>
-                                            <div class="col-sm">
-                                                <small>Engine No.</small>
-                                                <p>{{vehicleDetailsData[0]?.vehicleEngineNo}}</p>
-                                            </div>
-                                            <div class="col-sm">
-                                                <small>Fuel Type</small>
-                                                <p>{{vehicleDetailsData[0]?.fuelType }}</p>
-                                            </div>
-                                            <div class="col-sm">
-                                                <small>Insurance Date</small>
-                                                <p>{{vehicleDetailsData[0]?.insuranceExpiryDate}}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" [ngClass]="{'active':selectedCanvasTab=='NearBy'?true:false}" id="near-by-vehicles-tab-pane" role="tabpanel"
-                            aria-labelledby="near-by-vehicles-tab" tabindex="0">
-                            <div class="container">
-                                <div class="row align-items-center mb-3" id="near-by-vehicles">
-                                    <div class="col-sm-auto">
-                                        <p>Search Nearby Vehicles</p>
-                                    </div>
-                                    <div class="col-sm-auto">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="flexSwitchCheckDefault">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-auto">
-                                        <p>Enter Radius :</p>
-                                    </div>
-                                    <div class="col-sm-auto">
-                                        <input class="form-control border-primary" type="text"
-                                            placeholder="Enter Radius in KM">
-                                    </div>
-                                </div>
-                                <div class="fixed-height-table">
-                                    <table class="table dashboard-table mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th>VEHICLE NUMBER</th>
-                                                <th>CURRENT LOCATION</th>
-                                                <th>DISTANCE</th>
-                                                <th>LAST DATA RECEIVED</th>
-                                                <th>VEHICLE STATUS</th>
-                                                <th>ACTION</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>MH 09 HS 4028</td>
-                                                <td>Yavatmal District Maharashtra</td>
-                                                <td>02 km</td>
-                                                <td>26-08-2022 4:25 PM</td>
-                                                <td>
-                                                    <div class="d-flex">
-                                                        <span class="text-success me-2"><i
-                                                                class="fa-solid fa-circle"></i></span>
-                                                        <span>Running</span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex">
-                                                        <button class="btn btn-light-main text-main me-2 btn-icon">
-                                                            <i class="fa-solid fa-phone-volume"></i>
-                                                        </button>
-                                                        <button
-                                                            class="btn bg-success bg-opacity-10 text-success btn-icon">
-                                                            <i class="fa-solid fa-route"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -587,5 +615,4 @@
             </div>
         </div>
     </div>
-</div>
 </div>
