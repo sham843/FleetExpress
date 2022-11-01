@@ -27,7 +27,8 @@ export class HeaderComponent implements OnInit {
     localStorage.setItem('themeColor', darkMode);
     this.themeClr = localStorage.getItem('themeColor');
     this.themeClr == 'dark' ? (this.renderer.addClass(document.body, 'darkTheme'), this.renderer.removeClass(document.body, 'lightTheme')) :
-      (this.renderer.addClass(document.body, 'lightTheme'), this.renderer.removeClass(document.body, 'darkTheme'))
+      (this.renderer.addClass(document.body, 'lightTheme'), this.renderer.removeClass(document.body, 'darkTheme'));
+      this.sharedService.setTheme(this.themeClr);
     const darkClassName = 'darkMode';
     this.className = darkMode == 'dark' ? darkClassName : '';
     if (darkMode) {

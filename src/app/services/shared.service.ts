@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
-import {Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { ApiCallService } from './api-call.service';
 import { CommonMethodsService } from './common-methods.service';
 import { ErrorsService } from './errors.service';
@@ -81,6 +81,15 @@ export class SharedService {
       "color": "brinjal"
     }
   ];
+
+  private theme = new BehaviorSubject('');
+  getTheme() {
+    return this.theme.asObservable();
+  }
+  setTheme(color: any) {
+    this.theme.next(color);
+  }
+
 
   constructor(private commonMethods: CommonMethodsService,
     private error: ErrorsService,

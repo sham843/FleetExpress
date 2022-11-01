@@ -23,7 +23,9 @@ export class SidebarComponent implements OnInit {
    }
 
   ngOnInit(): void {
-  
+    this.sharedService.getTheme().subscribe((res:any)=>{
+      this.lightIcon=res;
+    })
   }
   getSideBarState() {
     return this.sidebarservice.getSidebarState();

@@ -68,19 +68,20 @@ export class VehicleModalComponent implements OnInit {
       model: [this.dialogData ? this.dialogData.model : '', Validators.required],
       chassicNo: [this.dialogData ? this.dialogData.chassisNo : '', [Validators.compose([Validators.required, Validators.pattern('[0-9]{17}')])]],
       engineNo: [this.dialogData ? this.dialogData.engineNo : '', [Validators.compose([Validators.required, Validators.pattern('[a-zA-Z0-9_]{17}')])]],
-      insuranceExDate: ['', Validators.required],
-      insuranceDoc: ['', Validators.required],
-      registerNo: [''],
-      registerDoc: [''],
-      pollutionExDate: ['', Validators.required],
-      pollutionDoc: ['', Validators.required],
-      fitnessExDate: [''],
-      fitnessDoc: [''],
-      permitNo: ['', [Validators.compose([Validators.required])]],
-      permitDoc: ['', Validators.required]
+      insuranceExDate: [this.dialogData ? this.dialogData.insuranceExpiryDate : '', Validators.required],
+      registerNo: [this.dialogData ? this.dialogData.registrationCertificate : ''],
+      pollutionExDate: [this.dialogData ? this.dialogData.pollutionExpiryDate : '', Validators.required],
+      fitnessExDate: [this.dialogData ? this.dialogData.fitnessExpiryDate : ''],
+      permitNo: [this.dialogData ? this.dialogData.nationalPermit : '', [Validators.compose([Validators.required])]]
     })
     if (this.dialogData) {
       this.buttonFlag = false;
+      this.insuranceDoc=this.dialogData?this.dialogData.insuranceExpiryDoc:'';
+      this.registerDoc=this.dialogData?this.dialogData.regCertificateDoc:'';
+      this.pollutionDoc=this.dialogData?this.dialogData.pollutionExpiryDoc:'';
+      this.fitnessDoc=this.dialogData?this.dialogData.fitnessDoc:'';
+      this.nationalDoc=this.dialogData?this.dialogData.nationalPermitDoc:'';
+      this.profilePhotoImg=this.dialogData?this.dialogData.profilePhoto:'';
     }
   }
 
