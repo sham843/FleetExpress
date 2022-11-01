@@ -168,13 +168,13 @@ mat-form-field{
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0);
   box-shadow: inset 0 0 6px rgba(0,0,0,0);
   border-radius: 10px;
-	background-color: #fff;
+	// background-color: #fff;
   transition:all 1s ease-in-out;
 }
 ::-webkit-scrollbar
 {
 	width: 6px;
-	background-color: #F5F5F5;
+	// background-color: #F5F5F5;
   transition:all 1s ease-in-out;
 }
 *:hover::-webkit-scrollbar-thumb
@@ -1862,7 +1862,12 @@ input::-ms-clear {
 .offcanvas-backdrop.show {
   opacity: 0;
 }
-
+.agm-map-container-inner{
+  border-radius: 0.375rem;
+}
+.gm-svpc,.gmnoprint,.gm-style-cc{
+  display: none;
+}
 //  .lightTheme{
 //   background-color: rgb(226, 164, 164);
 // }
@@ -1917,4 +1922,62 @@ input::-ms-clear {
 }
 .darkTheme #dash-stats .overdue {
   background-image: url('./assets/images/Dashboard/Reminder-overdue.svg');
+}
+.darkTheme .reading-label,
+.darkTheme .reading-block{
+  color: #fff !important;
+}
+.darkTheme .apexcharts-text tspan{
+  filter: invert(1);
+}
+.darkTheme canvas{
+  filter: invert(1) !important;
+}
+.darkTheme .display-bar{
+  background: #1E1E2D !important;
+}
+.darkTheme #filters .input-group-text, 
+.darkTheme #filters .input-group .form-control, 
+.darkTheme #filters .btn{
+  background-color: rgb(255, 255, 255, 0.06) !important;
+}
+
+
+
+
+
+
+
+
+.scrollbar {
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  overscroll-behavior: contain;
+  scrollbar-color: #989ea6 transparent;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+}
+.scrollbar:hover::-webkit-scrollbar, .scrollbar:hover::-webkit-scrollbar-thumb, .scrollbar:hover:focus::-webkit-scrollbar, .scrollbar:hover:focus::-webkit-scrollbar-thumb {
+  visibility: visible;
+}
+.scrollbar::-webkit-scrollbar {
+  -webkit-appearance: none;
+  background-color: transparent;
+  height: 0.375rem;
+  visibility: hidden;
+  width: 0.375rem;
+}
+.scrollbar::-webkit-scrollbar-button, .scrollbar::-webkit-scrollbar-corner {
+  display: none;
+}
+.scrollbar::-webkit-scrollbar-button, .scrollbar::-webkit-scrollbar-corner {
+  display: none;
+}
+.scrollbar:hover::-webkit-scrollbar, .scrollbar:hover::-webkit-scrollbar-thumb, .scrollbar:hover:focus::-webkit-scrollbar, .scrollbar:hover:focus::-webkit-scrollbar-thumb {
+  visibility: visible;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: hsla(214,7%,62%,.4);
+  border-radius: 3px;
+  visibility: hidden;
 }

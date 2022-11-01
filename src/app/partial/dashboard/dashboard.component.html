@@ -106,7 +106,7 @@
                             [label]="avarageSpeedObj?.gaugeLabel" [append]="avarageSpeedObj?.gaugeAppendText"
                             [thick]="avarageSpeedObj?.gaugeThick" [animate]="true" [cap]="avarageSpeedObj?.guageCap" [markers]="markerConfig">
                         </ngx-gauge>
-                        <div class="fw-bold">{{'Vehicles Moving : '+ (vehiclesMoving.length?vehiclesMoving.length:'5')}}</div>
+                        <p class="fw-bold mb-0">{{'Vehicles Moving : '+ (vehiclesMoving.length?vehiclesMoving.length:'5')}}</p>
                     </div>
                 </div>
             </div>
@@ -119,9 +119,9 @@
                             [thick]="fastestVehicleObj?.gaugeThick" [animate]="true" [cap]="fastestVehicleObj?.guageCap" [markers]="markerConfig">
                         </ngx-gauge>
 
-                        <div class="fw-bold">{{'Vehicle No. : '+ (maxSpeedObj.length? maxSpeedObj?.vehicleNo:'PP22PP2222')}}</div>
-                        <div class="fw-normal">At :  {{maxSpeedObj.length?(maxSpeedObj?.deviceDatetime | date: 'dd-MM-yyyy hh:mm:ss a'): currentDate| date: 'dd-MM-yyyy hh:mm:ss a'}}
-                        </div>
+                        <p class="fw-bold mb-0">{{'Vehicle No. : '+ (maxSpeedObj.length? maxSpeedObj?.vehicleNo:'PP22PP2222')}}</p>
+                        <p class="fw-normal mb-0">At :  {{maxSpeedObj.length?(maxSpeedObj?.deviceDatetime | date: 'dd-MM-yyyy hh:mm:ss a'): currentDate| date: 'dd-MM-yyyy hh:mm:ss a'}}
+                        </p>
                     </div>
 
                 </div>

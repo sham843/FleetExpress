@@ -6,20 +6,21 @@
             <div class="row align-items-center" id="filters">
                 <div class="col-sm-4 border-end">
                     <div class="input-group">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
                         <input type="text" class="form-control" placeholder="Search" [formControl]="searchContent"
                             [maxLength]="15" (keyup)="setnumber(searchContent.value)"
                             (keypress)="validationService.noSpaces($event)">
-                        <div class="input-group-text" *ngIf="!searchContent.value">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </div>
-                        <div class="input-group-text" *ngIf="searchContent.value"><i class="fa fa-times"
+                        
+                        <!-- <div class="input-group-text" *ngIf="searchContent.value"><i class="fa fa-times"
                                 (click)="searchContent.reset()"></i>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="col-sm-2 border-end">
                     <div class="d-flex align-items-center justify-content-between">
-                        <button type="button" class="btn btn-light text-dark"
+                        <button type="button" class="btn btn-light"
                             (click)="clickOnTrackingTab('TotalVehicles')">
                             Total Vehicles <span class="badge ms-3">{{allVehiclelDataClone.length}}</span>
                         </button>
@@ -43,6 +44,8 @@
         </div>
     </div>
 </div>
+
+<div class="tracking-height">
 <div class="row">
     <div class="col-sm-4">
         <div class="card border-0 rounded">
@@ -584,4 +587,5 @@
             </div>
         </div>
     </div>
+</div>
 </div>
