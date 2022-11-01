@@ -29,7 +29,7 @@
           <li>
             <a routerLink="dashboard" routerLinkActive="active">
               <div class="menu-item">
-                <img [src]="lightIcon=='dark'?'assets/images/sidebar/Dashboard-dark.svg':'assets/images/sidebar/Dashboard-light.svg'">
+                <img [src]="lightIcon=='dark' || lightIcon1=='dark'?'assets/images/sidebar/Dashboard-dark.svg':'assets/images/sidebar/Dashboard-light.svg'">
               </div>
               <span>Dashboard</span>
             </a>

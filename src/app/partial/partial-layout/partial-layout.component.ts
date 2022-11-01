@@ -24,7 +24,6 @@ export class PartialLayoutComponent implements OnInit {
   }
   ngOnInit(): void {
     this.theme=sessionStorage.getItem('darkmode');
-    console.log(this.theme)
   }
 
 }
