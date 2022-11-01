@@ -106,9 +106,7 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
       else {
         this.timerFlag=true;
         this.resendTimer= -- this.resendTimer;
-        this.timerValue = this.resendTimer.toString().length != 2 ? '00.0' + this.resendTimer : '00.' + this.resendTimer;
-        console.log( this.timerValue);
-        
+        this.timerValue = this.resendTimer.toString().length != 2 ? '00.0' + this.resendTimer : '00.' + this.resendTimer;  
       }
     }, 1000);
   }

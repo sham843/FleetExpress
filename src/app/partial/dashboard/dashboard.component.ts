@@ -53,7 +53,7 @@ export class DashboardComponent implements OnInit {
   powerCutData=new Array();
   lat!: number;
   long!: number;
-  zoom:number = 4;
+  zoom:number = 12;
   subscription!:Subscription;
   @ViewChild('search')
   public searchElementRef !: ElementRef  ;

@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-// import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { debounceTime, distinctUntilChanged,Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { ConfirmationComponent } from 'src/app/dialogs/confirmation/confirmation.component';
 import { ModalsComponent } from 'src/app/dialogs/driver_modals/modals.component';
 import { ApiCallService } from 'src/app/services/api-call.service';
@@ -19,7 +18,7 @@ import { VehicleModalComponent } from './vehicle-modal/vehicle-modal.component';
   styleUrls: ['./register-vehicle.component.scss']
 })
 export class RegisterVehicleComponent implements OnInit {
-  vehicleNo=new FormControl();
+  vehicleNo = new FormControl();
   vehicleData = new Array();
   paginationNo: number = 1;
   pageSize: number = 10;
@@ -30,9 +29,11 @@ export class RegisterVehicleComponent implements OnInit {
   date = new Date();
   driverData = new Array();
   selectAll!: boolean;
-  highLightRow!:string;
-  vehicleDetails:any;
+  highLightRow!: string;
+  vehicleDetails: any;
   checkedVehicle = new Array();
+  pathImg: any;
+  deleteBtn: boolean = false;
   constructor(public validation: ValidationService,
     private apiCall: ApiCallService,
     private spinner: NgxSpinnerService,
@@ -55,7 +56,7 @@ export class RegisterVehicleComponent implements OnInit {
         this.getVehiclesData();
       })
   }
- 
+
   // --------------------------------------------get vehicle data--------------------------------------------------------------------
   getVehiclesData(flag?: any) {
     this.checkedVehicle = [];
@@ -66,7 +67,7 @@ export class RegisterVehicleComponent implements OnInit {
       if (response.statusCode == "200") {
         this.spinner.hide();
         this.vehicleData = response.responseData.responseData1;
-        !this.vehicleNo.value?this.vehicleDetails=response.responseData.responseData1:'';
+        !this.vehicleNo.value ? this.vehicleDetails = response.responseData.responseData1 : '';
         this.vehicleData.forEach((ele: any) => {
           ele.isBlock == 1 ? ele['isBlockFlag'] = true : ele['isBlockFlag'] = false;
         });
@@ -83,9 +84,8 @@ export class RegisterVehicleComponent implements OnInit {
     this.spinner.hide();
   }
 
-   // ---------------------------------------------------------Comfirmation dialog------------------------------------------------------
-   confirmationDialog(flag: boolean, label: string, event?: any, editData?: any) {
-   
+  // ---------------------------------------------------------Comfirmation dialog------------------------------------------------------
+  confirmationDialog(flag: boolean, label: string, event?: any, editData?: any) {
     this.selectAll ? this.uncheckVehicle() : '';
     let obj: any = ConfigService.dialogObj;
     if (label == 'status') {    //block vehicle
@@ -95,7 +95,7 @@ export class RegisterVehicleComponent implements OnInit {
       obj['cancelBtnText'] = 'Cancel';
     } else if (label == 'assign') {  //Assign vehicle
       obj['v1'] = editData?.vehicleNo;
-      obj['p1'] = flag ?  '' : 'Are you sure you want to unassign driver?';
+      obj['p1'] = flag ? '' : 'Are you sure you want to unassign driver?';
       obj['cconfirmationDialogardTitle'] = flag ? 'Assign Driver' : 'Unassign Driver';
       obj['successBtnText'] = flag ? 'Assign' : 'Unassign';
       obj['cancelBtnText'] = 'Cancel';
@@ -116,7 +116,7 @@ export class RegisterVehicleComponent implements OnInit {
         this.blockUnblockVhl(editData, event);
       }
       else if (res == 'Yes' && label == 'delete') {
-        this.getVehiclesData();
+        this.deleteVehicle();
       }
       else if (label == 'assign') {
         if (res == 'Ok') {
@@ -134,9 +134,6 @@ export class RegisterVehicleComponent implements OnInit {
           this.assignDriverToVehicle(event, editData, res);
         }
       }
-      /* else {
-        this.getVehiclesData();
-      } */
     }
     )
   }
@@ -144,7 +141,7 @@ export class RegisterVehicleComponent implements OnInit {
   assignDriverToVehicle(flag: any, data: any, id: number) {
     let param = {
       "id": 0,
-      "driverId": flag == 'assign' ?id:data.driverId,
+      "driverId": flag == 'assign' ? id : data.driverId,
       "vehicleId": flag == 'assign' ? data?.vehicleId : 0,
       "assignedby": this.webStorage.getUserId(),
       "assignedDate": this.date.toISOString(),
@@ -155,10 +152,7 @@ export class RegisterVehicleComponent implements OnInit {
     this.apiCall.setHttp('put', 'vehicle/assign-driver-to-vehicle', true, param, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe(() => {
       this.getVehiclesData();
-    })/* ,
-      (error: any) => {
-        this.error.handelError(error.status);
-      }) */
+    })
   }
   // ---------------------------------------------------------checkbox----------------------------------------------------------------
   selectVehicle(event: any, driverId: number) {
@@ -184,7 +178,34 @@ export class RegisterVehicleComponent implements OnInit {
       this.checkedVehicle = [];
     })
   }
- 
+  // ----------------------------------------------------------Remove Vehicle------------------------------------------------
+  deleteVehicle() {
+    this.deleteBtn = false;
+    let param = new Array();
+    for (let i = 0; i < this.vehicleData.length; i++) {
+      if (this.vehicleData[i].checked == true) {
+        let array = {
+          "vehicleId": this.vehicleData[i].vehicleId,
+          "isDeleted": true
+        }
+        param.push(array);
+      }
+    }
+    this.spinner.show();
+    this.apiCall.setHttp('delete', 'vehicle/Delete-vehicle', true, param, false, 'fleetExpressBaseUrl');
+    // this.subscription = 
+    this.apiCall.getHttp().subscribe((response: any) => {
+      if (response.statusCode == "200") {
+        this.checkedVehicle = [];
+        this.spinner.hide();
+        this.getVehiclesData();
+      }
+    },
+      (error: any) => {
+        this.spinner.hide();
+        this.error.handelError(error.status);
+      })
+  }
   // --------------------------------------------------------Block/Unblock Vehicle-------------------------------------------
   blockUnblockVhl(vhlData: any, event: any) {
     let isBlock: any;
@@ -216,24 +237,25 @@ export class RegisterVehicleComponent implements OnInit {
     this.vehicleNo.setValue('');
     this.getVehiclesData();
   }
-  vehicleModal(label: string, vehicleData?: any){
-      this.selectAll || this.vehicleData ? (this.uncheckVehicle(), this.vehicleData = []) : '';
-      let obj: any;
-      label == 'edit' ? (obj = vehicleData, this.highLightRow = vehicleData?.driverId) : obj = '';
-      const dialog = this.dialog.open(VehicleModalComponent, {
-        width: '900px',
-        data: obj,
-        disableClose: this.config.disableCloseBtnFlag,
-      })
-  
-      dialog.afterClosed().subscribe(res => {
-        this.highLightRow = '';
-        if (res == 'add') {
-          this.getVehiclesData();
-        }
+
+  // -----------------------------------modal ----------------------------------------------------------------------------
+  vehicleModal(label: string, vehicleData?: any) {
+    this.selectAll || this.vehicleData ? (this.uncheckVehicle(), this.vehicleData = []) : '';
+    let obj: any;
+    label == 'edit' ? (obj = vehicleData, this.highLightRow = vehicleData?.driverId) : obj = '';
+    const dialog = this.dialog.open(VehicleModalComponent, {
+      width: '900px',
+      data: obj,
+      disableClose: this.config.disableCloseBtnFlag,
+    })
+
+    dialog.afterClosed().subscribe(res => {
+      this.highLightRow = '';
+      if (res == 'add') {
+        this.getVehiclesData();
       }
-      )
-    
+    }
+    )
   }
   onPagintion(pageNo: any) {
     this.selectAll = false;

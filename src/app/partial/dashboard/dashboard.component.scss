@@ -26,6 +26,21 @@
     margin-bottom: 1rem;
     display: inline-block;
 }
+#dash-stats .due-overdue {
+    margin-bottom: 1rem;
+    background-color: #EFEFEF;
+    border-radius: 50%;
+    margin: 0 auto; 
+    width: 50px;
+    height: 50px;
+    line-height:50px;
+}
+#dash-stats .due-overdue img{
+    margin-bottom: 0rem;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+}
 
 #dash-stats p {
     font-size: 0.85rem;
