@@ -7,14 +7,19 @@
     <form [formGroup]="registerVehicleForm" #formDirective="ngForm" (ngSubmit)="saveVehicleDetails(formDirective)">
         <div class="row">
             <div class="col-sm-3">
-                <div class="position-relative">
+                <div class="position-relative">   
                     <img src={{vehiclePhoto}} class="vehicle-image">
+                    <input type="file" name="myfile" #updVehiclePhoto
+                            (change)="vehiclePhotoUpd($event)" accept=".png,.jpg,.jpeg" style="display:none"/>
                     <div class="vehicle-buttons d-flex flex-column upload-btn-wrapper">
-                        <button class="btn bg-light text-primary" (click)="updVehiclePhoto.click()">
+                        <button type="button" class="btn bg-light text-primary" *ngIf="!this.profilePhotoImg?.length" (click)="updVehiclePhoto.click()">
                             <i class="fa-solid fa-plus"></i>
                         </button>
-                        <input type="file" name="myfile" formControlName="vehiclePhoto" #updVehiclePhoto
-                            (change)="vehiclePhotoUpd($event)" accept=".png,.jpg,.jpeg" />
+                    
+                    <button type="button" *ngIf="this.profilePhotoImg?.length" class="border border-0 btn bg-light text-primary"
+                         (click)="clearDoc('profile')">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
                     </div>
                 </div>
             </div>
@@ -104,7 +109,7 @@
                                         expiry date is required</span>
                                 </mat-error>
                             </mat-form-field>
-                            <input type="file" name="myfile" #uploadInsurance formControlName="insuranceDoc"
+                            <input type="file" name="myfile" #uploadInsurance 
                                 style="display: none;" (change)="documentUpload($event,'insurance')" accept=".pdf" />
                             <button type="button" *ngIf="!this.insuranceDoc?.length" mat-icon-button
                                 (click)="uploadInsurance.click()" matTooltip="Upload only PDF file" accept=".pdf"
@@ -130,7 +135,7 @@
                                 </mat-error> -->
                             </mat-form-field>
                             <div>
-                                <input type="file" name="myfile" #uploadRegister formControlName="registerDoc"
+                                <input type="file" name="myfile" #uploadRegister 
                                     style="display: none;" (change)="documentUpload($event,'register')" accept=".pdf" />
                                 <button type="button" *ngIf="!this.registerDoc?.length" mat-icon-button
                                     (click)="uploadRegister.click()" matTooltip="Upload only PDF file" accept=".pdf">
@@ -160,7 +165,7 @@
                                 </mat-error>
                             </mat-form-field>
                             <div>
-                                <input type="file" name="myfile" #uploadPollution formControlName="pollutionDoc"
+                                <input type="file" name="myfile" #uploadPollution 
                                     style="display:none;" (change)="documentUpload($event,'pollution')" accept=".pdf" />
                                 <button type="button" *ngIf="!this.pollutionDoc?.length" mat-icon-button
                                     (click)="uploadPollution.click()" matTooltip="Upload only PDF file" accept=".pdf"
@@ -188,7 +193,7 @@
                                 </mat-error> -->
                             </mat-form-field>
                             <div>
-                                <input type="file" name="myfile" #uploadFitness formControlName="fitnessDoc"
+                                <input type="file" name="myfile" #uploadFitness 
                                     style="display:none;" (change)="documentUpload($event,'fitness')" accept=".pdf" />
                                 <button type="button" *ngIf="!this.fitnessDoc?.length" mat-icon-button
                                     (click)="uploadFitness.click()" matTooltip="Upload only PDF file" accept=".pdf">
@@ -213,11 +218,10 @@
                                     <span class="text-danger" *ngIf="f['permitNo'].hasError('required')">National permit
                                         number is
                                         required</span>
-                                    <!-- <span class="text-danger" *ngIf="f['permitNo'].hasError('pattern')">Enter valid national permit number </span> -->
                                 </mat-error>
                             </mat-form-field>
                             <div>
-                                <input type="file" name="myfile" #uploadPermit formControlName="permitDoc"
+                                <input type="file" name="myfile" #uploadPermit 
                                     style="display: none;" (change)="documentUpload($event,'permit')" accept=".pdf" />
                                 <button type="button" *ngIf="!this.nationalDoc?.length" mat-icon-button
                                     (click)="uploadPermit.click()" matTooltip="Upload only PDF file" accept=".pdf"

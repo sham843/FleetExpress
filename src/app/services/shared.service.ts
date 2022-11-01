@@ -82,7 +82,7 @@ export class SharedService {
     }
   ];
 
-  private theme = new BehaviorSubject('light');
+  private theme = new BehaviorSubject('');
   getTheme() {
     return this.theme.asObservable();
   }

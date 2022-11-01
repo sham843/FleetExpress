@@ -26,9 +26,9 @@ export class VehicleModalComponent implements OnInit {
   fitnessDoc: string | any;
   nationalDoc: string | any;
   profilePhotoImg!: string;
-  dialogData!:any;
-  cardTitle!:string;
-  vehiclePhoto!: string;
+  dialogData!: any;
+  cardTitle!: string;
+  vehiclePhoto: string = 'assets/images/Vehicle-profile.svg';
   highLightRow!: string;
   buttonFlag: boolean = true;
   subscription!: Subscription;
@@ -55,35 +55,37 @@ export class VehicleModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.dialogData = this.data;
-    this.dialogData!=0? this.cardTitle='Edit Vehicle' :this.cardTitle='Add Vehicle';
+    this.dialogData != 0 ? this.cardTitle = 'Edit Vehicle' : this.cardTitle = 'Add Vehicle';
     this.getFormControl();
   }
   getFormControl() {
     this.registerVehicleForm = this.fb.group({
       vehiclePhoto: [''],
-      vehicleNo: [this.dialogData?this.dialogData.vehicleNo:'', [Validators.compose([Validators.required, Validators.maxLength(10), Validators.pattern('^[A-Z]{2}[0-9]{2}[A-Z]{2,3}[0-9]{4}')])]],
-      fuelType:[this.dialogData?'-':''],
-      manufacturer: [this.dialogData?this.dialogData.manufacturer:''],
-      model: [this.dialogData?this.dialogData.model:'',Validators.required],
-      chassicNo: [this.dialogData?this.dialogData.chassisNo:'',[Validators.compose([Validators.required,Validators.pattern('[0-9]{17}')])]],
-      engineNo: [this.dialogData?this.dialogData.engineNo:'',[Validators.compose([Validators.required,Validators.pattern('[a-zA-Z0-9_]{17}')])]],
-      insuranceExDate: ['',Validators.required],
-      insuranceDoc: ['',Validators.required],
-      registerNo: [''],
-      registerDoc: [''],
-      pollutionExDate: ['', Validators.required],
-      pollutionDoc: ['',Validators.required],
-      fitnessExDate: [''],
-      fitnessDoc: [''],
-      permitNo: ['',[Validators.compose([Validators.required,Validators.pattern('[a-zA-Z0-9_]{12}')])]],
-      permitDoc: ['',Validators.required]
+      vehicleNo: [this.dialogData ? this.dialogData.vehicleNo : '', [Validators.compose([Validators.required, Validators.maxLength(10), Validators.pattern('^[A-Z]{2}[0-9]{2}[A-Z]{2,3}[0-9]{4}')])]],
+      fuelType: [this.dialogData ? '-' : ''],
+      manufacturer: [this.dialogData ? this.dialogData.manufacturer : ''],
+      model: [this.dialogData ? this.dialogData.model : '', Validators.required],
+      chassicNo: [this.dialogData ? this.dialogData.chassisNo : '', [Validators.compose([Validators.required, Validators.pattern('[0-9]{17}')])]],
+      engineNo: [this.dialogData ? this.dialogData.engineNo : '', [Validators.compose([Validators.required, Validators.pattern('[a-zA-Z0-9_]{17}')])]],
+      insuranceExDate: [this.dialogData ? this.dialogData.insuranceExpiryDate : '', Validators.required],
+      registerNo: [this.dialogData ? this.dialogData.registrationCertificate : ''],
+      pollutionExDate: [this.dialogData ? new Date(this.dialogData.pollutionExpiryDate) : '', Validators.required],
+      fitnessExDate: [this.dialogData ? this.dialogData.fitnessExpiryDate : ''],
+      permitNo: [this.dialogData ? this.dialogData.nationalPermit : '', [Validators.compose([Validators.required])]]
     })
-    if(this.dialogData){
-      this.buttonFlag=false;
+    if (this.dialogData) {
+      this.buttonFlag = false;
+      this.insuranceDoc=this.dialogData?this.dialogData.insuranceExpiryDoc:'';
+      this.registerDoc=this.dialogData?this.dialogData.regCertificateDoc:'';
+      this.pollutionDoc=this.dialogData?this.dialogData.pollutionExpiryDoc:'';
+      this.fitnessDoc=this.dialogData?this.dialogData.fitnessDoc:'';
+      this.nationalDoc=this.dialogData?this.dialogData.nationalPermitDoc:'';
+      this.profilePhotoImg=this.dialogData?this.dialogData.profilePhoto:'';
     }
+    this.vehiclePhoto=this.profilePhotoImg;
   }
-  
-  get f(){return this.registerVehicleForm.controls;}
+
+  get f() { return this.registerVehicleForm.controls; }
   // ---------------------------------------------------------------------Upload Photo And Document---------------------------
   vehiclePhotoUpd(event: any) {
     let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'vehicleProfile', "png,jpg,jpeg");
@@ -105,7 +107,7 @@ export class VehicleModalComponent implements OnInit {
       next: (ele: any) => {
         if (ele.statusCode == "200") {
           flag == 'insurance' ? this.insuranceDoc = ele.responseData : flag == 'register' ? this.registerDoc = ele.responseData : flag == 'pollution' ? this.pollutionDoc = ele.responseData : flag == 'fitness' ? this.fitnessDoc = ele.responseData : this.nationalDoc = ele.responseData;
-          this.commonMethods.snackBar(ele.statusMessage, 1)
+          // this.commonMethods.snackBar(ele.statusMessage, 1)
         }
       }
     }, (error: any) => {
@@ -115,41 +117,44 @@ export class VehicleModalComponent implements OnInit {
   clearDoc(flag?: any) {
     flag == 'insurance' ? (this.uploadInsurance.nativeElement.value = null, this.insuranceDoc = '') :
       flag == 'register' ? (this.uploadRegister.nativeElement.value = '', this.registerDoc = '') :
-      flag == 'pollution' ? (this.uploadPollution.nativeElement.value = '', this.pollutionDoc = '') :
-      flag == 'fitness' ? (this.uploadFitness.nativeElement.value = '', this.fitnessDoc = '') :
-        (this.uploadPermit.nativeElement.value = '', this.nationalDoc = '');
+        flag == 'pollution' ? (this.uploadPollution.nativeElement.value = '', this.pollutionDoc = '') :
+          flag == 'fitness' ? (this.uploadFitness.nativeElement.value = '', this.fitnessDoc = '') :
+            flag == 'profile' ? (this.updVehiclePhoto.nativeElement.value = '', this.profilePhotoImg = '', this.vehiclePhoto = 'assets/images/Vehicle-profile.svg') :
+              (this.uploadPermit.nativeElement.value = '', this.nationalDoc = '');
   }
 
   checkDocumentUpd(flag: any) {
-     if (flag == 'insurance') {
-      if (this.registerVehicleForm.value.insuranceDoc == '') {
+    if (flag == 'insurance') {
+      if (this.registerVehicleForm.value.insuranceExDate.length != 0 && !this.insuranceDoc) {
         this.commonMethods.snackBar("Please upload insurance document", 1);
       }
     }
     else if (flag == 'register') {
-      if (this.registerVehicleForm.value.registerDoc == '') {
+      if (!this.registerDoc) {
         this.commonMethods.snackBar("Please upload register certificate", 1);
       }
     }
     else if (flag == 'pollution') {
-      if (this.registerVehicleForm.value.pollutionDoc == '') {
+      if (this.registerVehicleForm.value.pollutionExDate.length != 0 && !this.pollutionDoc) {
         this.commonMethods.snackBar("Please upload pollution document", 1);
       }
-    } 
+    }
     else if (flag == 'fitness') {
-      if (this.registerVehicleForm.value.fitnessDoc == '') {
+      if (this.registerVehicleForm.value.fitnessExDate.length != 0 && !this.fitnessDoc) {
         this.commonMethods.snackBar("Please upload fitness document", 1);
       }
-    } 
+    }
     else if (flag == 'permit') {
-      if (this.registerVehicleForm.value.permitDoc == '') {
+      if (this.registerVehicleForm.value.permitNo.length != 0 && !this.nationalDoc) {
         this.commonMethods.snackBar("Please upload national permit document", 1);
       }
-    } 
+    }
   }
+
+  // -------------------------------------------------Add vehicle------------------------------------------------------------------
   saveVehicleDetails(formDirective: any) {
     this.highLightRow = '';
-    let vhlaData = (this.registerVehicleForm.value.vhlNumber).split('');
+    let vhlaData = (this.registerVehicleForm.value.vehicleNo).split('');
     let first = vhlaData.splice(0, 2).join('');
     let second = vhlaData.splice(0, 2).join('');
     let third = vhlaData.splice(0, 2).join('');
@@ -161,23 +166,23 @@ export class VehicleModalComponent implements OnInit {
       "newVehNo2": second,
       "newVehNo3": third,
       "newVehNo4": forth,
-      // "driverName": this.driverName,
-      "driverNo": "",
+      "driverName": this.dialogData ?this.dialogData.driverName ||'': "",
+      "driverNo": this.dialogData ? this.dialogData.mobileNo ||'' : "",
       "vehicleTypeId": 0,
       "capacity": 0,
-      "createdBy": 0,
-      // "vehRegId": this.vhlId,
+      "createdBy": this.webStorage.getUserId(),
+      "vehRegId": this.dialogData ? this.dialogData.vehicleId : 0,
       "permit": "",
       "licence": "",
       "deviceId": 0,
       "deviceCompanyId": 0,
       "deviceSIMNo": "",
       "vehicleOwnerId": this.webStorage.getVehicleOwnerId(),
-      "vehicleMake": this.registerVehicleForm.value.brand,
+      "vehicleMake": "",
       "vehicleModel": this.registerVehicleForm.value.model,
       "vehicleChassisNo": this.registerVehicleForm.value.chassicNo,
-      "vehicleEngineNo": this.registerVehicleForm.value.plateNo,
-      "flag": "u",
+      "vehicleEngineNo": this.registerVehicleForm.value.engineNo,
+      "flag": this.dialogData ? "u" : "i",
       "isDeviceInfoChange": true,
       "vehicleAssignStatusId": 0,
       "rate": 0,
@@ -206,6 +211,7 @@ export class VehicleModalComponent implements OnInit {
       "profilePhoto": this.profilePhotoImg
     }
     if (this.registerVehicleForm.invalid) {
+      console.log(this.registerVehicleForm.value)
       return
     }
     else {
@@ -216,7 +222,8 @@ export class VehicleModalComponent implements OnInit {
         if (response.statusCode == "200") {
           this.spinner.hide();
           formDirective.resetForm();
-          this.commonMethods.snackBar(response.statusMessage, 1)
+          this.dialogRef.close('');
+          this.commonMethods.snackBar(response.statusMessage, 0)
         }
       }, (error: any) => {
         this.error.handelError(error.status);

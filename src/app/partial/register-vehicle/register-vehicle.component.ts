@@ -96,7 +96,7 @@ export class RegisterVehicleComponent implements OnInit {
     } else if (label == 'assign') {  //Assign vehicle
       obj['v1'] = editData?.vehicleNo;
       obj['p1'] = flag ? '' : 'Are you sure you want to unassign driver?';
-      obj['cconfirmationDialogardTitle'] = flag ? 'Assign Driver' : 'Unassign Driver';
+      obj['cardTitle'] = flag ? 'Assign Driver' : 'Unassign Driver';
       obj['successBtnText'] = flag ? 'Assign' : 'Unassign';
       obj['cancelBtnText'] = 'Cancel';
     } else if (label == 'delete') {  //Delete vehiclen
@@ -127,6 +127,7 @@ export class RegisterVehicleComponent implements OnInit {
           })
           dialog.afterClosed().subscribe(res => {
             if (res == 'Yes') {
+
             }
           })
         }
@@ -240,9 +241,9 @@ export class RegisterVehicleComponent implements OnInit {
 
   // -----------------------------------modal ----------------------------------------------------------------------------
   vehicleModal(label: string, vehicleData?: any) {
-    this.selectAll || this.vehicleData ? (this.uncheckVehicle(), this.vehicleData = []) : '';
+    this.selectAll || this.vehicleData ? (this.uncheckVehicle()) : '';
     let obj: any;
-    label == 'edit' ? (obj = vehicleData, this.highLightRow = vehicleData?.driverId) : obj = '';
+    label == 'edit' ? (obj = vehicleData, this.highLightRow = vehicleData?.vehicleId) : obj = '';
     const dialog = this.dialog.open(VehicleModalComponent, {
       width: '900px',
       data: obj,
@@ -251,7 +252,8 @@ export class RegisterVehicleComponent implements OnInit {
 
     dialog.afterClosed().subscribe(res => {
       this.highLightRow = '';
-      if (res == 'add') {
+       this.getVehiclesData();
+      if(res=='Yes'){
         this.getVehiclesData();
       }
     }

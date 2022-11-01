@@ -81,7 +81,6 @@ export class MakePaymentComponent implements OnInit {
       }
     }
   }
-
   callHashApi() {
     // this.modalFalg = true;
     let formData = this.paymentForm.value;

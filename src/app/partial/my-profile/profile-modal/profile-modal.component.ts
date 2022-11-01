@@ -56,7 +56,7 @@ export class ProfileModalComponent implements OnInit {
       panNo: ['', Validators.compose([Validators.pattern('[A-Z]{3}[ABCFGHLJPTF]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}')])],
       panDoc: ['']
     })
-    this.profilePhotoupd=this.dialogData.profilePhoto?this.dialogData.profilePhoto:this.profilePhotoupd='assets/images/user.jpg';
+    this.profilePhoto=this.dialogData.profilePhoto?this.dialogData.profilePhoto:this.profilePhotoupd='assets/images/user.jpg';
   }
 // --------------------------------------------------------------profile photo Upload--------------------------------------------------
 profileUploads(event: any) {
@@ -67,7 +67,6 @@ profileUploads(event: any) {
     }
     reader.readAsDataURL(event.target.files[0]);
   }
-
 
   this.spinner.show();
   let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'driverProfile', "png,jpg,jpeg");

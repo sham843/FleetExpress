@@ -10,9 +10,9 @@
                     <!-- <i class="fa-solid fa-bell"></i> -->
                     <mat-icon>notifications_active</mat-icon>
                 </a>
-                <a class="btn btn-light bg-transparent" (click)="toggleBackgroundImage()">
-                    <mat-icon *ngIf="sidebarservice?.hasBackgroundImage" (click)="themeChange('dark')">light_mode</mat-icon>
-                    <mat-icon *ngIf="!sidebarservice?.hasBackgroundImage" (click)="themeChange('light')">nightlight</mat-icon>
+                <a class="btn btn-light bg-transparent">
+                    <mat-icon *ngIf="themeClr!='dark'" (click)="themeChange('dark')">nightlight</mat-icon>
+                    <mat-icon *ngIf="themeClr=='dark'" (click)="themeChange('light')">light_mode</mat-icon>
                 </a>
                 <div class="dropdown bg-transparent">
                     <button class="btn btn-light dropdown-toggle shadow-none bg-transparent" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -20,6 +20,7 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuButton1">
                       <li><a class="dropdown-item" [routerLink]="['my-profile']">Profile</a></li>
+                      <li><a class="dropdown-item" (click)="confirmationDialog(true,'password')">Change Password</a></li>
                       <li><a class="dropdown-item" (click)="confirmationDialog(true,'status')">Logout</a></li>
                     </ul>
                   </div>

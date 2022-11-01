@@ -16,24 +16,25 @@ import { SharedService } from 'src/app/services/shared.service';
   ]
 })
 export class SidebarComponent implements OnInit {
-  menus:any = [];
-  lightIcon:any='light';
+  menus: any = [];
+  lightIcon: any;
+  lightIcon1: any;
   constructor(public sidebarservice: SidebarService, public sharedService: SharedService) {
     this.menus = sidebarservice.getMenuList();
-   }
+  }
 
   ngOnInit(): void {
-    this.sharedService.getTheme().subscribe((res:any)=>{
-      this.lightIcon=res;
+    this.sharedService.getTheme().subscribe((res: any) => {
+      res ? this.lightIcon = res : this.lightIcon = localStorage.getItem('themeColor');
     })
   }
   getSideBarState() {
     return this.sidebarservice.getSidebarState();
   }
 
-  toggle(currentMenu:any) {
+  toggle(currentMenu: any) {
     if (currentMenu.type === 'dropdown') {
-      this.menus.forEach((element:any) => {
+      this.menus.forEach((element: any) => {
         if (element === currentMenu) {
           currentMenu.active = !currentMenu.active;
         } else {
@@ -43,7 +44,7 @@ export class SidebarComponent implements OnInit {
     }
   }
 
-  getState(currentMenu:any) {
+  getState(currentMenu: any) {
 
     if (currentMenu.active) {
       return 'down';
@@ -55,5 +56,5 @@ export class SidebarComponent implements OnInit {
   hasBackgroundImage() {
     return this.sidebarservice.hasBackgroundImage;
   }
-  
+
 }

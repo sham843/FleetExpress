@@ -215,7 +215,6 @@ export class DashboardComponent implements OnInit {
     this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
         this.vehicleStatusData = responseData.responseData;
-        console.log(this.vehicleStatusData)
         this.getpieChartData(this.vehicleStatusData);
       }
       else {

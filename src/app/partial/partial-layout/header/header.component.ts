@@ -14,15 +14,22 @@ import { SidebarService } from '../sidebar/sidebar.service';
 export class HeaderComponent implements OnInit {
   @HostBinding('class') className = '';
   themeColor: any = 'light';
+  themeClr:any;
   constructor(public sidebarservice: SidebarService,
     private sharedService: SharedService,
     private dialog: MatDialog,
     private config: ConfigService,
     private overlay: OverlayContainer,
-    private renderer: Renderer2) { }
+    private renderer: Renderer2
+  ) { }
 
   themeChange(darkMode: any) {
-    this.sharedService.setTheme(darkMode);
+    localStorage.setItem('themeColor', darkMode);
+    this.themeClr = localStorage.getItem('themeColor');
+    this.themeClr == 'dark' ? (this.renderer.addClass(document.body, 'darkTheme'), this.renderer.removeClass(document.body, 'lightTheme')) :
+      (this.renderer.addClass(document.body, 'lightTheme'), this.renderer.removeClass(document.body, 'darkTheme'));
+      this.sharedService.setTheme(this.themeClr);
+      
     const darkClassName = 'darkMode';
     this.className = darkMode == 'dark' ? darkClassName : '';
     if (darkMode) {
@@ -46,11 +53,9 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.sharedService.getTheme().subscribe(res => {
-      res == 'light' ? (this.renderer.addClass(document.body, 'lightTheme'), this.renderer.removeClass(document.body, 'darkTheme')) :
-        (this.renderer.addClass(document.body, 'darkTheme'), this.renderer.removeClass(document.body, 'lightTheme'));
-    }
-    );
+    this.themeClr = localStorage.getItem('themeColor');
+    this.themeClr == 'dark' ? (this.renderer.addClass(document.body, 'darkTheme'), this.renderer.removeClass(document.body, 'lightTheme')) :
+      (this.renderer.addClass(document.body, 'lightTheme'), this.renderer.removeClass(document.body, 'darkTheme'));
   }
   confirmationDialog(flag: boolean, label: string) {
     let obj: any = ConfigService.dialogObj;
@@ -60,13 +65,19 @@ export class HeaderComponent implements OnInit {
       obj['successBtnText'] = flag ? 'Logout' : '';
       obj['cancelBtnText'] = 'Cancel';
     }
+    else{
+      obj['p1'] = flag ? '' : '';
+      obj['cardTitle'] = flag ? 'Change Password' : '';
+      obj['successBtnText'] = flag ? 'Submit' : '';
+      obj['cancelBtnText'] = 'Cancel';
+    }
     const dialog = this.dialog.open(ConfirmationComponent, {
       width: this.config.dialogBoxWidth[0],
       data: obj,
       disableClose: this.config.disableCloseBtnFlag,
     })
     dialog.afterClosed().subscribe(res => {
-      res == 'Yes' ? this.sharedService.logOut() : '';
+      (res == 'Yes' && label == 'status') ? this.sharedService.logOut() :'';
     }
     )
   }
