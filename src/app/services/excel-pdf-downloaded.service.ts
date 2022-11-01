@@ -17,7 +17,6 @@ export class ExcelPdfDownloadedService {
     return alpha;
   }
   downLoadPdf(data: any, pageName: any, responseData: any,header:any,key:any) {
-    console.log(responseData)
     let result: any = data.map((obj: any) => {
       let filterObj: any = {};
       for (let i: any = 0; i < key.length; i++) {
