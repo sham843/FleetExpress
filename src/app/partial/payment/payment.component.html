@@ -7,12 +7,12 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="pills-payment-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-stoppage" type="button" role="tab" aria-controls="pills-payment"
-                        aria-selected="true">Payment</button>
+                        aria-selected="true" (click)="selectedTab('Payment')">Payment</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-payment-history-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-payment-history" type="button" role="tab"
-                        aria-controls="pills-payment-history" aria-selected="false">Payment History</button>
+                        aria-controls="pills-payment-history" aria-selected="false" (click)="selectedTab('PaymentHistory')">Payment History</button>
                 </li>
             </ul>
         </div>
@@ -30,8 +30,12 @@
                                         </div>
                                         <div class="col-sm-8">
                                             <div class="input-group">
-                                                <div class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></div>
-                                                <input type="text" class="form-control" placeholder="Search">
+                                                <!-- <div class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></div>
+                                                     <input type="text" class="form-control" placeholder="Search"> -->
+                                                <input type="text" class="form-control" placeholder="Search" [maxlength]="15" [formControl]="searchContent">
+                                                <div class="input-group-text" *ngIf="!searchContent.value"><i class="fa-solid fa-magnifying-glass"></i></div>
+                                                <div class="input-group-text" *ngIf="searchContent.value"><i class="fa fa-times"
+                                                        (click)="searchContent.reset()"></i></div>
                                             </div>
                                         </div>
                                     </div>
@@ -55,7 +59,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let item of paymentDetails">
+                                    <tr *ngFor="let item of paymentDetails | paginate: {itemsPerPage: pageSize, 
+                                        currentPage: pageNumber, totalItems:totalTableData}" >
                                         <td>{{item?.rowNumber}}</td>
                                         <td>{{item?.vehicleNo}}</td>
                                         <td>{{item?.name}}</td>
@@ -67,11 +72,14 @@
                                         <td>{{item?.totalAmount}}</td>
                                         <td>
                                             <mat-checkbox class="example-margin" [(ngModel)]="item.checked" value=""
-                                            (change)="selectedElements($event,item.id)"></mat-checkbox>
+                                            (change)="selectedElements($event,item.rowNumber)"></mat-checkbox>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
+                            <pagination-controls   previousLabel="" nextLabel=""
+                            (pageChange)="onPagintion($event)" class="text-end m-2" >
+                        </pagination-controls>
                         </div>
                     </div>
                     <div class="form-container text-end m-3">
