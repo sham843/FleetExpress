@@ -86,6 +86,8 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
           this.OTPContainer = true;
           this.verifyOTPForm.reset();
           // this.sendOTPForm.reset();
+        }else{
+          this.commonMethods.snackBar(res.statusMessage, 1);
         }
       },
         (error: any) => {

@@ -217,9 +217,6 @@ export class DashboardComponent implements OnInit {
         this.vehicleStatusData = responseData.responseData;
         this.getpieChartData(this.vehicleStatusData);
       }
-      else {
-        // this.error.handelError(responseData.statusCode);
-      }
     },(error: any) => {
       this.error.handelError(error.status);
   })
@@ -230,11 +227,6 @@ export class DashboardComponent implements OnInit {
     this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
         this.pOIAlertData = responseData.responseData;
-      }
-      else {
-        (error: any) => {
-          this.error.handelError(error.status);
-      }
       }
     },(error: any) => {
       this.error.handelError(error.status);
@@ -252,27 +244,18 @@ export class DashboardComponent implements OnInit {
           this.powerCutData=responseData.responseData.filter((x:any)=> x.alertType=='power-cut');
           this.overSpeedData=responseData.responseData.filter((x:any)=> x.alertType=='overspeed');
         }
-        else {
-          (error: any) => {
-            this.error.handelError(error.status);
-          }
-        }
       }, (error: any) => {
         this.error.handelError(error.status);
       })
     })
   }
+
   getSIMRenewalReminderData() {
     this.SIMRenewalReminderData = [];
     this.apiCall.setHttp('get', 'dashboard/get-sim-due-and-over-due?UserId=' + this.webStorage.getUserId(), true, false, false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe((responseData: any) => {
       if (responseData.statusCode === "200" || responseData.length > 0) {
         this.SIMRenewalReminderData = responseData.responseData;
-      }
-      else {
-        (error: any) => {
-          this.error.handelError(error.status);
-      }
       }
     },(error: any) => {
       this.error.handelError(error.status);
