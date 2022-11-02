@@ -85,7 +85,6 @@ export class DriverComponent implements OnInit {
           }
         });
         this.totalItem = res.responseData.responseData2.totalRecords;
-
       } else {
         this.spinner.hide();
         this.driverDetails = [];
@@ -132,7 +131,6 @@ export class DriverComponent implements OnInit {
       } else {
         this.getDriverDetails();
       }
-
     }
     )
   }
@@ -214,14 +212,11 @@ export class DriverComponent implements OnInit {
         this.error.handelError(error.status);
       })
   }
-
   onPagintion(pageNo: any) {
     this.selectAll = false;
     this.paginationNo = pageNo;
     this.getDriverDetails();
   }
-
-
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();

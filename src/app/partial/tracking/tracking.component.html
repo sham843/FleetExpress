@@ -306,7 +306,11 @@
                                                     <button class="btn" type="button" *ngIf="playPauseBtnFlag"
                                                         (click)="pause();playPauseBtnFlag=false"><i
                                                             class="fa-solid fa-pause"></i></button>
-                                                    <button class="btn" type="button" [matMenuTriggerFor]="menu"><i
+
+                                                            <button type="button" class="btn btn-outline-secondary mx-2"  (click)="viewVehicleData()">
+                                                                <i class="fa-solid fa-eye"></i>
+                                                            </button>
+                                                   <!--  <button class="btn" type="button" [matMenuTriggerFor]="menu"><i
                                                             class="fa-solid fa-download"></i></button>
                                                     <mat-menu #menu="matMenu">
 
@@ -326,7 +330,7 @@
                                                                         class="fa-solid fa-file-excel"></i></span>
                                                             </div>
                                                         </button>
-                                                    </mat-menu>
+                                                    </mat-menu> -->
                                                 </div>
                                             </form>
                                         </div>

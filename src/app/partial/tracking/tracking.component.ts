@@ -14,6 +14,7 @@ import { ConfigService } from 'src/app/services/config.service';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { VehicleTrackingDetailsComponent } from './vehicle-tracking-details/vehicle-tracking-details.component';
 import { ValidationService } from 'src/app/services/validation.service';
+import { ViewReportComponent } from '../reports/view-report/view-report.component';
 declare var google: any;
 @Component({
   selector: 'app-tracking',
@@ -147,6 +148,21 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     });
 
     //#endregion scrren recorder end Fn
+  }
+// ---------------------------------------------view vehicle data---------------------------------------------------------------
+
+  viewVehicleData(){
+
+      let obj: any='Vehicle Tracking';
+      const dialog = this.dialog.open(ViewReportComponent, {
+        width: '900px',
+        data: obj,
+        disableClose: this.config.disableCloseBtnFlag,
+      })
+      dialog.afterClosed().subscribe(() => {
+       
+      }
+      )
   }
 
   getAllVehicleListData(flag: boolean) {

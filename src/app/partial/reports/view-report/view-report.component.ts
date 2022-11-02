@@ -27,10 +27,10 @@ export class ViewReportComponent implements OnInit {
     private excelService:ExcelPdfDownloadedService) { }
 
   ngOnInit(): void {
+    this.dialogData = this.data;
     this.getReportData();
   }
   getReportData() {
-    this.dialogData = this.data;
     this.fromDate = this.datepipe.transform(this.dialogData.fromDate, 'dd/MM/yyyy');
     this.toDate = this.datepipe.transform(this.dialogData.toDate, 'dd/MM/yyyy');
     this.currentDate = this.datepipe.transform(new Date, 'dd/MM/yyyy');
