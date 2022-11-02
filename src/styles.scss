@@ -2041,6 +2041,14 @@ input::-ms-clear {
 .darkTheme .report-list .list-group-item.active{
   border-bottom-color: #aaa;
 }
+.darkTheme #profile-details .text-data,
+.darkTheme #profile-details p{
+  color:#fff !important;
+}
+.darkTheme #profile-details .text-label{
+  color: #aaa !important;
+}
+
 
 .scrollbar {
   -webkit-overflow-scrolling: touch;
