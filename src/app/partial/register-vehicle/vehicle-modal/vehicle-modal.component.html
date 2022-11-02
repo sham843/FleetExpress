@@ -3,7 +3,7 @@
     <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick('No')"><i
             class="fas fa-times"></i></button>
 </div>
-<div>
+<div>  
     <form [formGroup]="registerVehicleForm" #formDirective="ngForm" (ngSubmit)="saveVehicleDetails(formDirective)">
         <div class="row">
             <div class="col-sm-3">
@@ -15,7 +15,6 @@
                         <button type="button" class="btn bg-light text-primary" *ngIf="!this.profilePhotoImg?.length" (click)="updVehiclePhoto.click()">
                             <i class="fa-solid fa-plus"></i>
                         </button>
-                    
                     <button type="button" *ngIf="this.profilePhotoImg?.length" class="border border-0 btn bg-light text-primary"
                          (click)="clearDoc('profile')">
                         <i class="fa-solid fa-trash-can"></i>

@@ -28,7 +28,7 @@ export class VehicleModalComponent implements OnInit {
   profilePhotoImg!: string;
   dialogData!: any;
   cardTitle!: string;
-  vehiclePhoto: string = 'assets/images/Vehicle-profile.svg';
+  vehiclePhoto: string ='assets/images/Vehicle-profile.svg';
   highLightRow!: string;
   buttonFlag: boolean = true;
   subscription!: Subscription;
@@ -60,7 +60,7 @@ export class VehicleModalComponent implements OnInit {
   }
   getFormControl() {
     this.registerVehicleForm = this.fb.group({
-      vehiclePhoto: [''],
+      // vehiclePhoto1: [''],
       vehicleNo: [this.dialogData ? this.dialogData.vehicleNo : '', [Validators.compose([Validators.required, Validators.maxLength(10), Validators.pattern('^[A-Z]{2}[0-9]{2}[A-Z]{2,3}[0-9]{4}')])]],
       fuelType: [this.dialogData ? '-' : ''],
       manufacturer: [this.dialogData ? this.dialogData.manufacturer : ''],
@@ -81,8 +81,9 @@ export class VehicleModalComponent implements OnInit {
       this.fitnessDoc=this.dialogData?this.dialogData.fitnessDoc:'';
       this.nationalDoc=this.dialogData?this.dialogData.nationalPermitDoc:'';
       this.profilePhotoImg=this.dialogData?this.dialogData.profilePhoto:'';
+      this.vehiclePhoto=this.profilePhotoImg;
     }
-    this.vehiclePhoto=this.profilePhotoImg;
+   
   }
 
   get f() { return this.registerVehicleForm.controls; }
@@ -178,7 +179,7 @@ export class VehicleModalComponent implements OnInit {
       "deviceCompanyId": 0,
       "deviceSIMNo": "",
       "vehicleOwnerId": this.webStorage.getVehicleOwnerId(),
-      "vehicleMake": "",
+      "vehicleMake":this.registerVehicleForm.value.manufacturer,
       "vehicleModel": this.registerVehicleForm.value.model,
       "vehicleChassisNo": this.registerVehicleForm.value.chassicNo,
       "vehicleEngineNo": this.registerVehicleForm.value.engineNo,
@@ -214,6 +215,7 @@ export class VehicleModalComponent implements OnInit {
       return
     }
     else {
+      console.log(param);
       this.spinner.show();
       this.apiCall.setHttp('post', 'vehicle/save-update-vehicle-details', true, param, false, 'fleetExpressBaseUrl');
       // this.subscription = 
