@@ -22,11 +22,12 @@
                         <mat-label>Enter Mobile Number</mat-label>
                         <input matInput placeholder="Enter Mobile Number"  formControlName="mobileNumber"
                         (keyPress)="this.validationService.onlyDigits($event)" [maxlength]="10">
+                        <mat-error *ngIf="f['mobileNumber'].errors">
+                            <span *ngIf=" f['mobileNumber'].hasError('pattern')" class="text-danger">Please enter valid
+                            mobile numbers</span>
+                        </mat-error>
                     </mat-form-field>
-                    <mat-error *ngIf="f['mobileNumber'].errors">
-                        <span *ngIf="submitted && f['mobileNumber'].hasError('pattern')" class="text-danger">Please enter valid
-                        mobile numbers</span>
-                    </mat-error>
+                    
                 </div>
             </div>
             <div class="row justify-content-between">
@@ -35,11 +36,12 @@
                         <mat-label>Enter Email id</mat-label>
                         <input matInput placeholder="Email id"  formControlName="emailId"
                         (keyPress)="this.validationService.alphaNumericWithSpacesAndSpecChars($event)">
+                        <mat-error *ngIf="f['emailId'].errors">
+                            <span *ngIf="f['emailId'].hasError('pattern')" class="text-danger">Please enter valid
+                            email Id</span>
+                        </mat-error>
                     </mat-form-field>
-                    <mat-error *ngIf="f['emailId'].errors">
-                        <span *ngIf="f['emailId'].hasError('pattern')" class="text-danger">Please enter valid
-                        email Id</span>
-                    </mat-error>
+                   
                 </div>
                 <div class="col-sm-6">
                     <mat-form-field appearance="standard" class="w-100">
@@ -47,11 +49,12 @@
                         <input matInput placeholder="GSTIN"  formControlName="gSTNo"
                         (keyPress)="this.validationService.alphabetsWithSpaces($event)"
                         [value]="f['gSTNo'].value | uppercase"> 
+                        <mat-error *ngIf="f['gSTNo'].errors">
+                            <span *ngIf="f['gSTNo'].hasError('pattern')" class="text-danger">Please enter valid
+                                GSTIN numbers</span>
+                        </mat-error>
                     </mat-form-field>
-                    <mat-error *ngIf="f['gSTNo'].errors">
-                        <span *ngIf="f['gSTNo'].hasError('pattern')" class="text-danger">Please enter valid
-                            GSTIN numbers</span>
-                    </mat-error>
+                   
                 </div>
             </div>
             <div class="row justify-content-between gx-2 mb-0">
