@@ -35,7 +35,6 @@ export class ConfirmationComponent implements OnInit {
 
   ngOnInit(): void {
     this.dialogData = this.data;
-    console.log("title", this.dialogData)
     this.dialogData.cardTitle == 'Assign Driver' ? this.getDriverData() : '';
     this.dialogData.cardTitle == 'Change Password' ? (this.getChangePwd(),this.dialogData?.p1=='') : '';
   }

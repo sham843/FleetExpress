@@ -72,7 +72,7 @@ export class ApiCallService {
       let currentDateTime: any = (Math.round(new Date().getTime() / 1000));
       if (currentDateTime >= expireAccessToken) {
         if (currentDateTime <= tokenExpireDateTime) {
-          // this.tokanExpiredFlag = true
+          this.tokanExpiredFlag = true
           let obj = {
             UserId: this.webStorage.getUserId(),
             RefreshToken: this.webStorage.tokenExpireRefreshString()

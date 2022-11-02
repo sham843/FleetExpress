@@ -211,7 +211,6 @@ export class VehicleModalComponent implements OnInit {
       "profilePhoto": this.profilePhotoImg
     }
     if (this.registerVehicleForm.invalid) {
-      console.log(this.registerVehicleForm.value)
       return
     }
     else {

@@ -6,8 +6,7 @@ import { ErrorsService } from 'src/app/services/errors.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ApiCallService } from 'src/app/services/api-call.service';
-import { WebStorageService } from 'src/app/services/web-storage.service';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import {FormControl} from '@angular/forms';
 import { ConfigService } from 'src/app/services/config.service';
 @Component({
   selector: 'app-settings',
@@ -24,10 +23,10 @@ import { ConfigService } from 'src/app/services/config.service';
 export class SettingsComponent implements OnInit {
   columnsToDisplay:any=['SR.NO','vehicle-icon','VEHICLE NO','VEHICLE TYPE'];
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
-  changePassForm!:FormGroup;
+/*   changePassForm!:FormGroup;
   CurrentPasswordHide:boolean = true;
   newPasswordHide:boolean=true;
-  retypePasswordHide:boolean=true;
+  retypePasswordHide:boolean=true; */
   submitted:boolean=false;
   value:number = 0;
   showTicks:boolean = false;
@@ -55,16 +54,15 @@ export class SettingsComponent implements OnInit {
     return 0;
   }
 
-  constructor(private fb:FormBuilder,
+  constructor(
     private spinner:NgxSpinnerService,
     private error:ErrorsService,
     private commonMethods:CommonMethodsService,
     private apiCall:ApiCallService,
-    private webStorage:WebStorageService,
     public config:ConfigService,) { }
 
   ngOnInit(): void {
-    this.getChangePwd();
+    // this.getChangePwd();
     this.getnotificationsData();
     this.getVehiclenotificationsData();
   }
@@ -74,7 +72,7 @@ export class SettingsComponent implements OnInit {
      this.getVehiclenotificationsData();
     });
  }
-getChangePwd(){
+/* getChangePwd(){
   this.changePassForm=this.fb.group({
     currentPwd:['',[Validators.compose([Validators.required,Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$')])]],
     newPwd:['',[Validators.compose([Validators.required,Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$')])]],
@@ -96,7 +94,7 @@ getChangePwd(){
   //   OverSpeed:[],
   //   Tilt:[]                              
   // })
-}
+} */
 public onPageChange(pageNum: number): void {
   this.pageNumber=pageNum;
   this.pageSize = this.itemsPerPage * (pageNum - 1);
@@ -105,7 +103,7 @@ public onPageChange(pageNum: number): void {
 clickedRow(index:any){
   this.highlightedRow=index;
 }
-onChangePassword(){
+/* onChangePassword(){
   this.submitted=true;
   if(this.changePassForm.invalid){
     return;
@@ -127,10 +125,10 @@ onChangePassword(){
       })
     }
   }
-}
-get fpass(){
+} */
+/* get fpass(){
   return this.changePassForm.controls;
-}
+} */
 // get f(){
 //   return this.notificationForm.controls;
 // }

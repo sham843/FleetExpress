@@ -30,12 +30,12 @@
                                 <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-3" id="clear-button">
                             <button mat-stroked-button (click)="notificationForm.reset();getNotificationsData()">Clear</button>
                         </div>
                        
                         <div class="col-sm text-end">
-                            <button class="btn btn-light btn-sm shadow-none" type="button" data-bs-toggle="dropdown"
+                            <button class="btn btn-light btn-sm shadow-none filter-button" type="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                                 <i class="fa-solid fa-filter"></i>
                                 <span class="ms-2">Filter</span>
