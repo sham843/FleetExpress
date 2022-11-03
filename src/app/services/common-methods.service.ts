@@ -48,8 +48,8 @@ export class CommonMethodsService {
     id.innerHTML = "";
     // "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@!#$%^&*";
 
-    var charsArray = "0123456789";
-    var lengthOtp = 4;
+    var charsArray = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var lengthOtp = 5;
     var captcha = [];
     for (var i = 0; i < lengthOtp; i++) {
       //below code will not allow Repetition of Characters
@@ -62,10 +62,9 @@ export class CommonMethodsService {
     canv.id = "captcha1";
     canv.width = 80;
     canv.height = 30;
-    //var ctx:any = canv.getContext("2d");
     var ctx: any = canv.getContext("2d");
-    ctx.font = "30px Times New Roman";
-    ctx.fillText(captcha.join(""), 0, 24);
+    ctx.font = "30px Arial";
+    ctx.fillText(captcha.join(""), 0, 30);
     // ctx.strokeText(captcha.join(""), 0, 30);
     //storing captcha so that can validate you can save it somewhere else according to your specific requirements
     this.codecareerPage = captcha.join("");

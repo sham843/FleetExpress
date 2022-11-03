@@ -15,7 +15,7 @@
                         <button type="button" class="btn bg-light text-primary" *ngIf="!this.profilePhotoImg?.length" (click)="updVehiclePhoto.click()">
                             <i class="fa-solid fa-plus"></i>
                         </button>
-                    <button type="button" *ngIf="this.profilePhotoImg?.length" class="border border-0 btn bg-light text-primary"
+                    <button type="button" *ngIf="this.profilePhotoImg?.length" class="border border-0 btn bg-light text-danger"
                          (click)="clearDoc('profile')">
                         <i class="fa-solid fa-trash-can"></i>
                     </button>
@@ -41,12 +41,11 @@
                     <div class="col-sm-6">
                         <mat-form-field appearance="standard" class="w-100">
                             <mat-label>Fuel Type</mat-label>
-                            <input matInput formControlName="fuelType" 
-                                (keypress)="this.vs.alphaNumeric($event)" maxlength="17">
-                            <!-- <mat-error *ngIf="f['fuelType'].errors">
-                                <span *ngIf="f['fuelType'].hasError('required')" class="text-danger">Fuel type
-                                    required</span>
-                            </mat-error> -->
+                                <mat-select formControlName="fuelType">
+                                    <mat-option *ngFor="let fuel of fuelsType" [value]="fuel.fuelTypeId">
+                                        {{fuel.fuelType}}
+                                    </mat-option>
+                                </mat-select>
                         </mat-form-field>
                     </div>
                 </div>
@@ -56,9 +55,6 @@
                             <mat-label>Manufacturer</mat-label>
                             <input matInput formControlName="manufacturer" 
                                 (keypress)="this.vs.alphaNumeric($event)" maxlength="17">
-                           <!--  <mat-error *ngIf="f['manufacturer'].errors">
-                                <span *ngIf="f['manufacturer'].hasError('required')" class="text-danger">Manufacturer is required</span>
-                            </mat-error> -->
                         </mat-form-field>
                     </div>
                     <div class="col-sm-6">
@@ -76,8 +72,8 @@
                     <div class="col-sm-6">
                         <mat-form-field appearance="standard" class="w-100">
                             <mat-label>Chassis No.</mat-label>
-                            <input matInput formControlName="chassicNo" required (keypress)="this.vs.onlyDigits($event)"
-                                maxlength="18">
+                            <input matInput formControlName="chassicNo" required (keypress)="this.vs.alphaNumeric($event)"
+                                maxlength="17">
                             <mat-error *ngIf="f['chassicNo'].errors">
                                 <span *ngIf="f['chassicNo'].hasError('required')" class="text-danger">Chassis number required</span>
                             </mat-error>
@@ -86,8 +82,8 @@
                     <div class="col-sm-6">
                         <mat-form-field appearance="standard" class="w-100">
                             <mat-label>Engine No.</mat-label>
-                            <input matInput formControlName="engineNo" required (keypress)="this.vs.onlyDigits($event)"
-                                maxlength="18">
+                            <input matInput formControlName="engineNo" required (keypress)="this.vs.alphaNumeric($event)"
+                                maxlength="14">
                             <mat-error *ngIf="f['engineNo'].errors">
                                 <span *ngIf="f['engineNo'].hasError('required')" class="text-danger">Engine number required</span>
                             </mat-error>
@@ -125,13 +121,9 @@
                         <div class="d-flex align-items-center">
                             <mat-form-field [appearance]="config.matFormField" class="w-100">
                                 <mat-label>Register Certificate Number</mat-label>
-                                <input matInput placeholder="Register Certificate Number" formControlName="registerNo"
-                                    (keypress)="this.vs.onlyDigits($event)" 
-                                    (blur)="checkDocumentUpd('register')">
-                                <!-- <mat-error *ngIf="f['registerNo'].errors">
-                                    <span class="text-danger" *ngIf="f['registerNo'].hasError('required')">Register
-                                        certificate number is required</span>
-                                </mat-error> -->
+                                <input matInput  placeholder="Register Certificate Number" formControlName="registerNo"
+                                     [value]="registerVehicleForm.value.vehicleNo" 
+                                    (blur)="checkDocumentUpd('register')"  maxlength="10" [readonly]="true">
                             </mat-form-field>
                             <div>
                                 <input type="file" name="myfile" #uploadRegister 

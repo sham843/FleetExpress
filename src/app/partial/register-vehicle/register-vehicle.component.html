@@ -72,8 +72,8 @@
                                 <th>VEHICLES NO</th>
                                 <th>MANUFACTURER</th>
                                 <th>MODEL</th>
-                                <th>CHASSIS NO.</th>
-                                <th>ENGINE NO.</th>
+                                <th>DRIVER NAME</th>
+                                <th>MOBILE NO.</th>
                                 <th>UPDATE DRIVER</th>
                                 <th>UNBLOCK/BLOCK</th>
                                 <th>ACTION</th>
@@ -90,11 +90,11 @@
                                 <td style="width:50px;">
                                     <img src="assets/images/Vehicle-profile.svg" style="width: 37px;">
                                 </td>
-                                <td>{{vehicle.vehicleNo || '-'}}</td>
+                                <td>{{vehicle.vehicleNo}}</td>
                                 <td>{{vehicle.manufacturer || '-'}}</td>
                                 <td>{{vehicle.model || '-'}}</td>
-                                <td>{{vehicle.chassisNo || '-'}}</td>
-                                <td>{{vehicle.engineNo || '-'}}</td>
+                                <td>{{vehicle.driverName || '-'}}</td>
+                                <td>{{vehicle.mobileNo || '-'}}</td>
                                 <td>
                                     <button class="btn btn-light-main btn-sm" *ngIf="!vehicle?.driverName"
                                     (click)="confirmationDialog(true,'assign','assign',vehicle)">Assign Driver</button>

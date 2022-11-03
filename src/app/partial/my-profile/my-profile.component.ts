@@ -57,7 +57,6 @@ export class MyProfileComponent implements OnInit {
     if (this.webStorage.getVehicleOwnerId()) {
       this.apiCall.setHttp('get', 'userdetail/get-user?userId='+this.webStorage.getUserId(), true, false, false, 'fleetExpressBaseUrl');
       this.apiCall.getHttp().subscribe((res: any) => {
-        console.log("profile",res.responseData[0]);
         this.userDetails = res.responseData[0];
         this.profilePhoto=this.userDetails.profilePhoto?this.userDetails.profilePhoto:'assets/images/Driver-profile.svg';
       })
