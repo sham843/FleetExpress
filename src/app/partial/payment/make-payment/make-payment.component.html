@@ -8,7 +8,7 @@
 <div>
     <form [formGroup]="paymentForm" #formDirective="ngForm" (ngSubmit)="onSubmit()">
         <div class="modal-body">
-            <strong>Vehicles : MH 12 YT 3462</strong>
+            <strong>Vehicles : {{vehicles.toString()}}</strong>
             <div class="row justify-content-between">
                 <div class="col-sm-6">
                     <mat-form-field appearance="standard" class="w-100">
@@ -49,10 +49,10 @@
                         <input matInput placeholder="GSTIN"  formControlName="gSTNo"
                         (keyPress)="this.validationService.alphabetsWithSpaces($event)"
                         [value]="f['gSTNo'].value | uppercase"> 
-                        <mat-error *ngIf="f['gSTNo'].errors">
+                        <!-- <mat-error *ngIf="f['gSTNo'].errors">
                             <span *ngIf="f['gSTNo'].hasError('pattern')" class="text-danger">Please enter valid
                                 GSTIN numbers</span>
-                        </mat-error>
+                        </mat-error> -->
                     </mat-form-field>
                    
                 </div>
@@ -80,8 +80,8 @@
         <div class="modal-footer">
             <div class="form-container w-100">
                 <div class="d-flex justify-content-between">
-                    <button type="button" (click)="onNoClick(formDirective)">Cancel</button>
-                    <button class="btn btn-main" >Make Payment</button>
+                    <button type="button" class="btn btn-light-main" (click)="onNoClick('No')">Cancel</button>
+                    <button class="btn btn-main">Make Payment</button>
                 </div>
             </div>
         </div>

@@ -72,7 +72,7 @@ export class HeaderComponent implements OnInit {
       obj['cancelBtnText'] = 'Cancel';
     }
     const dialog = this.dialog.open(ConfirmationComponent, {
-      width: this.config.dialogBoxWidth[0],
+      width: this.config.dialogBoxWidth[1],
       data: obj,
       disableClose: this.config.disableCloseBtnFlag,
     })
