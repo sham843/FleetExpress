@@ -157,9 +157,11 @@ export class ModalsComponent implements OnInit {
   //  ------------------------------------------------------add driver-----------------------------------------------------------------
   onSubmit(formDirective: any) {
     if (this.driverRegForm.invalid) {
+      alert("invalid");
       return;
     }
     else if (!this.licenceDoc || !this.aadharDoc || !this.panDoc) {
+      alert("document not uploaded");
       this.licenceDoc == '' ? (this.commonMethods.snackBar("Please upload Driving licence", 1), this.driverRegForm.invalid) :
         this.aadharDoc == '' ? this.commonMethods.snackBar("Please upload Aadhar card", 1) :
           this.panDoc == '' ? this.commonMethods.snackBar("Please upload Pan card", 1) : '';

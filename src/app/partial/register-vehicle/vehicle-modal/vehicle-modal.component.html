@@ -3,7 +3,7 @@
     <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick('No')"><i
             class="fas fa-times"></i></button>
 </div>
-<div>
+<div>  
     <form [formGroup]="registerVehicleForm" #formDirective="ngForm" (ngSubmit)="saveVehicleDetails(formDirective)">
         <div class="row">
             <div class="col-sm-3">
@@ -15,8 +15,7 @@
                         <button type="button" class="btn bg-light text-primary" *ngIf="!this.profilePhotoImg?.length" (click)="updVehiclePhoto.click()">
                             <i class="fa-solid fa-plus"></i>
                         </button>
-                    
-                    <button type="button" *ngIf="this.profilePhotoImg?.length" class="border border-0 btn bg-light text-primary"
+                    <button type="button" *ngIf="this.profilePhotoImg?.length" class="border border-0 btn bg-light text-danger"
                          (click)="clearDoc('profile')">
                         <i class="fa-solid fa-trash-can"></i>
                     </button>
@@ -42,12 +41,11 @@
                     <div class="col-sm-6">
                         <mat-form-field appearance="standard" class="w-100">
                             <mat-label>Fuel Type</mat-label>
-                            <input matInput formControlName="fuelType" 
-                                (keypress)="this.vs.alphaNumeric($event)" maxlength="17">
-                            <!-- <mat-error *ngIf="f['fuelType'].errors">
-                                <span *ngIf="f['fuelType'].hasError('required')" class="text-danger">Fuel type
-                                    required</span>
-                            </mat-error> -->
+                                <mat-select formControlName="fuelType">
+                                    <mat-option *ngFor="let fuel of fuelsType" [value]="fuel.fuelTypeId">
+                                        {{fuel.fuelType}}
+                                    </mat-option>
+                                </mat-select>
                         </mat-form-field>
                     </div>
                 </div>
@@ -57,9 +55,6 @@
                             <mat-label>Manufacturer</mat-label>
                             <input matInput formControlName="manufacturer" 
                                 (keypress)="this.vs.alphaNumeric($event)" maxlength="17">
-                           <!--  <mat-error *ngIf="f['manufacturer'].errors">
-                                <span *ngIf="f['manufacturer'].hasError('required')" class="text-danger">Manufacturer is required</span>
-                            </mat-error> -->
                         </mat-form-field>
                     </div>
                     <div class="col-sm-6">
@@ -77,8 +72,8 @@
                     <div class="col-sm-6">
                         <mat-form-field appearance="standard" class="w-100">
                             <mat-label>Chassis No.</mat-label>
-                            <input matInput formControlName="chassicNo" required (keypress)="this.vs.onlyDigits($event)"
-                                maxlength="18">
+                            <input matInput formControlName="chassicNo" required (keypress)="this.vs.alphaNumeric($event)"
+                                maxlength="17">
                             <mat-error *ngIf="f['chassicNo'].errors">
                                 <span *ngIf="f['chassicNo'].hasError('required')" class="text-danger">Chassis number required</span>
                             </mat-error>
@@ -87,8 +82,8 @@
                     <div class="col-sm-6">
                         <mat-form-field appearance="standard" class="w-100">
                             <mat-label>Engine No.</mat-label>
-                            <input matInput formControlName="engineNo" required (keypress)="this.vs.onlyDigits($event)"
-                                maxlength="18">
+                            <input matInput formControlName="engineNo" required (keypress)="this.vs.alphaNumeric($event)"
+                                maxlength="14">
                             <mat-error *ngIf="f['engineNo'].errors">
                                 <span *ngIf="f['engineNo'].hasError('required')" class="text-danger">Engine number required</span>
                             </mat-error>
@@ -101,9 +96,9 @@
                             <mat-form-field [appearance]="config.matFormField" class="w-100">
                                 <mat-label>Insurance Expiry Date</mat-label>
                                 <input matInput [matDatepicker]="picker" [readonly]="true" placeholder="Insurance Expiry Date" formControlName="insuranceExDate"
-                                    maxlength="20" minlength="15" (blur)="checkDocumentUpd('insurance')" (click)="picker.open()">
+                                    maxlength="20" minlength="15" (blur)="checkDocumentUpd('insurance')" (click)="picker.open()" [min]="minDate">
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-datepicker #picker startView="multi-year"></mat-datepicker>
                                 <mat-error *ngIf="f['insuranceExDate'].errors">
                                     <span class="text-danger"  *ngIf="f['insuranceExDate'].hasError('required')">Insurance
                                         expiry date is required</span>
@@ -126,13 +121,9 @@
                         <div class="d-flex align-items-center">
                             <mat-form-field [appearance]="config.matFormField" class="w-100">
                                 <mat-label>Register Certificate Number</mat-label>
-                                <input matInput placeholder="Register Certificate Number" formControlName="registerNo"
-                                    (keypress)="this.vs.onlyDigits($event)" 
-                                    (blur)="checkDocumentUpd('register')">
-                                <!-- <mat-error *ngIf="f['registerNo'].errors">
-                                    <span class="text-danger" *ngIf="f['registerNo'].hasError('required')">Register
-                                        certificate number is required</span>
-                                </mat-error> -->
+                                <input matInput  placeholder="Register Certificate Number" formControlName="registerNo"
+                                     [value]="registerVehicleForm.value.vehicleNo" 
+                                    (blur)="checkDocumentUpd('register')"  maxlength="10" [readonly]="true">
                             </mat-form-field>
                             <div>
                                 <input type="file" name="myfile" #uploadRegister 
@@ -155,10 +146,10 @@
                             <mat-form-field [appearance]="config.matFormField" class="w-100">
                                 <mat-label>Pollution Expiry Date</mat-label>
                                 <input matInput [matDatepicker]="datePicker" [readonly]="true" placeholder="Pollution Expiry Date" formControlName="pollutionExDate"
-                                    maxlength="10" (keyup)="this.vs.noSpaces($event)" (click)="datePicker.open()"
+                                    maxlength="10" (keyup)="this.vs.noSpaces($event)" (click)="datePicker.open()" [min]="minDate"
                                     (blur)="checkDocumentUpd('pollution')">
                                     <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
-                            <mat-datepicker #datePicker></mat-datepicker>
+                            <mat-datepicker #datePicker startView="multi-year"></mat-datepicker>
                                 <mat-error *ngIf="f['pollutionExDate'].errors">
                                     <span class="text-danger"
                                         *ngIf="f['pollutionExDate'].hasError('required')">Pollution expiry date is required</span>
@@ -184,10 +175,10 @@
                             <mat-form-field [appearance]="config.matFormField" class="w-100">
                                 <mat-label>Fitness Expiry Date</mat-label>
                                 <input matInput [matDatepicker]="datePickers" [readonly]="true" placeholder="Fitness Expiry Date" formControlName="fitnessExDate"
-                                   (keyup)="this.vs.noSpaces($event)" (click)="datePickers.open()"
+                                   (keyup)="this.vs.noSpaces($event)" (click)="datePickers.open()" [min]="minDate"
                                     (blur)="checkDocumentUpd('fitness')">
                                     <mat-datepicker-toggle matSuffix [for]="datePickers"></mat-datepicker-toggle>
-                            <mat-datepicker #datePickers></mat-datepicker>
+                            <mat-datepicker #datePickers startView="multi-year"></mat-datepicker>
                                <!--  <mat-error *ngIf="f['fitnessExDate'].errors">
                                     <span class="text-danger" *ngIf="f['fitnessExDate'].hasError('required')">Fitness expiry date is required</span>
                                 </mat-error> -->

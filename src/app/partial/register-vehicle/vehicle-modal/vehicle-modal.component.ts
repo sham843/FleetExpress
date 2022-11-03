@@ -28,10 +28,13 @@ export class VehicleModalComponent implements OnInit {
   profilePhotoImg!: string;
   dialogData!: any;
   cardTitle!: string;
-  vehiclePhoto: string = 'assets/images/Vehicle-profile.svg';
+  vehiclePhoto: string ='assets/images/Vehicle-profile.svg';
   highLightRow!: string;
   buttonFlag: boolean = true;
+  rgsNo: boolean = true;
   subscription!: Subscription;
+  fuelsType:any;
+  minDate=new Date();
   @ViewChild('closeModel') closeModel: any;
   @ViewChild('uploadInsurance') uploadInsurance: any;
   @ViewChild('uploadRegister') uploadRegister: any;
@@ -57,18 +60,17 @@ export class VehicleModalComponent implements OnInit {
     this.dialogData = this.data;
     this.dialogData != 0 ? this.cardTitle = 'Edit Vehicle' : this.cardTitle = 'Add Vehicle';
     this.getFormControl();
-  }
+      }
   getFormControl() {
     this.registerVehicleForm = this.fb.group({
-      vehiclePhoto: [''],
       vehicleNo: [this.dialogData ? this.dialogData.vehicleNo : '', [Validators.compose([Validators.required, Validators.maxLength(10), Validators.pattern('^[A-Z]{2}[0-9]{2}[A-Z]{2,3}[0-9]{4}')])]],
-      fuelType: [this.dialogData ? '-' : ''],
+      fuelType: [this.dialogData ? this.dialogData.fuelTypeId : ''],
       manufacturer: [this.dialogData ? this.dialogData.manufacturer : ''],
       model: [this.dialogData ? this.dialogData.model : '', Validators.required],
       chassicNo: [this.dialogData ? this.dialogData.chassisNo : '', [Validators.compose([Validators.required, Validators.pattern('[0-9]{17}')])]],
-      engineNo: [this.dialogData ? this.dialogData.engineNo : '', [Validators.compose([Validators.required, Validators.pattern('[a-zA-Z0-9_]{17}')])]],
+      engineNo: [this.dialogData ? this.dialogData.engineNo : '', [Validators.compose([Validators.required, Validators.pattern('[a-zA-Z0-9_]{14}')])]],
       insuranceExDate: [this.dialogData ? this.dialogData.insuranceExpiryDate : '', Validators.required],
-      registerNo: [this.dialogData ? this.dialogData.registrationCertificate : ''],
+      registerNo: [this.dialogData ? this.dialogData.vehicleNo:''],
       pollutionExDate: [this.dialogData ? new Date(this.dialogData.pollutionExpiryDate) : '', Validators.required],
       fitnessExDate: [this.dialogData ? this.dialogData.fitnessExpiryDate : ''],
       permitNo: [this.dialogData ? this.dialogData.nationalPermit : '', [Validators.compose([Validators.required])]]
@@ -81,8 +83,14 @@ export class VehicleModalComponent implements OnInit {
       this.fitnessDoc=this.dialogData?this.dialogData.fitnessDoc:'';
       this.nationalDoc=this.dialogData?this.dialogData.nationalPermitDoc:'';
       this.profilePhotoImg=this.dialogData?this.dialogData.profilePhoto:'';
+      this.vehiclePhoto=this.profilePhotoImg;
     }
-    this.vehiclePhoto=this.profilePhotoImg;
+    // 
+    this.apiCall.setHttp('get', 'vehicle/get-fuel-List', true, false, false, 'fleetExpressBaseUrl');
+      // this.subscription = 
+      this.apiCall.getHttp().subscribe((response: any) => {
+        this.fuelsType=response.responseData;
+      })
   }
 
   get f() { return this.registerVehicleForm.controls; }
@@ -107,7 +115,6 @@ export class VehicleModalComponent implements OnInit {
       next: (ele: any) => {
         if (ele.statusCode == "200") {
           flag == 'insurance' ? this.insuranceDoc = ele.responseData : flag == 'register' ? this.registerDoc = ele.responseData : flag == 'pollution' ? this.pollutionDoc = ele.responseData : flag == 'fitness' ? this.fitnessDoc = ele.responseData : this.nationalDoc = ele.responseData;
-          // this.commonMethods.snackBar(ele.statusMessage, 1)
         }
       }
     }, (error: any) => {
@@ -178,10 +185,11 @@ export class VehicleModalComponent implements OnInit {
       "deviceCompanyId": 0,
       "deviceSIMNo": "",
       "vehicleOwnerId": this.webStorage.getVehicleOwnerId(),
-      "vehicleMake": "",
+      "vehicleMake":this.registerVehicleForm.value.manufacturer,
       "vehicleModel": this.registerVehicleForm.value.model,
       "vehicleChassisNo": this.registerVehicleForm.value.chassicNo,
       "vehicleEngineNo": this.registerVehicleForm.value.engineNo,
+      "fuelTypeId":this.registerVehicleForm.value.fuelType,
       "flag": this.dialogData ? "u" : "i",
       "isDeviceInfoChange": true,
       "vehicleAssignStatusId": 0,
@@ -214,6 +222,7 @@ export class VehicleModalComponent implements OnInit {
       return
     }
     else {
+      console.log(param);
       this.spinner.show();
       this.apiCall.setHttp('post', 'vehicle/save-update-vehicle-details', true, param, false, 'fleetExpressBaseUrl');
       // this.subscription = 

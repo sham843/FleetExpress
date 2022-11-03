@@ -25,6 +25,7 @@
         </div>
     </div>
   </ng-container>
+  <ng-container *ngIf="this.vehicleDetails?.length">
     <div class="col-sm-12">
         <div class="card card-body border-0">
             <div class="card form-card">
@@ -72,8 +73,8 @@
                                 <th>VEHICLES NO</th>
                                 <th>MANUFACTURER</th>
                                 <th>MODEL</th>
-                                <th>CHASSIS NO.</th>
-                                <th>ENGINE NO.</th>
+                                <th>DRIVER NAME</th>
+                                <th>MOBILE NO.</th>
                                 <th>UPDATE DRIVER</th>
                                 <th>UNBLOCK/BLOCK</th>
                                 <th>ACTION</th>
@@ -90,11 +91,11 @@
                                 <td style="width:50px;">
                                     <img src="assets/images/Vehicle-profile.svg" style="width: 37px;">
                                 </td>
-                                <td>{{vehicle.vehicleNo || '-'}}</td>
+                                <td>{{vehicle.vehicleNo}}</td>
                                 <td>{{vehicle.manufacturer || '-'}}</td>
                                 <td>{{vehicle.model || '-'}}</td>
-                                <td>{{vehicle.chassisNo || '-'}}</td>
-                                <td>{{vehicle.engineNo || '-'}}</td>
+                                <td>{{vehicle.driverName || '-'}}</td>
+                                <td><a href="tel:{{vehicle.mobileNo}}" style="text-decoration: none;">{{vehicle.mobileNo || '-'}}</a></td>
                                 <td>
                                     <button class="btn btn-light-main btn-sm" *ngIf="!vehicle?.driverName"
                                     (click)="confirmationDialog(true,'assign','assign',vehicle)">Assign Driver</button>
@@ -128,7 +129,7 @@
                         </div>
                     </div>
                  <div *ngIf="vehicleData?.length">
-                    <pagination-controls  previousLabel="" nextLabel=""
+                    <pagination-controls previousLabel="" nextLabel=""
                         (pageChange)="onPagintion($event)" class="text-end m-2">
                     </pagination-controls>
                  </div>
@@ -136,4 +137,6 @@
             </div>
         </div>
     </div>
+    </ng-container>
+   
 </div>

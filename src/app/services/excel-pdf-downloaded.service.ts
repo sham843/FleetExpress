@@ -33,7 +33,7 @@ export class ExcelPdfDownloadedService {
     doc.setTextColor(0, 0, 0);   
     doc.text(5, 20, "From : " + this.datepipe.transform(responseData.fromDate, 'dd/MM/YYYY hh:mm a'));
     doc.text(47, 20, "To : " + this.datepipe.transform(responseData.toDate, 'dd/MM/YYYY hh:mm a'));
-    doc.text(185, 20, "Date :" + this.datepipe.transform(new Date, 'dd/MM/YYYY'));
+    doc.text(145, 20, "Report Generated Date :" + this.datepipe.transform(new Date, 'dd/MM/YYYY'));
     doc.line(5, 24, 560, 24);
     doc.text(5, 29, "Vehicle No. :" + responseData.VehicleNumber + "(" + responseData.vehicleName + ")");
     doc.autoTable(

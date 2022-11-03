@@ -41,7 +41,7 @@ export class MyProfileComponent implements OnInit {
   }
 
   // ----------------------------------------------------get user Details------------------------------------------------------
-  getLoginUserDetails() {
+/*   getLoginUserDetails() {
     if (this.webStorage.getVehicleOwnerId()) {
       this.apiCall.setHttp('get', 'vehicle-owner/get-vehicle-owner?VehicleOwnerId='+this.webStorage.getVehicleOwnerId()+'&nopage=1&rowperpage=10', true, false, false, 'fleetExpressBaseUrl');
       this.apiCall.getHttp().subscribe((res: any) => {
@@ -52,8 +52,19 @@ export class MyProfileComponent implements OnInit {
     else {
       // this.tostrService.error("please login")
     }
+  } */
+  getLoginUserDetails() {
+    if (this.webStorage.getVehicleOwnerId()) {
+      this.apiCall.setHttp('get', 'userdetail/get-user?userId='+this.webStorage.getUserId(), true, false, false, 'fleetExpressBaseUrl');
+      this.apiCall.getHttp().subscribe((res: any) => {
+        this.userDetails = res.responseData[0];
+        this.profilePhoto=this.userDetails.profilePhoto?this.userDetails.profilePhoto:'assets/images/Driver-profile.svg';
+      })
+    }
+    else {
+      // this.tostrService.error("please login")
+    }
   }
- 
   
   // ----------------------------------------------------------Edit profile-----------------------------------------------------------
   profileModule(profileData?:any) {

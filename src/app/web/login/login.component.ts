@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
 
   reCaptcha(){
     this.loginForm.controls['captcha'].reset();
-    this.commonMethods.createCaptchaCarrerPage();
+    console.log(this.commonMethods.createCaptchaCarrerPage());
   }
   
   onLoginSubmit() {

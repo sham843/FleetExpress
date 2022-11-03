@@ -68,7 +68,7 @@ export class HeaderComponent implements OnInit {
     else{
       obj['p1'] = flag ? '' : '';
       obj['cardTitle'] = flag ? 'Change Password' : '';
-      obj['successBtnText'] = flag ? 'Submit' : '';
+      obj['successBtnText'] = flag ? '' : '';
       obj['cancelBtnText'] = 'Cancel';
     }
     const dialog = this.dialog.open(ConfirmationComponent, {

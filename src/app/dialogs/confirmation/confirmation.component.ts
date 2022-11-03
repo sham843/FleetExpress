@@ -59,13 +59,12 @@ export class ConfirmationComponent implements OnInit {
     })
   }
   onChangePassword() {
-    // this.submitted=true;
     if (this.changePassForm.invalid) {
       return;
     }
     else {
       if (this.changePassForm.value != this.changePassForm.value) {
-        this.commonMethods.snackBar("new password and confirm password not match", 0);
+        this.commonMethods.snackBar("new password and confirm password not match", 1);
         return
       } else {
         this.spinner.show();
@@ -73,10 +72,13 @@ export class ConfirmationComponent implements OnInit {
         this.apiCall.getHttp().subscribe((response: any) => {
           if (response.statusCode == "200") {
             this.spinner.hide();
+            this.commonMethods.snackBar(response.statusMessage, 0);
+            this.onNoClick('Yes');
           }
         },
           (error: any) => {
-            this.error.handelError(error.status)
+            this.error.handelError(error.status);
+            this.onNoClick('No');
           })
       }
     }
@@ -84,7 +86,6 @@ export class ConfirmationComponent implements OnInit {
   get fpass() {
     return this.changePassForm.controls;
   }
-
 
   onNoClick(flag: any): void {
     if (this.data.inputType && flag == 'Yes') {
@@ -100,7 +101,6 @@ export class ConfirmationComponent implements OnInit {
         return
       }
       else {
-        this.onChangePassword();
         this.dialogRef.close(flag);
       }
       let obj: any = { remark: this.remark.value, flag: 'Yes' };
