@@ -48,8 +48,8 @@ export class CommonMethodsService {
     id.innerHTML = "";
     // "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@!#$%^&*";
 
-    var charsArray = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    var lengthOtp = 5;
+    var charsArray = "0123456789abcdefghijklmnopqrstuvwxyz";
+    var lengthOtp = 4;
     var captcha = [];
     for (var i = 0; i < lengthOtp; i++) {
       //below code will not allow Repetition of Characters

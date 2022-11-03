@@ -34,6 +34,7 @@ export class VehicleModalComponent implements OnInit {
   rgsNo: boolean = true;
   subscription!: Subscription;
   fuelsType:any;
+  minDate=new Date();
   @ViewChild('closeModel') closeModel: any;
   @ViewChild('uploadInsurance') uploadInsurance: any;
   @ViewChild('uploadRegister') uploadRegister: any;

@@ -25,6 +25,7 @@
         </div>
     </div>
   </ng-container>
+  <ng-container *ngIf="this.vehicleDetails?.length">
     <div class="col-sm-12">
         <div class="card card-body border-0">
             <div class="card form-card">
@@ -94,7 +95,7 @@
                                 <td>{{vehicle.manufacturer || '-'}}</td>
                                 <td>{{vehicle.model || '-'}}</td>
                                 <td>{{vehicle.driverName || '-'}}</td>
-                                <td>{{vehicle.mobileNo || '-'}}</td>
+                                <td><a href="tel:{{vehicle.mobileNo}}" style="text-decoration: none;">{{vehicle.mobileNo || '-'}}</a></td>
                                 <td>
                                     <button class="btn btn-light-main btn-sm" *ngIf="!vehicle?.driverName"
                                     (click)="confirmationDialog(true,'assign','assign',vehicle)">Assign Driver</button>
@@ -128,7 +129,7 @@
                         </div>
                     </div>
                  <div *ngIf="vehicleData?.length">
-                    <pagination-controls  previousLabel="" nextLabel=""
+                    <pagination-controls previousLabel="" nextLabel=""
                         (pageChange)="onPagintion($event)" class="text-end m-2">
                     </pagination-controls>
                  </div>
@@ -136,4 +137,6 @@
             </div>
         </div>
     </div>
+    </ng-container>
+   
 </div>

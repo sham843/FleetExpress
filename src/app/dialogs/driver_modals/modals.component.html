@@ -80,7 +80,7 @@
                             <input matInput [matDatepicker]="picker" formControlName="dob" [readonly]="true"
                                 placeholder="Date of Birth" [max]="maxDate" (click)="picker.open()" required>
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-datepicker #picker startView="multi-year"></mat-datepicker>
                             <mat-error *ngIf="f['dob'].errors">
                                 <span class="text-danger" *ngIf="f['dob'].hasError('required')">
                                     Date of birth is required</span>
@@ -92,7 +92,7 @@
                             <input matInput [matDatepicker]="picker1" formControlName="licenceExpiryDate"
                                 [readonly]="true" placeholder="Licence Expiry Date" (click)="picker1.open()" [min]="maxDate" required>
                             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                            <mat-datepicker #picker1></mat-datepicker>
+                            <mat-datepicker #picker1 startView="multi-year"></mat-datepicker>
                             <mat-error *ngIf="f['licenceExpiryDate'].errors">
                                 <span class="text-danger" *ngIf="f['licenceExpiryDate'].hasError('required')">Licence
                                     expiry date required</span>

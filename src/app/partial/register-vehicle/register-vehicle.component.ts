@@ -73,9 +73,9 @@ export class RegisterVehicleComponent implements OnInit {
           ele.isBlock == 1 ? ele['isBlockFlag'] = true : ele['isBlockFlag'] = false;
           let vhlNo;
           vhlNo = ele.vehicleNo.split('');
-          vhlNo.splice(2, 0, " ");
-          vhlNo.splice(5, 0, " ");
-          vhlNo.splice(8, 0, " ");
+          vhlNo.splice(2,0," ");
+          vhlNo.splice(5,0," ");
+          vhlNo.splice(8,0," ");
           this.vehicleNoWithSpace=vhlNo.join(' ');
           ele['vhlNos']=this.vehicleNoWithSpace;
           console.log("in api",ele.vhlNos)
@@ -182,7 +182,6 @@ export class RegisterVehicleComponent implements OnInit {
     this.checkedVehicle = this.vehicleData.filter((x: any) => x.checked == true);
     this.selectAll = this.vehicleData.length == this.checkedVehicle.length ? true : false;
   }
-
   uncheckVehicle() {
     this.selectAll = false;
     this.vehicleData.map((ele: any) => {
