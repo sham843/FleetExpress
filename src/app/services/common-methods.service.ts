@@ -60,11 +60,11 @@ export class CommonMethodsService {
     }
     var canv = document.createElement("canvas");
     canv.id = "captcha1";
-    canv.width = 80;
-    canv.height = 30;
+    canv.width = 110;
+    canv.height = 25;
     var ctx: any = canv.getContext("2d");
-    ctx.font = "30px Arial";
-    ctx.fillText(captcha.join(""), 0, 30);
+    ctx.font = "24px Arial";
+    ctx.fillText(captcha.join(""), 0, 25);
     // ctx.strokeText(captcha.join(""), 0, 30);
     //storing captcha so that can validate you can save it somewhere else according to your specific requirements
     this.codecareerPage = captcha.join("");
