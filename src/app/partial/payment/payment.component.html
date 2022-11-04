@@ -171,9 +171,13 @@
                                         <td>{{item?.paymentDate}}</td>
                                         <td>₹{{item?.amount}}</td>
                                         <td>
-                                            <span class="text-success">{{item?.status}}</span>
+                                            <span class="text-success text-capitalize">{{item?.status}}</span>
                                         </td>
-                                        <td></td>
+                                        <td *ngIf="item?.status=='pending' || item?.status=='Pending'">
+                                            <button class="btn btn-outline-warning btn-icon">
+                                                <i class="fa-solid fa-rotate"></i>
+                                            </button>
+                                        </td>
                                     </tr>
                                     <!-- <tr>
                                         <td>1</td>
