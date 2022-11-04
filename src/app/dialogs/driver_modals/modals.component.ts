@@ -86,13 +86,15 @@ export class ModalsComponent implements OnInit {
   }
   // --------------------------------------------------uploads-----------------------------------------------------------------
   profilePhoto(event: any) {
-    if (event.target.files && event.target.files[0]) {
+     if (event.target.files && event.target.files[0]) {
+     if(10485760 > event.target.files[0].size){
       var reader = new FileReader();
       reader.onload = (event: any) => {
         this.driverProfile = event.target.result;
       }
       reader.readAsDataURL(event.target.files[0]);
-    }
+     }
+    } 
     let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'driverProfile', "png,jpg,jpeg");
     documentUrl.subscribe({
       next: (ele: any) => {
@@ -157,14 +159,12 @@ export class ModalsComponent implements OnInit {
   //  ------------------------------------------------------add driver-----------------------------------------------------------------
   onSubmit(formDirective: any) {
     if (this.driverRegForm.invalid) {
-      alert("invalid");
       return;
     }
     else if (!this.licenceDoc || !this.aadharDoc || !this.panDoc) {
-      alert("document not uploaded");
-      this.licenceDoc == '' ? (this.commonMethods.snackBar("Please upload Driving licence", 1), this.driverRegForm.invalid) :
-        this.aadharDoc == '' ? this.commonMethods.snackBar("Please upload Aadhar card", 1) :
-          this.panDoc == '' ? this.commonMethods.snackBar("Please upload Pan card", 1) : '';
+      !this.licenceDoc ? (this.commonMethods.snackBar("Please upload Driving licence", 1), this.driverRegForm.invalid) :
+        !this.aadharDoc? this.commonMethods.snackBar("Please upload Aadhar card", 1) :
+          !this.panDoc? this.commonMethods.snackBar("Please upload Pan card", 1) : '';
     }
     else {
       let formData = this.driverRegForm.value;

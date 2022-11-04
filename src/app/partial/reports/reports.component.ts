@@ -1,7 +1,7 @@
 import { MapsAPILoader } from '@agm/core';
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { ApiCallService } from 'src/app/services/api-call.service';
@@ -23,6 +23,10 @@ interface timePeriodArray {
   styleUrls: ['./reports.component.scss']
 })
 export class ReportsComponent implements OnInit {
+  range = new FormGroup({
+    start: new FormControl<Date | null>(null),
+    end: new FormControl<Date | null>(null),
+  });
   reportForm!: FormGroup;
   maxEndDate = new Date();
   vehicleList = new Array();

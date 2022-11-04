@@ -139,7 +139,8 @@ export class SharedService {
       }
     })
   }
-  uploadProfilePhoto(event?: any, folderName?: any, allowedDocTypes?: any) {
+  uploadProfilePhoto(event?: any, folderName?: any, allowedDocTypes?: any, flag?: any) {
+    flag
     return new Observable(obj => {
       let selResult = event != '' && event != undefined ? event.target.value.split('.') : '';
       const docExt = selResult.pop();
@@ -147,32 +148,36 @@ export class SharedService {
       let fileName = '';
       const docExtLowerCase = docExt.toLowerCase();
       if (allowedDocTypes.match(docExtLowerCase)) {
-        if (event.target != undefined && event.target.files) {
-          if (event != '') {
-            file = event.target.files[0];
-            fileName = 'files'
+        // if (10485760 > event.target.files[0].size) {
+          if (event.target != undefined && event.target.files) {
+            if (event != '') {
+              file = event.target.files[0];
+              fileName = 'files'
+            }
+            const reader: any = new FileReader();
+            reader.onload = () => {
+              const formData = new FormData();
+              formData.append('DirName', folderName)
+              formData.append(fileName, file);
+              this.apiCall.setHttp('post', 'upload/upload-photo', true, formData, false, 'fleetExpressBaseUrl');
+              // this.subscription =
+              this.apiCall.getHttp().subscribe({
+                next: (res: any) => {
+                  this.spinner.hide();
+                  if (res.statusCode === "200") {
+                    obj.next(res);
+                  }
+                  else {
+                    this.commonMethods.checkDataType(res.statusMessage) == false ? this.error.handelError(res.statusCode) : this.commonMethods.snackBar(res.statusMessage, 1);
+                  }
+                },
+              })
+            }
+            reader.readAsDataURL(file);
           }
-          const reader: any = new FileReader();
-          reader.onload = () => {
-            const formData = new FormData();
-            formData.append('DirName', folderName)
-            formData.append(fileName, file);
-            this.apiCall.setHttp('post', 'upload/upload-photo', true, formData, false, 'fleetExpressBaseUrl');
-            // this.subscription =
-            this.apiCall.getHttp().subscribe({
-              next: (res: any) => {
-                this.spinner.hide();
-                if (res.statusCode === "200") {
-                  obj.next(res);
-                }
-                else {
-                  this.commonMethods.checkDataType(res.statusMessage) == false ? this.error.handelError(res.statusCode) : this.commonMethods.snackBar(res.statusMessage, 1);
-                }
-              },
-            })
-          }
-          reader.readAsDataURL(file);
-        }
+       /*  } else {
+          this.commonMethods.snackBar("Uploading photo upto 10.48 MB", 1)
+        } */
       }
 
       else {

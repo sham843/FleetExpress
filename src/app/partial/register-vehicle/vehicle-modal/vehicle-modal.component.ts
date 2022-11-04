@@ -95,8 +95,8 @@ export class VehicleModalComponent implements OnInit {
 
   get f() { return this.registerVehicleForm.controls; }
   // ---------------------------------------------------------------------Upload Photo And Document---------------------------
-  vehiclePhotoUpd(event: any) {
-    let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'vehicleProfile', "png,jpg,jpeg");
+  vehiclePhotoUpd(event: any,flag:any) {
+    let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'vehicleProfile', "png,jpg,jpeg",flag);
     documentUrl.subscribe({
       next: (ele: any) => {
         if (ele.statusCode == "200") {

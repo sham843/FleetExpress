@@ -70,10 +70,14 @@ export class ConfirmationComponent implements OnInit {
         this.spinner.show();
         this.apiCall.setHttp('get', 'login/change-password?UserId=' + this.webStorage.getUserId() + '&NewPassword=' + this.changePassForm.value.reTypePwd + '&OldPassword=' + this.changePassForm.value.currentPwd, true, false, false, 'fleetExpressBaseUrl');
         this.apiCall.getHttp().subscribe((response: any) => {
-          if (response.statusCode == "200") {
+          if (response.responseData == "Password Changed Successfully...") {
             this.spinner.hide();
-            this.commonMethods.snackBar(response.statusMessage, 0);
+            this.commonMethods.snackBar(response.responseData, 0);
             this.onNoClick('Yes');
+          }
+          else{
+            this.spinner.hide();
+            this.commonMethods.snackBar(response.responseData, 1);
           }
         },
           (error: any) => {
