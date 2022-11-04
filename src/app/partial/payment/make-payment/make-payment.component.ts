@@ -220,7 +220,6 @@ export class MakePaymentComponent implements OnInit {
       "email": formData?.emailId,
       "phone": formData?.mobileNumber,
       "productinfo": "vtsamc",
-      "hash": this.hash,
       "udf1": "2", // for web
       "udf2": this.udf2, // login Userid
       "udf3": this.udf3, // Vehicle Ids
@@ -228,10 +227,11 @@ export class MakePaymentComponent implements OnInit {
       "udf5": this.udf5, // Total Count Of Vechicle Selected + Basic Amount + Gst Amount + Transaction Cost
       "surl": this.sUrl,
       "furl": this.sUrl,
+      "hash": this.hash,
     }
+
     if (Object.keys(obj).length !== 0) {
       this.spinner.hide();
-      console.log(bolt)
       bolt.launch(obj, {
         responseHandler: (BOLT: any) => {
           if (BOLT.response.txnStatus != "CANCEL") {

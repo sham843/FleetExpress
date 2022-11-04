@@ -73,7 +73,7 @@ export class PaymentComponent implements OnInit {
           this.paymentRateDetails = res.responseData1;
           this.paymentArrayDetails2 = res.responseData2;
           this.totalTableData=res.responseData.responseData2?.totalRecords
-          res.responseData.responseData1.map((x:any)=>{
+          res.responseData.responseData1?.map((x:any)=>{
             x.rate=parseFloat((this.paymentRateDetails[0].rate)).toFixed(2)
             x.BasicAmount=parseFloat((this.paymentRateDetails[0].rate)).toFixed(2)
             x.gSTAmount=((this.paymentRateDetails[0].rate * this.paymentRateDetails[0].gst)/100).toFixed(2)

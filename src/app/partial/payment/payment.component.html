@@ -40,6 +40,13 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-sm-3">
+                                    <div class="form-container text-end">
+                                        <button class="btn btn-main" (click)="openPaymentDia()" [disabled]="!selectedTableData.length">
+                                            Make Payment
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="card-body p-0">
@@ -86,11 +93,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-container text-end m-3">
-                        <button class="btn btn-main" (click)="openPaymentDia()" [disabled]="!selectedTableData.length">
-                            Make Payment
-                        </button>
-                    </div>
+                    
                 </div>
                 <div class="tab-pane fade active" id="pills-payment-history">
                     <div class="card form-card">
@@ -171,9 +174,13 @@
                                         <td>{{item?.paymentDate}}</td>
                                         <td>₹{{item?.amount}}</td>
                                         <td>
-                                            <span class="text-success">{{item?.status}}</span>
+                                            <span class="text-success text-capitalize">{{item?.status}}</span>
                                         </td>
-                                        <td></td>
+                                        <td *ngIf="item?.status=='pending' || item?.status=='Pending'">
+                                            <button class="btn btn-outline-warning btn-icon">
+                                                <i class="fa-solid fa-rotate"></i>
+                                            </button>
+                                        </td>
                                     </tr>
                                     <!-- <tr>
                                         <td>1</td>
