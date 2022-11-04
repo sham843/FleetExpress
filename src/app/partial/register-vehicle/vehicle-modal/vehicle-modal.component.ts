@@ -222,7 +222,6 @@ export class VehicleModalComponent implements OnInit {
       return
     }
     else {
-      console.log(param);
       this.spinner.show();
       this.apiCall.setHttp('post', 'vehicle/save-update-vehicle-details', true, param, false, 'fleetExpressBaseUrl');
       // this.subscription = 

@@ -78,8 +78,6 @@ export class RegisterVehicleComponent implements OnInit {
           vhlNo.splice(8,0," ");
           this.vehicleNoWithSpace=vhlNo.join(' ');
           ele['vhlNos']=this.vehicleNoWithSpace;
-          console.log("in api",ele.vhlNos)
-          console.log(ele);
         });
 
         flag == 'search' ? (this.searchHideShow = false, this.clearSerachBtn = true) : '';

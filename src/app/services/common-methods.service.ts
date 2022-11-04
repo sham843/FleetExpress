@@ -48,8 +48,8 @@ export class CommonMethodsService {
     id.innerHTML = "";
     // "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@!#$%^&*";
 
-    var charsArray = "0123456789abcdefghijklmnopqrstuvwxyz";
-    var lengthOtp = 4;
+    var charsArray = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var lengthOtp = 5;
     var captcha = [];
     for (var i = 0; i < lengthOtp; i++) {
       //below code will not allow Repetition of Characters
@@ -63,16 +63,22 @@ export class CommonMethodsService {
     canv.width = 110;
     canv.height = 25;
     var ctx: any = canv.getContext("2d");
-    ctx.font = "24px Arial";
+    ctx.font = "italic 20px Arno Pro";
+    // ctx.lineWidth = 1;
+    ctx.moveTo(7, 17);
+    ctx.lineTo(7, 17);
+    ctx.lineTo(70, 17);
+    ctx.stroke();
+    ctx.moveTo(0, 25);
+    ctx.lineTo(0,25);
+    ctx.lineTo(72, 25);
+    ctx.stroke();
+    // ctx.lineWidth = 2;
     ctx.fillText(captcha.join(""), 0, 25);
-    // ctx.strokeText(captcha.join(""), 0, 30);
-    //storing captcha so that can validate you can save it somewhere else according to your specific requirements
     this.codecareerPage = captcha.join("");
     let appendChild: any = document.getElementById("captcha");
     appendChild.appendChild(canv); // adds the canvas to the body element
-
   }
-
   checkvalidateCaptcha() {
     return this.codecareerPage;
   }
@@ -181,14 +187,14 @@ export class CommonMethodsService {
   //     return window.btoa(rsa.encrypt(rawData));
   // }
 
-  currentDate(){
+  currentDate() {
     return moment.utc().startOf('day').toISOString();
   }
 
   set24Hours() {
     var time = moment.duration("24:00:00");
     var date = moment();
-    return  date.subtract(time);
+    return date.subtract(time);
   }
 
   setSevenDays() {

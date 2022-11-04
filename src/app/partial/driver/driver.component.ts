@@ -103,7 +103,7 @@ export class DriverComponent implements OnInit {
 
   // -----------------------------------------------comfirmation module----------------------------------------------------------
   confirmationDialog(flag: boolean, label: string, event?: any, drData?: any) {
-    this.selectAll ? this.uncheckAllDriver() : '';
+    // this.selectAll ? this.uncheckAllDriver() : '';
     let obj: any = ConfigService.dialogObj;
     if (label == 'status') {
       obj['p1'] = flag ? 'Are you sure you want to Block Driver?' : 'Are you sure you want to Unblock Driver?';
@@ -170,7 +170,7 @@ export class DriverComponent implements OnInit {
           this.driverDetails[i].checked = event.checked;
         }
       } else {
-        this.driverDetails[i].checked = event.checked;
+        this.driverDetails[i].checked=event.checked;
       }
     }
     this.checkArray = [];
@@ -186,9 +186,10 @@ export class DriverComponent implements OnInit {
     })
   }
   removeDriverData() {
+    console.log(" this.checkArray ", this.checkArray )
     this.deleteBtn = false;
     let param = new Array();
-    for (let i = 0; i < this.driverDetails.length; i++) {
+  /*  for (let i = 0; i < this.driverDetails.length; i++) {
       if (this.driverDetails[i].checked == true) {
         let array = {
           "driverId": this.driverDetails[i].driverId,
@@ -196,13 +197,20 @@ export class DriverComponent implements OnInit {
         }
         param.push(array);
       }
-    }
+    } */
+    this.checkArray.find((ele: any) => {
+      let obj = {
+        "driverId": ele.driverId,
+          "isDeleted": 1
+      }
+      param.push(obj);
+    });
     this.spinner.show();
     this.apiCall.setHttp('delete', 'driver/Delete-Driver', true, param, false, 'fleetExpressBaseUrl');
     // this.subscription = 
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
-        this.checkArray = [];
+        this.uncheckAllDriver();
         this.spinner.hide();
         this.getDriverDetails();
       }
