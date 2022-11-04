@@ -21,7 +21,7 @@ export class ModalsComponent implements OnInit {
   remark = new FormControl('');
   driverRegForm!: FormGroup;
   maxDate = new Date();
-  driverProfile: string | any = 'assets/images/user.jpg';
+  driverProfile: string | any = 'assets/images/Driver-profile.svg';
   profilePhotoupd!: string;
   licenceDoc!: string;
   panDoc!: string;
@@ -80,7 +80,7 @@ export class ModalsComponent implements OnInit {
       this.panDoc = this.dialogData?.panCardDoc;
       this.aadharDoc = this.dialogData?.aadharCardDoc;
       this.driverProfile = this.dialogData?.profilePhoto;
-      this.profilePhotoupd = this.dialogData?.profilePhoto ? this.dialogData?.profilePhoto : this.driverProfile = 'assets/images/user.jpg';
+      this.profilePhotoupd = this.dialogData?.profilePhoto ? this.dialogData?.profilePhoto : this.driverProfile = 'assets/images/Driver-profile.svg';
       this.dialogData.presentAddress == this.dialogData.permanentAddress ? this.addressFlag = true : this.addressFlag = false;
     }
   }
@@ -171,7 +171,7 @@ export class ModalsComponent implements OnInit {
       let licenceExpireDt = formData.licenceExpiryDate
       formData.id = this.dialogData ? this.dialogData?.driverId : this.editId;
       formData.middleName = '';
-      formData.licenceExpiryDate = licenceExpireDt.toISOString();
+      formData.licenceExpiryDate = new Date(licenceExpireDt).toISOString();
       formData.dob = this.datepipe.transform(formData.dob, 'yyyy/MM/dd');
       formData.createdBy = this.webStorage.getUserId();
       formData.createdDate = this.date.toISOString();

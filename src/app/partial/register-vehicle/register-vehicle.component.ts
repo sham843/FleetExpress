@@ -78,8 +78,6 @@ export class RegisterVehicleComponent implements OnInit {
           vhlNo.splice(8,0," ");
           this.vehicleNoWithSpace=vhlNo.join(' ');
           ele['vhlNos']=this.vehicleNoWithSpace;
-          console.log("in api",ele.vhlNos)
-          console.log(ele);
         });
 
         flag == 'search' ? (this.searchHideShow = false, this.clearSerachBtn = true) : '';
@@ -97,7 +95,7 @@ export class RegisterVehicleComponent implements OnInit {
 
   // ---------------------------------------------------------Comfirmation dialog------------------------------------------------------
   confirmationDialog(flag: boolean, label: string, event?: any, editData?: any) {
-    this.selectAll ? this.uncheckVehicle() : '';
+    // this.selectAll ? this.uncheckVehicle() : '';
     let obj: any = ConfigService.dialogObj;
     if (label == 'status') {    //block vehicle
       obj['p1'] = flag ? 'Are you sure you want to Block Vehicle?' : 'Are you sure you want to Unblock Vehicle?';
@@ -207,7 +205,7 @@ export class RegisterVehicleComponent implements OnInit {
     // this.subscription = 
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
-        this.checkedVehicle = [];
+        this.uncheckVehicle();
         this.spinner.hide();
         this.getVehiclesData();
       }

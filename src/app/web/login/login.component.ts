@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
 
   reCaptcha(){
     this.loginForm.controls['captcha'].reset();
-    console.log(this.commonMethods.createCaptchaCarrerPage());
+    this.commonMethods.createCaptchaCarrerPage();
   }
   
   onLoginSubmit() {
@@ -66,10 +66,12 @@ export class LoginComponent implements OnInit {
         }else{
           this.spinner.hide();
           this.commonMethods.snackBar(res.statusMessage,1);
+          this.reCaptcha();
         }
       },(error: any) => {
         this.spinner.hide();
         this.error.handelError(error.status);
+        this.reCaptcha();
     })
   }
 }
