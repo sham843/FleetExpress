@@ -65,19 +65,18 @@ export class UserManagementSystemComponent implements OnInit {
     this.totalUserTableData=0;
     this.userTableData=[];
     this.apiCall.setHttp('get', 'userdetail/get-user-list?vehicleOwnerId='+this.userData[0]?.vehicleOwnerId+'&Subusertypeid=&SearchText='+this.searchContent.value+'&District=0&TalukaId=0&NoPage='+ (!this.searchContent.value?this.pageNumber:0)+'&RowsPerPage='+(!this.searchContent.value?10:0), true, false, false, 'fleetExpressBaseUrl');
-    // this.subscription = 
     this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
           res.responseData.responseData1.map((x: any) => {
             x.isblocked = x.isblocked == 1 ? true : false;
           })
+          this.pageNumber = 1;
           this.userTableData = res.responseData.responseData1;
           this.totalUserTableData = res.responseData.responseData2.totalRecords;
         } else {
             this.userTableData=[];
             this.totalUserTableData=0;
-            // this.error.handelError(res.statusCode);
         }
       },
       error: ((error: any) => { this.userTableData=[]; this.error.handelError(error.status) })

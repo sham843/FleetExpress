@@ -194,8 +194,11 @@ export class ReportsComponent implements OnInit {
     }
   }
   settodate(fromDate: any) {
-    const maxTodayDate = moment(fromDate).add(7, 'days').calendar();
-    this.maxTodayDate = moment(maxTodayDate).toISOString() < moment().toISOString() ? moment(maxTodayDate).toISOString() : moment().toISOString();
+    const selectedmaxTime ='T'+((new Date(fromDate).toISOString()).split("T"))[1];
+    const maxTodayDate = (moment(fromDate).add(7, 'days').calendar());
+    console.log(maxTodayDate + selectedmaxTime);
+    const maxTodayDateTime= moment(moment(maxTodayDate.concat(selectedmaxTime), 'DD/MM/YYYY HH:mm:ss ')).add(5, 'hour').add(30, 'minute');
+    this.maxTodayDate = moment(maxTodayDate).toISOString() < moment().toISOString() ? moment(maxTodayDateTime).toISOString() : moment().toISOString();
   }
   checkValidDate() {
     const reportData = this.reportForm.value;
@@ -215,9 +218,7 @@ export class ReportsComponent implements OnInit {
     this.reportForm && reportData.toDate && (str += "&toDate=" + new Date(reportData.toDate).toISOString())
     this.reportForm && reportData.VehicleNumber && (str += (isVenicleNumber ? "&VehicleNumber=" : "&VehicleNo=") + reportData.VehicleNumber)
 
-    // 'MH12AC1111')
     return str;
-    //  reportData.VehicleNumber
   }
   SearchReport() {
     if (this.reportForm.invalid) {
