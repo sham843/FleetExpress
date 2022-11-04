@@ -26,6 +26,7 @@ export class PaymentComponent implements OnInit {
   pageSize: number = 10;
   totalTableData!:number|string;
   searchContent = new FormControl();
+  paymentArrayDetails2= new FormControl();
   get paymentHisrory(){
     return this.paymentHisroryFormData.controls
   }
@@ -65,11 +66,12 @@ export class PaymentComponent implements OnInit {
     this.getPaymentData();
   }
   getPaymentData() {
-    this.apiCall.setHttp('get', 'payment/get-vehicle-payment?UserId=' + this.webStorage.getUserId() + '&RateTypeId=2&NoPage='+this.pageNumber+'&RowsPerPage='+this.pageSize+'&SearchText=', true, false, false, 'fleetExpressBaseUrl');
+    this.apiCall.setHttp('get', 'payment/get-vehicle-payment?UserId=' + this.webStorage.getUserId() + '&RateTypeId=2&NoPage='+this.pageNumber+'&RowsPerPage='+this.pageSize+'&SearchText='+this.searchContent.value, true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
           this.paymentRateDetails = res.responseData1;
+          this.paymentArrayDetails2 = res.responseData2;
           this.totalTableData=res.responseData.responseData2?.totalRecords
           res.responseData.responseData1.map((x:any)=>{
             x.rate=parseFloat((this.paymentRateDetails[0].rate)).toFixed(2)
@@ -122,7 +124,9 @@ export class PaymentComponent implements OnInit {
       transactionCostTotal:0 ,
       amountTotal:0 ,
       otherDetails:this.paymentRateDetails[0],
-      data:this.selectedTableData
+      otherDetails2:this.paymentArrayDetails2,
+      data:this.selectedTableData,
+
     }
     for(let i=0;i< this.selectedTableData.length; i++){
       obj.basicTotal=obj.basicTotal+ parseFloat(this.selectedTableData[i].BasicAmount);
@@ -136,6 +140,11 @@ export class PaymentComponent implements OnInit {
       disableClose: this.configService.disableCloseBtnFlag,
     })
     dialog.afterClosed().subscribe(res => {
+      this.selectAll = false;
+      
+      if(res.flagStatus=='Yes' ){
+      // this.formvalueData=res.formData;
+      }
       console.log(res)
     })
   }

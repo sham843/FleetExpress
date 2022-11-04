@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { PartialLayoutRoutes } from './partial-layout.routing';
 import { MaterialModule } from 'src/app/shared/angularMaterialModule/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PaymentReceiptComponent } from '../payment/payment-receipt/payment-receipt.component';
 
 
 
@@ -18,6 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
+    PaymentReceiptComponent
   ],
   imports: [
     CommonModule,

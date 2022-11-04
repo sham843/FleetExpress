@@ -1,12 +1,14 @@
 import { Routes } from '@angular/router';
 import { ExpenseGuard } from 'src/app/auth/expense.guard';
+import { PaymentReceiptComponent } from '../payment/payment-receipt/payment-receipt.component';
 
 export const PartialLayoutRoutes: Routes = [
   { path: 'dashboard', loadChildren: () => import('../dashboard/dashboard.module').then(m => m.DashboardModule), data: { title: 'Dashboard' }, canActivate: [ExpenseGuard] },
   { path: 'tracking', loadChildren: () => import('../../partial/tracking/tracking.module').then(m => m.TrackingModule), data: { title: 'Tracking' }, canActivate: [ExpenseGuard] },
   { path: 'register-vehicle', loadChildren: () => import('../../partial/register-vehicle/register-vehicle.module').then(m => m.RegisterVehicleModule), data: { title: 'Register Vehicle' }, canActivate: [ExpenseGuard] },
   { path: 'driver', loadChildren: () => import('../../partial/driver/driver.module').then(m => m.DriverModule), data: { title: 'Driver' }, canActivate: [ExpenseGuard] },
-  { path: 'geofence', loadChildren: () => import('../../partial/geofence/geofence.module').then(m => m.GeofenceModule), data: { title: 'Geofence' }, canActivate: [ExpenseGuard] },
+  { path: 'geofence', loadChildren: () => import('../../partial/geofence/geofence.module').then(m => m.GeofenceModule), data: { title: 'Geofence' }, canActivate: [ExpenseGuard] }, 
+  { path: 'paymentReceipt', component: PaymentReceiptComponent, data: { title: 'Payment Receipt' }, canActivate: [ExpenseGuard] },
   { path: 'payment', loadChildren: () => import('../../partial/payment/payment.module').then(m => m.PaymentModule), data: { title: 'Payment' }, canActivate: [ExpenseGuard] },
   { path: 'reports', loadChildren: () => import('../../partial/reports/reports.module').then(m => m.ReportsModule), data: { title: 'Reports' }, canActivate: [ExpenseGuard] },
   { path: 'user-management-system', loadChildren: () => import('../../partial/user-management-system/user-management-system.module').then(m => m.UserManagementSystemModule), data: { title: 'User Management System' }, canActivate: [ExpenseGuard] },

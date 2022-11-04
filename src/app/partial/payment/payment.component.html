@@ -64,7 +64,7 @@
                                         <td>{{item?.rowNumber}}</td>
                                         <td>{{item?.vehicleNo}}</td>
                                         <td>{{item?.name}}</td>
-                                        <td>{{item?.mobileno1}}</td>
+                                        <td><a href="tel:{{item?.mobileno1}}" style="text-decoration: none;">{{item?.mobileno1}}</a></td>
                                         <td>{{item?.rate}}</td>
                                         <td>{{item?.BasicAmount}}</td>
                                         <td>{{item?.gSTAmount}}</td>
@@ -77,9 +77,13 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <pagination-controls   previousLabel="" nextLabel=""
-                            (pageChange)="onPagintion($event)" class="text-end m-2" >
-                        </pagination-controls>
+                            <pagination-controls *ngIf="paymentDetails.length" previousLabel="" nextLabel="" (pageChange)="onPagintion($event)" class="text-end m-2">
+                            </pagination-controls>
+                            <div *ngIf="!paymentDetails.length">
+                                <div class="alert alert-danger text-center py-2">
+                                    No data found
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="form-container text-end m-3">
@@ -226,7 +230,7 @@
 
 
 
-<div class="modal fade modal-lg" id="MakePaymentModal" aria-hidden="true" aria-labelledby="MakePaymentModalLabel"
+<!-- <div class="modal fade modal-lg" id="MakePaymentModal" aria-hidden="true" aria-labelledby="MakePaymentModalLabel"
     tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -295,4 +299,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
