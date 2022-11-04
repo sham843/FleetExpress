@@ -108,7 +108,7 @@ export class RegisterVehicleComponent implements OnInit {
       obj['cardTitle'] = flag ? 'Assign Driver' : 'Unassign Driver';
       obj['successBtnText'] = flag ? 'Assign' : 'Unassign';
       obj['cancelBtnText'] = 'Cancel';
-    } else if (label == 'delete') {  //Delete vehiclen
+    } else if (label == 'delete') {  //Delete vehicle
       obj['p1'] = 'Are you sure you want to delete this record';
       obj['cardTitle'] = 'Delete';
       obj['successBtnText'] = 'Delete';
