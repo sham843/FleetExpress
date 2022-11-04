@@ -189,15 +189,6 @@ export class DriverComponent implements OnInit {
     console.log(" this.checkArray ", this.checkArray )
     this.deleteBtn = false;
     let param = new Array();
-  /*  for (let i = 0; i < this.driverDetails.length; i++) {
-      if (this.driverDetails[i].checked == true) {
-        let array = {
-          "driverId": this.driverDetails[i].driverId,
-          "isDeleted": 1
-        }
-        param.push(array);
-      }
-    } */
     this.checkArray.find((ele: any) => {
       let obj = {
         "driverId": ele.driverId,

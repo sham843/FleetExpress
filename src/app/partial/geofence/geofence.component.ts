@@ -23,7 +23,7 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
   totalPages!: number;
   highlightRow!: string;
   selectAll!: boolean;
-
+ checkGeofence:any;
   constructor(public dialog: MatDialog, private configService: ConfigService,
     private apiCall: ApiCallService, private error: ErrorsService, private commonMethods: CommonMethodsService) { }
 
@@ -51,6 +51,7 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
       next: (res: any) => {
         if (res.statusCode == "200") {
           this.geofenceListArray = res.responseData?.responseData1;
+          !this.searchContent.value?this.checkGeofence=res.responseData?.responseData1:'';
           this.totalRecords = res?.responseData?.responseData2?.totalRecords;
           this.totalPages = res?.responseData?.responseData2?.totalRecords;
         } else {
