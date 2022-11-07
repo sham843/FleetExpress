@@ -49,7 +49,20 @@ export class ViewReportComponent implements OnInit {
     else if (this.dialogData.pageNames == "Trip Report") {
       this.header = ["Sr No.", " Distance", "Duration", "Start Date", "Start Address", "End Date", "End Address"];
       this.displayedColumns = ['', 'travelledDistance', 'speed', 'startDateTime', 'startLatLong', 'endDateTime', 'endLatLong'];
-    } else {
+    } 
+    else if(this.dialogData.pageNames == "Stopage Report") {
+      this.header = ["SrNo.", "Vehicle no", "From", "To", "Duration", "Location", "STPL Device"];
+    }
+    else if(this.dialogData.pageNames == "Day Distance Report") {
+      this.header = ["SrNo.", "Vehicle no", "From Time", "To Time", "Total Distance[KM]", "STPL Device"];
+    }
+    else if(this.dialogData.pageNames == "Locationwise Stoppage Report") {
+      this.header = ["SrNo.", "Vehicle no", "Location", "Address", "In Time", "Out Time", "Duration"];
+    }
+    else if(this.dialogData.pageNames == "Distance Report") {
+      this.header = ["SrNo.", "Vehicle no", "From Date Time", "To Date Time", "Distance travelled [KM]", "Time Taken [hr]", "STPL Device"];
+    }
+    else {
       this.header = ["SrNo.", " Driver Name", "tripDurationInMins", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
     }
 

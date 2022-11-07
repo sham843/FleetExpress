@@ -232,6 +232,8 @@ export class ReportsComponent implements OnInit {
         case "Address Report": url = 'reports/get-tracking-address-mob'; break;
         case "Overspeed Report": url = 'reports/get-vehicle-details-for-overspeed'; break;
         case "Speed Range Report": url = 'reports/get-overspeed-report-speedrange'; break;
+        case "Stoppage Report": url = 'reports/get-Stoppage-Report'; break;
+        case "Day Distance Report": url = 'reports/get-Distance-Report'; break;
       }
       this.apiCall.setHttp('get', url + this.getQueryString() + '&UserId=' + this.webStorage.getUserId() + '&VehicleOwnerId=' + this.webStorage.getVehicleOwnerId() + '&pageno=' + this.pageNo + '&rowsperpage=' + this.pageSize, true, false, false, 'fleetExpressBaseUrl');
       this.apiCall.getHttp().subscribe((responseData: any) => {
