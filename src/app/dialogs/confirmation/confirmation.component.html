@@ -54,7 +54,7 @@
                                     <div class="col-sm-12 form-container">
                                         <div class="mb-3">
                                             <mat-form-field [appearance]="config.matFormField" class="w-100 form-group">
-                                                <mat-label>Current password</mat-label>
+                                                <mat-label>Current Password</mat-label>
                                                 <input matInput [type]="CurrentPasswordHide ? 'password' : 'text'"
                                                     autocomplete="nope" formControlName="currentPwd"
                                                     [ngClass]="{ 'is-invalid':fpass['currentPwd'].errors }">
@@ -76,7 +76,7 @@
 
                                         <div class="mb-3">
                                             <mat-form-field [appearance]="config.matFormField" class="w-100 form-group">
-                                                <mat-label>New password</mat-label>
+                                                <mat-label>New Password</mat-label>
                                                 <input matInput [type]="newPasswordHide ? 'password' : 'text'"
                                                     formControlName="newPwd"
                                                     [ngClass]="{ 'is-invalid':fpass['newPwd'].errors }">
@@ -100,7 +100,7 @@
 
                                         <div class="mb-4">
                                             <mat-form-field [appearance]="config.matFormField" class="w-100 form-group">
-                                                <mat-label>Retype password</mat-label>
+                                                <mat-label>Confirm Password</mat-label>
                                                 <input matInput [type]="retypePasswordHide ? 'password' : 'text'"
                                                     formControlName="reTypePwd"
                                                     [ngClass]="{'is-invalid':fpass['reTypePwd'].errors}">
@@ -113,7 +113,7 @@
                                                 </button>
                                                 <mat-error>
                                                     <span *ngIf="fpass['reTypePwd'].errors?.['required']"
-                                                        class="text-danger">ReType Password is required</span>
+                                                        class="text-danger">Confirm Password is required</span>
                                                     <span *ngIf="fpass['reTypePwd'].errors?.['pattern']"
                                                         class="text-danger">New
                                                         Password is invalid format</span>
