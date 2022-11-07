@@ -2069,9 +2069,10 @@ input::-ms-clear {
 .darkTheme mat-icon{
   color:#fff !important;
 }
+.darkTheme .btn-view,
 .darkTheme .dropdown-menu,
 .darkTheme .dropdown-header{
-  background: #000;
+  background: #000 !important;
   color: #fff !important;
 }
 .darkTheme .btn-close{
