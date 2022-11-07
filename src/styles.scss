@@ -2007,7 +2007,8 @@ input::-ms-clear {
 .darkTheme .mat-select-arrow,
 .darkTheme .mat-select-value,
 .darkTheme .itinerary-details .veh-time,
-.darkTheme #myTab .nav-link{
+.darkTheme #myTab .nav-link,
+.darkTheme .noti-title{
   color: #fff !important;
 }
 .darkTheme #itinerary-buttons .btn{
@@ -2077,6 +2078,9 @@ input::-ms-clear {
 }
 .darkTheme .btn-close{
   filter:invert(1);
+}
+.darkTheme .mat-slider-ticks-container{
+  background-color: #fff;
 }
 .dropdown-header{
   border-top-left-radius: 0.375rem;
