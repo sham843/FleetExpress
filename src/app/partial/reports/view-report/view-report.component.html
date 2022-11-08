@@ -32,27 +32,57 @@
                 <mat-header-cell *matHeaderCellDef class="mxw-100">Sr No. </mat-header-cell>
                 <mat-cell *matCellDef="let element" class="mxw-100"> {{element.rowNumber}} </mat-cell>
             </ng-container>
-    
+            <ng-container matColumnDef="vehicleNo">
+                <mat-header-cell *matHeaderCellDef class="mxw-100">Vehicle no </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="mxw-100"> {{element.vehicleNo}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="dateOn">
+                <mat-header-cell *matHeaderCellDef class="mxw-100">From Date </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="mxw-100"> {{element.dateOn | date:'dd-MM-yyyy hh:mm:ss'}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="dateOff">
+                <mat-header-cell *matHeaderCellDef class="mxw-100">To Date </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="mxw-100"> {{element.dateOff | date:'dd-MM-yyyy hh:mm:ss'}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="tripDurationInMins">
+                <mat-header-cell *matHeaderCellDef class="mxw-100">Duration </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="mxw-100"> {{element.tripDurationInMins}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="fromDate">
+                <mat-header-cell *matHeaderCellDef class="mxw-150"> From Date </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="mxw-150"> {{element.fromDate | date:'dd-MM-yyyy hh:mm:ss'}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="toDate">
+                <mat-header-cell *matHeaderCellDef class="mxw-150"> To Date </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="mxw-150"> {{element.toDate | date:'dd-MM-yyyy hh:mm:ss'}} </mat-cell>
+            </ng-container>
             <ng-container matColumnDef="deviceDateTime">
                 <mat-header-cell *matHeaderCellDef class="mxw-150"> Date </mat-header-cell>
-                <mat-cell *matCellDef="let element" class="mxw-150"> {{element.deviceDateTime}} </mat-cell>
+                <mat-cell *matCellDef="let element" class="mxw-150"> {{element.deviceDateTime | date:'dd-MM-yyyy hh:mm:ss'}} </mat-cell>
             </ng-container>
-    
+            <ng-container matColumnDef="travelledDistance">
+                <mat-header-cell *matHeaderCellDef class="mxw-150"> Total Distance[KM] </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="mxw-150"> {{element.travelledDistance}} </mat-cell>
+            </ng-container>
             <ng-container matColumnDef="speed">
                 <mat-header-cell *matHeaderCellDef class="mxw-100 text-center"> Speed(Km/h) </mat-header-cell>
                 <mat-cell *matCellDef="let element" class="mxw-100 ">
                     <div class="text-center w-100">{{element.speed}}</div>
                 </mat-cell>
             </ng-container>
-    
             <ng-container matColumnDef="address">
                 <mat-header-cell *matHeaderCellDef> Address </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.address}} </mat-cell>
             </ng-container>
-    
+            <ng-container matColumnDef="STPLDevice">
+                <mat-header-cell *matHeaderCellDef> STPL Device </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.STPLDevice}} </mat-cell>
+            </ng-container>
+            
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
         </mat-table>
+        
     </div>
 </div>
 <div class="row mt-3">
