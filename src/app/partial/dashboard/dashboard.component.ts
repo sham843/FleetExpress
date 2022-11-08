@@ -62,7 +62,8 @@ export class DashboardComponent implements OnInit {
   allVehiclelData=new Array();
   map:any;
   currentDate=new Date();
-  interval:any
+  interval:any;
+  total:number=0;
   icon = { url: '../../assets/images/location.png', scaledSize: {height: 15, width: 20}}
   constructor(private webStorage: WebStorageService, private apiCall:ApiCallService,
     private error:ErrorsService ,private mapsAPILoader: MapsAPILoader, public config: ConfigService) {
@@ -302,6 +303,9 @@ export class DashboardComponent implements OnInit {
     series[1] = items.stopVehicles|0;
     series[2] = items.runningVehicles|0;
     series[3] = items.offlineVehicles|0;
+    series.map((x:any)=>{
+      this.total=this.total+x
+    })
     this.FleetStatusPieChartOption.series = series;
     this.FleetStatusPieChartOption.labels= [series[0]+" Idle", series[1]+" Stopped", series[2]+" Running", series[3]+" Offline"],
     this.FleetStatusPieChartOption.labels.total= {

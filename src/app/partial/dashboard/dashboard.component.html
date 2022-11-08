@@ -9,13 +9,19 @@
     <div class="col-sm-3">
         <div class="card mb-3 plain-card">
             <div class="card-header">Fleet Status</div>
-            <div class="card-body" *ngIf="pieChartDisplay">
-                <apx-chart id="chartoptions" [series]="FleetStatusPieChartOption.series"
-                    [chart]="FleetStatusPieChartOption.chart" [labels]="FleetStatusPieChartOption.labels"
-                    [title]="FleetStatusPieChartOption.title" [theme]="FleetStatusPieChartOption.theme"
-                    [fill]="FleetStatusPieChartOption.fill" [yaxis]="FleetStatusPieChartOption.yaxis"
-                    [stroke]="FleetStatusPieChartOption.stroke" [legend]="FleetStatusPieChartOption.legend"
-                    [plotOptions]="FleetStatusPieChartOption.plotOptions"></apx-chart>
+            <div class="position-relative">
+                <div class="card-body" *ngIf="pieChartDisplay">
+                    <apx-chart id="chartoptions" [series]="FleetStatusPieChartOption.series"
+                        [chart]="FleetStatusPieChartOption.chart" [labels]="FleetStatusPieChartOption.labels"
+                        [title]="FleetStatusPieChartOption.title" [theme]="FleetStatusPieChartOption.theme"
+                        [fill]="FleetStatusPieChartOption.fill" [yaxis]="FleetStatusPieChartOption.yaxis"
+                        [stroke]="FleetStatusPieChartOption.stroke" [legend]="FleetStatusPieChartOption.legend"
+                        [plotOptions]="FleetStatusPieChartOption.plotOptions"></apx-chart>
+                </div>
+                <div id="total" class="totalvehicles">
+                    <span>Total</span>
+                    <span class="total">{{total}}</span>
+                </div>
             </div>
         </div>
         <div class="card plain-card mb-3">
