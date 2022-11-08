@@ -52,6 +52,7 @@ export class UserManagementSystemComponent implements OnInit {
   }
   ngAfterViewInit(){
     this.searchContent.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(()=>{
+      this.pageNumber=1;
      this.getUserTableData();
     });
  }
@@ -64,14 +65,13 @@ export class UserManagementSystemComponent implements OnInit {
   getUserTableData(){
     this.totalUserTableData=0;
     this.userTableData=[];
-    this.apiCall.setHttp('get', 'userdetail/get-user-list?vehicleOwnerId='+this.userData[0]?.vehicleOwnerId+'&Subusertypeid=&SearchText='+this.searchContent.value+'&District=0&TalukaId=0&NoPage='+ (!this.searchContent.value?this.pageNumber:0)+'&RowsPerPage='+(!this.searchContent.value?10:0), true, false, false, 'fleetExpressBaseUrl');
+    this.apiCall.setHttp('get', 'userdetail/get-user-list?vehicleOwnerId='+this.userData[0]?.vehicleOwnerId+'&Subusertypeid=&SearchText='+this.searchContent.value+'&District=0&TalukaId=0&NoPage='+(!this.searchContent.value?this.pageNumber:0)+'&RowsPerPage='+(!this.searchContent.value?10:0), true, false, false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
           res.responseData.responseData1.map((x: any) => {
             x.isblocked = x.isblocked == 1 ? true : false;
           })
-          this.pageNumber = 1;
           this.userTableData = res.responseData.responseData1;
           this.totalUserTableData = res.responseData.responseData2.totalRecords;
         } else {
