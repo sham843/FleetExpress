@@ -96,7 +96,7 @@ export class DashboardComponent implements OnInit {
       chart: {
         type: 'donut'
       },
-      labels: ["Idle", "Stopped", "Running", "Offline"],
+      labels: [],
       fill: {
         type: "solid",
         colors: ["#00E396", "#F9CE1D", "#D4526E", "#D7263D"]
@@ -303,6 +303,21 @@ export class DashboardComponent implements OnInit {
     series[2] = items.runningVehicles|0;
     series[3] = items.offlineVehicles|0;
     this.FleetStatusPieChartOption.series = series;
+    this.FleetStatusPieChartOption.labels= [series[0]+" Idle", series[1]+" Stopped", series[2]+" Running", series[3]+" Offline"],
+    this.FleetStatusPieChartOption.labels.total= {
+      show: true,
+      showAlways: true,
+      label: 'Total',
+      fontSize: '22px',
+      fontFamily: 'Helvetica, Arial, sans-serif',
+      fontWeight: 600,
+      color: '#373d3f',
+      formatter: function (series:any) {
+        return series.globals.seriesTotals.reduce((a:any, b:any) => {
+          return a + b
+        }, 0)
+      }
+    },
     this.pieChartDisplay = true;
   }
   onMapReady(map: any) {
