@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ConfigService } from 'src/app/services/config.service';
@@ -59,7 +60,8 @@ export class ReportsComponent implements OnInit {
     public config: ConfigService,
     private mapsAPILoader: MapsAPILoader,
     private sharedService: SharedService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private spinner:NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
@@ -140,6 +142,7 @@ export class ReportsComponent implements OnInit {
     
   }
   setIndex(index: number, label: any) {
+   // this.getStoppageData();
     this.selectedTablabel = label;
     this.selectedIndex = index;
     this.showTimePeriod = (label == 'Stopage Report' || label == 'Overspeed Report' || label == 'Speed Range Report') ? true : false;
@@ -221,19 +224,20 @@ export class ReportsComponent implements OnInit {
   }
   getQueryString() {
     const reportData = this.reportForm.value;
-    // this.vehicleList.find(x=>x.VehicleNumber)
+    const selectedVehicle=this.vehicleList.find(x=>x.vehicleRegistrationNo==reportData.VehicleNumber)
     let str = "?";
     const isVenicleNumber = (this.selectedTablabel == 'Summary Report' || this.selectedTablabel == 'Trip Report') ? true : false
     this.reportForm && reportData.fromDate && (str += "fromDate=" + new Date(reportData.fromDate).toISOString())
     this.reportForm && reportData.toDate && (str += "&toDate=" + new Date(reportData.toDate).toISOString())
     this.reportForm && reportData.VehicleNumber && (str += (isVenicleNumber ? "&VehicleNumber=" : "&VehicleNo=") + reportData.VehicleNumber)
-    &&(str += "&VehicleId=" + reportData.VehicleNumber)
+     &&(str += "&VehicleId=" + selectedVehicle?.id)
     return str;
   }
   SearchReport() {
     if (this.reportForm.invalid) {
       return;
     } else {
+      this.spinner.show();
       this.reportResponseData = [];
       var url: any;
       switch (this.selectedTablabel) {
@@ -250,18 +254,29 @@ export class ReportsComponent implements OnInit {
       this.apiCall.setHttp('get', url + this.getQueryString()+'&UserId=' + this.webStorage.getUserId() + '&VehicleOwnerId=' + this.webStorage.getVehicleOwnerId()  + '&pageno=' + this.pageNo + '&rowsperpage=' + this.pageSize, true, false, false, 'fleetExpressBaseUrl');
       this.apiCall.getHttp().subscribe((responseData: any) => {
         if (responseData.statusCode === "200" || responseData.length > 0) {
-          responseData.responseData.data.map((x:any)=>{
-            x.latitude= x.latitude?x.latitude:x.latOff;
-            x.longitude= x.longitude?x.longitude:x.longOff;
+          if(this.selectedTablabel !='Summary Report'){
+            responseData.responseData.data.map((x:any)=>{
+            (x.latitude ||x.latOff) ? (x.latitude= x.latitude?x.latitude:x.latOff):'';
+            (x.longitude ||x.longOff) ? (x.longitude= x.longitude?x.longitude:x.longOff):'';
           })
           let resp: any = this.sharedService.getAddressBylatLong(1, responseData.responseData.data, 10);
           this.reportResponseData = resp;
+        }else{
+          this.reportResponseData.push(responseData.responseData);
         }
-        else {
+        setTimeout(()=>{  
+          this.spinner.hide()                         // <<<---using ()=> syntax
+          this.viewReport();
+      }, 5000);
+       
+        }
+        else { 
+          this.spinner.hide()    
           this.commonMethods.snackBar(responseData.statusMessage, 0);
         }
       },
-        (error: any) => {
+        (error: any) => { 
+          this.spinner.hide()    
           this.error.handelError(error.status)
         })
     }

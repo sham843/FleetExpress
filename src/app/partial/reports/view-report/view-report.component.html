@@ -30,7 +30,7 @@
         <mat-table #table [dataSource]="dataSource">
             <ng-container matColumnDef="rowNumber">
                 <mat-header-cell *matHeaderCellDef class="mxw-100">Sr No. </mat-header-cell>
-                <mat-cell *matCellDef="let element" class="mxw-100"> {{element.rowNumber}} </mat-cell>
+                <mat-cell *matCellDef="let element" class="mxw-100"> {{element.rowNumber?element.rowNumber:1}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="vehicleNo">
                 <mat-header-cell *matHeaderCellDef class="mxw-100">Vehicle no </mat-header-cell>
@@ -74,9 +74,37 @@
                 <mat-header-cell *matHeaderCellDef> Address </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.address}} </mat-cell>
             </ng-container>
-            <ng-container matColumnDef="STPLDevice">
+            <ng-container matColumnDef="driverName">
+                <mat-header-cell *matHeaderCellDef> Driver Name </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.driverName}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="mobileNo">
+                <mat-header-cell *matHeaderCellDef> Mobile Number </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.mobileNo}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="vehicleType">
+                <mat-header-cell *matHeaderCellDef> Veh.Type </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.vehicleType}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="runningTime">
+                <mat-header-cell *matHeaderCellDef> Running Time </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.runningTime}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="stoppageTime">
+                <mat-header-cell *matHeaderCellDef> Stoppage Time </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.stoppageTime}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="idleTime">
+                <mat-header-cell *matHeaderCellDef> Idle Time </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.idleTime}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="maxSpeed">
+                <mat-header-cell *matHeaderCellDef> Max Speed</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.maxSpeed}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="isMahaMiningDevice">
                 <mat-header-cell *matHeaderCellDef> STPL Device </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.STPLDevice}} </mat-cell>
+                <mat-cell *matCellDef="let element"> {{element.isMahaMiningDevice==true? 'Yes': 'No' }} </mat-cell>
             </ng-container>
             
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
