@@ -20,7 +20,9 @@ export class ModalsComponent implements OnInit {
   dialogData: any;
   remark = new FormControl('');
   driverRegForm!: FormGroup;
-  maxDate = new Date();
+  maxDate=new Date();
+  max = new Date(this.validation.isOver18().toString());
+  min = new Date('01-01-1901');
   driverProfile: string | any = 'assets/images/Driver-profile.svg';
   profilePhotoupd!: string;
   licenceDoc!: string;
@@ -66,7 +68,7 @@ export class ModalsComponent implements OnInit {
       firstName: [this.dialogData ? this.dialogData?.name.split(' ').shift() : '', Validators.compose([Validators.required, Validators.maxLength(15), Validators.pattern('[a-zA-Z][a-zA-Z ]+')])],
       lastName: [this.dialogData ? this.dialogData?.name.split(' ').pop() : '', Validators.compose([Validators.required, Validators.maxLength(15), Validators.pattern('[a-zA-Z][a-zA-Z ]+')])],
       dob: [this.dialogData ? new Date(this.dialogData.dob) : '', Validators.required],
-      licenceNumber: [this.dialogData ? this.dialogData?.licenceNumber : '', Validators.compose([Validators.required, Validators.pattern('^[A-Z]{2}[0-9]{13}$'), Validators.maxLength(20), Validators.minLength(15)])],
+      licenceNumber: [this.dialogData ? this.dialogData?.licenceNumber : '', Validators.compose([Validators.required, Validators.pattern('^[A-Z]{2}[0-9]{14}$'), Validators.maxLength(20), Validators.minLength(15)])],
       aadharNumber: [this.dialogData ? this.dialogData?.aadharNumber : '', Validators.compose([Validators.required, Validators.pattern('^[0-9]{12}$'), Validators.maxLength(12), Validators.minLength(12)])],
       panNumber: [this.dialogData ? this.dialogData?.panNumber : '', Validators.compose([Validators.required, Validators.pattern('[A-Z]{3}[ACHPTF]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}'), Validators.maxLength(10)])],
       presentAddress: [this.dialogData ? this.dialogData?.presentAddress : '', Validators.compose([Validators.required, Validators.maxLength(150)])],
@@ -124,7 +126,7 @@ export class ModalsComponent implements OnInit {
   clearDoc(flag?: any) {
       flag == 'pan' ? (this.panUpload.nativeElement.value = '', this.panDoc = '') :
         flag == 'aadhar' ? (this.aadharUpload.nativeElement.value = '', this.aadharDoc = '') :
-        flag == 'profile' ? (this.profileUpload.nativeElement.value = '', this.profilePhotoupd = '', this.driverProfile = 'assets/images/user.jpg'):
+        flag == 'profile' ? (this.profileUpload.nativeElement.value = '', this.profilePhotoupd = '', this.driverProfile = 'assets/images/Driver-profile.svg'):
           (this.licenceUpload.nativeElement.value = '', this.licenceDoc = '');
     // this.driverProfile = 'assets/images/user.jpg';
   }
@@ -139,6 +141,7 @@ export class ModalsComponent implements OnInit {
       if (!this.aadharDoc) {
         this.commonMethods.snackBar("Please upload Aadhar card", 1);
       }
+    this.driverRegForm.value.aadharNumber==0?this.driverRegForm.controls['aadharNumber'].setValue(''):'';
     }
     else if (flag == 'pan') {
       if (!this.panDoc) {
@@ -181,8 +184,9 @@ export class ModalsComponent implements OnInit {
       formData.panCardDoc = this.panDoc;
       formData.aadharCardDoc = this.aadharDoc || '';
       formData.licenceDoc = this.licenceDoc || '';
-      formData.profilePhoto = this.profilePhotoupd != 'assets/images/user.jpg' ? this.profilePhotoupd : '';
+      formData.profilePhoto = this.profilePhotoupd != 'assets/images/Driver-profile.svg' ? this.profilePhotoupd : '';
       this.spinner.show();
+      console.log("formData",formData)
       this.apiCall.setHttp('post', 'driver/save-update-deriver-details', true, formData, false, 'fleetExpressBaseUrl');
       this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
@@ -193,14 +197,16 @@ export class ModalsComponent implements OnInit {
           this.dialogRef.close('add');
         }
         else {
+          this.dialogRef.close('');
           this.spinner.hide();
           this.error.handelError(response.statusCode);
         }
-      },
+      })
+      /* ,
         (error: any) => {
           this.error.handelError(error.status);
         })
-      this.spinner.hide();
+      this.spinner.hide(); */
     }
   }
 

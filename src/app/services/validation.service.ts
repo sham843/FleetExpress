@@ -10,14 +10,22 @@ export class ValidationService {
     const maskSeperator = new RegExp('^[ ]+|[ ]+$', 'gm');
     return !maskSeperator.test(event.key);
   }
-  onlyAlphabets(event: any) {
+  /* onlyAlphabets(event: any) {
     if (!this.noSpacesAtStart(event)) {
       return false
     }
     const maskSeperator = new RegExp('^([a-zA-Z])', 'g');
     return maskSeperator.test(event.key);
-  }
-
+  } */
+  onlyAlphabets(event: any) {
+    this.noSpaces(event);
+    const maskSeperator = new RegExp('^([a-zA-Z])', 'g');
+    return maskSeperator.test(event.key);
+}
+onlyAlphabetsWithSpace(event: any) {
+  const maskSeperator = new RegExp('^([a-zA-Z])', 'g');
+  return maskSeperator.test(event.key);
+}
   alphabetsWithQuama(event: any) {
     const maskSeperator = new RegExp('^([a-zA-Z ,])', 'g');
     return maskSeperator.test(event.key);
@@ -114,4 +122,18 @@ export class ValidationService {
       return { passwordValid: true }
     }
   }
+  setDate(date:Date){
+    let d=date;
+    d.setHours(d.getHours() + 5);
+    d.setMinutes(d.getMinutes() + 30);
+    return new Date(d)
+  }
+  isOver18() { // find Date toDay date to 18 year old Date
+    let year = new Date().getFullYear() - 18;
+    let month = new Date().getMonth() + 1;
+    let date = new Date().getDate();
+    let fullDate = month + '-' + date + '-' + year;
+    let asd = this.setDate(new Date(fullDate));
+    return asd;
+}
 }

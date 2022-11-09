@@ -67,9 +67,9 @@
                                                 </button>
                                                 <mat-error>
                                                     <span *ngIf="fpass['currentPwd'].errors?.['required']"
-                                                        class="text-danger">Current Password is required</span>
+                                                        class="text-danger">Required Current Password</span>
                                                     <span *ngIf="fpass['currentPwd'].errors?.['pattern']"
-                                                        class="text-danger">Current Password is invalid format</span>
+                                                        class="text-danger">Invalid Current Password format</span>
                                                 </mat-error>
                                             </mat-form-field>
                                         </div>
@@ -89,18 +89,16 @@
                                                 </button>
                                                 <mat-error>
                                                     <span *ngIf="fpass['newPwd'].errors?.['required']"
-                                                        class="text-danger">New
-                                                        Password is required</span>
+                                                        class="text-danger">Required New Password</span>
                                                     <span *ngIf="fpass['newPwd'].errors?.['pattern']"
-                                                        class="text-danger">New
-                                                        Password is invalid format</span>
+                                                        class="text-danger">Invalid New Password format</span>
                                                 </mat-error>
                                             </mat-form-field>
                                         </div>
 
                                         <div class="mb-4">
                                             <mat-form-field [appearance]="config.matFormField" class="w-100 form-group">
-                                                <mat-label>Confirm Password</mat-label>
+                                                <mat-label>Retype Password</mat-label>
                                                 <input matInput [type]="retypePasswordHide ? 'password' : 'text'"
                                                     formControlName="reTypePwd"
                                                     [ngClass]="{'is-invalid':fpass['reTypePwd'].errors}">
@@ -113,10 +111,9 @@
                                                 </button>
                                                 <mat-error>
                                                     <span *ngIf="fpass['reTypePwd'].errors?.['required']"
-                                                        class="text-danger">Confirm Password is required</span>
+                                                        class="text-danger">Required Confirm Password</span>
                                                     <span *ngIf="fpass['reTypePwd'].errors?.['pattern']"
-                                                        class="text-danger">New
-                                                        Password is invalid format</span>
+                                                        class="text-danger">Invalid Confirm Password format</span>
                                                 </mat-error>
                                             </mat-form-field>
                                         </div>

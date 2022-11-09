@@ -14,13 +14,13 @@
                     <input type="file" #profileUpload name="myfile" accept=".jpg,.jpeg,.png"
                    style="display:none" (change)="profilePhoto($event)"/>
                     <div class="vehicle-buttons d-flex flex-column upload-btn-wrapper">
-                        <button type="button" class="btn bg-light text-primary" *ngIf="!this.profilePhotoupd?.length || this.driverProfile=='assets/images/user.jpg'"
+                        <button type="button" class="btn bg-light text-primary" *ngIf="!this.profilePhotoupd?.length || this.driverProfile=='assets/images/Driver-profile.svg'"
                             (click)="profileUpload.click()" matTooltip="Upload only png,jpg,jpeg file upto 10.48 MB">
                             <i class="fa-solid fa-plus"></i>
                         </button>
                         
                         <button type="button" class="border border-0 btn bg-light text-danger"
-                            *ngIf="this.profilePhotoupd?.length && this.driverProfile!='assets/images/user.jpg'" (click)="clearDoc('profile')">
+                            *ngIf="this.profilePhotoupd?.length && this.driverProfile!='assets/images/Driver-profile.svg'" (click)="clearDoc('profile')">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                        
@@ -35,8 +35,7 @@
                             <mat-label>First Name</mat-label>
                             <input matInput placeholder="First Name" value="" formControlName="firstName"
                                 [value]="driverRegForm.get('firstName')?.value | titlecase"
-                                (keypress)="this.validation.onlyAlphabets($event)"
-                                (keyup)="this.validation.noSpaces($event)" maxlength="15" required>
+                                (keypress)="this.validation.onlyAlphabets($event)" maxlength="15" required>
                             <mat-error *ngIf="f['firstName'].errors">
                                 <span class="text-danger" *ngIf="f['firstName'].hasError('required')">
                                     first Name is required</span>
@@ -50,8 +49,7 @@
                             <mat-label>Last Name</mat-label>
                             <input matInput placeholder="Last Name" value="" formControlName="lastName"
                                 [value]="driverRegForm.get('lastName')?.value | titlecase"
-                                (keypress)="this.validation.onlyAlphabets($event)" required
-                                (keyup)="this.validation.noSpaces($event)" maxlength="15">
+                                (keypress)="this.validation.onlyAlphabets($event)" required maxlength="15">
                             <mat-error *ngIf="f['lastName'].errors">
                                 <span class="text-danger" *ngIf="f['lastName'].hasError('required')">
                                     Last Name is required</span>
@@ -78,7 +76,7 @@
                         <mat-form-field [appearance]="config.matFormField" class="w-100">
                             <mat-label>Date of Birth</mat-label>
                             <input matInput [matDatepicker]="picker" formControlName="dob" [readonly]="true"
-                                placeholder="Date of Birth" [max]="maxDate" (click)="picker.open()" required>
+                                placeholder="Date of Birth" [min]="min"  [max]="max" (click)="picker.open()" required>
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker startView="multi-year"></mat-datepicker>
                             <mat-error *ngIf="f['dob'].errors">
@@ -166,7 +164,7 @@
                             <mat-form-field [appearance]="config.matFormField" class="w-100">
                                 <mat-label>PAN Number</mat-label>
                                 <input matInput placeholder="PAN Number" formControlName="panNumber" maxlength="10"
-                                    (keyup)="this.validation.noSpaces($event)"
+                                    (keyup)="this.validation.noSpaces($event)" [value]="driverRegForm.get('panNumber')?.value |uppercase"
                                     [ngClass]="{'is-invalid':f['panNumber'].errors}" (blur)="checkDocumentUpd('pan')"
                                     required>
                                 <mat-error *ngIf="f['panNumber'].errors">
@@ -179,8 +177,6 @@
                             <div>
                                 <input type="file" name="myfile" #panUpload style="display: none;"
                                     (change)="documentUpload($event,'pan')" accept=".pdf" />
-                                <!--   <input type="file" name="myfile" #panUpload formControlName="panCardDoc"
-                                    style="display: none;" (change)="documentUpload($event,'pan')" accept=".pdf" /> -->
                                 <button type="button" *ngIf="!this.panDoc?.length" mat-icon-button
                                     (click)="panUpload.click()" matTooltip="Upload only PDF file" accept=".pdf"
                                     required>
