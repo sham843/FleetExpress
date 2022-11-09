@@ -20,7 +20,9 @@ export class ModalsComponent implements OnInit {
   dialogData: any;
   remark = new FormControl('');
   driverRegForm!: FormGroup;
-  maxDate = new Date();
+  maxDate=new Date();
+  max = new Date(this.validation.isOver18().toString());
+  min = new Date('01-01-1901');
   driverProfile: string | any = 'assets/images/Driver-profile.svg';
   profilePhotoupd!: string;
   licenceDoc!: string;
@@ -184,6 +186,7 @@ export class ModalsComponent implements OnInit {
       formData.licenceDoc = this.licenceDoc || '';
       formData.profilePhoto = this.profilePhotoupd != 'assets/images/Driver-profile.svg' ? this.profilePhotoupd : '';
       this.spinner.show();
+      console.log("formData",formData)
       this.apiCall.setHttp('post', 'driver/save-update-deriver-details', true, formData, false, 'fleetExpressBaseUrl');
       this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {

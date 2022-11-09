@@ -122,4 +122,18 @@ onlyAlphabetsWithSpace(event: any) {
       return { passwordValid: true }
     }
   }
+  setDate(date:Date){
+    let d=date;
+    d.setHours(d.getHours() + 5);
+    d.setMinutes(d.getMinutes() + 30);
+    return new Date(d)
+  }
+  isOver18() { // find Date toDay date to 18 year old Date
+    let year = new Date().getFullYear() - 18;
+    let month = new Date().getMonth() + 1;
+    let date = new Date().getDate();
+    let fullDate = month + '-' + date + '-' + year;
+    let asd = this.setDate(new Date(fullDate));
+    return asd;
+}
 }

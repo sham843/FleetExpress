@@ -35,6 +35,7 @@ export class RegisterVehicleComponent implements OnInit {
   checkedVehicle = new Array();
   pathImg: any;
   deleteBtn: boolean = false;
+  totalVehicle:any;
   constructor(public validation: ValidationService,
     private apiCall: ApiCallService,
     private spinner: NgxSpinnerService,
@@ -69,6 +70,7 @@ export class RegisterVehicleComponent implements OnInit {
         this.spinner.hide();
         this.vehicleData = response.responseData.responseData1;
         !this.vehicleNo.value ? this.vehicleDetails = response.responseData.responseData1 : '';
+        this.totalVehicle=response.responseData.responseData2.totalRecords;
         this.vehicleData.forEach((ele: any) => {
           ele.isBlock == 1 ? ele['isBlockFlag'] = true : ele['isBlockFlag'] = false;
           let vhlNo;

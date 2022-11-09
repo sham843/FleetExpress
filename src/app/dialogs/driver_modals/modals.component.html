@@ -76,7 +76,7 @@
                         <mat-form-field [appearance]="config.matFormField" class="w-100">
                             <mat-label>Date of Birth</mat-label>
                             <input matInput [matDatepicker]="picker" formControlName="dob" [readonly]="true"
-                                placeholder="Date of Birth" [max]="maxDate" (click)="picker.open()" required>
+                                placeholder="Date of Birth" [min]="min"  [max]="max" (click)="picker.open()" required>
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker startView="multi-year"></mat-datepicker>
                             <mat-error *ngIf="f['dob'].errors">
