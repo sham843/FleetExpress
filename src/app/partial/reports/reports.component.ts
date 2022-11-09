@@ -304,7 +304,7 @@ export class ReportsComponent implements OnInit {
     obj.pageNames = pageName;
     obj.data = dataArr;
     const dialog = this.dialog.open(ViewReportComponent, {
-      width: '900px',
+      width: '1024px',
       data: obj,
       disableClose: this.config.disableCloseBtnFlag,
     })

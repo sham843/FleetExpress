@@ -221,15 +221,19 @@ mat-form-field{
   font-size: 0.85rem;
   font-family: "Poppins", sans-serif !important;
 }
-.dashboard-table th{
+.dashboard-table th,
+.dashboard-table .mat-header-cell{
   background-color:#fff;
   color: #ACACAC;
   font-weight: normal;
 }
+.dashboard-table .mat-cell,
+.dashboard-table .mat-header-cell,
 .dashboard-table th,
 .dashboard-table td{
   vertical-align: middle;
 }
+.dashboard-table .mat-cell,
 .dashboard-table td{
   color: #6E6D80;
 }
@@ -2123,4 +2127,10 @@ input::-ms-clear {
   background-color: hsla(214,7%,62%,.4);
   border-radius: 3px;
   visibility: hidden;
+}
+.mat-dialog-container .mat-dialog-title{
+  font-family: 'Rubik', sans-serif;
+  width: 100%;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
