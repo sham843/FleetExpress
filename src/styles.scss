@@ -264,7 +264,14 @@ mat-form-field{
 .dashboard-table .srno{
   width: 50px;
 }
-
+.mxw-100{
+  max-width: 100px !important;
+  width: 100px !important;
+}
+.mxw-150{
+  max-width: 150px !important;
+  width: 150px !important;
+}
 .form-card .card-header{
   font-size: 0.85rem;
   font-weight: 600;
