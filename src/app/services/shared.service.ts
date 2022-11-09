@@ -111,6 +111,7 @@ export class SharedService {
             file = event.target.files[0];
             fileName = 'files';
           }
+          this.spinner.show();
           const reader: any = new FileReader();
           reader.onload = () => {
             const formData = new FormData();
@@ -119,11 +120,12 @@ export class SharedService {
             // this.subscription =
             this.apiCall.getHttp().subscribe({
               next: (res: any) => {
-                this.spinner.hide();
                 if (res.statusCode === "200") {
+                  this.spinner.hide();
                   obj.next(res);
                 }
                 else {
+                  this.spinner.hide();
                   this.commonMethods.checkDataType(res.statusMessage) == false ? this.error.handelError(res.statusCode) : this.commonMethods.snackBar(res.statusMessage, 1);
                 }
               },
@@ -141,6 +143,7 @@ export class SharedService {
   }
   uploadProfilePhoto(event?: any, folderName?: any, allowedDocTypes?: any, flag?: any) {
     flag
+    this.spinner.show();
     return new Observable(obj => {
       let selResult = event != '' && event != undefined ? event.target.value.split('.') : '';
       const docExt = selResult.pop();
@@ -163,11 +166,12 @@ export class SharedService {
               // this.subscription =
               this.apiCall.getHttp().subscribe({
                 next: (res: any) => {
-                  this.spinner.hide();
                   if (res.statusCode === "200") {
+                    this.spinner.hide();
                     obj.next(res);
                   }
                   else {
+                    this.spinner.hide();
                     this.commonMethods.checkDataType(res.statusMessage) == false ? this.error.handelError(res.statusCode) : this.commonMethods.snackBar(res.statusMessage, 1);
                   }
                 },

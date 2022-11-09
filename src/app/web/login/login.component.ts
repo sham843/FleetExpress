@@ -52,7 +52,6 @@ export class LoginComponent implements OnInit {
     this.commonMethods.createCaptchaCarrerPage();
     this.commonMethods.snackBar("Invalid Captcha.Please try again", 1);
     }
-
     else {
       this.spinner.show();
       this.loginData = this.loginForm.value;

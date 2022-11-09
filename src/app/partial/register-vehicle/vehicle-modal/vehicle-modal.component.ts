@@ -28,13 +28,13 @@ export class VehicleModalComponent implements OnInit {
   profilePhotoImg!: string;
   dialogData!: any;
   cardTitle!: string;
-  vehiclePhoto: string ='assets/images/Vehicle-profile.svg';
+  vehiclePhoto: string = 'assets/images/Vehicle-profile.svg';
   highLightRow!: string;
   buttonFlag: boolean = true;
   rgsNo: boolean = true;
   subscription!: Subscription;
-  fuelsType:any;
-  minDate=new Date();
+  fuelsType: any;
+  minDate = new Date();
   @ViewChild('closeModel') closeModel: any;
   @ViewChild('uploadInsurance') uploadInsurance: any;
   @ViewChild('uploadRegister') uploadRegister: any;
@@ -60,43 +60,44 @@ export class VehicleModalComponent implements OnInit {
     this.dialogData = this.data;
     this.dialogData != 0 ? this.cardTitle = 'Edit Vehicle' : this.cardTitle = 'Add Vehicle';
     this.getFormControl();
-      }
+  }
   getFormControl() {
     this.registerVehicleForm = this.fb.group({
       vehicleNo: [this.dialogData ? this.dialogData.vehicleNo : '', [Validators.compose([Validators.required, Validators.maxLength(10), Validators.pattern('^[A-Z]{2}[0-9]{2}[A-Z]{2,3}[0-9]{4}')])]],
       fuelType: [this.dialogData ? this.dialogData.fuelTypeId : ''],
       manufacturer: [this.dialogData ? this.dialogData.manufacturer : ''],
       model: [this.dialogData ? this.dialogData.model : '', Validators.required],
-      chassicNo: [this.dialogData ? this.dialogData.chassisNo : '', [Validators.compose([Validators.required, Validators.pattern('[0-9]{17}')])]],
-      engineNo: [this.dialogData ? this.dialogData.engineNo : '', [Validators.compose([Validators.required, Validators.pattern('[a-zA-Z0-9_]{14}')])]],
+      chassicNo: [this.dialogData ? this.dialogData.chassisNo : '', [Validators.compose([Validators.required, Validators.pattern('[A-Z0-9_]{17}')])]],
+      engineNo: [this.dialogData ? this.dialogData.engineNo : '', [Validators.compose([Validators.required, Validators.pattern('[A-Z0-9_]{14}')])]],
       insuranceExDate: [this.dialogData ? this.dialogData.insuranceExpiryDate : '', Validators.required],
-      registerNo: [this.dialogData ? this.dialogData.vehicleNo:''],
+      registerNo: [this.dialogData ? this.dialogData.vehicleNo : ''],
       pollutionExDate: [this.dialogData ? new Date(this.dialogData.pollutionExpiryDate) : '', Validators.required],
       fitnessExDate: [this.dialogData ? this.dialogData.fitnessExpiryDate : ''],
       permitNo: [this.dialogData ? this.dialogData.nationalPermit : '', [Validators.compose([Validators.required])]]
     })
     if (this.dialogData) {
       this.buttonFlag = false;
-      this.insuranceDoc=this.dialogData?this.dialogData.insuranceExpiryDoc:'';
-      this.registerDoc=this.dialogData?this.dialogData.regCertificateDoc:'';
-      this.pollutionDoc=this.dialogData?this.dialogData.pollutionExpiryDoc:'';
-      this.fitnessDoc=this.dialogData?this.dialogData.fitnessDoc:'';
-      this.nationalDoc=this.dialogData?this.dialogData.nationalPermitDoc:'';
-      this.profilePhotoImg=this.dialogData?this.dialogData.profilePhoto:'';
-      this.vehiclePhoto=this.profilePhotoImg;
+      this.insuranceDoc = this.dialogData ? this.dialogData.insuranceExpiryDoc : '';
+      this.registerDoc = this.dialogData ? this.dialogData.regCertificateDoc : '';
+      this.pollutionDoc = this.dialogData ? this.dialogData.pollutionExpiryDoc : '';
+      this.fitnessDoc = this.dialogData ? this.dialogData.fitnessDoc : '';
+      this.nationalDoc = this.dialogData ? this.dialogData.nationalPermitDoc : '';
+      this.profilePhotoImg = this.dialogData ?this.dialogData.profilePhoto :'';
+      this.vehiclePhoto =this.profilePhotoImg?this.profilePhotoImg:'assets/images/Vehicle-profile.svg';
+      
     }
     // 
     this.apiCall.setHttp('get', 'vehicle/get-fuel-List', true, false, false, 'fleetExpressBaseUrl');
-      // this.subscription = 
-      this.apiCall.getHttp().subscribe((response: any) => {
-        this.fuelsType=response.responseData;
-      })
+    // this.subscription = 
+    this.apiCall.getHttp().subscribe((response: any) => {
+      this.fuelsType = response.responseData;
+    })
   }
 
   get f() { return this.registerVehicleForm.controls; }
   // ---------------------------------------------------------------------Upload Photo And Document---------------------------
-  vehiclePhotoUpd(event: any,flag:any) {
-    let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'vehicleProfile', "png,jpg,jpeg",flag);
+  vehiclePhotoUpd(event: any, flag: any) {
+    let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'vehicleProfile', "png,jpg,jpeg", flag);
     documentUrl.subscribe({
       next: (ele: any) => {
         if (ele.statusCode == "200") {
@@ -173,8 +174,8 @@ export class VehicleModalComponent implements OnInit {
       "newVehNo2": second,
       "newVehNo3": third,
       "newVehNo4": forth,
-      "driverName": this.dialogData ?this.dialogData.driverName ||'': "",
-      "driverNo": this.dialogData ? this.dialogData.mobileNo ||'' : "",
+      "driverName": this.dialogData ? this.dialogData.driverName || '' : "",
+      "driverNo": this.dialogData ? this.dialogData.mobileNo || '' : "",
       "vehicleTypeId": 0,
       "capacity": 0,
       "createdBy": this.webStorage.getUserId(),
@@ -185,11 +186,11 @@ export class VehicleModalComponent implements OnInit {
       "deviceCompanyId": 0,
       "deviceSIMNo": "",
       "vehicleOwnerId": this.webStorage.getVehicleOwnerId(),
-      "vehicleMake":this.registerVehicleForm.value.manufacturer,
+      "vehicleMake": this.registerVehicleForm.value.manufacturer,
       "vehicleModel": this.registerVehicleForm.value.model,
       "vehicleChassisNo": this.registerVehicleForm.value.chassicNo,
       "vehicleEngineNo": this.registerVehicleForm.value.engineNo,
-      "fuelTypeId":this.registerVehicleForm.value.fuelType,
+      "fuelTypeId": this.registerVehicleForm.value.fuelType,
       "flag": this.dialogData ? "u" : "i",
       "isDeviceInfoChange": true,
       "vehicleAssignStatusId": 0,
@@ -221,8 +222,17 @@ export class VehicleModalComponent implements OnInit {
     if (this.registerVehicleForm.invalid) {
       return
     }
+    else if (!this.insuranceDoc || !this.registerDoc || !this.pollutionDoc || !this.fitnessDoc || !this.nationalDoc ) {
+     !this.insuranceDoc ? (this.commonMethods.snackBar("Please Upload Insurance Document", 1), this.registerVehicleForm.invalid) :
+        !this.registerDoc? this.commonMethods.snackBar("Please Upload Register Certificate", 1) :
+          !this.pollutionDoc? this.commonMethods.snackBar("Please Upload Pollution Document", 1) :
+          !this.fitnessDoc? this.commonMethods.snackBar("Please Upload Fitness Document", 1) :
+          !this.nationalDoc? this.commonMethods.snackBar("Please Upload National Document", 1) :'';
+          // !this.profilePhotoImg? this.commonMethods.snackBar("Please Upload Vahicle Photo", 1) : '';
+      return
+    }
     else {
-      this.spinner.show();
+      // this.spinner.show();
       this.apiCall.setHttp('post', 'vehicle/save-update-vehicle-details', true, param, false, 'fleetExpressBaseUrl');
       // this.subscription = 
       this.apiCall.getHttp().subscribe((response: any) => {
@@ -231,10 +241,15 @@ export class VehicleModalComponent implements OnInit {
           formDirective.resetForm();
           this.dialogRef.close('');
           this.commonMethods.snackBar(response.statusMessage, 0)
+        }else{
+          this.spinner.hide();
+          this.dialogRef.close('');
+          this.commonMethods.snackBar(response.statusMessage, 1)
         }
       }, (error: any) => {
+        this.spinner.hide();
+        this.dialogRef.close('');
         this.error.handelError(error.status);
-        this.spinner.hide()
       })
     }
   }

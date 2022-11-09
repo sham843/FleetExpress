@@ -35,14 +35,14 @@
                             <mat-label>Name</mat-label>
                             <input matInput placeholder="Enter Name"
                                 formControlName="name"
-                                (keypress)="this.vs.onlyAlphabets($event)">
+                                (keypress)="this.vs.onlyAlphabetsWithSpace($event)">
                             <mat-error *ngIf="f['name'].errors">
                                 <span class="text-danger"
                                     *ngIf="f['name'].hasError('required')">
-                                    first Name is required</span>
+                                     Name is required</span>
                                 <span class="text-danger"
                                     *ngIf="f['name'].hasError('pattern')">
-                                    first Name is Invalid</span>
+                                     Name is Invalid</span>
                             </mat-error>
                         </mat-form-field>
                     </div>

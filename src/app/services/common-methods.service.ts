@@ -65,14 +65,14 @@ export class CommonMethodsService {
     var ctx: any = canv.getContext("2d");
     ctx.font = "italic 20px Arno Pro";
     // ctx.lineWidth = 1;
-    ctx.moveTo(7, 17);
+   ctx.moveTo(7, 17);
     ctx.lineTo(7, 17);
     ctx.lineTo(70, 17);
     ctx.stroke();
     ctx.moveTo(0, 25);
     ctx.lineTo(0,25);
     ctx.lineTo(72, 25);
-    ctx.stroke();
+    ctx.stroke(); 
     // ctx.lineWidth = 2;
     ctx.fillText(captcha.join(""), 0, 25);
     this.codecareerPage = captcha.join("");

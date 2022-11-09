@@ -10,14 +10,22 @@ export class ValidationService {
     const maskSeperator = new RegExp('^[ ]+|[ ]+$', 'gm');
     return !maskSeperator.test(event.key);
   }
-  onlyAlphabets(event: any) {
+  /* onlyAlphabets(event: any) {
     if (!this.noSpacesAtStart(event)) {
       return false
     }
     const maskSeperator = new RegExp('^([a-zA-Z])', 'g');
     return maskSeperator.test(event.key);
-  }
-
+  } */
+  onlyAlphabets(event: any) {
+    this.noSpaces(event);
+    const maskSeperator = new RegExp('^([a-zA-Z])', 'g');
+    return maskSeperator.test(event.key);
+}
+onlyAlphabetsWithSpace(event: any) {
+  const maskSeperator = new RegExp('^([a-zA-Z])', 'g');
+  return maskSeperator.test(event.key);
+}
   alphabetsWithQuama(event: any) {
     const maskSeperator = new RegExp('^([a-zA-Z ,])', 'g');
     return maskSeperator.test(event.key);
