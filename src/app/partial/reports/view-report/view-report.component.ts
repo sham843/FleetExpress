@@ -44,16 +44,36 @@ export class ViewReportComponent implements OnInit {
       this.displayedColumns = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
     }
     else if (this.dialogData.pageNames == "Address Report") {
-   this.header = ["Sr No.", " Date", "Address"];
+    this.header = ["Sr No.", "From Date", "To Date", "Address"];
+    this.displayedColumns = ['rowNumber', 'fromDate', 'toDate', 'address'];
     }
     else if (this.dialogData.pageNames == "Trip Report") {
       this.header = ["Sr No.", " Distance", "Duration", "Start Date", "Start Address", "End Date", "End Address"];
-      this.displayedColumns = ['', 'travelledDistance', 'speed', 'startDateTime', 'startLatLong', 'endDateTime', 'endLatLong'];
-    } else {
-      this.header = ["SrNo.", " Driver Name", "tripDurationInMins", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
+      this.displayedColumns = ['rowNumber', 'travelledDistance', 'speed', 'startDateTime', 'startLatLong', 'endDateTime', 'endLatLong'];
+    } 
+    else if(this.dialogData.pageNames == "Stopage Report") {
+      this.header = ["SrNo.", "Vehicle no", "From", "To", "Duration", "Location", "STPL Device"];
+      this.displayedColumns = ['rowNumber', 'vehicleNo', 'dateOn', 'dateOff', 'tripDurationInMins', 'address','isMahaMiningDevice'];
+    }
+    else if(this.dialogData.pageNames == "Daywise Stoppage Report") {
+      this.header = ["SrNo.", "Vehicle no", "From Time", "To Time", "Duration"];
+      this.displayedColumns = ['rowNumber', 'vehicleNo', 'dateOn', 'dateOff', 'tripDurationInMins'];
+    }
+     else if(this.dialogData.pageNames == "Day Distance Report") {
+      this.header = ["SrNo.", "Vehicle no", "From Time", "To Time", "Total Distance[KM]", "STPL Device"];
+      this.displayedColumns = ['rowNumber', 'vehicleNo', 'fromDate', 'toDate', 'travelledDistance','isMahaMiningDevice'];
+    }
+    else if(this.dialogData.pageNames == "Distance Report") {
+      this.header = ["SrNo.", "Vehicle no", "From Date Time", "To Date Time", "Distance travelled [KM]", "Time Taken [hr]", "STPL Device"];
+      this.displayedColumns = ['rowNumber', 'vehicleNo', 'fromDate', 'toDate', 'travelledDistance','runningTime','isMahaMiningDevice'];
+    }
+    else {
+      this.header = ["SrNo.", " Driver Name", "Mobile Number", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
+      this.displayedColumns = ['rowNumber', 'driverName', 'mobileNo', 'vehicleType', 'runningTime','stoppageTime','idleTime','maxSpeed','travelledDistance'];
     }
 
     this.dataSource=this.dialogData.data;
+    console.log(this.dataSource)
   }
   onDownloadPDF(){
     this.excelService.downLoadPdf(this.dialogData.data, this.dialogData.pageNames,this.dialogData,this.header,this.displayedColumns);

@@ -192,7 +192,7 @@
                     <div class="col-sm-6">
                         <mat-form-field [appearance]="config.matFormField" class="w-100">
                             <textarea matInput formControlName="presentAddress" placeholder="Present Address"
-                                maxlength="150" required></textarea>
+                                maxlength="150" required rows="4"></textarea>
                             <mat-error *ngIf="f['presentAddress'].errors">
                                 <span class="text-danger" *ngIf="f['presentAddress'].hasError('required')">Present
                                     Address
@@ -204,7 +204,7 @@
                     <div class="col-sm-6">
                         <mat-form-field [appearance]="config.matFormField" class="w-100">
                             <textarea matInput formControlName="permanentAddress" placeholder="Permanent Address"
-                                maxlength="150" required></textarea>
+                                maxlength="150" required rows="4"></textarea>
                             <mat-error *ngIf="f['permanentAddress'].errors">
                                 <span class="text-danger" *ngIf="f['permanentAddress'].hasError('required')">Permanent
                                     Address is

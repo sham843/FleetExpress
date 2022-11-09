@@ -102,7 +102,6 @@
                                             </tr>
                                         </thead>
                                         <tbody *ngIf="showTab=='users'" > 
-                                            {{userTableData.length}}
                                             <tr *ngFor="let user of userTableData | paginate: {itemsPerPage: pageSize, 
                                                 currentPage: pageNumber, totalItems:totalUserTableData}; let i=index " [ngClass]="{'highLightRow':user?.id==highlightRowindex}">
                                                 <td>{{((pageNumber + 1) * 10 + i + 1)-20}}</td>

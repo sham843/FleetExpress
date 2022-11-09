@@ -63,7 +63,7 @@ export class CommonMethodsService {
     canv.width = 110;
     canv.height = 25;
     var ctx: any = canv.getContext("2d");
-    ctx.font = "italic 20px Arno Pro";
+    ctx.font = "italic 28px Arial";
     // ctx.lineWidth = 1;
    ctx.moveTo(7, 17);
     ctx.lineTo(7, 17);

@@ -111,3 +111,20 @@
 agm-map {
     height: 300px;
 }
+.totalvehicles{
+    text-transform: capitalize;
+    position: absolute;
+    top:40%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-align:center;
+}
+.totalvehicles span{
+    display: block;
+    font-size: 0.85rem;
+}
+.totalvehicles .total{
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--main-color);
+}
