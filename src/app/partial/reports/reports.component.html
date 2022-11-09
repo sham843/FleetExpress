@@ -44,7 +44,7 @@
                         </div>
                         <div class="col-sm-5">
                             <div class="form-container">                                
-                                <div class="row mb-3">
+                                <div class="row mb-3 g-3">
                                     <div class="col-sm-6">
                                         <label class="form-label">Vehicle Number</label>
                                         <div class="d-block">
@@ -71,8 +71,6 @@
                                             </mat-form-field>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
                                     <div class="col-sm-6">
                                         <label class="form-label">Start Date</label>
                                         <div class="d-block"  [ngClass]="{ 'isdisabled':(f['timePeriod'].value !='4' && f['timePeriod'].value !='')  }">
