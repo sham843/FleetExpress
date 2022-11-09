@@ -20,6 +20,8 @@ export class ViewReportComponent implements OnInit {
   key: any;
   dataSource:any;
   displayedColumns:any;
+  pageNumber: number = 1;
+  pageSize: number = 10;
   constructor(public dialogRef: MatDialogRef<ViewReportComponent>,
     public CommonMethod: CommonMethodsService,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -29,6 +31,9 @@ export class ViewReportComponent implements OnInit {
   ngOnInit(): void {
     this.dialogData = this.data;
     this.getReportData();
+  }
+  onPagintion(pageNo: any) {
+    this.pageNumber = pageNo;
   }
   getReportData() {
     this.fromDate = this.datepipe.transform(this.dialogData.fromDate, 'dd/MM/yyyy');
@@ -49,7 +54,7 @@ export class ViewReportComponent implements OnInit {
     }
     else if (this.dialogData.pageNames == "Trip Report") {
       this.header = ["Sr No.", " Distance", "Duration", "Start Date", "Start Address", "End Date", "End Address"];
-      this.displayedColumns = ['rowNumber', 'travelledDistance', 'speed', 'startDateTime', 'startLatLong', 'endDateTime', 'endLatLong'];
+      this.displayedColumns = ['rowNumber', 'travelledDistance', 'tripDurationInMins', 'startDateTime', 'startaddress', 'endDateTime', 'endaddress'];
     } 
     else if(this.dialogData.pageNames == "Stopage Report") {
       this.header = ["SrNo.", "Vehicle no", "From", "To", "Duration", "Location", "STPL Device"];

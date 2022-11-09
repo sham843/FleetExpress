@@ -49,6 +49,7 @@ export class ReportsComponent implements OnInit {
   geoCoders: any;
   pageNo: number = 1;
   pageSize: number = 10;
+  isSubmitted:boolean=false;
   get f() { return this.reportForm.controls };
   constructor(private fb: FormBuilder,
     private apiCall: ApiCallService,
@@ -234,6 +235,7 @@ export class ReportsComponent implements OnInit {
     return str;
   }
   SearchReport() {
+    this.isSubmitted=true;
     if (this.reportForm.invalid) {
       return;
     } else {
@@ -254,16 +256,16 @@ export class ReportsComponent implements OnInit {
       this.apiCall.setHttp('get', url + this.getQueryString()+'&UserId=' + this.webStorage.getUserId() + '&VehicleOwnerId=' + this.webStorage.getVehicleOwnerId()  + '&pageno=' + this.pageNo + '&rowsperpage=' + this.pageSize, true, false, false, 'fleetExpressBaseUrl');
       this.apiCall.getHttp().subscribe((responseData: any) => {
         if (responseData.statusCode === "200" || responseData.length > 0) {
-          if(this.selectedTablabel !='Summary Report'){
-            responseData.responseData.data.map((x:any)=>{
-            (x.latitude ||x.latOff) ? (x.latitude= x.latitude?x.latitude:x.latOff):'';
-            (x.longitude ||x.longOff) ? (x.longitude= x.longitude?x.longitude:x.longOff):'';
-          })
-          let resp: any = this.sharedService.getAddressBylatLong(1, responseData.responseData.data, 10);
-          this.reportResponseData = resp;
-        }else{
-          this.reportResponseData.push(responseData.responseData);
-        }
+          if (this.selectedTablabel != 'Summary Report') {
+            // responseData.responseData.data.map((x: any) => {
+            //   (x.latitude || x.latOff) ? (x.latitude = x.latitude ? x.latitude : x.latOff) : '';
+            //   (x.longitude || x.longOff) ? (x.longitude = x.longitude ? x.longitude : x.longOff) : '';
+            // })
+            let resp: any = this.sharedService.getAddressBylatLong(1, responseData.responseData.data, 10);
+            this.reportResponseData = resp;
+          } else {
+            this.reportResponseData.push(responseData.responseData);
+          }
         setTimeout(()=>{  
           this.spinner.hide()                         // <<<---using ()=> syntax
           this.viewReport();
@@ -310,8 +312,9 @@ export class ReportsComponent implements OnInit {
     })
     dialog.afterClosed().subscribe(() => {
       this.reportResponseData = [];
+      this.isSubmitted=false;
       this.getStoppageData();
-      this.selectedTab('stoppage');
+      // this.selectedTab(this.selectedTablabel);
     }
     )
   }

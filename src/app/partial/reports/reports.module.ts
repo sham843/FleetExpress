@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AgmCoreModule } from '@agm/core';
 import { ConfigService } from 'src/app/services/config.service';
 import { ViewReportComponent } from './view-report/view-report.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ViewReportComponent } from './view-report/view-report.component';
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
     NgxMatTimepickerModule,
+    NgxPaginationModule,
     AgmCoreModule.forRoot(ConfigService.googleApiObj),
   ],
   providers:[]
