@@ -72,7 +72,7 @@
             </ng-container>
             <ng-container matColumnDef="address">
                 <mat-header-cell *matHeaderCellDef> Address </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.address}} </mat-cell>
+                <mat-cell *matCellDef="let element">{{element.latitude}} {{element.longitude}} {{element.address}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="driverName">
                 <mat-header-cell *matHeaderCellDef> Driver Name </mat-header-cell>
