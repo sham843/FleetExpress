@@ -1,16 +1,12 @@
 <div class="this.dialogData!='Vehicle Tracking'">
-    <div class="container">
-        <div style="text-align:end;">
-            <button type="button" class="btn-danger" mat-icon-button mat-dialog-close (click)="onNoClick('No')"><i
-                    class="fas fa-times"></i></button>
+    <div mat-dialog-title class="mat-dialog-title">
+        <div class="d-flex justify-content-between align-items-center">
+            {{this.dialogData.pageNames}}
+            <button mat-icon-button mat-dialog-close (click)="onNoClick('No')">
+                <mat-icon>close</mat-icon>
+            </button>
         </div>
         <div class="row">
-            <div class="col-sm-12">
-                <h3 class="text-center">{{this.dialogData.pageNames}}</h3>
-            </div>
-        </div>
-    
-        <div class="row mt-2">
             <div class="col-sm-2 view">
                 From : {{this.fromDate}}
             </div>
@@ -21,58 +17,66 @@
                 Date : {{currentDate}}
             </div>
         </div>
-        <hr style="height:1.5px;color:black">
         <div class="row">
             <div class="col-sm-12 view">
                 Vehicle No : {{this.dialogData.VehicleNumber}}({{this.dialogData.vehicleName}})
             </div>
         </div>
-        <mat-table #table [dataSource]="dataSource">
+    </div>
+    <div mat-dialog-content class="mat-dialog-content">
+
+        <mat-table #table [dataSource]="dataSource" class="dashboard-table">
             <ng-container matColumnDef="rowNumber">
-                <mat-header-cell *matHeaderCellDef class="mxw-100">Sr No. </mat-header-cell>
-                <mat-cell *matCellDef="let element" class="mxw-100"> {{element.rowNumber?element.rowNumber:1}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef class="srno">Sr No. </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="srno"> {{element.rowNumber?element.rowNumber:1}}
+                </mat-cell>
             </ng-container>
             <ng-container matColumnDef="vehicleNo">
-                <mat-header-cell *matHeaderCellDef class="mxw-100">Vehicle no </mat-header-cell>
-                <mat-cell *matCellDef="let element" class="mxw-100"> {{element.vehicleNo}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef>Vehicle no </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.vehicleNo}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="dateOn">
-                <mat-header-cell *matHeaderCellDef class="mxw-100">From Date </mat-header-cell>
-                <mat-cell *matCellDef="let element" class="mxw-100"> {{element.dateOn | date:'dd-MM-yyyy hh:mm:ss'}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef>From Date </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.dateOn | date:'dd-MM-yyyy hh:mm:ss'}}
+                </mat-cell>
             </ng-container>
             <ng-container matColumnDef="dateOff">
-                <mat-header-cell *matHeaderCellDef class="mxw-100">To Date </mat-header-cell>
-                <mat-cell *matCellDef="let element" class="mxw-100"> {{element.dateOff | date:'dd-MM-yyyy hh:mm:ss'}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef>To Date </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.dateOff | date:'dd-MM-yyyy hh:mm:ss'}}
+                </mat-cell>
             </ng-container>
             <ng-container matColumnDef="tripDurationInMins">
-                <mat-header-cell *matHeaderCellDef class="mxw-100">Duration </mat-header-cell>
-                <mat-cell *matCellDef="let element" class="mxw-100"> {{element.tripDurationInMins}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef>Duration </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.tripDurationInMins}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="fromDate">
-                <mat-header-cell *matHeaderCellDef class="mxw-150"> From Date </mat-header-cell>
-                <mat-cell *matCellDef="let element" class="mxw-150"> {{element.fromDate | date:'dd-MM-yyyy hh:mm:ss'}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef> From Date </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.fromDate | date:'dd-MM-yyyy hh:mm:ss'}}
+                </mat-cell>
             </ng-container>
             <ng-container matColumnDef="toDate">
-                <mat-header-cell *matHeaderCellDef class="mxw-150"> To Date </mat-header-cell>
-                <mat-cell *matCellDef="let element" class="mxw-150"> {{element.toDate | date:'dd-MM-yyyy hh:mm:ss'}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef> To Date </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.toDate | date:'dd-MM-yyyy hh:mm:ss'}}
+                </mat-cell>
             </ng-container>
             <ng-container matColumnDef="deviceDateTime">
-                <mat-header-cell *matHeaderCellDef class="mxw-150"> Date </mat-header-cell>
-                <mat-cell *matCellDef="let element" class="mxw-150"> {{element.deviceDateTime | date:'dd-MM-yyyy hh:mm:ss'}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.deviceDateTime | date:'dd-MM-yyyy hh:mm:ss'}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="travelledDistance">
-                <mat-header-cell *matHeaderCellDef class="mxw-150"> Total Distance[KM] </mat-header-cell>
-                <mat-cell *matCellDef="let element" class="mxw-150"> {{element.travelledDistance}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef> Total Distance[KM] </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.travelledDistance}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="speed">
-                <mat-header-cell *matHeaderCellDef class="mxw-100 text-center"> Speed(Km/h) </mat-header-cell>
-                <mat-cell *matCellDef="let element" class="mxw-100 ">
+                <mat-header-cell *matHeaderCellDef> Speed(Km/h) </mat-header-cell>
+                <mat-cell *matCellDef="let element">
                     <div class="text-center w-100">{{element.speed}}</div>
                 </mat-cell>
             </ng-container>
             <ng-container matColumnDef="address">
                 <mat-header-cell *matHeaderCellDef> Address </mat-header-cell>
-                <mat-cell *matCellDef="let element">{{element.latitude}} {{element.longitude}} {{element.address}} </mat-cell>
+                <mat-cell *matCellDef="let element">{{element.latitude}} {{element.longitude}} {{element.address}}
+                </mat-cell>
             </ng-container>
             <ng-container matColumnDef="driverName">
                 <mat-header-cell *matHeaderCellDef> Driver Name </mat-header-cell>
@@ -103,38 +107,60 @@
                 <mat-cell *matCellDef="let element"> {{element.maxSpeed}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="isMahaMiningDevice">
-                <mat-header-cell *matHeaderCellDef> STPL Device </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.isMahaMiningDevice==true? 'Yes': 'No' }} </mat-cell>
+                <mat-header-cell *matHeaderCellDef class="srno"> STPL Device </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="srno"> {{element.isMahaMiningDevice==true? 'Yes': 'No' }} </mat-cell>
             </ng-container>
-            
+
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
         </mat-table>
+    </div>
+    <div mat-dialog-actions>
+        <div class="d-flex justify-content-between w-100">
+            <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-light-main" (click)="onNoClick('No')">Cancel</button>
+
+                <button type="button" class="btn btn-outline-secondary" [matMenuTriggerFor]="menu">
+                    <i class="fa-solid fa-download"></i>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="onDownloadPDF()">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>PDF</span>
+                            <span class="text-danger"><i class="fa-solid fa-file-pdf"></i></span>
+                        </div>
+                    </button>
+                    <button mat-menu-item (click)="onDownloadExcel()">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>Excel</span>
+                            <span class="text-success"><i class="fa-solid fa-file-excel"></i></span>
+                        </div>
+                    </button>
+                </mat-menu>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- <div class="this.dialogData!='Vehicle Tracking'">
+    <div class="container">
+        <div style="text-align:end;">
+            <button type="button" class="btn-danger" mat-icon-button mat-dialog-close (click)="onNoClick('No')"><i
+                    class="fas fa-times"></i></button>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 class="text-center"></h3>
+            </div>
+        </div>
         
     </div>
 </div>
 <div class="row mt-3">
     <div class="col-sm-12 ">
-        <div class="d-flex justify-content-between">
-            <button type="button" class="btn btn-light-main" (click)="onNoClick('No')">Cancel</button>
-
-            <button type="button" class="btn btn-outline-secondary" [matMenuTriggerFor]="menu">
-                <i class="fa-solid fa-download"></i>
-            </button>
-            <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="onDownloadPDF()">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span>PDF</span>
-                        <span class="text-danger"><i class="fa-solid fa-file-pdf"></i></span>
-                    </div>
-                </button>
-                <button mat-menu-item (click)="onDownloadExcel()">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span>Excel</span>
-                        <span class="text-success"><i class="fa-solid fa-file-excel"></i></span>
-                    </div>
-                </button>
-            </mat-menu>
-        </div>
+        
     </div>
-</div>
+</div> -->
