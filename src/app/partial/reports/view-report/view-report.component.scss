@@ -2,3 +2,13 @@
     font-size: 0.85rem;
     font-weight: bold;
 }
+.dropdown-menu{
+    padding: 0;
+    width:250px;
+    border: none;
+    box-shadow: 0px 3px 6px #00000029;
+}
+.dropdown-menu .drop-item{
+    padding:5px 10px;
+    font-size: 0.85rem;
+}

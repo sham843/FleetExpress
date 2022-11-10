@@ -208,18 +208,27 @@ export class SharedService {
     let getData: any = [];
     let sliceArray = data.slice(Number(counter), Number(lastIndex));
     sliceArray.map(async (x: any, i: any) => { //get address by lat & log
-      const addressByLatLong = await this.getAddress(x, i);
+      if(x.latitude){
+      const addressByLatLong = await this.getAddress(x, i, 'address');
       getData.push(addressByLatLong);
+      }else{
+        const objStart={latitude:x.latOn, longitude:x.longOn};
+        const objEnd={latitude:x.latOff, longitude:x.longOff};
+        const addressStartByLatLong = await this.getAddress(objStart, i, 'startaddress');
+        const addressEndByLatLong = await this.getAddress(objEnd, i,'endaddress');
+        var addressStart = Object.assign(x, addressStartByLatLong, addressEndByLatLong);
+        getData.push(addressStart);
+      }
     });
     setTimeout(() => { this.spinner.hide(); }, 2000, true);
     return getData;
   }
 
-  getAddress(cr: any, i: any) { // get address by lat long
+  getAddress(cr: any, i: any, label:string) { // get address by lat long
     return new Promise((resolve) => {  //  return new Promise((resolve, reject) => {
       setTimeout(() => {
         let geocoder: any = new google.maps.Geocoder;
-        var latlng = { lat: parseFloat(cr.latitude), lng: parseFloat(cr.longitude) };
+        var latlng = { lat: parseFloat(cr.latitude), lng: parseFloat(cr.longitude ) };
         geocoder === undefined && (geocoder = new google.maps.Geocoder())
         geocoder.geocode({ 'location': latlng }, (results: any, status: any) => {
           let tempObj: any = new Object();
@@ -228,14 +237,14 @@ export class SharedService {
           if (status === 'OK') {
             if (results[0]) {
               var address = results.length === 0 ? "Unknown location" : results[0].formatted_address;
-              tempObj.address = address;
+              label=='startaddress'? tempObj.startaddress = address :label=='endaddress'? tempObj.endaddress = address: tempObj.address  = address;
               resolve(tempObj);
             } else {
-              tempObj.address = "Unknown location";
+              label=='startaddress'? tempObj.startaddress=  "Unknown location" :label=='endaddress'? tempObj.endaddress=  "Unknown location": tempObj.address  =  "Unknown location";
               resolve(tempObj);
             }
           } else {
-            tempObj.address = "Unknown location";
+            label=='startaddress'? tempObj.startaddress=  "Unknown location" :label=='endaddress'? tempObj.endaddress=  "Unknown location": tempObj.address  =  "Unknown location";
             resolve(tempObj);
           }
         })
