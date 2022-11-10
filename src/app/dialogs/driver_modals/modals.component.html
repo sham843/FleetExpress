@@ -1,9 +1,9 @@
 <div class="position-relative mb-3">
     <h5 mat-dialog-title class="mb-0">{{cardTitle}}</h5>
-    <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick(formDirective)"><i
+    <button type="button" class="btn-modal-close bg-white" mat-icon-button mat-dialog-close (click)="onNoClick(formDirective)"><i
             class="fas fa-times"></i></button>
 </div>
-
+ 
 <div>
     <form [formGroup]="driverRegForm" #formDirective="ngForm" (ngSubmit)="onSubmit(formDirective)">
         <div class="row">
@@ -101,7 +101,7 @@
                             <mat-form-field [appearance]="config.matFormField" class="w-100">
                                 <mat-label>Driving Licence Number</mat-label>
                                 <input matInput placeholder="Driving Licence Number" formControlName="licenceNumber"
-                                    [ngClass]="{'is-invalid':f['licenceNumber'].errors}" maxlength="20" minlength="15"
+                                    [ngClass]="{'is-invalid':f['licenceNumber'].errors}" 
                                     (blur)="checkDocumentUpd('licence')" required>
                                 <mat-error *ngIf="f['licenceNumber'].errors">
                                     <span class="text-danger" *ngIf="f['licenceNumber'].hasError('pattern')">Enter valid
