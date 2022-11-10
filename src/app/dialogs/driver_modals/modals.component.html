@@ -4,7 +4,6 @@
             class="fas fa-times"></i></button>
 </div>
 
-
 <div>
     <form [formGroup]="driverRegForm" #formDirective="ngForm" (ngSubmit)="onSubmit(formDirective)">
         <div class="row">
@@ -163,10 +162,10 @@
                         <div class="d-flex align-items-center">
                             <mat-form-field [appearance]="config.matFormField" class="w-100">
                                 <mat-label>PAN Number</mat-label>
-                                <input matInput placeholder="PAN Number" formControlName="panNumber" maxlength="10"
-                                    (keyup)="this.validation.noSpaces($event)" [value]="driverRegForm.get('panNumber')?.value |uppercase"
+                                <input matInput placeholder="PAN Number" formControlName="panNumber" maxlength="10" [ngModel]="driverRegForm.value.panNumber" 
+                                 (keyup)="this.validation.noSpaces($event)" oninput="this.value = this.value.toUpperCase()"
                                     [ngClass]="{'is-invalid':f['panNumber'].errors}" (blur)="checkDocumentUpd('pan')"
-                                    required>
+                                    required uppercase>
                                 <mat-error *ngIf="f['panNumber'].errors">
                                     <span class="text-danger" *ngIf="f['panNumber'].hasError('required')">Aadhar number
                                         is required</span>
@@ -175,6 +174,7 @@
                                 </mat-error>
                             </mat-form-field>
                             <div>
+                                <!--[ngModel]="inputvalue" (ngModelChange)="inputvalue = $event.toUpperCase()" -->
                                 <input type="file" name="myfile" #panUpload style="display: none;"
                                     (change)="documentUpload($event,'pan')" accept=".pdf" />
                                 <button type="button" *ngIf="!this.panDoc?.length" mat-icon-button

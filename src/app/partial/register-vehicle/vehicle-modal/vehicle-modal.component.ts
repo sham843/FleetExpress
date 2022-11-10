@@ -58,21 +58,21 @@ export class VehicleModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.dialogData = this.data;
-    this.dialogData != 0 ? this.cardTitle = 'Edit Vehicle' : this.cardTitle = 'Add Vehicle';
+    this.dialogData != 0 ? this.cardTitle = 'Vehicle Details' : this.cardTitle = 'Add Vehicle';
     this.getFormControl();
   }
   getFormControl() {
     this.registerVehicleForm = this.fb.group({
       vehicleNo: [this.dialogData ? this.dialogData.vehicleNo : '', [Validators.compose([Validators.required, Validators.maxLength(10), Validators.pattern('^[A-Z]{2}[0-9]{2}[A-Z]{2,3}[0-9]{4}')])]],
       fuelType: [this.dialogData ? this.dialogData.fuelTypeId : ''],
-      manufacturer: [this.dialogData ? this.dialogData.manufacturer : ''],
+      manufacturer: [this.dialogData ? this.dialogData.manufacturer : '',Validators.required],
       model: [this.dialogData ? this.dialogData.model : '', Validators.required],
       chassicNo: [this.dialogData ? this.dialogData.chassisNo : '', [Validators.compose([Validators.required, Validators.pattern('[A-Z0-9_]{17}')])]],
       engineNo: [this.dialogData ? this.dialogData.engineNo : '', [Validators.compose([Validators.required, Validators.pattern('[A-Z0-9_]{14}')])]],
       insuranceExDate: [this.dialogData ? this.dialogData.insuranceExpiryDate : '', Validators.required],
       registerNo: [this.dialogData ? this.dialogData.vehicleNo : ''],
       pollutionExDate: [this.dialogData ? new Date(this.dialogData.pollutionExpiryDate) : '', Validators.required],
-      fitnessExDate: [this.dialogData ? this.dialogData.fitnessExpiryDate : ''],
+      fitnessExDate: [this.dialogData ? this.dialogData.fitnessExpiryDate : '',Validators.required],
       permitNo: [this.dialogData ? this.dialogData.nationalPermit : '', [Validators.compose([Validators.required])]]
     })
     if (this.dialogData) {
@@ -123,12 +123,12 @@ export class VehicleModalComponent implements OnInit {
     })
   }
   clearDoc(flag?: any) {
+  flag == 'profile' ? (this.updVehiclePhoto.nativeElement.value = '', this.profilePhotoImg = '', this.vehiclePhoto = 'assets/images/Vehicle-profile.svg') :
     flag == 'insurance' ? (this.uploadInsurance.nativeElement.value = null, this.insuranceDoc = '') :
       flag == 'register' ? (this.uploadRegister.nativeElement.value = '', this.registerDoc = '') :
         flag == 'pollution' ? (this.uploadPollution.nativeElement.value = '', this.pollutionDoc = '') :
           flag == 'fitness' ? (this.uploadFitness.nativeElement.value = '', this.fitnessDoc = '') :
-            flag == 'profile' ? (this.updVehiclePhoto.nativeElement.value = '', this.profilePhotoImg = '', this.vehiclePhoto = 'assets/images/Vehicle-profile.svg') :
-              (this.uploadPermit.nativeElement.value = '', this.nationalDoc = '');
+          flag == 'permit' ?  (this.uploadPermit.nativeElement.value = '', this.nationalDoc = ''):'';
   }
 
   checkDocumentUpd(flag: any) {

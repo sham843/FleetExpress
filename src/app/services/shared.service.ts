@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable} from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { ApiCallService } from './api-call.service';
@@ -94,7 +94,7 @@ export class SharedService {
   constructor(private commonMethods: CommonMethodsService,
     private error: ErrorsService,
     private apiCall: ApiCallService,
-    private spinner: NgxSpinnerService,
+    private spinner: NgxSpinnerService
   ) {
   }
 
@@ -151,7 +151,6 @@ export class SharedService {
       let fileName = '';
       const docExtLowerCase = docExt.toLowerCase();
       if (allowedDocTypes.match(docExtLowerCase)) {
-        // if (10485760 > event.target.files[0].size) {
           if (event.target != undefined && event.target.files) {
             if (event != '') {
               file = event.target.files[0];
@@ -179,10 +178,7 @@ export class SharedService {
             }
             reader.readAsDataURL(file);
           }
-       /*  } else {
-          this.commonMethods.snackBar("Uploading photo upto 10.48 MB", 1)
-        } */
-      }
+        }
 
       else {
         obj.error("Only " + allowedDocTypes + " file format allowed.");
@@ -192,6 +188,8 @@ export class SharedService {
   }
   logOut() {
     sessionStorage.clear();
+    var element = document.getElementById("bodyTag");
+    element?.classList.remove("darkTheme");
     this.commonMethods.routerLinkRedirect('login');
   }
 

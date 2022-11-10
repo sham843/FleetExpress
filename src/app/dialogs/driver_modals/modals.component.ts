@@ -36,6 +36,7 @@ export class ModalsComponent implements OnInit {
   buttonFlag: boolean = true;
   addressFlag: boolean = false;
   cardTitle!: string;
+  inputvalue:any;
   @ViewChild('profileUpload') profileUpload: any;
   @ViewChild('panUpload') panUpload: any;
   @ViewChild('aadharUpload') aadharUpload: any;

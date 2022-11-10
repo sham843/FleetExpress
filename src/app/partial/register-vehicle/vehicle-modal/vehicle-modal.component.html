@@ -54,14 +54,18 @@
                         <mat-form-field appearance="standard" class="w-100">
                             <mat-label>Manufacturer</mat-label>
                             <input matInput formControlName="manufacturer" (keypress)="this.vs.alphaNumeric($event)"
-                                maxlength="17">
+                                maxlength="17" required>
+                                <mat-error *ngIf="f['manufacturer'].errors">
+                                    <span *ngIf="f['manufacturer'].hasError('required')" class="text-danger">Manufacturer is
+                                        required</span>
+                                </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="col-sm-6">
                         <mat-form-field appearance="standard" class="w-100">
                             <mat-label>Model</mat-label>
-                            <input matInput formControlName="model" required (keypress)="this.vs.alphaNumeric($event)"
-                                maxlength="10">
+                            <input matInput formControlName="model" required (keypress)="this.vs.alphaNumericWithSpaces($event)"
+                                maxlength="30">
                             <mat-error *ngIf="f['model'].errors">
                                 <span *ngIf="f['model'].hasError('required')" class="text-danger">Model is
                                     required</span>
@@ -185,12 +189,12 @@
                                 <input matInput [matDatepicker]="datePickers" [readonly]="true"
                                     placeholder="Fitness Expiry Date" formControlName="fitnessExDate"
                                     (keyup)="this.vs.noSpaces($event)" (click)="datePickers.open()" [min]="minDate"
-                                    (blur)="checkDocumentUpd('fitness')">
+                                    (blur)="checkDocumentUpd('fitness')" required>
                                 <mat-datepicker-toggle matSuffix [for]="datePickers"></mat-datepicker-toggle>
                                 <mat-datepicker #datePickers startView="multi-year"></mat-datepicker>
-                                <!--  <mat-error *ngIf="f['fitnessExDate'].errors">
+                                 <mat-error *ngIf="f['fitnessExDate'].errors">
                                     <span class="text-danger" *ngIf="f['fitnessExDate'].hasError('required')">Fitness expiry date is required</span>
-                                </mat-error> -->
+                                </mat-error>
                             </mat-form-field>
                             <div>
                                 <input type="file" name="myfile" #uploadFitness style="display:none;"
@@ -214,10 +218,9 @@
                                 <mat-label>National Permit Number</mat-label>
                                 <input matInput placeholder="Permit Number" formControlName="permitNo" maxlength="10"
                                     (keyup)="this.vs.noSpaces($event)" (blur)="checkDocumentUpd('permit')">
-                                <mat-error *ngIf="f['permitNo'].errors">
+                                <mat-error *ngIf="f['permitNo'].errors" required>
                                     <span class="text-danger" *ngIf="f['permitNo'].hasError('required')">National permit
-                                        number is
-                                        required</span>
+                                        number is required</span>
                                 </mat-error>
                             </mat-form-field>
                             <div>

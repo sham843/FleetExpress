@@ -63,10 +63,12 @@ export class ConfirmationComponent implements OnInit {
       return;
     }
     else {
-      if (this.changePassForm.value != this.changePassForm.value) {
-        this.commonMethods.snackBar("new password and confirm password not match", 1);
+      if (this.changePassForm.value.newPwd != this.changePassForm.value.reTypePwd) {
+        this.commonMethods.snackBar("New Password and Confirm Password does not match", 1);
         return
-      } else {
+      } else if(this.changePassForm.value.currentPwd == this.changePassForm.value.newPwd){
+        this.commonMethods.snackBar("New Password must be different from Current Password.", 1);
+      }else{
         this.spinner.show();
         this.apiCall.setHttp('get', 'login/change-password?UserId=' + this.webStorage.getUserId() + '&NewPassword=' + this.changePassForm.value.reTypePwd + '&OldPassword=' + this.changePassForm.value.currentPwd, true, false, false, 'fleetExpressBaseUrl');
         this.apiCall.getHttp().subscribe((response: any) => {
