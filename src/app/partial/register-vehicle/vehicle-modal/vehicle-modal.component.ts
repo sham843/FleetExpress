@@ -32,7 +32,6 @@ export class VehicleModalComponent implements OnInit {
   highLightRow!: string;
   buttonFlag: boolean = true;
   rgsNo: boolean = true;
-  IsWait: boolean = false;
   subscription!: Subscription;
   fuelsType: any;
   minDate = new Date();
@@ -99,19 +98,19 @@ export class VehicleModalComponent implements OnInit {
   get f() { return this.registerVehicleForm.controls; }
   // ---------------------------------------------------------------------Upload Photo And Document---------------------------
   vehiclePhotoUpd(event: any, flag: any) {
-    this.IsWait = true;
+  this.spinner.show();
     let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'vehicleProfile', "png,jpg,jpeg", flag);
     setTimeout(() => {
       documentUrl.subscribe({
         next: (ele: any) => {
           if (ele.statusCode == "200") {
-            this.IsWait = false;
+            this.spinner.hide();
             this.profilePhotoImg = ele.responseData;
             this.vehiclePhoto = this.profilePhotoImg;
           }
         }
       }, (error: any) => {
-        this.IsWait = false;
+        this.spinner.hide();
         this.error.handelError(error.status);
       })
     }, 1000);
