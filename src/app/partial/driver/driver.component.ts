@@ -122,6 +122,7 @@ export class DriverComponent implements OnInit {
       width: this.config.dialogBoxWidth[0],
       data: obj,
       disableClose: this.config.disableCloseBtnFlag,
+      autoFocus: false
     })
 
     dialog.afterClosed().subscribe(res => {
@@ -229,6 +230,7 @@ export class DriverComponent implements OnInit {
       width: '900px',
       data: obj,
       disableClose: this.config.disableCloseBtnFlag,
+      autoFocus: false
     })
 
     dialog.afterClosed().subscribe(res => {

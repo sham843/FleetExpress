@@ -120,6 +120,7 @@ export class RegisterVehicleComponent implements OnInit {
       width: this.config.dialogBoxWidth[0],
       data: obj,
       disableClose: this.config.disableCloseBtnFlag,
+      autoFocus: false
     })
 
     dialog.afterClosed().subscribe(res => {
@@ -135,6 +136,7 @@ export class RegisterVehicleComponent implements OnInit {
             width: '900px',
             data: '',
             disableClose: this.config.disableCloseBtnFlag,
+            autoFocus: false
           })
           dialog.afterClosed().subscribe(res => {
             if (res == 'Yes') {
@@ -262,6 +264,7 @@ export class RegisterVehicleComponent implements OnInit {
       width: '900px',
       data: obj,
       disableClose: this.config.disableCloseBtnFlag,
+      autoFocus: false
     })
 
     dialog.afterClosed().subscribe(res => {

@@ -9,8 +9,8 @@
             <div class="col-sm-3">
                 <div class="position-relative">
                     <img src={{vehiclePhoto}} class="vehicle-image">
-                    <input type="file" name="myfile" #updVehiclePhoto (change)="vehiclePhotoUpd($event,'vehicle')"
-                        accept=".png,.jpg,.jpeg" style="display:none" />
+                    <input type="file"  name="myfile" #updVehiclePhoto (change)="vehiclePhotoUpd($event,'vehicle')"
+                        accept=".png,.jpg,.jpeg" style="display:none"/>
                     <div class="vehicle-buttons d-flex flex-column upload-btn-wrapper">
                         <button type="button" class="btn bg-light text-primary" *ngIf="!this.profilePhotoImg?.length && this.vehiclePhoto =='assets/images/Vehicle-profile.svg'" (click)="updVehiclePhoto.click()">
                             <i class="fa-solid fa-plus"></i>
@@ -27,7 +27,7 @@
                     <div class="col-sm-6">
                         <mat-form-field appearance="standard" class="w-100">
                             <mat-label>Vehicle No</mat-label>
-                            <input matInput formControlName="vehicleNo" required
+                            <input matInput formControlName="vehicleNo" required 
                                 (keypress)="this.vs.alphaNumeric($event)" minlength="6" maxlength="10" [readonly]="this.cardTitle == 'Vehicle Details'"
                                 [value]="registerVehicleForm.get('vehicleNo')?.value | uppercase">
                             <mat-error *ngIf="f['vehicleNo'].errors">

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component,Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -43,6 +43,7 @@ export class VehicleModalComponent implements OnInit {
   @ViewChild('uploadPermit') uploadPermit: any;
   @ViewChild('updVehiclePhoto') updVehiclePhoto: any;
   @ViewChild(FormGroupDirective) formGroupDirective!: FormGroupDirective;
+ 
   constructor(public dialogRef: MatDialogRef<VehicleModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private commonMethods: CommonMethodsService,
