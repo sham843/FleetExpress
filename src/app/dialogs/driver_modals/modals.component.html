@@ -1,6 +1,6 @@
 <div class="position-relative mb-3">
     <h5 mat-dialog-title class="mb-0">{{cardTitle}}</h5>
-    <button type="button" class="btn-modal-close bg-white" mat-icon-button mat-dialog-close (click)="onNoClick(formDirective)"><i
+    <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick(formDirective)"><i
             class="fas fa-times"></i></button>
 </div>
  
@@ -120,7 +120,7 @@
                                 matTooltip="Upload only PDF file" accept=".pdf" required>
                                 <mat-icon>file_upload</mat-icon>
                             </button>
-                            <button type="button" class="border border-0 bg-white" *ngIf="this.licenceDoc?.length"
+                            <button type="button" mat-icon-button *ngIf="this.licenceDoc?.length"
                                 (click)="clearDoc('licence')">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
@@ -150,7 +150,7 @@
                                     required>
                                     <mat-icon>file_upload</mat-icon>
                                 </button>
-                                <button type="button" class="border border-0 bg-white" *ngIf="this.aadharDoc?.length"
+                                <button type="button" mat-icon-button *ngIf="this.aadharDoc?.length"
                                     (click)="clearDoc('aadhar')">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </button>
@@ -181,7 +181,7 @@
                                     required>
                                     <mat-icon>file_upload</mat-icon>
                                 </button>
-                                <button type="button" class="border border-0 bg-white" *ngIf="this.panDoc?.length"
+                                <button type="button" mat-icon-button *ngIf="this.panDoc?.length"
                                     (click)="clearDoc('pan')">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </button>
