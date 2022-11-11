@@ -311,6 +311,9 @@ mat-form-field{
   background-size: 30%;
   box-shadow: none;
 }
+.modal .modal-header .btn-close:focus{
+  background-color: none;
+}
 
 .upload-btn-wrapper {
   position: relative;
@@ -1835,6 +1838,12 @@ input::-ms-clear {
   position: absolute !important;
   right: -23px;
   top: -22px;
+}
+.btn-modal-close:focus{
+  background-color:none;
+}
+.mat-button-focus-overlay {
+  background: transparent;
 }
 .ngx-pagination{
   margin: 0 !important;
