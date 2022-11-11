@@ -77,7 +77,7 @@
                     <div class="col-sm-6">
                         <mat-form-field appearance="standard" class="w-100">
                             <mat-label>Chassis No.</mat-label>
-                            <input matInput formControlName="chassicNo" required
+                            <input matInput formControlName="chassicNo" required oninput="this.value = this.value.toUpperCase()"
                                 (keypress)="this.vs.alphaNumeric($event)" maxlength="17">
                             <mat-error *ngIf="f['chassicNo'].errors">
                                 <span *ngIf="f['chassicNo'].hasError('required')" class="text-danger">Chassis number
@@ -88,7 +88,7 @@
                     <div class="col-sm-6">
                         <mat-form-field appearance="standard" class="w-100">
                             <mat-label>Engine No.</mat-label>
-                            <input matInput formControlName="engineNo" required
+                            <input matInput formControlName="engineNo" required oninput="this.value = this.value.toUpperCase()"
                                 (keypress)="this.vs.alphaNumeric($event)" maxlength="14">
                             <mat-error *ngIf="f['engineNo'].errors">
                                 <span *ngIf="f['engineNo'].hasError('required')" class="text-danger">Engine number

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component,Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -43,7 +43,7 @@ export class VehicleModalComponent implements OnInit {
   @ViewChild('uploadPermit') uploadPermit: any;
   @ViewChild('updVehiclePhoto') updVehiclePhoto: any;
   @ViewChild(FormGroupDirective) formGroupDirective!: FormGroupDirective;
- 
+
   constructor(public dialogRef: MatDialogRef<VehicleModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private commonMethods: CommonMethodsService,
@@ -98,28 +98,36 @@ export class VehicleModalComponent implements OnInit {
   get f() { return this.registerVehicleForm.controls; }
   // ---------------------------------------------------------------------Upload Photo And Document---------------------------
   vehiclePhotoUpd(event: any, flag: any) {
+  this.spinner.show();
     let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'vehicleProfile', "png,jpg,jpeg", flag);
-    documentUrl.subscribe({
-      next: (ele: any) => {
-        if (ele.statusCode == "200") {
-          this.profilePhotoImg = ele.responseData;
-          this.vehiclePhoto = this.profilePhotoImg;
+    setTimeout(() => {
+      documentUrl.subscribe({
+        next: (ele: any) => {
+          if (ele.statusCode == "200") {
+            this.spinner.hide();
+            this.profilePhotoImg = ele.responseData;
+            this.vehiclePhoto = this.profilePhotoImg;
+          }
         }
-      }
-    }, (error: any) => {
-      this.error.handelError(error.status);
-    })
+      }, (error: any) => {
+        this.spinner.hide();
+        this.error.handelError(error.status);
+      })
+    }, 1000);
   }
 
   documentUpload(event: any, flag: any) {
+    this.spinner.show();
     let documentUrl: any = this.sharedService.uploadDocuments(event, "pdf");
     documentUrl.subscribe({
       next: (ele: any) => {
         if (ele.statusCode == "200") {
+          this.spinner.hide();
           flag == 'insurance' ? this.insuranceDoc = ele.responseData : flag == 'register' ? this.registerDoc = ele.responseData : flag == 'pollution' ? this.pollutionDoc = ele.responseData : flag == 'fitness' ? this.fitnessDoc = ele.responseData : this.nationalDoc = ele.responseData;
         }
       }
     }, (error: any) => {
+      this.spinner.hide();
       this.error.handelError(error.status);
     })
   }

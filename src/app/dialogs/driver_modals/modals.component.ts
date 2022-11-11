@@ -69,7 +69,7 @@ export class ModalsComponent implements OnInit {
       firstName: [this.dialogData ? this.dialogData?.name.split(' ').shift() : '', Validators.compose([Validators.required, Validators.maxLength(15), Validators.pattern('[a-zA-Z][a-zA-Z ]+')])],
       lastName: [this.dialogData ? this.dialogData?.name.split(' ').pop() : '', Validators.compose([Validators.required, Validators.maxLength(15), Validators.pattern('[a-zA-Z][a-zA-Z ]+')])],
       dob: [this.dialogData ? new Date(this.dialogData.dob) : '', Validators.required],
-      licenceNumber: [this.dialogData ? this.dialogData?.licenceNumber : '', Validators.compose([Validators.required, Validators.pattern('^(([A-Z]{2}[0-9]{2})( )[0-9]{11})|([A-Z]{2}-[0-9]{13})'),Validators.maxLength(16)])],
+      licenceNumber: [this.dialogData ? this.dialogData?.licenceNumber : '', Validators.compose([Validators.required, Validators.pattern('^(([A-Z]{2}[0-9]{2})( )[0-9]{11})|([A-Z]{2}-[0-9]{13})|([A-Z]{2}[0-9]{13})'),Validators.minLength(15),Validators.maxLength(16)])],
       aadharNumber: [this.dialogData ? this.dialogData?.aadharNumber : '', Validators.compose([Validators.required, Validators.pattern('^[0-9]{12}$'), Validators.maxLength(12), Validators.minLength(12)])],
       panNumber: [this.dialogData ? this.dialogData?.panNumber : '', Validators.compose([Validators.required, Validators.pattern('[A-Z]{3}[ABCFGHLJPTF]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}'), Validators.maxLength(10)])],
       presentAddress: [this.dialogData ? this.dialogData?.presentAddress : '', Validators.compose([Validators.required, Validators.maxLength(150)])],

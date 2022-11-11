@@ -100,8 +100,8 @@
                             <mat-form-field [appearance]="config.matFormField" class="w-100">
                                 <mat-label>Driving Licence Number</mat-label>
                                 <input matInput placeholder="Driving Licence Number" formControlName="licenceNumber"
-                                    [ngClass]="{'is-invalid':f['licenceNumber'].errors}" 
-                                    (blur)="checkDocumentUpd('licence')" required maxlength="16">
+                                    [ngClass]="{'is-invalid':f['licenceNumber'].errors}"  oninput="this.value = this.value.toUpperCase()"
+                                    (blur)="checkDocumentUpd('licence')" required minlength="15" maxlength="16">
                                 <mat-error *ngIf="f['licenceNumber'].errors">
                                     <span class="text-danger" *ngIf="f['licenceNumber'].hasError('pattern')">Enter valid
                                         licence
