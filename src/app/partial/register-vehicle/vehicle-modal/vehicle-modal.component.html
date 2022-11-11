@@ -28,7 +28,7 @@
                         <mat-form-field appearance="standard" class="w-100">
                             <mat-label>Vehicle No</mat-label>
                             <input matInput formControlName="vehicleNo" required
-                                (keypress)="this.vs.alphaNumeric($event)" maxlength="15" [disabled]="cardTitle=='Vehicle Details'"
+                                (keypress)="this.vs.alphaNumeric($event)" minlength="6" maxlength="10" [readonly]="this.cardTitle == 'Vehicle Details'"
                                 [value]="registerVehicleForm.get('vehicleNo')?.value | uppercase">
                             <mat-error *ngIf="f['vehicleNo'].errors">
                                 <span *ngIf="f['vehicleNo'].hasError('required')" class="text-danger">Vehicle number

@@ -99,14 +99,14 @@ export class RegisterVehicleComponent implements OnInit {
   confirmationDialog(flag: boolean, label: string, event?: any, editData?: any) {
     let obj: any = ConfigService.dialogObj;
     if (label == 'status') { //block vehicle
-      obj['p1'] = flag ? 'Are you sure you want to Block Vehicle?' : 'Are you sure you want to Unblock Vehicle?';
+      obj['p1'] = flag ? 'Are you sure you want to Block '+editData?.vehicleNo+'  Vehicle?' : 'Are you sure you want to Unblock '+editData?.vehicleNo+' Vehicle?';
       obj['cardTitle'] = flag ? 'Block Vehicle' : 'Unblock Vehicle';
       obj['successBtnText'] = flag ? 'Block' : 'Unblock';
       obj['cancelBtnText'] = 'Cancel';
       editData.driverId != 0 ? this.assignDriverToVehicle('unassign', editData, 0) : '';   
     } else if (label == 'assign') {  //Assign vehicle
       obj['v1'] = editData?.vehicleNo;
-      obj['p1'] = flag ? '' : 'Are you sure you want to unassign driver?';
+      obj['p1'] = flag ? '' : 'Are you sure you want to Unassign "'+ editData?.driverName +'" from "'+ editData?.vehicleNo +'" ?';
       obj['cardTitle'] = flag ? 'Assign Driver' : 'Unassign Driver';
       obj['successBtnText'] = flag ? 'Assign' : 'Unassign';
       obj['cancelBtnText'] = 'Cancel';
@@ -129,7 +129,7 @@ export class RegisterVehicleComponent implements OnInit {
       else if (res == 'Yes' && label == 'delete') {
         this.deleteVehicle();
       }
-      else if (label == 'assign') {
+      else if (res != 'No' && label == 'assign') {
         if (res == 'Ok') {
           const dialog = this.dialog.open(ModalsComponent, {
             width: '900px',
@@ -138,13 +138,15 @@ export class RegisterVehicleComponent implements OnInit {
           })
           dialog.afterClosed().subscribe(res => {
             if (res == 'Yes') {
-
             }
           })
         }
         else {
           this.assignDriverToVehicle(event, editData, res);
         }
+      }
+      else{
+        this.getVehiclesData();
       }
     }
     )
@@ -154,7 +156,8 @@ export class RegisterVehicleComponent implements OnInit {
     let param = {
       "id": 0,
       "driverId": flag == 'assign' ? id : data.driverId,
-      "vehicleId": flag == 'assign' ? data?.vehicleId : 0,
+      "vehicleId":data?.vehicleId,
+      // "vehicleId": flag == 'assign' ? data?.vehicleId : 0,
       "assignedby": this.webStorage.getUserId(),
       "assignedDate": this.date.toISOString(),
       "isDeleted": 0,

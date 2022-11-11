@@ -103,7 +103,6 @@ export class MakePaymentComponent implements OnInit {
           disableClose: this.configService.disableCloseBtnFlag,
         })
         dialog.afterClosed().subscribe(res => {
-          console.log(res)
           if(res=='no'){
           }else{
             this.callHashApi();

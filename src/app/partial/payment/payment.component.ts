@@ -145,7 +145,6 @@ export class PaymentComponent implements OnInit {
       if(res.flagStatus=='Yes' ){
       // this.formvalueData=res.formData;
       }
-      console.log(res)
     })
   }
 

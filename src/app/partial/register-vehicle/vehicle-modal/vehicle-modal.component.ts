@@ -63,16 +63,16 @@ export class VehicleModalComponent implements OnInit {
   }
   getFormControl() {
     this.registerVehicleForm = this.fb.group({
-      vehicleNo: [this.dialogData ? this.dialogData.vehicleNo : '', [Validators.compose([Validators.required, Validators.maxLength(10), Validators.pattern('^[A-Z]{2}[0-9]{2}[A-Z]{2,3}[0-9]{4}')])]],
+      vehicleNo: [this.dialogData ? this.dialogData.vehicleNo : '', [Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(10), Validators.pattern('^([A-Z]{2}[0-9]{2}[A-Z]{2,3}[0-9]{4})|^([A-Z]{3}[0-9]{3,4})')])]],
       fuelType: [this.dialogData ? this.dialogData.fuelTypeId : ''],
-      manufacturer: [this.dialogData ? this.dialogData.manufacturer : '',Validators.required],
+      manufacturer: [this.dialogData ? this.dialogData.manufacturer : '', Validators.required],
       model: [this.dialogData ? this.dialogData.model : '', Validators.required],
       chassicNo: [this.dialogData ? this.dialogData.chassisNo : '', [Validators.compose([Validators.required, Validators.pattern('[A-Z0-9_]{17}')])]],
       engineNo: [this.dialogData ? this.dialogData.engineNo : '', [Validators.compose([Validators.required, Validators.pattern('[A-Z0-9_]{14}')])]],
       insuranceExDate: [this.dialogData ? this.dialogData.insuranceExpiryDate : '', Validators.required],
       registerNo: [this.dialogData ? this.dialogData.vehicleNo : ''],
       pollutionExDate: [this.dialogData ? new Date(this.dialogData.pollutionExpiryDate) : '', Validators.required],
-      fitnessExDate: [this.dialogData ? this.dialogData.fitnessExpiryDate : '',Validators.required],
+      fitnessExDate: [this.dialogData ? this.dialogData.fitnessExpiryDate : '', Validators.required],
       permitNo: [this.dialogData ? this.dialogData.nationalPermit : '', [Validators.compose([Validators.required])]]
     })
     if (this.dialogData) {
@@ -82,9 +82,9 @@ export class VehicleModalComponent implements OnInit {
       this.pollutionDoc = this.dialogData ? this.dialogData.pollutionExpiryDoc : '';
       this.fitnessDoc = this.dialogData ? this.dialogData.fitnessDoc : '';
       this.nationalDoc = this.dialogData ? this.dialogData.nationalPermitDoc : '';
-      this.profilePhotoImg = this.dialogData ?this.dialogData.profilePhoto :'';
-      this.vehiclePhoto =this.profilePhotoImg?this.profilePhotoImg:'assets/images/Vehicle-profile.svg';
-      
+      this.profilePhotoImg = this.dialogData ? this.dialogData.profilePhoto : '';
+      this.vehiclePhoto = this.profilePhotoImg ? this.profilePhotoImg : 'assets/images/Vehicle-profile.svg';
+
     }
     // 
     this.apiCall.setHttp('get', 'vehicle/get-fuel-List', true, false, false, 'fleetExpressBaseUrl');
@@ -123,12 +123,12 @@ export class VehicleModalComponent implements OnInit {
     })
   }
   clearDoc(flag?: any) {
-  flag == 'profile' ? (this.updVehiclePhoto.nativeElement.value = '', this.profilePhotoImg = '', this.vehiclePhoto = 'assets/images/Vehicle-profile.svg') :
-    flag == 'insurance' ? (this.uploadInsurance.nativeElement.value = null, this.insuranceDoc = '') :
-      flag == 'register' ? (this.uploadRegister.nativeElement.value = '', this.registerDoc = '') :
-        flag == 'pollution' ? (this.uploadPollution.nativeElement.value = '', this.pollutionDoc = '') :
-          flag == 'fitness' ? (this.uploadFitness.nativeElement.value = '', this.fitnessDoc = '') :
-          flag == 'permit' ?  (this.uploadPermit.nativeElement.value = '', this.nationalDoc = ''):'';
+    flag == 'profile' ? (this.updVehiclePhoto.nativeElement.value = '', this.profilePhotoImg = '', this.vehiclePhoto = 'assets/images/Vehicle-profile.svg') :
+      flag == 'insurance' ? (this.uploadInsurance.nativeElement.value = null, this.insuranceDoc = '') :
+        flag == 'register' ? (this.uploadRegister.nativeElement.value = '', this.registerDoc = '') :
+          flag == 'pollution' ? (this.uploadPollution.nativeElement.value = '', this.pollutionDoc = '') :
+            flag == 'fitness' ? (this.uploadFitness.nativeElement.value = '', this.fitnessDoc = '') :
+              flag == 'permit' ? (this.uploadPermit.nativeElement.value = '', this.nationalDoc = '') : '';
   }
 
   checkDocumentUpd(flag: any) {
@@ -162,18 +162,27 @@ export class VehicleModalComponent implements OnInit {
   // -------------------------------------------------Add vehicle------------------------------------------------------------------
   saveVehicleDetails(formDirective: any) {
     this.highLightRow = '';
-    let vhlaData = (this.registerVehicleForm.value.vehicleNo).split('');
-    let first = vhlaData.splice(0, 2).join('');
-    let second = vhlaData.splice(0, 2).join('');
-    let third = vhlaData.splice(0, 2).join('');
-    let forth = vhlaData.join('');
+    console.log(this.registerVehicleForm.value.vehicleNo);
+    let first, second, third, forth, oldFirst, oldSecond;
+    if (this.registerVehicleForm.value.vehicleNo.length == 10) {
+      let vhlaData = (this.registerVehicleForm.value.vehicleNo).split('');
+      first = vhlaData.splice(0, 2).join('');
+      second = vhlaData.splice(0, 2).join('');
+      third = vhlaData.splice(0, 2).join('');
+      forth = vhlaData.join('');
+    }
+    else {
+      let vhlaData = (this.registerVehicleForm.value.vehicleNo).split('');
+      oldFirst = vhlaData.splice(0, 3).join('');
+      oldSecond = vhlaData.join('');
+    }
     let param = {
-      "oldVehNo1": "",
-      "oldVehNo2": "",
-      "newVehNo1": first,
-      "newVehNo2": second,
-      "newVehNo3": third,
-      "newVehNo4": forth,
+      "oldVehNo1": oldFirst ? oldFirst : '',
+      "oldVehNo2": oldSecond ? oldSecond : '',
+      "newVehNo1": first ? first : '',
+      "newVehNo2": second ? second : '',
+      "newVehNo3": third ? third : '',
+      "newVehNo4": forth ? forth : '',
       "driverName": this.dialogData ? this.dialogData.driverName || '' : "",
       "driverNo": this.dialogData ? this.dialogData.mobileNo || '' : "",
       "vehicleTypeId": 0,
@@ -222,13 +231,13 @@ export class VehicleModalComponent implements OnInit {
     if (this.registerVehicleForm.invalid) {
       return
     }
-    else if (!this.insuranceDoc || !this.registerDoc || !this.pollutionDoc || !this.fitnessDoc || !this.nationalDoc ) {
-     !this.insuranceDoc ? (this.commonMethods.snackBar("Please Upload Insurance Document", 1), this.registerVehicleForm.invalid) :
-        !this.registerDoc? this.commonMethods.snackBar("Please Upload Register Certificate", 1) :
-          !this.pollutionDoc? this.commonMethods.snackBar("Please Upload Pollution Document", 1) :
-          !this.fitnessDoc? this.commonMethods.snackBar("Please Upload Fitness Document", 1) :
-          !this.nationalDoc? this.commonMethods.snackBar("Please Upload National Document", 1) :'';
-          // !this.profilePhotoImg? this.commonMethods.snackBar("Please Upload Vahicle Photo", 1) : '';
+    else if (!this.insuranceDoc || !this.registerDoc || !this.pollutionDoc || !this.fitnessDoc || !this.nationalDoc) {
+      !this.insuranceDoc ? (this.commonMethods.snackBar("Please Upload Insurance Document", 1), this.registerVehicleForm.invalid) :
+        !this.registerDoc ? this.commonMethods.snackBar("Please Upload Register Certificate", 1) :
+          !this.pollutionDoc ? this.commonMethods.snackBar("Please Upload Pollution Document", 1) :
+            !this.fitnessDoc ? this.commonMethods.snackBar("Please Upload Fitness Document", 1) :
+              !this.nationalDoc ? this.commonMethods.snackBar("Please Upload National Document", 1) : '';
+      // !this.profilePhotoImg? this.commonMethods.snackBar("Please Upload Vahicle Photo", 1) : '';
       return
     }
     else {
@@ -241,7 +250,7 @@ export class VehicleModalComponent implements OnInit {
           formDirective.resetForm();
           this.dialogRef.close('');
           this.commonMethods.snackBar(response.statusMessage, 0)
-        }else{
+        } else {
           this.spinner.hide();
           this.dialogRef.close('');
           this.commonMethods.snackBar(response.statusMessage, 1)

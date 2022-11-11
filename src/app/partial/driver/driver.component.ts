@@ -65,7 +65,6 @@ export class DriverComponent implements OnInit {
 
   // -----------------------------------------------Driver Details----------------------------------------------------------
   getDriverDetails(flag?: any) {
-    debugger
     this.checkArray = [];
     this.spinner.show();
     this.apiCall.setHttp('get', 'driver/get-driver?searchText=' + this.driverName.value + '&pageno=' + this.paginationNo + '&rowperPage=' + this.pageSize, true, false, false, 'fleetExpressBaseUrl');
@@ -108,7 +107,7 @@ export class DriverComponent implements OnInit {
     // this.selectAll ? this.uncheckAllDriver() : '';
     let obj: any = ConfigService.dialogObj;
     if (label == 'status') {
-      obj['p1'] = flag ? 'Are you sure you want to Block Driver?' : 'Are you sure you want to Unblock Driver?';
+      obj['p1'] = flag ? 'Are you sure you want to Block "' +drData.name+ '" Driver?' : 'Are you sure you want to Unblock "' +drData.name+ '" Driver?';
       obj['cardTitle'] = flag ? 'Block Driver' : 'Unblock Driver';
       obj['successBtnText'] = flag ? 'Block' : 'Unblock';
       obj['cancelBtnText'] = 'Cancel';
@@ -188,7 +187,6 @@ export class DriverComponent implements OnInit {
     })
   }
   removeDriverData() {
-    console.log(" this.checkArray ", this.checkArray )
     this.deleteBtn = false;
     let param = new Array();
     this.checkArray.find((ele: any) => {

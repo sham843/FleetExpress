@@ -78,7 +78,6 @@ export class ViewReportComponent implements OnInit {
     }
 
     this.dataSource=this.dialogData.data;
-    console.log(this.dataSource)
   }
   onDownloadPDF(){
     this.excelService.downLoadPdf(this.dialogData.data, this.dialogData.pageNames,this.dialogData,this.header,this.displayedColumns);
