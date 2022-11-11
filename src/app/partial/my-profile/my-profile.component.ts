@@ -73,6 +73,7 @@ export class MyProfileComponent implements OnInit {
       width: '900px',
       data: obj,
       disableClose: this.config.disableCloseBtnFlag,
+      autoFocus: false
     })
 
     dialog.afterClosed().subscribe(res => {

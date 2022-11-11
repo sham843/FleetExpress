@@ -69,6 +69,7 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
       width: this.configService.dialogBoxWidth[2],
       data: data,
       disableClose: this.configService.disableCloseBtnFlag,
+      autoFocus: false
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -102,6 +103,7 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
       width: this.configService.dialogBoxWidth[0],
       data: obj,
       disableClose: this.configService.disableCloseBtnFlag,
+      autoFocus: false
     })
 
     dialog.afterClosed().subscribe(res => {
