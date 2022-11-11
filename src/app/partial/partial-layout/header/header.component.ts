@@ -77,7 +77,9 @@ export class HeaderComponent implements OnInit {
       disableClose: this.config.disableCloseBtnFlag,
     })
     dialog.afterClosed().subscribe(res => {
-      (res == 'Yes' && label == 'status') ? this.sharedService.logOut() :'';
+      res == 'Yes'?this.sharedService.logOut() :'';
+     /*  (res == 'Yes' && label == 'status') ? this.sharedService.logOut() :'';
+      (res == 'Yes' && label == 'password'?this.sharedService.logOut() :'') */
     }
     )
   }

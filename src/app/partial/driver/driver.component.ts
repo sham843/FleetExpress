@@ -65,12 +65,9 @@ export class DriverComponent implements OnInit {
 
   // -----------------------------------------------Driver Details----------------------------------------------------------
   getDriverDetails(flag?: any) {
+    debugger
     this.checkArray = [];
     this.spinner.show();
-    if (flag == 'search') {
-      this.searchHideShow = false;
-      this.clearHideShow = true;
-    }
     this.apiCall.setHttp('get', 'driver/get-driver?searchText=' + this.driverName.value + '&pageno=' + this.paginationNo + '&rowperPage=' + this.pageSize, true, false, false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe((res: any) => {
       if (res.statusCode === "200") {
@@ -86,6 +83,7 @@ export class DriverComponent implements OnInit {
         });
         this.totalItem = res.responseData.responseData2.totalRecords;
       } else {
+        !this.driverName.value ?this.checkdata=[]:'';
         this.spinner.hide();
         this.driverDetails = [];
       }
@@ -94,6 +92,10 @@ export class DriverComponent implements OnInit {
         this.spinner.hide();
         this.error.handelError(error.status);this.driverDetails = [];
       })
+      if (flag == 'search') {
+        this.searchHideShow = false;
+        this.clearHideShow = true;
+      }
   }
 
   clearSearchData() {
@@ -201,9 +203,9 @@ export class DriverComponent implements OnInit {
     // this.subscription = 
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
+        this.getDriverDetails();
         this.uncheckAllDriver();
         this.spinner.hide();
-        this.getDriverDetails();
       }
     },
       (error: any) => {

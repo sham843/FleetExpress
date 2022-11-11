@@ -159,7 +159,8 @@ export class RegisterVehicleComponent implements OnInit {
       "assignedDate": this.date.toISOString(),
       "isDeleted": 0,
       "vehicleNumber": data?.vehicleNo,
-      "userId": this.webStorage.getUserId()
+      "userId": this.webStorage.getUserId(),
+      "isAssigned":flag == 'assign' ?1:0
     }
     this.apiCall.setHttp('put', 'vehicle/assign-driver-to-vehicle', true, param, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe(() => {
