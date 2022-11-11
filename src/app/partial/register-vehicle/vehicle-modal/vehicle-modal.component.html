@@ -12,9 +12,11 @@
                     <input type="file"  name="myfile" #updVehiclePhoto (change)="vehiclePhotoUpd($event,'vehicle')"
                         accept=".png,.jpg,.jpeg" style="display:none"/>
                     <div class="vehicle-buttons d-flex flex-column upload-btn-wrapper">
-                        <button type="button" class="btn bg-light text-primary" *ngIf="!this.profilePhotoImg?.length && this.vehiclePhoto =='assets/images/Vehicle-profile.svg'" (click)="updVehiclePhoto.click()">
+                        <button type="button" class="btn bg-light text-primary" *ngIf="!this.profilePhotoImg?.length && this.vehiclePhoto =='assets/images/Vehicle-profile.svg' && !IsWait" (click)="updVehiclePhoto.click()">
                             <i class="fa-solid fa-plus"></i>
                         </button>
+                        <mat-progress-spinner mode="indeterminate" *ngIf="IsWait" diameter="20">
+                        </mat-progress-spinner>
                     <button type="button" *ngIf="this.profilePhotoImg?.length && this.vehiclePhoto!='assets/images/Vehicle-profile.svg'" class="border border-0 btn bg-light text-danger"
                          (click)="clearDoc('profile')">
                         <i class="fa-solid fa-trash-can"></i>
