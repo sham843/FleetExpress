@@ -50,6 +50,7 @@ export class LoginComponent implements OnInit {
     }
    else if (this.loginForm.value.captcha !=  this.commonMethods.checkvalidateCaptcha()){
     this.commonMethods.createCaptchaCarrerPage();
+    this.loginForm.controls['captcha'].reset();
     this.commonMethods.snackBar("Invalid Captcha.Please try again", 1);
     }
     else {

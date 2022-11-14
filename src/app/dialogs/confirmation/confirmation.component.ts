@@ -6,8 +6,8 @@ import { ApiCallService } from 'src/app/services/api-call.service';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
+import { SharedService } from 'src/app/services/shared.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
-
 @Component({
   selector: 'app-confirmation',
   templateUrl: './confirmation.component.html',
@@ -31,7 +31,8 @@ export class ConfirmationComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private webStorage: WebStorageService,
     private fb: FormBuilder,
-    public config: ConfigService) { }
+    public config: ConfigService,
+    private sharedService:SharedService) { }
 
   ngOnInit(): void {
     this.dialogData = this.data;
@@ -50,6 +51,9 @@ export class ConfirmationComponent implements OnInit {
         this.error.handelError(error.status);
       })
   }
+  sortFunc() {
+    return 1;
+  }
   // ------------------------------------------change password--------------------------------------------------------------------
   getChangePwd() {
     this.changePassForm = this.fb.group({
@@ -63,10 +67,12 @@ export class ConfirmationComponent implements OnInit {
       return;
     }
     else {
-      if (this.changePassForm.value != this.changePassForm.value) {
-        this.commonMethods.snackBar("new password and confirm password not match", 1);
+      if (this.changePassForm.value.newPwd != this.changePassForm.value.reTypePwd) {
+        this.commonMethods.snackBar("New Password and Confirm Password does not match", 1);
         return
-      } else {
+      } else if(this.changePassForm.value.currentPwd == this.changePassForm.value.newPwd){
+        this.commonMethods.snackBar("New Password must be different from Current Password.", 1);
+      }else{
         this.spinner.show();
         this.apiCall.setHttp('get', 'login/change-password?UserId=' + this.webStorage.getUserId() + '&NewPassword=' + this.changePassForm.value.reTypePwd + '&OldPassword=' + this.changePassForm.value.currentPwd, true, false, false, 'fleetExpressBaseUrl');
         this.apiCall.getHttp().subscribe((response: any) => {
@@ -74,6 +80,7 @@ export class ConfirmationComponent implements OnInit {
             this.spinner.hide();
             this.commonMethods.snackBar(response.responseData, 0);
             this.onNoClick('Yes');
+            this.sharedService.logOut();
           }
           else{
             this.spinner.hide();

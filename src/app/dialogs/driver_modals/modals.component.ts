@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, TitleCasePipe} from '@angular/common';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -36,6 +36,7 @@ export class ModalsComponent implements OnInit {
   buttonFlag: boolean = true;
   addressFlag: boolean = false;
   cardTitle!: string;
+  inputvalue:any;
   @ViewChild('profileUpload') profileUpload: any;
   @ViewChild('panUpload') panUpload: any;
   @ViewChild('aadharUpload') aadharUpload: any;
@@ -53,7 +54,8 @@ export class ModalsComponent implements OnInit {
     private datepipe: DatePipe,
     private apiCall: ApiCallService,
     private spinner: NgxSpinnerService,
-    private commonMethods: CommonMethodsService) { }
+    private commonMethods: CommonMethodsService,
+    private titlecasePipe:TitleCasePipe) { }
 
   ngOnInit(): void {
     this.dialogData = this.data ? this.data : '';
@@ -68,9 +70,9 @@ export class ModalsComponent implements OnInit {
       firstName: [this.dialogData ? this.dialogData?.name.split(' ').shift() : '', Validators.compose([Validators.required, Validators.maxLength(15), Validators.pattern('[a-zA-Z][a-zA-Z ]+')])],
       lastName: [this.dialogData ? this.dialogData?.name.split(' ').pop() : '', Validators.compose([Validators.required, Validators.maxLength(15), Validators.pattern('[a-zA-Z][a-zA-Z ]+')])],
       dob: [this.dialogData ? new Date(this.dialogData.dob) : '', Validators.required],
-      licenceNumber: [this.dialogData ? this.dialogData?.licenceNumber : '', Validators.compose([Validators.required, Validators.pattern('^[A-Z]{2}[0-9]{14}$'), Validators.maxLength(20), Validators.minLength(15)])],
+      licenceNumber: [this.dialogData ? this.dialogData?.licenceNumber : '', Validators.compose([Validators.required, Validators.pattern('^(([A-Z]{2}[0-9]{2})( )[0-9]{11})|([A-Z]{2}-[0-9]{13})|([A-Z]{2}[0-9]{13})'),Validators.minLength(15),Validators.maxLength(16)])],
       aadharNumber: [this.dialogData ? this.dialogData?.aadharNumber : '', Validators.compose([Validators.required, Validators.pattern('^[0-9]{12}$'), Validators.maxLength(12), Validators.minLength(12)])],
-      panNumber: [this.dialogData ? this.dialogData?.panNumber : '', Validators.compose([Validators.required, Validators.pattern('[A-Z]{3}[ACHPTF]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}'), Validators.maxLength(10)])],
+      panNumber: [this.dialogData ? this.dialogData?.panNumber : '', Validators.compose([Validators.required, Validators.pattern('[A-Z]{3}[ABCFGHLJPTF]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}'), Validators.maxLength(10)])],
       presentAddress: [this.dialogData ? this.dialogData?.presentAddress : '', Validators.compose([Validators.required, Validators.maxLength(150)])],
       permanentAddress: [this.dialogData ? this.dialogData?.permanentAddress : '', Validators.compose([Validators.required, Validators.maxLength(150)])],
       flag: [this.dialogData ? 'u' : 'i'],
@@ -88,38 +90,47 @@ export class ModalsComponent implements OnInit {
   }
   // --------------------------------------------------uploads-----------------------------------------------------------------
   profilePhoto(event: any) {
-     if (event.target.files && event.target.files[0]) {
-     if(10485760 > event.target.files[0].size){
-      var reader = new FileReader();
-      reader.onload = (event: any) => {
-        this.driverProfile = event.target.result;
-      }
-      reader.readAsDataURL(event.target.files[0]);
-     }
-    } 
-    let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'driverProfile', "png,jpg,jpeg");
+    this.spinner.show();
+    let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'driverProfile', "png,jpg,jpeg,JPEG,PNG,JPG");
     documentUrl.subscribe({
       next: (ele: any) => {
         if (ele.statusCode == "200") {
+          this.spinner.hide();
+          if (event.target.files && event.target.files[0]) {
+            if(10485760 > event.target.files[0].size){
+             var reader = new FileReader();
+             reader.onload = (event: any) => {
+               this.driverProfile = event.target.result;
+             }
+             reader.readAsDataURL(event.target.files[0]);
+            }
+           }
           this.profilePhotoupd = ele.responseData;
+        }else{
+          this.spinner.hide();
         }
       }
     },
       (error: any) => {
+        this.spinner.hide();
         this.error.handelError(error.status);
       })
   }
 
   documentUpload(event: any, flag: any) {
+  this.spinner.show();
     let documentUrl: any = this.sharedService.uploadDocuments(event, "pdf");
     documentUrl.subscribe({
       next: (ele: any) => {
         if (ele.statusCode == "200") {
+          this.spinner.hide();
           flag == 'licence' ? this.licenceDoc = ele.responseData : flag == 'pan' ? this.panDoc = ele.responseData : this.aadharDoc = ele.responseData;
         }
+        this.spinner.hide();
       }
     },
       (error: any) => {
+        this.spinner.hide();
         this.error.handelError(error.status);
       })
   }
@@ -171,6 +182,8 @@ export class ModalsComponent implements OnInit {
     }
     else {
       let formData = this.driverRegForm.value;
+      formData.firstName=this.titlecasePipe.transform(this.driverRegForm.value.firstName);
+      formData.lastName=this.titlecasePipe.transform(this.driverRegForm.value.lastName);
       let licenceExpireDt = formData.licenceExpiryDate
       formData.id = this.dialogData ? this.dialogData?.driverId : this.editId;
       formData.middleName = '';
@@ -186,7 +199,6 @@ export class ModalsComponent implements OnInit {
       formData.licenceDoc = this.licenceDoc || '';
       formData.profilePhoto = this.profilePhotoupd != 'assets/images/Driver-profile.svg' ? this.profilePhotoupd : '';
       this.spinner.show();
-      console.log("formData",formData)
       this.apiCall.setHttp('post', 'driver/save-update-deriver-details', true, formData, false, 'fleetExpressBaseUrl');
       this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
@@ -199,14 +211,14 @@ export class ModalsComponent implements OnInit {
         else {
           this.dialogRef.close('');
           this.spinner.hide();
-          this.error.handelError(response.statusCode);
+          this.commonMethods.snackBar(response.statusMessage,1);
         }
-      })
-      /* ,
+      }
+      ,
         (error: any) => {
           this.error.handelError(error.status);
         })
-      this.spinner.hide(); */
+      this.spinner.hide();
     }
   }
 

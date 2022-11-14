@@ -3,8 +3,7 @@
     <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick(formDirective)"><i
             class="fas fa-times"></i></button>
 </div>
-
-
+ 
 <div>
     <form [formGroup]="driverRegForm" #formDirective="ngForm" (ngSubmit)="onSubmit(formDirective)">
         <div class="row">
@@ -23,7 +22,6 @@
                             *ngIf="this.profilePhotoupd?.length && this.driverProfile!='assets/images/Driver-profile.svg'" (click)="clearDoc('profile')">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
-                       
                     </div>
                 </div>
             </div>
@@ -102,8 +100,8 @@
                             <mat-form-field [appearance]="config.matFormField" class="w-100">
                                 <mat-label>Driving Licence Number</mat-label>
                                 <input matInput placeholder="Driving Licence Number" formControlName="licenceNumber"
-                                    [ngClass]="{'is-invalid':f['licenceNumber'].errors}" maxlength="20" minlength="15"
-                                    (blur)="checkDocumentUpd('licence')" required>
+                                    [ngClass]="{'is-invalid':f['licenceNumber'].errors}"  oninput="this.value = this.value.toUpperCase()"
+                                    (blur)="checkDocumentUpd('licence')" required minlength="15" maxlength="16">
                                 <mat-error *ngIf="f['licenceNumber'].errors">
                                     <span class="text-danger" *ngIf="f['licenceNumber'].hasError('pattern')">Enter valid
                                         licence
@@ -122,7 +120,7 @@
                                 matTooltip="Upload only PDF file" accept=".pdf" required>
                                 <mat-icon>file_upload</mat-icon>
                             </button>
-                            <button type="button" class="border border-0 bg-white" *ngIf="this.licenceDoc?.length"
+                            <button type="button" mat-icon-button *ngIf="this.licenceDoc?.length"
                                 (click)="clearDoc('licence')">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
@@ -152,7 +150,7 @@
                                     required>
                                     <mat-icon>file_upload</mat-icon>
                                 </button>
-                                <button type="button" class="border border-0 bg-white" *ngIf="this.aadharDoc?.length"
+                                <button type="button" mat-icon-button *ngIf="this.aadharDoc?.length"
                                     (click)="clearDoc('aadhar')">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </button>
@@ -163,10 +161,10 @@
                         <div class="d-flex align-items-center">
                             <mat-form-field [appearance]="config.matFormField" class="w-100">
                                 <mat-label>PAN Number</mat-label>
-                                <input matInput placeholder="PAN Number" formControlName="panNumber" maxlength="10"
-                                    (keyup)="this.validation.noSpaces($event)" [value]="driverRegForm.get('panNumber')?.value |uppercase"
+                                <input matInput placeholder="PAN Number" formControlName="panNumber" maxlength="10" [ngModel]="driverRegForm.value.panNumber" 
+                                 (keyup)="this.validation.noSpaces($event)" oninput="this.value = this.value.toUpperCase()"
                                     [ngClass]="{'is-invalid':f['panNumber'].errors}" (blur)="checkDocumentUpd('pan')"
-                                    required>
+                                    required uppercase>
                                 <mat-error *ngIf="f['panNumber'].errors">
                                     <span class="text-danger" *ngIf="f['panNumber'].hasError('required')">Aadhar number
                                         is required</span>
@@ -175,6 +173,7 @@
                                 </mat-error>
                             </mat-form-field>
                             <div>
+                                <!--[ngModel]="inputvalue" (ngModelChange)="inputvalue = $event.toUpperCase()" -->
                                 <input type="file" name="myfile" #panUpload style="display: none;"
                                     (change)="documentUpload($event,'pan')" accept=".pdf" />
                                 <button type="button" *ngIf="!this.panDoc?.length" mat-icon-button
@@ -182,7 +181,7 @@
                                     required>
                                     <mat-icon>file_upload</mat-icon>
                                 </button>
-                                <button type="button" class="border border-0 bg-white" *ngIf="this.panDoc?.length"
+                                <button type="button" mat-icon-button *ngIf="this.panDoc?.length"
                                     (click)="clearDoc('pan')">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </button>

@@ -10,7 +10,7 @@
     </div>
 </div>
 <div class="row">
-    <ng-container *ngIf="!checkdata?.length">
+    <ng-container *ngIf="checkdata?.length==0">
         <div class="col-sm-12">
             <div class="card card-body plain-card card-fullheight">
                 <div class="text-center justify-content-center">
@@ -89,7 +89,7 @@
                                     </td>
                                     <td><a href="tel:{{driver.mobileNo}}" style="text-decoration: none;">{{driver.mobileNo}}</a></td>
                                     <td>
-                                        <mat-slide-toggle [checked]="driver.isBlockFlag" [color]="color"
+                                        <mat-slide-toggle [checked]="driver.isBlock==1" [color]="color"
                                             (change)="confirmationDialog($event.checked,'status',$event,driver)">
                                         </mat-slide-toggle>
                                     </td>

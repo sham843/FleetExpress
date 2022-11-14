@@ -72,12 +72,14 @@ export class HeaderComponent implements OnInit {
       obj['cancelBtnText'] = 'Cancel';
     }
     const dialog = this.dialog.open(ConfirmationComponent, {
-      width: this.config.dialogBoxWidth[1],
+      width:label == 'status'?this.config.dialogBoxWidth[0]:this.config.dialogBoxWidth[1],
       data: obj,
       disableClose: this.config.disableCloseBtnFlag,
     })
     dialog.afterClosed().subscribe(res => {
-      (res == 'Yes' && label == 'status') ? this.sharedService.logOut() :'';
+      res == 'Yes'?this.sharedService.logOut() :'';
+     /*  (res == 'Yes' && label == 'status') ? this.sharedService.logOut() :'';
+      (res == 'Yes' && label == 'password'?this.sharedService.logOut() :'') */
     }
     )
   }

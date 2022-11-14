@@ -68,9 +68,9 @@
                     <table class="table dashboard-table mb-0">
                         <thead>
                             <tr>
-                                <th>SR. No</th>
+                                <th>SR. NO.</th>
                                 <th></th>
-                                <th>VEHICLES NO</th>
+                                <th>VEHICLES NO.</th>
                                 <th>MANUFACTURER</th>
                                 <th>MODEL</th>
                                 <th>DRIVER NAME</th>
@@ -97,7 +97,7 @@
                                 <td>{{vehicle.driverName || '-'}}</td>
                                 <td><a href="tel:{{vehicle.mobileNo}}" style="text-decoration: none;">{{vehicle.mobileNo || '-'}}</a></td>
                                 <td>
-                                    <button class="btn btn-light-main btn-sm" *ngIf="!vehicle?.driverName"
+                                    <button class="btn btn-light-main btn-sm" *ngIf="!vehicle?.driverName" [disabled]="vehicle.isBlockFlag"
                                     (click)="confirmationDialog(true,'assign','assign',vehicle)">Assign Driver</button>
 
                                     <button class="btn border border-warning text-warning btn-sm" *ngIf="vehicle?.driverName"
@@ -128,7 +128,7 @@
                         <div class="alert alert-danger text-center errorMSG w-100">Data is not available
                         </div>
                     </div>
-                 <div *ngIf="vehicleData?.length">
+                 <div *ngIf="vehicleData?.length !=0 && totalItem > 10">
                     <pagination-controls previousLabel="" nextLabel=""
                         (pageChange)="onPagintion($event)" class="text-end m-2">
                     </pagination-controls>
@@ -138,5 +138,6 @@
         </div>
     </div>
     </ng-container>
-   
 </div>
+
+

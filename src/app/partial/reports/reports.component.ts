@@ -171,7 +171,6 @@ export class ReportsComponent implements OnInit {
           fromDate: moment(oneDaySpan).toISOString(),
           toDate: currentDateTime,
         })
-        console.log()
         break;
       case "3":
         const startweek = moment().subtract(7, 'days').calendar();
