@@ -7,6 +7,7 @@ import { ApiCallService } from 'src/app/services/api-call.service';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
+import { WebStorageService } from 'src/app/services/web-storage.service';
 import { CreateGeofenceComponent } from './create-geofence/create-geofence.component';
 @Component({
   selector: 'app-geofence',
@@ -25,7 +26,8 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
   selectAll!: boolean;
  checkGeofence:any;
   constructor(public dialog: MatDialog, private configService: ConfigService,
-    private apiCall: ApiCallService, private error: ErrorsService, private commonMethods: CommonMethodsService) { }
+    private apiCall: ApiCallService, private error: ErrorsService, private commonMethods: CommonMethodsService,
+    private webStorage:WebStorageService) { }
 
   ngOnInit(): void {
     this.getAllGeofecneData();
@@ -46,7 +48,7 @@ export class GeofenceComponent implements OnInit, AfterViewInit, OnDestroy {
   getAllGeofecneData() {
     this.selectAll = false;
     this.checkedGeoFenceArray = []; // clear prev checked data
-    this.apiCall.setHttp('get', 'Geofencne/get-All-POI?userId=23895&NoPage=' + this.paginationNo + '&RowsPerPage=' + this.configService.pageSize + '&searchText=' + this.searchContent.value, true, false, false, 'fleetExpressBaseUrl');
+    this.apiCall.setHttp('get', 'Geofencne/get-All-POI?userId='+this.webStorage.getUserId()+'&NoPage=' + this.paginationNo + '&RowsPerPage=' + this.configService.pageSize + '&searchText=' + this.searchContent.value, true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode == "200") {
