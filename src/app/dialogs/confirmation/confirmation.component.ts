@@ -8,7 +8,6 @@ import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
-
 @Component({
   selector: 'app-confirmation',
   templateUrl: './confirmation.component.html',
@@ -51,6 +50,9 @@ export class ConfirmationComponent implements OnInit {
       (error: any) => {
         this.error.handelError(error.status);
       })
+  }
+  sortFunc() {
+    return 1;
   }
   // ------------------------------------------change password--------------------------------------------------------------------
   getChangePwd() {
