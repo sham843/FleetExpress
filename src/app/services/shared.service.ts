@@ -161,10 +161,12 @@ export class SharedService {
               // this.subscription =
               this.apiCall.getHttp().subscribe({
                 next: (res: any) => {
+                  console.log(res.statusCode)
                   if (res.statusCode === "200") {
                     obj.next(res);
                   }
                   else {
+                    this.spinner.hide();
                     this.commonMethods.checkDataType(res.statusMessage) == false ? this.error.handelError(res.statusCode) : this.commonMethods.snackBar(res.statusMessage, 1);
                   }
                 },

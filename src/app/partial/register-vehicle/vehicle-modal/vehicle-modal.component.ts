@@ -99,10 +99,11 @@ export class VehicleModalComponent implements OnInit {
   // ---------------------------------------------------------------------Upload Photo And Document---------------------------
   vehiclePhotoUpd(event: any, flag: any) {
   this.spinner.show();
-    let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'vehicleProfile', "png,jpg,jpeg", flag);
+    let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'vehicleProfile', "bmp, gif, png, jpg, jpeg, Tiff, Tif", flag);
     setTimeout(() => {
       documentUrl.subscribe({
         next: (ele: any) => {
+          console.log("statuscode",ele.statusCode);
           if (ele.statusCode == "200") {
             this.spinner.hide();
             this.profilePhotoImg = ele.responseData;
@@ -171,7 +172,6 @@ export class VehicleModalComponent implements OnInit {
   // -------------------------------------------------Add vehicle------------------------------------------------------------------
   saveVehicleDetails(formDirective: any) {
     this.highLightRow = '';
-    console.log(this.registerVehicleForm.value.vehicleNo);
     let first, second, third, forth, oldFirst, oldSecond;
     if (this.registerVehicleForm.value.vehicleNo.length == 10) {
       let vhlaData = (this.registerVehicleForm.value.vehicleNo).split('');

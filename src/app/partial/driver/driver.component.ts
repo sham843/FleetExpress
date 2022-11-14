@@ -74,11 +74,7 @@ export class DriverComponent implements OnInit {
         !this.driverName.value ? this.checkdata = res.responseData.responseData1 : '';
         this.spinner.hide();
         this.driverDetails.forEach((ele: any) => {
-          ele['isBlockFlag'] = false;
           ele['isChecked'] = false;
-          if (ele.isBlock) {
-            ele.isBlockFlag = true;
-          }
         });
         this.totalItem = res.responseData.responseData2.totalRecords;
       } else {
@@ -104,14 +100,21 @@ export class DriverComponent implements OnInit {
 
   // -----------------------------------------------comfirmation module----------------------------------------------------------
   confirmationDialog(flag: boolean, label: string, event?: any, drData?: any) {
-    // this.selectAll ? this.uncheckAllDriver() : '';
+    console.log(flag,label,drData)
+    // this.selectAll ? this.uncheckAllDriver() : ''; 
     let obj: any = ConfigService.dialogObj;
-    if (label == 'status') {
+    if (label == 'status' && drData.isAssigned==0) {
       obj['p1'] = flag ? 'Are you sure you want to Block "' +drData.name+ '" Driver?' : 'Are you sure you want to Unblock "' +drData.name+ '" Driver?';
       obj['cardTitle'] = flag ? 'Block Driver' : 'Unblock Driver';
       obj['successBtnText'] = flag ? 'Block' : 'Unblock';
       obj['cancelBtnText'] = 'Cancel';
-    } else if (label == 'delete') {
+    }else if(label == 'status' && drData.isAssigned==1){
+      obj['p1'] = flag ?drData.name+ 'is assigned to MH12YG7654 still you want to block?': 'Are you sure you want to Unblock "' +drData.name+ '" Driver?';
+      obj['cardTitle'] = flag ? 'Block Driver' : 'Unblock Driver';
+      obj['successBtnText'] = flag ? 'Block' : 'Unblock';
+      obj['cancelBtnText'] = 'Cancel';
+    }
+     else if (label == 'delete') {
       obj['p1'] = 'Are you sure you want to delete this record';
       obj['cardTitle'] = 'Delete';
       obj['successBtnText'] = 'Delete';
@@ -151,14 +154,18 @@ export class DriverComponent implements OnInit {
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
+        this.getDriverDetails();
       }
-      else {
+       else {
         this.spinner.hide();
+        this.getDriverDetails();
         this.error.handelError(response.statusCode);
       }
     },
       (error: any) => {
+        this.spinner.hide();
         this.error.handelError(error.status);
+        this.getDriverDetails();
       })
   }
 

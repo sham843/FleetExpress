@@ -1,6 +1,6 @@
 <div class="position-relative mb-3">
     <h5 mat-dialog-title class="mb-0">{{cardTitle}}</h5>
-    <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick('No')"><i
+ <button type="button" class="btn-modal-close" (click)="onNoClick('No')" mat-icon-button mat-dialog-close><i
             class="fas fa-times"></i></button>
 </div>
 <div>
@@ -9,16 +9,19 @@
             <div class="col-sm-3">
                 <div class="position-relative">
                     <img src={{vehiclePhoto}} class="vehicle-image">
-                    <input type="file"  name="myfile" #updVehiclePhoto (change)="vehiclePhotoUpd($event,'vehicle')"
-                        accept=".png,.jpg,.jpeg" style="display:none"/>
+                    <input type="file" name="myfile" #updVehiclePhoto (change)="vehiclePhotoUpd($event,'vehicle')"
+                        accept=".png,.jpg,.jpeg" style="display:none" />
                     <div class="vehicle-buttons d-flex flex-column upload-btn-wrapper">
-                        <button type="button" class="btn bg-light text-primary" *ngIf="!this.profilePhotoImg?.length && this.vehiclePhoto =='assets/images/Vehicle-profile.svg'" (click)="updVehiclePhoto.click()">
+                        <button type="button" class="btn bg-light text-primary"
+                            *ngIf="!this.profilePhotoImg?.length && this.vehiclePhoto =='assets/images/Vehicle-profile.svg'"
+                            (click)="updVehiclePhoto.click()">
                             <i class="fa-solid fa-plus"></i>
                         </button>
-                    <button type="button" *ngIf="this.profilePhotoImg?.length && this.vehiclePhoto!='assets/images/Vehicle-profile.svg'" class="border border-0 btn bg-light text-danger"
-                         (click)="clearDoc('profile')">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
+                        <button type="button"
+                            *ngIf="this.profilePhotoImg?.length && this.vehiclePhoto!='assets/images/Vehicle-profile.svg'"
+                            class="border border-0 btn bg-light text-danger" (click)="clearDoc('profile')">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -27,8 +30,9 @@
                     <div class="col-sm-6">
                         <mat-form-field appearance="standard" class="w-100">
                             <mat-label>Vehicle No</mat-label>
-                            <input matInput formControlName="vehicleNo" required 
-                                (keypress)="this.vs.alphaNumeric($event)" minlength="6" maxlength="10" [readonly]="this.cardTitle == 'Vehicle Details'"
+                            <input matInput formControlName="vehicleNo" required
+                                (keypress)="this.vs.alphaNumeric($event)" minlength="6" maxlength="10"
+                                [readonly]="this.cardTitle == 'Vehicle Details'"
                                 [value]="registerVehicleForm.get('vehicleNo')?.value | uppercase">
                             <mat-error *ngIf="f['vehicleNo'].errors">
                                 <span *ngIf="f['vehicleNo'].hasError('required')" class="text-danger">Vehicle number
@@ -55,17 +59,17 @@
                             <mat-label>Manufacturer</mat-label>
                             <input matInput formControlName="manufacturer" (keypress)="this.vs.alphaNumeric($event)"
                                 maxlength="17" required>
-                                <mat-error *ngIf="f['manufacturer'].errors">
-                                    <span *ngIf="f['manufacturer'].hasError('required')" class="text-danger">Manufacturer is
-                                        required</span>
-                                </mat-error>
+                            <mat-error *ngIf="f['manufacturer'].errors">
+                                <span *ngIf="f['manufacturer'].hasError('required')" class="text-danger">Manufacturer is
+                                    required</span>
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="col-sm-6">
                         <mat-form-field appearance="standard" class="w-100">
                             <mat-label>Model</mat-label>
-                            <input matInput formControlName="model" required (keypress)="this.vs.alphaNumericWithSpaces($event)"
-                                maxlength="30">
+                            <input matInput formControlName="model" required
+                                (keypress)="this.vs.alphaNumericWithSpaces($event)" maxlength="30">
                             <mat-error *ngIf="f['model'].errors">
                                 <span *ngIf="f['model'].hasError('required')" class="text-danger">Model is
                                     required</span>
@@ -77,7 +81,8 @@
                     <div class="col-sm-6">
                         <mat-form-field appearance="standard" class="w-100">
                             <mat-label>Chassis No.</mat-label>
-                            <input matInput formControlName="chassicNo" required oninput="this.value = this.value.toUpperCase()"
+                            <input matInput formControlName="chassicNo" required
+                                oninput="this.value = this.value.toUpperCase()"
                                 (keypress)="this.vs.alphaNumeric($event)" maxlength="17">
                             <mat-error *ngIf="f['chassicNo'].errors">
                                 <span *ngIf="f['chassicNo'].hasError('required')" class="text-danger">Chassis number
@@ -88,7 +93,8 @@
                     <div class="col-sm-6">
                         <mat-form-field appearance="standard" class="w-100">
                             <mat-label>Engine No.</mat-label>
-                            <input matInput formControlName="engineNo" required oninput="this.value = this.value.toUpperCase()"
+                            <input matInput formControlName="engineNo" required
+                                oninput="this.value = this.value.toUpperCase()"
                                 (keypress)="this.vs.alphaNumeric($event)" maxlength="14">
                             <mat-error *ngIf="f['engineNo'].errors">
                                 <span *ngIf="f['engineNo'].hasError('required')" class="text-danger">Engine number
@@ -192,8 +198,9 @@
                                     (blur)="checkDocumentUpd('fitness')" required>
                                 <mat-datepicker-toggle matSuffix [for]="datePickers"></mat-datepicker-toggle>
                                 <mat-datepicker #datePickers startView="multi-year"></mat-datepicker>
-                                 <mat-error *ngIf="f['fitnessExDate'].errors">
-                                    <span class="text-danger" *ngIf="f['fitnessExDate'].hasError('required')">Fitness expiry date is required</span>
+                                <mat-error *ngIf="f['fitnessExDate'].errors">
+                                    <span class="text-danger" *ngIf="f['fitnessExDate'].hasError('required')">Fitness
+                                        expiry date is required</span>
                                 </mat-error>
                             </mat-form-field>
                             <div>

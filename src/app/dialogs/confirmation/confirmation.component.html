@@ -6,7 +6,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 mat-dialog-title class="mb-3"> {{dialogData?.cardTitle}}</h5>
                         <div class="mt-3 text-end">
-                            <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close><i
+                            <button type="button" class="btn-modal-close" (click)="onNoClick('No')" mat-icon-button mat-dialog-close><i
                                     class="fas fa-times"></i></button>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                                     <mat-label>Select Driver Name</mat-label>
                                     <mat-select [formControl]="driverName">
                                         <mat-option *ngFor="let driver of driverData" [value]="driver.driverId"
-                                            [disabled]="driver.isAssigned==1">
+                                            [disabled]="driver.isAssigned==1 || driver.isBlock==1">
                                             {{driver.name}}
                                         </mat-option>
                                     </mat-select>

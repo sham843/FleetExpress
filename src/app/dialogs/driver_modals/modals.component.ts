@@ -89,22 +89,24 @@ export class ModalsComponent implements OnInit {
   }
   // --------------------------------------------------uploads-----------------------------------------------------------------
   profilePhoto(event: any) {
-     if (event.target.files && event.target.files[0]) {
-     if(10485760 > event.target.files[0].size){
-      var reader = new FileReader();
-      reader.onload = (event: any) => {
-        this.driverProfile = event.target.result;
-      }
-      reader.readAsDataURL(event.target.files[0]);
-     }
-    } 
     this.spinner.show();
-    let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'driverProfile', "png,jpg,jpeg");
+    let documentUrl: any = this.sharedService.uploadProfilePhoto(event, 'driverProfile', "png,jpg,jpeg,JPEG,PNG,JPG");
     documentUrl.subscribe({
       next: (ele: any) => {
         if (ele.statusCode == "200") {
           this.spinner.hide();
+          if (event.target.files && event.target.files[0]) {
+            if(10485760 > event.target.files[0].size){
+             var reader = new FileReader();
+             reader.onload = (event: any) => {
+               this.driverProfile = event.target.result;
+             }
+             reader.readAsDataURL(event.target.files[0]);
+            }
+           }
           this.profilePhotoupd = ele.responseData;
+        }else{
+          this.spinner.hide();
         }
       }
     },
@@ -206,7 +208,7 @@ export class ModalsComponent implements OnInit {
         else {
           this.dialogRef.close('');
           this.spinner.hide();
-          this.error.handelError(response.statusCode);
+          this.commonMethods.snackBar(response.statusMessage,1);
         }
       }
       ,
