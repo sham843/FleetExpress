@@ -109,7 +109,7 @@ export class DriverComponent implements OnInit {
       obj['successBtnText'] = flag ? 'Block' : 'Unblock';
       obj['cancelBtnText'] = 'Cancel';
     }else if(label == 'status' && drData.isAssigned==1){
-      obj['p1'] = flag ?drData.name+ 'is assigned to MH12YG7654 still you want to block?': 'Are you sure you want to Unblock "' +drData.name+ '" Driver?';
+      obj['p1'] =flag ?drData.name+ ' is assigned to "' +drData.vehicleNo+ '" still you want to block?': 'Are you sure you want to Unblock "' +drData.name+ '" Driver?';
       obj['cardTitle'] = flag ? 'Block Driver' : 'Unblock Driver';
       obj['successBtnText'] = flag ? 'Block' : 'Unblock';
       obj['cancelBtnText'] = 'Cancel';

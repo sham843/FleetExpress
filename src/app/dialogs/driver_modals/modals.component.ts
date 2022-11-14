@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, TitleCasePipe} from '@angular/common';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -54,7 +54,8 @@ export class ModalsComponent implements OnInit {
     private datepipe: DatePipe,
     private apiCall: ApiCallService,
     private spinner: NgxSpinnerService,
-    private commonMethods: CommonMethodsService) { }
+    private commonMethods: CommonMethodsService,
+    private titlecasePipe:TitleCasePipe) { }
 
   ngOnInit(): void {
     this.dialogData = this.data ? this.data : '';
@@ -181,6 +182,8 @@ export class ModalsComponent implements OnInit {
     }
     else {
       let formData = this.driverRegForm.value;
+      formData.firstName=this.titlecasePipe.transform(this.driverRegForm.value.firstName);
+      formData.lastName=this.titlecasePipe.transform(this.driverRegForm.value.lastName);
       let licenceExpireDt = formData.licenceExpiryDate
       formData.id = this.dialogData ? this.dialogData?.driverId : this.editId;
       formData.middleName = '';
