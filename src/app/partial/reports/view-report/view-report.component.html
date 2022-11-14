@@ -57,8 +57,7 @@
         </div>
     </div>
     <div mat-dialog-content class="mat-dialog-content pt-0">
-
-        <table mat-table #table [dataSource]="dataSource"  class="dashboard-table">
+        <table mat-table #table *ngIf="reportResponseData.length" [dataSource]="dataSource"  class="dashboard-table">
             <ng-container matColumnDef="rowNumber">
                 <th mat-header-cell *matHeaderCellDef class="srno">Sr No. </th>
                 <td mat-cell *matCellDef="let element" class="srno"> {{element.rowNumber?element.rowNumber:element.srNo?element.srNo:1}}
@@ -165,7 +164,12 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-        <pagination-controls   previousLabel="" nextLabel=""
+        <div *ngIf="!reportResponseData.length">
+            <div class="alert alert-danger text-center py-2">
+                No data found
+            </div>
+        </div>
+        <pagination-controls *ngIf="reportResponseData.length"  previousLabel="" nextLabel=""
                                     (pageChange)="onPagintion($event)" class="text-end m-2" >
                                 </pagination-controls>
     </div>
