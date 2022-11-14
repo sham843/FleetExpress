@@ -138,6 +138,7 @@ body { margin: 0; font-family: 'Poppins', "Helvetica Neue", sans-serif;backgroun
 }
 .dropdown-menu,
 .mat-option-text,
+.mat-checkbox-label,
 .mat-select-value-text,
 mat-form-field{
   font-size: 0.85rem !important;
@@ -1886,9 +1887,9 @@ input::-ms-clear {
 .agm-map-container-inner{
   border-radius: 0.375rem;
 }
-.gm-svpc,.gmnoprint,.gm-style-cc{
-  display: none;
-}
+// .gm-svpc,.gmnoprint,.gm-style-cc{
+//   display: none;
+// }
 //  .lightTheme{
 //   background-color: rgb(226, 164, 164);
 // }
@@ -1999,6 +2000,7 @@ input::-ms-clear {
 .darkTheme .mat-form-field-empty.mat-form-field-label,
 .darkTheme .mat-input-element,
 .darkTheme .mat-button-wrapper,
+.darkTheme .mat-checkbox-label,
 .darkTheme input{
   color: #fff !important;
 }
