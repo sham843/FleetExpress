@@ -103,7 +103,6 @@ export class RegisterVehicleComponent implements OnInit {
       obj['cardTitle'] = flag ? 'Block Vehicle' : 'Unblock Vehicle';
       obj['successBtnText'] = flag ? 'Block' : 'Unblock';
       obj['cancelBtnText'] = 'Cancel';
-      editData.driverId != 0 ? this.assignDriverToVehicle('unassign', editData, 0) : '';   
     } else if (label == 'assign') {  //Assign vehicle
       obj['v1'] = editData?.vehicleNo;
       obj['p1'] = flag ? '' : 'Are you sure you want to Unassign "'+ editData?.driverName +'" from "'+ editData?.vehicleNo +'" ?';
@@ -122,10 +121,11 @@ export class RegisterVehicleComponent implements OnInit {
       disableClose: this.config.disableCloseBtnFlag,
       autoFocus: false
     })
-
+    // 
     dialog.afterClosed().subscribe(res => {
+      (editData?.driverId != 0 && res == 'Yes' && label == 'status')? this.assignDriverToVehicle('unassign', editData, 0) : ''; 
       if (res == 'Yes' && label == 'status') {
-        this.blockUnblockVhl(editData, event);
+          this.blockUnblockVhl(editData, event);
       }
       else if (res == 'Yes' && label == 'delete') {
         this.deleteVehicle();
