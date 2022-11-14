@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class ConfigService {
 
-  dialogBoxWidth = ['320px', '400px', '700px', '1024px'];  // Set angular material dialog box width
+  dialogBoxWidth = ['320px', '800px', '700px', '1024px'];  // Set angular material dialog box width
 
   disableCloseBtnFlag: boolean = true// When click on body material dialog box is not closed flag
 
