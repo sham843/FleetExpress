@@ -1,17 +1,11 @@
 import { MapsAPILoader } from '@agm/core';
-import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { ApiCallService } from 'src/app/services/api-call.service';
-import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { MasterService } from 'src/app/services/master.service';
-import { SharedService } from 'src/app/services/shared.service';
-import { WebStorageService } from 'src/app/services/web-storage.service';
 import { ViewReportComponent } from './view-report/view-report.component';
 
 interface timePeriodArray {
@@ -44,6 +38,7 @@ export class ReportsComponent implements OnInit {
     { value: '4', viewValue: 'Custom' },
   ];
   maxTodayDate !: Date | any;
+  maxTodayDateString !: Date | any;
   tabArrayData = new Array();
   selectedIndex !: number;
   geoCoders: any;
@@ -52,17 +47,11 @@ export class ReportsComponent implements OnInit {
   isSubmitted:boolean=false;
   get f() { return this.reportForm.controls };
   constructor(private fb: FormBuilder,
-    private apiCall: ApiCallService,
-    private datepipe: DatePipe,
-    private webStorage: WebStorageService,
-    private commonMethods: CommonMethodsService,
     private master: MasterService,
     private error: ErrorsService,
     public config: ConfigService,
     private mapsAPILoader: MapsAPILoader,
-    private sharedService: SharedService,
-    private dialog: MatDialog,
-    private spinner:NgxSpinnerService
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -83,12 +72,6 @@ export class ReportsComponent implements OnInit {
   }
   selectedTab(tab: any) {
     this.tabArrayData = [];
-    this.reportForm.patchValue({
-      fromDate: '',
-      toDate: '',
-      VehicleNumber: '', 
-      timePeriod: ''
-    });
     switch (tab) {
       case 'stoppage': this.tabArrayData = [{
         label: 'Stopage Report',
@@ -143,9 +126,22 @@ export class ReportsComponent implements OnInit {
     
   }
   setIndex(index: number, label: any) {
-   // this.getStoppageData();
     this.selectedTablabel = label;
     this.selectedIndex = index;
+    if(label == 'Stopage Report' || label=='Distance Report'){
+      this.timePeriodArray = [
+        { value: '1', viewValue: 'Today' },
+        { value: '2', viewValue: '24hr' },
+        { value: '3', viewValue: 'Weekly' },
+        { value: '4', viewValue: 'Custom' },
+      ];
+    }else{
+      this.timePeriodArray = [
+        { value: '1', viewValue: 'Today' },
+        { value: '2', viewValue: '24hr' },
+        { value: '4', viewValue: 'Custom' },
+      ];
+    }
     this.showTimePeriod = (label == 'Stopage Report' || label == 'Overspeed Report' || label == 'Speed Range Report') ? true : false;
     if (label == 'Stopage Report' || label == 'Overspeed Report' || label == 'Speed Range Report') {
       this.reportForm.controls["timePeriod"].setValidators([Validators.required]);
@@ -155,7 +151,7 @@ export class ReportsComponent implements OnInit {
     this.reportForm.controls["timePeriod"].updateValueAndValidity();
     if(label=='Daywise Stoppage Report'){
       this.selectTimePeriod('1');
-    }else if(label=='Day Distance Report'){
+    }else if(label=='Day Distance Report' || label=='Overspeed Report'){
       this.selectTimePeriod('2')
     }else{
 
@@ -174,8 +170,7 @@ export class ReportsComponent implements OnInit {
       }
   }
   selectTimePeriod(value: any) {
-    const currentDateTime=(moment.utc().subtract(1, 'second')).toISOString();
-
+    const currentDateTime=(moment.utc().subtract(1, 'minute')).toISOString();
     switch (value) {
       case "1":
         this.reportForm.patchValue({
@@ -207,10 +202,15 @@ export class ReportsComponent implements OnInit {
     }
   }
   settodate(fromDate: any) {
-    const selectedmaxTime ='T'+((new Date(fromDate).toISOString()).split("T"))[1];
-    const maxTodayDate = (moment(fromDate).add(7, 'days').calendar());
-    const maxTodayDateTime= moment(moment(maxTodayDate.concat(selectedmaxTime), 'DD/MM/YYYY HH:mm:ss ')).add(5, 'hour').add(31, 'minute');
-    this.maxTodayDate = moment(maxTodayDate).toISOString() < moment().toISOString() ? moment(maxTodayDateTime).toISOString() : moment().toISOString();
+    const label=this.selectedTablabel;
+    this.reportForm.controls['toDate'].setValue('');
+    if (label == 'Stopage Report' || label == 'Distance Report') {
+      this.maxTodayDateString = (moment(fromDate).add(7, 'days').format("YYYY-MM-DD HH:mm:ss"));
+    } else {
+      this.maxTodayDateString = (moment(fromDate).add(1, 'days').format("YYYY-MM-DD HH:mm:ss"));
+    }
+    const maxTodayDateTime= moment(moment(this.maxTodayDateString)).toISOString();
+    this.maxTodayDate = moment(this.maxTodayDateString).toISOString() < moment().toISOString() ? moment(maxTodayDateTime).toISOString() : moment().toISOString();
   }
   checkValidDate() {
     const reportData = this.reportForm.value;
@@ -230,15 +230,14 @@ export class ReportsComponent implements OnInit {
     this.reportForm && reportData.fromDate && (str += "fromDate=" + new Date(reportData.fromDate).toISOString())
     this.reportForm && reportData.toDate && (str += "&toDate=" + new Date(reportData.toDate).toISOString())
     this.reportForm && reportData.VehicleNumber && (str += (isVenicleNumber ? "&VehicleNumber=" : "&VehicleNo=") + reportData.VehicleNumber)
-     &&(str += "&VehicleId=" + selectedVehicle?.id)
+     &&(str += "&VehicleId=" + selectedVehicle?.id) 
     return str;
   }
   SearchReport() {
-    this.isSubmitted=true;
+    this.isSubmitted = true;
     if (this.reportForm.invalid) {
       return;
     } else {
-      this.spinner.show();
       this.reportResponseData = [];
       var url: any;
       switch (this.selectedTablabel) {
@@ -252,69 +251,31 @@ export class ReportsComponent implements OnInit {
         case "Day Distance Report":
         case "Distance Report": url = 'reports/get-Distance-Report'; break;
       }
-      this.apiCall.setHttp('get', url + this.getQueryString()+'&UserId=' + this.webStorage.getUserId() + '&VehicleOwnerId=' + this.webStorage.getVehicleOwnerId()  + '&pageno=' + this.pageNo + '&rowsperpage=' + this.pageSize, true, false, false, 'fleetExpressBaseUrl');
-      this.apiCall.getHttp().subscribe((responseData: any) => {
-        if (responseData.statusCode === "200" || responseData.length > 0) {
-          if (this.selectedTablabel != 'Summary Report') {
-            // responseData.responseData.data.map((x: any) => {
-            //   (x.latitude || x.latOff) ? (x.latitude = x.latitude ? x.latitude : x.latOff) : '';
-            //   (x.longitude || x.longOff) ? (x.longitude = x.longitude ? x.longitude : x.longOff) : '';
-            // })
-            let resp: any = this.sharedService.getAddressBylatLong(1, responseData.responseData.data, 10);
-            this.reportResponseData = resp;
-          } else {
-            this.reportResponseData.push(responseData.responseData);
-          }
-        setTimeout(()=>{  
-          this.spinner.hide()                         // <<<---using ()=> syntax
-          this.viewReport();
-      }, 5000);
-       
-        }
-        else { 
-          this.spinner.hide()    
-          this.commonMethods.snackBar(responseData.statusMessage, 0);
-        }
-      },
-        (error: any) => { 
-          this.spinner.hide()    
-          this.error.handelError(error.status)
-        })
-    }
-  }
 
-  viewReport() {
-    let vehicleName: any;
-    let dataArr;
-    this.vehicleList.find((ele: any) => {
-      if (this.reportForm.value.VehicleNumber == ele.vehicleNo) {
-        vehicleName = ele.vehTypeName;
+      let obj: any;
+      //let pageName = this.selectedTablabel;
+      obj = this.reportForm.value;
+      obj.pageNames = this.selectedTablabel;
+      obj.url = url;
+      obj.queryString = this.getQueryString();
+      obj.vehicleList = this.vehicleList;
+      const dialog = this.dialog.open(ViewReportComponent, {
+        width: '100vw',
+        data: obj,
+        disableClose: this.config.disableCloseBtnFlag,
+      })
+      dialog.afterClosed().subscribe(() => {
+        this.reportResponseData = [];
+        this.isSubmitted = false;
+        this.getStoppageData();
+        this.setIndex(this.selectedIndex, this.selectedTablabel);
       }
-      this.reportForm.value['vehicleName'] = vehicleName;
-    });
-    let resData = this.reportResponseData.map((item: any) => Object.assign({}, item));
-    dataArr = resData.map((x: any) => {
-      x.deviceDateTime = this.datepipe.transform(x.deviceDateTime, 'dd-MM-YYYY hh:mm a')
-      return x
-    });
-    resData = this.reportResponseData;
-    let pageName = this.selectedTablabel;
+      )
 
-    let obj: any;
-    obj = this.reportForm.value;
-    obj.pageNames = pageName;
-    obj.data = dataArr;
-    const dialog = this.dialog.open(ViewReportComponent, {
-      width: '100vw',
-      data: obj,
-      disableClose: this.config.disableCloseBtnFlag,
-    })
-    dialog.afterClosed().subscribe(() => {
-      this.reportResponseData = [];
-      this.isSubmitted=false;
-      this.getStoppageData();
-      // this.selectedTab(this.selectedTablabel);
+
+
     }
-    )
   }
+
+  
 }

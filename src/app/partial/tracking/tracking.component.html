@@ -77,7 +77,7 @@
                                             <p class="vehicle-no">{{item?.vehicleNo}} </p>
                                         </a>
                                         <span class="veh-status">({{'Ticket Raised'}})</span>
-                                        <a class="text-primary veh-status"> View Details</a>
+                                        <a class="text-primary veh-status" (click)="viewDetails(item)">View Details</a>
                                         <span class="veh-status"
                                             [ngClass]="{'text-danger':item?.gpsStatus=='Offline','text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
                                             <i class="fa-solid fa-circle me-2"></i>{{item?.gpsStatus}}

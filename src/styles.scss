@@ -129,6 +129,12 @@ body { margin: 0; font-family: 'Poppins', "Helvetica Neue", sans-serif;backgroun
   font-size: 0.85rem;
   font-weight: 500;
   margin-bottom: 5px;
+  color:#757575;
+}
+.form-container .form-data{
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 5px;
 }
 .form-container .form-switch{
   font-size: 0.85rem;
@@ -2152,4 +2158,14 @@ input::-ms-clear {
   width: 100%;
   font-weight: 600;
   margin-bottom: 10px;
+}
+.timepicker-backdrop-overlay,
+.timepicker-overlay{
+  z-index: 9999 !important;
+}
+.timepicker__header{
+  background: var(--main-gradient) !important;
+}
+.timepicker-button{
+  color: var(--main-color) !important;
 }

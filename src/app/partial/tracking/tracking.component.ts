@@ -54,7 +54,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
   ];
   videoUrl!:string;
   videoBtnClickFlag:boolean = false;
-
+  viewDeatailsData=new Array();
   map: any;
   line: any;
   trackingData = new Array();
@@ -198,6 +198,27 @@ export class TrackingComponent implements OnInit, AfterViewInit {
 
   submitvehicleMarkMaintance() {
 
+  }
+  viewDetails(item:any){
+    this.apiCall.setHttp('get', 'maintenance/get-maintenance-details?VehicleId=' + item.vehicleId, true, false, false, 'fleetExpressBaseUrl');
+    this.subscription = this.apiCall.getHttp().subscribe({
+      next: (res: any) => {
+        if (res.statusCode === "200") {
+          res.responseData.map((x:any)=>{
+            switch(x.maintenanceType){
+              case 1: x.maintenanceTypeDetails='Scheduled';break;
+              case 2: x.maintenanceTypeDetails='Repair';break;
+              case 3: x.maintenanceTypeDetails='Accident';break;
+            }
+          })
+          this.viewDeatailsData=res.responseData;
+          this.openTicketRaisedDialog(this.viewDeatailsData,'ManitananceViewDetails')
+        } else {
+          this.viewDeatailsData = [];
+        }
+      }
+    }, (error: any) => { this.error.handelError(error.status) });
+    
   }
 
   openTicketRaisedDialog(data: any, flag: string) {
