@@ -156,7 +156,7 @@ export class ReportsComponent implements OnInit {
       }
   }
   selectTimePeriod(value: any) {
-    const currentDateTime=(moment.utc().subtract(1, 'second')).toISOString();
+    const currentDateTime=(moment.utc().subtract(1, 'minute')).toISOString();
     switch (value) {
       case "1":
         this.reportForm.patchValue({

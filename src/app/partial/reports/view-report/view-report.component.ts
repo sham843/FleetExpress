@@ -43,6 +43,9 @@ export class ViewReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.dialogData = this.data;
+    this.fromDate = this.datepipe.transform(this.dialogData.fromDate, 'dd/MM/yyyy HH:mm:ss a');
+    this.toDate = this.datepipe.transform(this.dialogData.toDate, 'dd/MM/yyyy HH:mm:ss a');
+    this.currentDate = this.datepipe.transform(new Date, 'dd/MM/yyyy HH:mm:ss a');
     this.searchTableData()
   }
   onPagintion(pageNo: any) {
@@ -53,12 +56,8 @@ export class ViewReportComponent implements OnInit {
     this.spinner.show();
     this.apiCall.setHttp('get', this.dialogData.url + this.dialogData.queryString+'&UserId=' + this.webStorage.getUserId()+'&DeviceId= 0' + '&VehicleOwnerId=' + this.webStorage.getVehicleOwnerId()  + '&pageno=' + this.pageNumber + '&rowsperpage=' + this.pageSize, true, false, false, 'fleetExpressBaseUrl');
       this.apiCall.getHttp().subscribe((responseData: any) => {
-        if (responseData.statusCode === "200" || responseData.length > 0) {
+        if ((responseData.statusCode === "200") && responseData.responseData.data) {
           if (this.dialogData.pageNames != 'Summary Report') {
-            // responseData.responseData.data.map((x: any) => {
-            //   (x.latitude || x.latOff) ? (x.latitude = x.latitude ? x.latitude : x.latOff) : '';
-            //   (x.longitude || x.longOff) ? (x.longitude = x.longitude ? x.longitude : x.longOff) : '';
-            // })
             let resp: any = this.sharedService.getAddressBylatLong(1, responseData.responseData.data, 10);
             this.reportResponseData = resp;
           } else {
@@ -82,31 +81,32 @@ export class ViewReportComponent implements OnInit {
         })
   }
   viewReport() {
-    let vehicleName: any;
+    let vehicleType: any;
     this.spinner.hide()   
     this.dialogData.vehicleList.find((ele: any) => {
-      if (this.dialogData.VehicleNumber == ele.vehicleNo) {
-        vehicleName = ele.vehTypeName;
+      if (this.dialogData.VehicleNumber == ele.vehicleRegistrationNo) {
+        vehicleType = ele.vehicleType;
       }
-      this.dialogData.VehicleNumber = vehicleName;
+      this.dialogData.vehicleType=vehicleType;
+      console.log(this.dialogData?.vehicleType)
     });
-    // console.log(this.reportResponseData);
-    // let resData = this.reportResponseData.map((item: any) => Object.assign({}, item));
-    // this.reportResponseData.map((x: any) => {
-    //   x.deviceDateTime = this.datepipe.transform(x.deviceDateTime, 'dd-MM-YYYY hh:mm a')
-    //   //return x
-    // });
-    // resData = this.reportResponseData;
-    // console.log(resData)
+    //let resData = this.reportResponseData.map((item: any) => Object.assign({}, item));
+    this.reportResponseData.map((x: any) => {
+      x.deviceDateTime?x.deviceDateTime = this.datepipe.transform(x.deviceDateTime, 'dd-MM-YYYY hh:mm a'):'';
+      x.startDateTime? x.startDateTime=this.datepipe.transform(x.startDateTime, 'dd-MM-YYYY hh:mm a'):'';
+      x.endDateTime? x.endDateTime=this.datepipe.transform(x.endDateTime, 'dd-MM-YYYY hh:mm a'):'';
+      x.dateOff? x.dateOff=this.datepipe.transform(x.dateOff, 'dd-MM-YYYY hh:mm a'):'';
+      x.dateOn? x.dateOn=this.datepipe.transform(x.dateOn, 'dd-MM-YYYY hh:mm a'):'';
+      x.fromDate? x.fromDate=this.datepipe.transform(x.fromDate, 'dd-MM-YYYY hh:mm a'):'';
+      x.toDate? x.toDate=this.datepipe.transform(x.toDate, 'dd-MM-YYYY hh:mm a'):'';
+      return x
+    });
+    //resData = this.reportResponseData;
+    //console.log(resData)
     this.getReportData();
   }
 
-
   getReportData() {
-    this.fromDate = this.datepipe.transform(this.dialogData.fromDate, 'dd/MM/yyyy');
-    this.toDate = this.datepipe.transform(this.dialogData.toDate, 'dd/MM/yyyy');
-    this.currentDate = this.datepipe.transform(new Date, 'dd/MM/yyyy');
-
     if (this.dialogData.pageNames == "Speed Range Report") {
       this.header = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
       this.displayedColumns= ['rowNumber', 'deviceDateTime', 'speed', 'address'];
@@ -143,7 +143,6 @@ export class ViewReportComponent implements OnInit {
       this.header = ["SrNo.", " Driver Name", "Mobile Number", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
       this.displayedColumns = ['rowNumber', 'driverName', 'mobileNo', 'vehicleType', 'runningTime','stoppageTime','idleTime','maxSpeed','travelledDistance'];
     }
-
     this.dataSource=this.reportResponseData;
   }
   onDownloadPDF(){
