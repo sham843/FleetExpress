@@ -18,7 +18,7 @@
                         [stroke]="FleetStatusPieChartOption.stroke" [legend]="FleetStatusPieChartOption.legend"
                         [plotOptions]="FleetStatusPieChartOption.plotOptions"></apx-chart>
                 </div>
-                <div id="total" class="totalvehicles">
+                <div id="total" class="totalvehicles" *ngIf="total">
                     <span>Total</span>
                     <span class="total">{{total}}</span>
                 </div>
