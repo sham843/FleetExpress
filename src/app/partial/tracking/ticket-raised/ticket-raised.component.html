@@ -156,6 +156,7 @@
                     <mat-label>Vehicle’s available Time</mat-label>
                     <input matInput [ngxTimepicker]="availabletime" formControlName="vehicleTime">
                     <ngx-material-timepicker #availabletime></ngx-material-timepicker>
+                    <mat-icon matSuffix >access_time</mat-icon>
                 </mat-form-field>
             </div>
         </div>
@@ -163,7 +164,7 @@
     <div class="form-container w-100">
         <div class="d-flex justify-content-between">
             <button type="button" class="btn btn-light-main" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-main">Raise Ticket</button>
+            <button class="btn btn-main">Raise Ticket</button>
         </div>
     </div>
 </form>
