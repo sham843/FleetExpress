@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ErrorsService } from 'src/app/services/errors.service';
+import { WebStorageService } from 'src/app/services/web-storage.service';
 
 @Component({
   selector: 'app-ticket-raised',
@@ -14,25 +15,31 @@ import { ErrorsService } from 'src/app/services/errors.service';
 })
 export class TicketRaisedComponent implements OnInit {
   maintananceForm !:FormGroup;
+  complaintForm !:FormGroup;
   dialogData !:object|any;
   currentDate=new Date();
   subscription!:Subscription;
   timePeriod = new FormControl('');
   timeZone=[{lable:'2 Hours', id:'2_Hours'},{lable:'24 Hours', id:'24_Hours'},{lable:'7 Days', id:'7_Days'}];
-
+  stateData=new Array();
+  cityData=new Array();
+  userData :any;
   get maintanance() { return this.maintananceForm.controls };
+  get complaint() { return this.complaintForm.controls };
   constructor(public dialogRef: MatDialogRef<TicketRaisedComponent>,
      private fb:FormBuilder, private commonMethod:CommonMethodsService,
      //public validationService:ValidationService, 
     private error:ErrorsService, private apiCall:ApiCallService,
     private spinner:NgxSpinnerService,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private webStorage:WebStorageService
   ) { }
 
   ngOnInit(): void {
     this.dialogData = this.data;
-    console.log(this.dialogData);
+    this.userData=this.webStorage.getUser()
     this.getMaintananceForm();
+    this.dialogData['flag']=='compliant'? this.getStates():'';
   }
   getMaintananceForm() {
     this.maintananceForm = this.fb.group({
@@ -41,7 +48,41 @@ export class TicketRaisedComponent implements OnInit {
       maintenanceFrom: ['', Validators.required],
       remark: []
     })
+    this.complaintForm = this.fb.group({
+      userMobileNumber: [this.userData?.mobileNo1],
+      DriverMobileNumber: [this.dialogData?.driverMobileNo ],
+      stateId: ['', Validators.required],
+      cityId: ['', Validators.required],
+      vehicleDate: ['', Validators.required],
+      vehicleTime: ['', Validators.required]
+    })
   }
+  
+  getStates(){
+    this.apiCall.setHttp('get', 'MasterAsyncRepository/GetState', true, false, false, 'fleetExpressMasterUrl');
+    this.subscription = this.apiCall.getHttp().subscribe({
+      next: (res: any) => {
+        if (res.statusCode === "200") {
+          this.stateData=res.responseData;
+        } else {
+          this.stateData = [];
+        }
+      }
+    }, (error: any) => { this.error.handelError(error.status) });
+  }
+  getCity(StateId:any){
+    this.apiCall.setHttp('get', 'MasterAsyncRepository/GetCity?StateId='+StateId, true, false, false, 'fleetExpressMasterUrl');
+    this.subscription = this.apiCall.getHttp().subscribe({
+      next: (res: any) => {
+        if (res.statusCode === "200") {
+          this.cityData=res.responseData;
+        } else {
+          this.cityData = [];
+        }
+      }
+    }, (error: any) => { this.error.handelError(error.status) });
+  }
+
   submitvehicleMarkMaintance() {
     if (this.maintananceForm.invalid) {
       return;
@@ -74,6 +115,50 @@ export class TicketRaisedComponent implements OnInit {
         this.spinner.hide();
         this.error.handelError(error.status)
       });
+    }
+  }
+  submitvehicleComplent(){
+    if (this.complaintForm.invalid) {
+      return;
+    } else {
+      console.log(this.complaintForm.value);
+      const userFormData = this.complaintForm.value;
+      const obj = {
+        "id": 0,
+        "vehicleId": 0,
+        "subject": "",
+        "message": "",
+        "complaintDate": new Date().toISOString(),
+        "complaintFrom": 0,
+        "forwardedTo": "",
+        "complaintTypeId": 0,
+        "complaintStatusId": 0,
+        "stateId": userFormData?.stateId,
+        "cityId": userFormData?.cityId,
+        "createdBy": this.webStorage.getUserId(),
+        "createdDate": new Date().toISOString(),
+        "isDeleted": false,
+        "imagePath": "",
+        "vehicleDate": new Date(userFormData?.vehicleDate).toISOString(),
+        "vehicleTime": userFormData?.vehicleTime
+      }
+      console.log(obj) 
+      //this.spinner.show();
+      // this.apiCall.setHttp('post', 'maintenance/save-update-complaint', true, obj, false, 'fleetExpressBaseUrl');
+      // this.subscription = this.apiCall.getHttp().subscribe({
+      //   next: (res: any) => {
+      //     this.spinner.hide();
+      //     if (res.statusCode === "200") {
+      //       this.commonMethod.snackBar('Complaint ticket raised sucssessfully',0)
+      //         this.onNoClick('Yes');
+      //     } else {
+      //         this.error.handelError(res.statusCode);
+      //     }
+      //   }
+      // },(error: any) => {
+      //   this.spinner.hide();
+      //   this.error.handelError(error.status)
+      // });
     }
   }
   

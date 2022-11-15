@@ -96,7 +96,7 @@
     <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick('Yes')"><i
             class="fas fa-times"></i></button>
 </div>
-<form *ngIf="this.dialogData['flag']=='compliant'"  [formGroup]="maintananceForm" (ngSubmit)="submitvehicleMarkMaintance()">
+<form *ngIf="this.dialogData['flag']=='compliant'"  [formGroup]="complaintForm" (ngSubmit)="submitvehicleComplent()">
     <div class="form-container">
         <p class="mb-0">GPS Wire Cut <small class="text-muted"> {{currentDate | date}} {{currentDate | date:'hh:mm'}}</small></p>
         <small class="text-muted">The Technician will visit you as per the below details.</small>
@@ -104,14 +104,14 @@
             <div class="col-sm-6">
                 <mat-form-field class="w-100" appearance="standard">
                     <mat-label>Your Number</mat-label>
-                    <input matInput placeholder="Your Number">
+                    <input matInput placeholder="Your Number"  formControlName="userMobileNumber">
                     <span matPrefix class="me-2">+91 </span>
                 </mat-form-field>
             </div>
             <div class="col-sm-6">
                 <mat-form-field class="w-100" appearance="standard">
                     <mat-label>Driver's Phone Number</mat-label>
-                    <input matInput placeholder="Driver's Phone Number">
+                    <input matInput placeholder="Driver's Phone Number"  formControlName="DriverMobileNumber">
                     <span matPrefix class="me-2">+91 </span>
                 </mat-form-field>
             </div>
@@ -120,9 +120,9 @@
             <div class="col-sm-6">
                 <mat-form-field appearance="standard" class="w-100">
                     <mat-label>Vehicle's available State</mat-label>
-                    <mat-select>
-                        <mat-option *ngFor="let item of timeZone" [value]="item?.id">
-                            {{item?.id}}
+                    <mat-select formControlName="stateId" (selectionChange)="getCity(complaint['stateId'].value)">
+                        <mat-option *ngFor="let item of stateData" [value]="item?.id">
+                            {{item?.state}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -130,9 +130,9 @@
             <div class="col-sm-6">
                 <mat-form-field appearance="standard" class="w-100">
                     <mat-label>Vehicle's available City</mat-label>
-                    <mat-select>
-                        <mat-option *ngFor="let item of timeZone" [value]="item?.id">
-                            {{item?.id}}
+                    <mat-select formControlName="cityId" >
+                        <mat-option *ngFor="let item of cityData" [value]="item?.id" >
+                            {{item?.name}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -142,7 +142,7 @@
             <div class="col-sm-6">
                 <mat-form-field appearance="standard" class="w-100">
                     <mat-label>Vehicle's available Date</mat-label>
-                    <input matInput [matDatepicker]="availabledate">
+                    <input matInput [matDatepicker]="availabledate" formControlName="vehicleDate">
                     <mat-datepicker-toggle matSuffix [for]="availabledate"></mat-datepicker-toggle>
                     <mat-datepicker #availabledate></mat-datepicker>
                 </mat-form-field>
@@ -150,7 +150,7 @@
             <div class="col-sm-6">
                 <mat-form-field appearance="standard" class="w-100">
                     <mat-label>Vehicle’s available Time</mat-label>
-                    <input matInput [matDatepicker]="availabletime">
+                    <input matInput [matDatepicker]="availabletime" formControlName="vehicleTime">
                     <mat-datepicker-toggle matSuffix [for]="availabletime"></mat-datepicker-toggle>
                     <mat-datepicker #availabletime></mat-datepicker>
                 </mat-form-field>
