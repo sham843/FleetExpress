@@ -2159,3 +2159,13 @@ input::-ms-clear {
   font-weight: 600;
   margin-bottom: 10px;
 }
+.timepicker-backdrop-overlay,
+.timepicker-overlay{
+  z-index: 9999 !important;
+}
+.timepicker__header{
+  background: var(--main-gradient) !important;
+}
+.timepicker-button{
+  color: var(--main-color) !important;
+}
