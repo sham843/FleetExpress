@@ -166,44 +166,44 @@
 </form>
 
 
-<div class="position-relative mb-3" *ngIf="this.dialogData['flag']=='ManitananceViewDetails' ||this.dialogData['flag']=='complentViewDetails'" >
+<div class="position-relative mb-3 border-bottom pb-2" *ngIf="this.dialogData['flag']=='ManitananceViewDetails' ||this.dialogData['flag']=='complentViewDetails'" >
     <p  class="modal-title mb-0" id="MaintenanceModalLabel"><span class="fw-bold text-main">
             {{dialogData[0]?.vehicleNumber}} </span> Maintenance</p>
     <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick('Yes')"><i
             class="fas fa-times"></i></button>
 </div>
 <div class="form-container" *ngIf="dialogData['flag']=='ManitananceViewDetails'">
-    <p class="mb-0">Details</p>
-    <div class="row">
-        <div class="col-sm-6">
-            <mat-label>Select Maintanance Type</mat-label>
+    <p class="mb-2 fw-bold">Details</p>
+    <div class="row mb-2">
+        <div class="col-sm-5">
+            <mat-label class="form-label">Maintanance Type :</mat-label>
         </div>
-        <div class="col-sm-6">
-            <mat-label>{{dialogData[0]?.maintenanceTypeDetails}}</mat-label>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-6">
-            <mat-label>From Date And Time</mat-label>
-        </div>
-        <div class="col-sm-6">
-                <mat-label>{{dialogData[0]?.maintenanceFrom | date : 'dd-MM-yyyy hh:mm:ss a'}}</mat-label>
+        <div class="col-sm-7">
+            <mat-label class="form-data">{{dialogData[0]?.maintenanceTypeDetails}}</mat-label>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-6">
-            <mat-label>To Date And Time</mat-label>
+    <div class="row mb-2">
+        <div class="col-sm-5">
+            <mat-label class="form-label">From Date And Time :</mat-label>
         </div>
-        <div class="col-sm-6">
-            <mat-label>{{dialogData[0]?.maintenanceTo | date : 'dd-MM-yyyy hh:mm:ss a'}}</mat-label>
+        <div class="col-sm-7">
+                <mat-label class="form-data">{{dialogData[0]?.maintenanceFrom | date : 'dd-MM-yyyy hh:mm:ss a'}}</mat-label>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-6">
-            <mat-label>Add Remark</mat-label>
+    <div class="row mb-2">
+        <div class="col-sm-5">
+            <mat-label class="form-label">To Date And Time :</mat-label>
         </div>
-        <div class="col-sm-6">
-                <mat-label>{{dialogData[0]?.remark}}</mat-label>
+        <div class="col-sm-7">
+            <mat-label class="form-data">{{dialogData[0]?.maintenanceTo | date : 'dd-MM-yyyy hh:mm:ss a'}}</mat-label>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-sm-5">
+            <mat-label class="form-label">Remark :</mat-label>
+        </div>
+        <div class="col-sm-7">
+                <mat-label class="form-data">{{dialogData[0]?.remark}}</mat-label>
         </div>
     </div>
 </div>
