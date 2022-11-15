@@ -258,7 +258,8 @@ export class VehicleModalComponent implements OnInit {
           this.spinner.hide();
           formDirective.resetForm();
           this.dialogRef.close('');
-          this.commonMethods.snackBar(response.statusMessage, 0)
+          this.commonMethods.snackBar(response.responseData.responseData1[0].msg, 0)
+          console.log(response.responseData.responseData1[0].msg)
         } else {
           this.spinner.hide();
           this.dialogRef.close('');
