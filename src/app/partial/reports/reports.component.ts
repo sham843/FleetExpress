@@ -128,6 +128,20 @@ export class ReportsComponent implements OnInit {
   setIndex(index: number, label: any) {
     this.selectedTablabel = label;
     this.selectedIndex = index;
+    if(label == 'Stopage Report' || label=='Distance Report'){
+      this.timePeriodArray = [
+        { value: '1', viewValue: 'Today' },
+        { value: '2', viewValue: '24hr' },
+        { value: '3', viewValue: 'Weekly' },
+        { value: '4', viewValue: 'Custom' },
+      ];
+    }else{
+      this.timePeriodArray = [
+        { value: '1', viewValue: 'Today' },
+        { value: '2', viewValue: '24hr' },
+        { value: '4', viewValue: 'Custom' },
+      ];
+    }
     this.showTimePeriod = (label == 'Stopage Report' || label == 'Overspeed Report' || label == 'Speed Range Report') ? true : false;
     if (label == 'Stopage Report' || label == 'Overspeed Report' || label == 'Speed Range Report') {
       this.reportForm.controls["timePeriod"].setValidators([Validators.required]);
