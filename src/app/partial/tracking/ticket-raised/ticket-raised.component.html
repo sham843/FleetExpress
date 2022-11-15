@@ -1,20 +1,21 @@
-<div class="position-relative mb-3" *ngIf="this.dialogData['flag']=='maintenance'" >
-    <p  class="modal-title mb-0" id="MaintenanceModalLabel">Mark <span class="fw-bold text-main">
+<div class="position-relative mb-3" *ngIf="this.dialogData['flag']=='maintenance'">
+    <p class="modal-title mb-0" id="MaintenanceModalLabel">Mark <span class="fw-bold text-main">
             {{dialogData?.vehicleNo}} </span> in 'Maintenance'</p>
-    <h5 *ngIf="this.dialogData['flag']=='shareLocation'" mat-dialog-title class="mb-0">Share Location</h5>      
+    <h5 *ngIf="this.dialogData['flag']=='shareLocation'" mat-dialog-title class="mb-0">Share Location</h5>
     <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick('Yes')"><i
             class="fas fa-times"></i></button>
 </div>
-<form *ngIf="this.dialogData['flag']=='maintenance'"  [formGroup]="maintananceForm" (ngSubmit)="submitvehicleMarkMaintance()">
+<form *ngIf="this.dialogData['flag']=='maintenance'" [formGroup]="maintananceForm"
+    (ngSubmit)="submitvehicleMarkMaintance()">
     <div class="form-container">
         <div class="mb-3">
             <div class="form-label">Select Maintenance Type</div>
             <div class="d-flex align-items-center ps-3">
                 <mat-radio-group aria-label="Select Maintenance Type" formControlName="maintenanceType">
-                    <mat-radio-button value="1" id="Scheduled"   >Scheduled</mat-radio-button>
-                    <mat-radio-button value="2" id="Repair" >Repair</mat-radio-button>
-                    <mat-radio-button value="3" id="Accident" >Accident</mat-radio-button>
-                  </mat-radio-group>
+                    <mat-radio-button value="1" id="Scheduled">Scheduled</mat-radio-button>
+                    <mat-radio-button value="2" id="Repair">Repair</mat-radio-button>
+                    <mat-radio-button value="3" id="Accident">Accident</mat-radio-button>
+                </mat-radio-group>
             </div>
         </div>
         <div class="mb-0">
@@ -24,7 +25,7 @@
                     <mat-form-field appearance="standard" class="w-100">
                         <mat-label>From Date and time</mat-label>
                         <input matInput [ngxMatDatetimePicker]="fromDate" [max]="currentDate"
-                            formControlName="maintenanceFrom" >
+                            formControlName="maintenanceFrom">
                         <mat-datepicker-toggle matSuffix [for]="$any(fromDate)"></mat-datepicker-toggle>
                         <ngx-mat-datetime-picker #fromDate>
                         </ngx-mat-datetime-picker>
@@ -34,7 +35,7 @@
                     <mat-form-field appearance="standard" class="w-100">
                         <mat-label>To Date and time</mat-label>
                         <input matInput [ngxMatDatetimePicker]="toDate" formControlName="maintenanceTo"
-                            [max]="currentDate" [min]="this.maintananceForm.controls['maintenanceFrom'].value" >
+                            [max]="currentDate" [min]="this.maintananceForm.controls['maintenanceFrom'].value">
                         <mat-datepicker-toggle matSuffix [for]="$any(toDate)"></mat-datepicker-toggle>
                         <ngx-mat-datetime-picker #toDate>
                         </ngx-mat-datetime-picker>
@@ -50,7 +51,7 @@
     <div class="form-container w-100">
         <div class="d-flex justify-content-between">
             <button type="button" class="btn btn-light-main" mat-dialog-close (click)="onNoClick('Yes')">Cancel</button>
-            <button class="btn btn-main" >Mark Vehicle In Maintenance</button>
+            <button class="btn btn-main">Mark Vehicle In Maintenance</button>
         </div>
     </div>
 </form>
@@ -61,12 +62,12 @@
             class="fas fa-times"></i></button>
 </div> -->
 
-<div class="row mb-4" *ngIf="this.dialogData['flag']=='shareLocation'" >
+<div class="row mb-4" *ngIf="this.dialogData['flag']=='shareLocation'">
     <div class="col-sm-8">
         <mat-form-field appearance="standard" class="w-100">
             <mat-label>Select Time Period</mat-label>
             <mat-select name="timePeriod" [formControl]="timePeriod">
-                <mat-option *ngFor="let item of timeZone"  [value]="item?.id">
+                <mat-option *ngFor="let item of timeZone" [value]="item?.id">
                     {{item?.lable}}
                 </mat-option>
             </mat-select>
@@ -82,23 +83,27 @@
         </div>
     </div>
 </div>
-<div class="form-container w-100" *ngIf="this.dialogData['flag']=='shareLocation'" >
+<div class="form-container w-100" *ngIf="this.dialogData['flag']=='shareLocation'">
     <div class="d-flex justify-content-between">
-        <button type="button" class="btn btn-light-main" type="button" mat-dialog-close (click)="onNoClick('No')" >Close</button>
-        <button type="button" class="btn btn-main" cdkFocusInitial (click)="onNoClick('Yes')"type="submit">Share Location</button>
+        <button type="button" class="btn btn-light-main" type="button" mat-dialog-close
+            (click)="onNoClick('No')">Close</button>
+        <button type="button" class="btn btn-main" cdkFocusInitial (click)="onNoClick('Yes')" type="submit">Share
+            Location</button>
     </div>
 </div>
 
 
 <div class="position-relative mb-3" *ngIf="this.dialogData['flag']=='compliant'">
-    <p   class="modal-title mb-0" id="ComplentModalLabel">Ticket Raise For<span class="fw-bold text-main">
+    <p class="modal-title mb-0" id="ComplentModalLabel">Ticket Raise For<span class="fw-bold text-main">
             {{dialogData?.vehicleNo}} </span></p>
     <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick('Yes')"><i
             class="fas fa-times"></i></button>
 </div>
-<form *ngIf="this.dialogData['flag']=='compliant'"  [formGroup]="maintananceForm" (ngSubmit)="submitvehicleMarkMaintance()">
+<form *ngIf="this.dialogData['flag']=='compliant'" [formGroup]="maintananceForm"
+    (ngSubmit)="submitvehicleMarkMaintance()">
     <div class="form-container">
-        <p class="mb-0">GPS Wire Cut <small class="text-muted"> {{currentDate | date}} {{currentDate | date:'hh:mm'}}</small></p>
+        <p class="mb-0">GPS Wire Cut <small class="text-muted"> {{currentDate | date}} {{currentDate |
+                date:'hh:mm'}}</small></p>
         <small class="text-muted">The Technician will visit you as per the below details.</small>
         <div class="row">
             <div class="col-sm-6">
@@ -150,9 +155,8 @@
             <div class="col-sm-6">
                 <mat-form-field appearance="standard" class="w-100">
                     <mat-label>Vehicle’s available Time</mat-label>
-                    <input matInput [matDatepicker]="availabletime">
-                    <mat-datepicker-toggle matSuffix [for]="availabletime"></mat-datepicker-toggle>
-                    <mat-datepicker #availabletime></mat-datepicker>
+                    <input matInput [ngxTimepicker]="availabletime">
+                    <ngx-material-timepicker #availabletime></ngx-material-timepicker>
                 </mat-form-field>
             </div>
         </div>
@@ -166,8 +170,9 @@
 </form>
 
 
-<div class="position-relative mb-3 border-bottom pb-2" *ngIf="this.dialogData['flag']=='ManitananceViewDetails' ||this.dialogData['flag']=='complentViewDetails'" >
-    <p  class="modal-title mb-0" id="MaintenanceModalLabel"><span class="fw-bold text-main">
+<div class="position-relative mb-3 border-bottom pb-2"
+    *ngIf="this.dialogData['flag']=='ManitananceViewDetails' ||this.dialogData['flag']=='complentViewDetails'">
+    <p class="modal-title mb-0" id="MaintenanceModalLabel"><span class="fw-bold text-main">
             {{dialogData[0]?.vehicleNumber}} </span> Maintenance</p>
     <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick('Yes')"><i
             class="fas fa-times"></i></button>
@@ -187,7 +192,7 @@
             <mat-label class="form-label">From Date And Time :</mat-label>
         </div>
         <div class="col-sm-7">
-                <mat-label class="form-data">{{dialogData[0]?.maintenanceFrom | date : 'dd-MM-yyyy hh:mm:ss a'}}</mat-label>
+            <mat-label class="form-data">{{dialogData[0]?.maintenanceFrom | date : 'dd-MM-yyyy hh:mm:ss a'}}</mat-label>
         </div>
     </div>
     <div class="row mb-2">
@@ -203,7 +208,7 @@
             <mat-label class="form-label">Remark :</mat-label>
         </div>
         <div class="col-sm-7">
-                <mat-label class="form-data">{{dialogData[0]?.remark}}</mat-label>
+            <mat-label class="form-data">{{dialogData[0]?.remark}}</mat-label>
         </div>
     </div>
 </div>
@@ -222,7 +227,7 @@
             <mat-label>Status</mat-label>
         </div>
         <div class="col-sm-6">
-                <mat-label>{{dialogData[0]?.maintenanceFrom | date : 'dd-MM-yyyy hh:mm:ss a'}}</mat-label>
+            <mat-label>{{dialogData[0]?.maintenanceFrom | date : 'dd-MM-yyyy hh:mm:ss a'}}</mat-label>
         </div>
     </div>
     <div class="row">
@@ -238,7 +243,7 @@
             <mat-label>Vehicle Location</mat-label>
         </div>
         <div class="col-sm-6">
-                <mat-label>{{dialogData[0]?.remark}}</mat-label>
+            <mat-label>{{dialogData[0]?.remark}}</mat-label>
         </div>
     </div>
     <div class="row">
@@ -246,7 +251,7 @@
             <mat-label>Available Time</mat-label>
         </div>
         <div class="col-sm-6">
-                <mat-label>{{dialogData[0]?.remark}}</mat-label>
+            <mat-label>{{dialogData[0]?.remark}}</mat-label>
         </div>
     </div>
 </div>

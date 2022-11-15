@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TicketRaisedComponent } from './ticket-raised/ticket-raised.component';
 import { ConfigService } from 'src/app/services/config.service';
 import { VehicleTrackingDetailsComponent } from './vehicle-tracking-details/vehicle-tracking-details.component';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { VehicleTrackingDetailsComponent } from './vehicle-tracking-details/vehi
      NgxMatNativeDateModule,
      NgxMatTimepickerModule,
      AgmCoreModule.forRoot(ConfigService.googleApiObj),
+     NgxMaterialTimepickerModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
