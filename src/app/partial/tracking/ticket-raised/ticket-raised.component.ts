@@ -31,6 +31,7 @@ export class TicketRaisedComponent implements OnInit {
 
   ngOnInit(): void {
     this.dialogData = this.data;
+    console.log(this.dialogData);
     this.getMaintananceForm();
   }
   getMaintananceForm() {

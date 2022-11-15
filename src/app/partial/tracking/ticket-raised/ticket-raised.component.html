@@ -88,3 +88,123 @@
         <button type="button" class="btn btn-main" cdkFocusInitial (click)="onNoClick('Yes')"type="submit">Share Location</button>
     </div>
 </div>
+
+
+<div class="position-relative mb-3">
+    <p *ngIf="this.dialogData['flag']=='compliant'"  class="modal-title mb-0" id="MaintenanceModalLabel">Mark <span class="fw-bold text-main">
+            {{dialogData?.vehicleNo}} </span> in 'Maintenance'</p>
+    <h5 *ngIf="this.dialogData['flag']=='shareLocation'" mat-dialog-title class="mb-0">Share Location</h5>      
+    <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick('Yes')"><i
+            class="fas fa-times"></i></button>
+</div>
+<form *ngIf="this.dialogData['flag']=='compliant'"  [formGroup]="maintananceForm" (ngSubmit)="submitvehicleMarkMaintance()">
+    <div class="form-container">
+        <p class="mb-0">GPS Wire Cut <small class="text-muted">22 jul 2022 , 01:31</small></p>
+        <small class="text-muted">The Technician will visit you as per the below details.</small>
+        <div class="row">
+            <div class="col-sm-6">
+                <mat-form-field class="w-100" appearance="standard">
+                    <mat-label>Your Number</mat-label>
+                    <input matInput placeholder="Your Number">
+                    <span matPrefix class="me-2">+91 </span>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-6">
+                <mat-form-field class="w-100" appearance="standard">
+                    <mat-label>Driver's Phone Number</mat-label>
+                    <input matInput placeholder="Driver's Phone Number">
+                    <span matPrefix class="me-2">+91 </span>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <mat-form-field appearance="standard" class="w-100">
+                    <mat-label>Vehicle's available State</mat-label>
+                    <mat-select>
+                        <mat-option *ngFor="let item of timeZone" [value]="item?.id">
+                            {{item?.id}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-6">
+                <mat-form-field appearance="standard" class="w-100">
+                    <mat-label>Vehicle's available City</mat-label>
+                    <mat-select>
+                        <mat-option *ngFor="let item of timeZone" [value]="item?.id">
+                            {{item?.id}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <mat-form-field appearance="standard" class="w-100">
+                    <mat-label>Vehicle's available Date</mat-label>
+                    <input matInput [matDatepicker]="availabledate">
+                    <mat-datepicker-toggle matSuffix [for]="availabledate"></mat-datepicker-toggle>
+                    <mat-datepicker #availabledate></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-6">
+                <mat-form-field appearance="standard" class="w-100">
+                    <mat-label>Vehicle’s available Time</mat-label>
+                    <input matInput [matDatepicker]="availabletime">
+                    <mat-datepicker-toggle matSuffix [for]="availabletime"></mat-datepicker-toggle>
+                    <mat-datepicker #availabletime></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div class="form-container w-100">
+        <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-light-main" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-main">Raise Ticket</button>
+        </div>
+    </div>
+</form>
+
+
+<div class="position-relative mb-3">
+    <p *ngIf="this.dialogData['flag']=='ViewDetails'"  class="modal-title mb-0" id="MaintenanceModalLabel">Mark <span class="fw-bold text-main">
+            {{dialogData?.vehicleNo}} </span> in 'Maintenance'</p>
+    <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick('Yes')"><i
+            class="fas fa-times"></i></button>
+</div>
+<div class="form-container" *ngIf="this.dialogData['flag']=='ViewDetails'">
+    <p class="mb-0">Details</p>
+    <div class="row">
+        <div class="col-sm-6">
+            <mat-label>Select Maintanance Type</mat-label>
+        </div>
+        <div class="col-sm-6">
+            <mat-label>{{this.dialogData[0]?.maintenanceTypeDetails}}</mat-label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <mat-label>From Date And Time</mat-label>
+        </div>
+        <div class="col-sm-6">
+                <mat-label>{{ this.dialogData[0]?.maintenanceFrom | date : 'dd-MM-yyyy hh:mm:ss a'}}</mat-label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <mat-label>To Date And Time</mat-label>
+        </div>
+        <div class="col-sm-6">
+            <mat-label>{{this.dialogData[0]?.maintenanceTo | date : 'dd-MM-yyyy hh:mm:ss a'}}</mat-label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <mat-label>Add Remark</mat-label>
+        </div>
+        <div class="col-sm-6">
+                <mat-label>{{this.dialogData[0]?.remark}}</mat-label>
+        </div>
+    </div>
+</div>
