@@ -1,5 +1,5 @@
-<div class="position-relative mb-3">
-    <p *ngIf="this.dialogData['flag']=='maintenance'"  class="modal-title mb-0" id="MaintenanceModalLabel">Mark <span class="fw-bold text-main">
+<div class="position-relative mb-3" *ngIf="this.dialogData['flag']=='maintenance'" >
+    <p  class="modal-title mb-0" id="MaintenanceModalLabel">Mark <span class="fw-bold text-main">
             {{dialogData?.vehicleNo}} </span> in 'Maintenance'</p>
     <h5 *ngIf="this.dialogData['flag']=='shareLocation'" mat-dialog-title class="mb-0">Share Location</h5>      
     <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick('Yes')"><i
@@ -90,16 +90,15 @@
 </div>
 
 
-<div class="position-relative mb-3">
-    <p *ngIf="this.dialogData['flag']=='compliant'"  class="modal-title mb-0" id="MaintenanceModalLabel">Mark <span class="fw-bold text-main">
-            {{dialogData?.vehicleNo}} </span> in 'Maintenance'</p>
-    <h5 *ngIf="this.dialogData['flag']=='shareLocation'" mat-dialog-title class="mb-0">Share Location</h5>      
+<div class="position-relative mb-3" *ngIf="this.dialogData['flag']=='compliant'">
+    <p   class="modal-title mb-0" id="ComplentModalLabel">Ticket Raise For<span class="fw-bold text-main">
+            {{dialogData?.vehicleNo}} </span></p>
     <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick('Yes')"><i
             class="fas fa-times"></i></button>
 </div>
 <form *ngIf="this.dialogData['flag']=='compliant'"  [formGroup]="maintananceForm" (ngSubmit)="submitvehicleMarkMaintance()">
     <div class="form-container">
-        <p class="mb-0">GPS Wire Cut <small class="text-muted">22 jul 2022 , 01:31</small></p>
+        <p class="mb-0">GPS Wire Cut <small class="text-muted"> {{currentDate | date}} {{currentDate | date:'hh:mm'}}</small></p>
         <small class="text-muted">The Technician will visit you as per the below details.</small>
         <div class="row">
             <div class="col-sm-6">
@@ -167,20 +166,20 @@
 </form>
 
 
-<div class="position-relative mb-3">
-    <p *ngIf="this.dialogData['flag']=='ViewDetails'"  class="modal-title mb-0" id="MaintenanceModalLabel">Mark <span class="fw-bold text-main">
-            {{dialogData?.vehicleNo}} </span> in 'Maintenance'</p>
+<div class="position-relative mb-3" *ngIf="this.dialogData['flag']=='ManitananceViewDetails' ||this.dialogData['flag']=='complentViewDetails'" >
+    <p  class="modal-title mb-0" id="MaintenanceModalLabel"><span class="fw-bold text-main">
+            {{dialogData[0]?.vehicleNumber}} </span> Maintenance</p>
     <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick('Yes')"><i
             class="fas fa-times"></i></button>
 </div>
-<div class="form-container" *ngIf="this.dialogData['flag']=='ViewDetails'">
+<div class="form-container" *ngIf="dialogData['flag']=='ManitananceViewDetails'">
     <p class="mb-0">Details</p>
     <div class="row">
         <div class="col-sm-6">
             <mat-label>Select Maintanance Type</mat-label>
         </div>
         <div class="col-sm-6">
-            <mat-label>{{this.dialogData[0]?.maintenanceTypeDetails}}</mat-label>
+            <mat-label>{{dialogData[0]?.maintenanceTypeDetails}}</mat-label>
         </div>
     </div>
     <div class="row">
@@ -188,7 +187,7 @@
             <mat-label>From Date And Time</mat-label>
         </div>
         <div class="col-sm-6">
-                <mat-label>{{ this.dialogData[0]?.maintenanceFrom | date : 'dd-MM-yyyy hh:mm:ss a'}}</mat-label>
+                <mat-label>{{dialogData[0]?.maintenanceFrom | date : 'dd-MM-yyyy hh:mm:ss a'}}</mat-label>
         </div>
     </div>
     <div class="row">
@@ -196,7 +195,7 @@
             <mat-label>To Date And Time</mat-label>
         </div>
         <div class="col-sm-6">
-            <mat-label>{{this.dialogData[0]?.maintenanceTo | date : 'dd-MM-yyyy hh:mm:ss a'}}</mat-label>
+            <mat-label>{{dialogData[0]?.maintenanceTo | date : 'dd-MM-yyyy hh:mm:ss a'}}</mat-label>
         </div>
     </div>
     <div class="row">
@@ -204,7 +203,50 @@
             <mat-label>Add Remark</mat-label>
         </div>
         <div class="col-sm-6">
-                <mat-label>{{this.dialogData[0]?.remark}}</mat-label>
+                <mat-label>{{dialogData[0]?.remark}}</mat-label>
+        </div>
+    </div>
+</div>
+<div class="form-container" *ngIf="this.dialogData['flag']=='complentViewDetails'">
+    <p class="mb-0">Details</p>
+    <div class="row">
+        <div class="col-sm-6">
+            <mat-label>Ticket Id</mat-label>
+        </div>
+        <div class="col-sm-6">
+            <mat-label>{{dialogData[0]?.maintenanceTypeDetails}}</mat-label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <mat-label>Status</mat-label>
+        </div>
+        <div class="col-sm-6">
+                <mat-label>{{dialogData[0]?.maintenanceFrom | date : 'dd-MM-yyyy hh:mm:ss a'}}</mat-label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <mat-label>Driver Phone Number</mat-label>
+        </div>
+        <div class="col-sm-6">
+            <mat-label>{{dialogData[0]?.maintenanceTo | date : 'dd-MM-yyyy hh:mm:ss a'}}</mat-label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <mat-label>Vehicle Location</mat-label>
+        </div>
+        <div class="col-sm-6">
+                <mat-label>{{dialogData[0]?.remark}}</mat-label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <mat-label>Available Time</mat-label>
+        </div>
+        <div class="col-sm-6">
+                <mat-label>{{dialogData[0]?.remark}}</mat-label>
         </div>
     </div>
 </div>

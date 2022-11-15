@@ -212,7 +212,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
             }
           })
           this.viewDeatailsData=res.responseData;
-          this.openTicketRaisedDialog(this.viewDeatailsData,'ViewDetails')
+          this.openTicketRaisedDialog(this.viewDeatailsData,'ManitananceViewDetails')
         } else {
           this.viewDeatailsData = [];
         }
