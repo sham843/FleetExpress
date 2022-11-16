@@ -27,6 +27,7 @@ export class ViewReportComponent implements OnInit {
   displayedColumns:any;
   pageNumber: number = 1;
   pageSize: number = 10;
+  totalItem!:number;
   reportResponseData=new Array();
   constructor(public dialogRef: MatDialogRef<ViewReportComponent>,
     public CommonMethod: CommonMethodsService,
@@ -50,6 +51,7 @@ export class ViewReportComponent implements OnInit {
   }
   onPagintion(pageNo: any) {
     this.pageNumber = pageNo;
+    this.searchTableData();
   }
 
   searchTableData(){
@@ -60,10 +62,11 @@ export class ViewReportComponent implements OnInit {
           if (this.dialogData.pageNames != 'Summary Report') {
             let resp: any = this.sharedService.getAddressBylatLong(1, responseData.responseData.data, 10);
             this.reportResponseData = resp;
+            this.totalItem=responseData.responseData.totalCount;
           } else {
             this.reportResponseData.push(responseData.responseData);
           }
-        setTimeout(()=>{                      // <<<---using ()=> syntax
+        setTimeout(()=>{                      // <<<---using ()=> syntax   
           this.viewReport();
       }, 2000);
        
@@ -88,7 +91,6 @@ export class ViewReportComponent implements OnInit {
         vehicleType = ele.vehicleType;
       }
       this.dialogData.vehicleType=vehicleType;
-      console.log(this.dialogData?.vehicleType)
     });
     //let resData = this.reportResponseData.map((item: any) => Object.assign({}, item));
     this.reportResponseData.map((x: any) => {
@@ -102,7 +104,6 @@ export class ViewReportComponent implements OnInit {
       return x
     });
     //resData = this.reportResponseData;
-    //console.log(resData)
     this.getReportData();
   }
 

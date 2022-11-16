@@ -76,7 +76,7 @@ export class ReportsComponent implements OnInit {
     switch (tab) {
       case 'stoppage': this.tabArrayData = [{
         label: 'Stopage Report',
-        disc: 'All the stoppages of a vehicles with certain stoppage time at a particular location'
+        disc: 'All the stoppages of a vehicles with certain stoppage time at a particular location',
       },
       {
         label: 'Daywise Stoppage Report',
@@ -126,7 +126,11 @@ export class ReportsComponent implements OnInit {
     }
 
   }
+  clearValidation(formDirective?:any){
+    formDirective.resetForm();
+  }
   setIndex(index: number, label: any) {
+    this.getStoppageData();
     this.selectedTablabel = label;
     this.selectedIndex = index;
     if (label == 'Stopage Report' || label == 'Distance Report') {
@@ -155,7 +159,6 @@ export class ReportsComponent implements OnInit {
     } else if (label == 'Day Distance Report' || label == 'Overspeed Report') {
       this.selectTimePeriod('2')
     } else {
-
     }
   }
 
