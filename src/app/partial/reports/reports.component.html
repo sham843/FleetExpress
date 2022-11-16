@@ -7,17 +7,17 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="pills-stoppage-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-stoppage" type="button" role="tab" aria-controls="pills-stoppage"
-                        aria-selected="true" (click)="selectedTab('stoppage')">stoppage</button>
+                        aria-selected="true" (click)="selectedTab('stoppage');clearValidation(formDirective)">stoppage</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-distance-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-distance" type="button" role="tab" aria-controls="pills-distance"
-                        aria-selected="false" (click)="selectedTab('distance')">distance</button>
+                        aria-selected="false" (click)="selectedTab('distance');clearValidation(formDirective)">distance</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-tools-tab" data-bs-toggle="pill" data-bs-target="#pills-tools"
                         type="button" role="tab" aria-controls="pills-tools" aria-selected="false"
-                        (click)="selectedTab('tools')">tools</button>
+                        (click)="selectedTab('tools');clearValidation(formDirective)">tools</button>
                 </li>
             </ul>
         </div>
