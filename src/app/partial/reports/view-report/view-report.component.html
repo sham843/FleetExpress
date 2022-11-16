@@ -7,19 +7,19 @@
             </button>
         </div>
         <div class="row align-items-center">
-            <div class="col-sm-2 view">
+            <div class="col-sm view">
                 From : {{this.fromDate}}
             </div>
-            <div class="col-sm-2 view">
+            <div class="col-sm view">
                 To : {{this.toDate}}
             </div>
-            <div class="col-sm-4 view text-center">
+            <div class="col-sm-4 view">
                 Vehicle No : {{this.dialogData.VehicleNumber}}({{this.dialogData.vehicleType}})
             </div>
-            <div class="col-sm-2 view">
+            <div class="col-sm view">
                 Date : {{currentDate}}
             </div>
-            <div class="col-sm-2 text-end">
+            <div class="col-sm-auto text-end">
                 <button mat-icon-button type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <mat-icon>filter_list</mat-icon>
                 </button>
@@ -58,7 +58,7 @@
     </div>
     <div mat-dialog-content class="mat-dialog-content pt-0">
         <table mat-table #table *ngIf="reportResponseData.length" [dataSource]="dataSource | paginate: {itemsPerPage: pageSize, 
-            currentPage: pageNumber, totalItems:totalItem}"  class="dashboard-table">
+            currentPage: pageNumber, totalItems:totalItem}"  class="dashboard-table w-100">
             <ng-container matColumnDef="rowNumber">
                 <th mat-header-cell *matHeaderCellDef class="srno">Sr No. </th>
                 <td mat-cell *matCellDef="let element" class="srno"> {{element.rowNumber?element.rowNumber:element.srNo?element.srNo:1}}
