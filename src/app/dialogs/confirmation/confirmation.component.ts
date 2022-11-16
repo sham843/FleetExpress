@@ -74,7 +74,7 @@ export class ConfirmationComponent implements OnInit {
         this.commonMethods.snackBar("New Password must be different from Current Password.", 1);
       }else{
         this.spinner.show();
-        this.apiCall.setHttp('get', 'login/change-password?UserId=' + this.webStorage.getUserId() + '&NewPassword=' + this.changePassForm.value.reTypePwd + '&OldPassword=' + this.changePassForm.value.currentPwd, true, false, false, 'fleetExpressBaseUrl');
+        this.apiCall.setHttp('get', 'login/change-password/'+this.changePassForm.value.currentPwd+'?&UserId=' + this.webStorage.getUserId() + '&NewPassword=' + this.changePassForm.value.reTypePwd , true, false, false, 'fleetExpressBaseUrl');
         this.apiCall.getHttp().subscribe((response: any) => {
           if (response.responseData == "Password Changed Successfully...") {
             this.spinner.hide();

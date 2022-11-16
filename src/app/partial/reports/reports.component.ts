@@ -1,6 +1,6 @@
 import { MapsAPILoader } from '@agm/core';
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormControl, FormGroupDirective } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { ConfigService } from 'src/app/services/config.service';
@@ -31,6 +31,7 @@ export class ReportsComponent implements OnInit {
   currentDate = moment().toISOString();
   header: any;
   key: any;
+  @ViewChild(FormGroupDirective) formGroupDirective!: FormGroupDirective;
   timePeriodArray: timePeriodArray[] = [
     { value: '1', viewValue: 'Today' },
     { value: '2', viewValue: '24hr' },
@@ -44,7 +45,7 @@ export class ReportsComponent implements OnInit {
   geoCoders: any;
   pageNo: number = 1;
   pageSize: number = 10;
-  isSubmitted:boolean=false;
+  isSubmitted: boolean = false;
   get f() { return this.reportForm.controls };
   constructor(private fb: FormBuilder,
     private master: MasterService,
@@ -81,10 +82,10 @@ export class ReportsComponent implements OnInit {
         label: 'Daywise Stoppage Report',
         disc: 'Report for stoppages of a vehicle in a day'
       },
-      // {
-      //   label: 'Locationwise Stoppage Report',
-      //   disc: 'All the stoppages of a vehicles, at a particular location'
-      // },
+        // {
+        //   label: 'Locationwise Stoppage Report',
+        //   disc: 'All the stoppages of a vehicles, at a particular location'
+        // },
       ];
         this.setIndex(0, 'Stopage Report');
         break;
@@ -123,19 +124,19 @@ export class ReportsComponent implements OnInit {
       ]; this.setIndex(0, 'Overspeed Report');
         break;
     }
-    
+
   }
   setIndex(index: number, label: any) {
     this.selectedTablabel = label;
     this.selectedIndex = index;
-    if(label == 'Stopage Report' || label=='Distance Report'){
+    if (label == 'Stopage Report' || label == 'Distance Report') {
       this.timePeriodArray = [
         { value: '1', viewValue: 'Today' },
         { value: '2', viewValue: '24hr' },
         { value: '3', viewValue: 'Weekly' },
         { value: '4', viewValue: 'Custom' },
       ];
-    }else{
+    } else {
       this.timePeriodArray = [
         { value: '1', viewValue: 'Today' },
         { value: '2', viewValue: '24hr' },
@@ -149,11 +150,11 @@ export class ReportsComponent implements OnInit {
       this.reportForm.controls["timePeriod"].clearValidators();
     }
     this.reportForm.controls["timePeriod"].updateValueAndValidity();
-    if(label=='Daywise Stoppage Report'){
+    if (label == 'Daywise Stoppage Report') {
       this.selectTimePeriod('1');
-    }else if(label=='Day Distance Report' || label=='Overspeed Report'){
+    } else if (label == 'Day Distance Report' || label == 'Overspeed Report') {
       this.selectTimePeriod('2')
-    }else{
+    } else {
 
     }
   }
@@ -170,11 +171,11 @@ export class ReportsComponent implements OnInit {
       }
   }
   selectTimePeriod(value: any) {
-    const currentDateTime=(moment.utc().subtract(1, 'minute')).toISOString();
+    const currentDateTime = (moment.utc().subtract(1, 'minute')).toISOString();
     switch (value) {
       case "1":
         this.reportForm.patchValue({
-          fromDate:( moment.utc().startOf('day').subtract(5, 'hour').subtract(30, 'minute')).toISOString(),
+          fromDate: (moment.utc().startOf('day').subtract(5, 'hour').subtract(30, 'minute')).toISOString(),
           toDate: currentDateTime,
         })
         break;
@@ -202,14 +203,14 @@ export class ReportsComponent implements OnInit {
     }
   }
   settodate(fromDate: any) {
-    const label=this.selectedTablabel;
+    const label = this.selectedTablabel;
     this.reportForm.controls['toDate'].setValue('');
     if (label == 'Stopage Report' || label == 'Distance Report') {
       this.maxTodayDateString = (moment(fromDate).add(7, 'days').format("YYYY-MM-DD HH:mm:ss"));
     } else {
       this.maxTodayDateString = (moment(fromDate).add(1, 'days').format("YYYY-MM-DD HH:mm:ss"));
     }
-    const maxTodayDateTime= moment(moment(this.maxTodayDateString)).toISOString();
+    const maxTodayDateTime = moment(moment(this.maxTodayDateString)).toISOString();
     this.maxTodayDate = moment(this.maxTodayDateString).toISOString() < moment().toISOString() ? moment(maxTodayDateTime).toISOString() : moment().toISOString();
   }
   checkValidDate() {
@@ -224,16 +225,16 @@ export class ReportsComponent implements OnInit {
   }
   getQueryString() {
     const reportData = this.reportForm.value;
-    const selectedVehicle=this.vehicleList.find(x=>x.vehicleRegistrationNo==reportData.VehicleNumber)
+    const selectedVehicle = this.vehicleList.find(x => x.vehicleRegistrationNo == reportData.VehicleNumber)
     let str = "?";
     const isVenicleNumber = (this.selectedTablabel == 'Summary Report' || this.selectedTablabel == 'Trip Report') ? true : false
     this.reportForm && reportData.fromDate && (str += "fromDate=" + new Date(reportData.fromDate).toISOString())
     this.reportForm && reportData.toDate && (str += "&toDate=" + new Date(reportData.toDate).toISOString())
     this.reportForm && reportData.VehicleNumber && (str += (isVenicleNumber ? "&VehicleNumber=" : "&VehicleNo=") + reportData.VehicleNumber)
-     &&(str += "&VehicleId=" + selectedVehicle?.id) 
+      && (str += "&VehicleId=" + selectedVehicle?.id)
     return str;
   }
-  SearchReport() {
+  SearchReport(formDirective:any) {
     this.isSubmitted = true;
     if (this.reportForm.invalid) {
       return;
@@ -265,17 +266,15 @@ export class ReportsComponent implements OnInit {
         disableClose: this.config.disableCloseBtnFlag,
       })
       dialog.afterClosed().subscribe(() => {
+        formDirective.resetForm();
         this.reportResponseData = [];
         this.isSubmitted = false;
         this.getStoppageData();
         this.setIndex(this.selectedIndex, this.selectedTablabel);
       }
       )
-
-
-
     }
   }
 
-  
+
 }

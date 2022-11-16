@@ -50,7 +50,7 @@
         <agm-map [latitude]="configService.lat" [zoom]="6" [longitude]="configService.long" [mapTypeId]="mapViewType"
             (mapReady)="onMapReady($event)">
         </agm-map>
-        <button class="btn-map-close" (click)="removeShape()" *ngIf="isShapeDrawn" aria-label="Remove Shape"><i
+        <button class="btn-map-close" (click)="removeShape()" *ngIf="isShapeDrawn" aria-label="Remove Shape" title="Delete Geofence"><i
                 class="fa-solid fa-xmark"></i>
         </button>
     </div>
