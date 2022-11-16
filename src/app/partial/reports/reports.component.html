@@ -73,10 +73,10 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <label class="form-label">Start Date</label>
-                                        <div class="d-block"  [ngClass]="{ 'isdisabled':(f['timePeriod'].value !='4' && f['timePeriod'].value !='')  }">
+                                        <div class="d-block"  [ngClass]="{ 'isdisabled':(f['timePeriod'].value !='4' && f['timePeriod'].value !=null)  }">
                                             <mat-form-field [appearance]="config.matFormField" class="w-100">
                                                 <input matInput [ngxMatDatetimePicker]="picker" [max]="currentDate" (dateChange)="settodate(f['fromDate'].value);checkValidDate()"
-                                                    [readonly]="f['timePeriod'].value !='4'" formControlName="fromDate">
+                                                    [readonly]="f['timePeriod'].value !='4' || f['timePeriod'].value !=null" formControlName="fromDate">
                                                 <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
                                                 <ngx-mat-datetime-picker #picker>
                                                 </ngx-mat-datetime-picker>
@@ -89,10 +89,10 @@
                                     </div>
                                     <div class="col-sm-6" >
                                         <label class="form-label">End Date</label>
-                                        <div class="d-block" [ngClass]="{ 'isdisabled':(f['timePeriod'].value !='4' && f['timePeriod'].value !='')}">
+                                        <div class="d-block" [ngClass]="{ 'isdisabled':(f['timePeriod'].value !='4' && f['timePeriod'].value !=null)}">
                                             <mat-form-field [appearance]="config.matFormField" class="w-100">
                                                 <input matInput [ngxMatDatetimePicker]="picker1" [min]="f['fromDate'].value " [max]="maxTodayDate || currentDate"
-                                                    [readonly]="f['timePeriod'].value !='4' " formControlName="toDate"  (dateChange)="checkValidDate()">
+                                                    [readonly]="(f['timePeriod'].value !='4' || f['timePeriod'].value ==null)  " formControlName="toDate"  (dateChange)="checkValidDate()">
                                                 <mat-datepicker-toggle matSuffix [for]="$any(picker1)"></mat-datepicker-toggle>
                                                 <ngx-mat-datetime-picker #picker1>
                                                 </ngx-mat-datetime-picker>

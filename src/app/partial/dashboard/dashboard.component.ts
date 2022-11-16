@@ -120,8 +120,8 @@ export class DashboardComponent implements OnInit {
             strokeWidth: 0
           }
         }
-      }
-    };
+      },
+    }
   }
 
   ngOnInit(): void {
@@ -298,6 +298,7 @@ export class DashboardComponent implements OnInit {
     this.barChartDisplay = true;
   }
   getpieChartData(items: any) {
+    this.total=0;
     const series = [0, 0, 0, 0];
     series[0] = items.idleVehicles|0;
     series[1] = items.stopVehicles|0;
@@ -307,7 +308,8 @@ export class DashboardComponent implements OnInit {
       this.total=this.total+x
     })
     this.FleetStatusPieChartOption.series = series;
-    this.FleetStatusPieChartOption.labels= [series[0]+" Idle", series[1]+" Stopped", series[2]+" Running", series[3]+" Offline"],
+    this.FleetStatusPieChartOption.labels= ["Idle", "Stopped", "Running", "Offline"],
+    // this.FleetStatusPieChartOption.labels= [series[0]+" Idle", series[1]+" Stopped", series[2]+" Running", series[3]+" Offline"],
     this.FleetStatusPieChartOption.labels.total= {
       show: true,
       showAlways: true,
@@ -321,7 +323,7 @@ export class DashboardComponent implements OnInit {
           return a + b
         }, 0)
       }
-    },
+    }
     this.pieChartDisplay = true;
   }
   onMapReady(map: any) {

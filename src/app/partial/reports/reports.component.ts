@@ -130,7 +130,6 @@ export class ReportsComponent implements OnInit {
     formDirective.resetForm();
   }
   setIndex(index: number, label: any) {
-    this.getStoppageData();
     this.selectedTablabel = label;
     this.selectedIndex = index;
     if (label == 'Stopage Report' || label == 'Distance Report') {
@@ -148,18 +147,21 @@ export class ReportsComponent implements OnInit {
       ];
     }
     this.showTimePeriod = (label == 'Stopage Report' || label == 'Distance Report') ? true : false;
+    console.log(this.showTimePeriod + "     " + label);
+    // debugger
     if (label == 'Stopage Report' || label == 'Distance Report') {
       this.reportForm.controls["timePeriod"].setValidators([Validators.required]);
     } else {
       this.reportForm.controls["timePeriod"].clearValidators();
     }
     this.reportForm.controls["timePeriod"].updateValueAndValidity();
-    if (label == 'Daywise Stoppage Report') {
-      this.selectTimePeriod('1');
-    } else if (label == 'Day Distance Report' || label == 'Overspeed Report') {
-      this.selectTimePeriod('2')
-    } else {
-    }
+    // if (label == 'Daywise Stoppage Report') {
+    //   this.selectTimePeriod('1');
+    // } else if (label == 'Day Distance Report' || label == 'Overspeed Report') {
+    //   this.selectTimePeriod('2')
+    // } else {
+    // }
+    console.log(this.reportForm.controls)
   }
 
   getVehicleData() {
