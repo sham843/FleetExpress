@@ -23,7 +23,7 @@
         </div>
         <div class="card border-0 rounded">
             <div class="card-body">
-                <form [formGroup]="reportForm" (ngSubmit)="SearchReport()">
+                <form [formGroup]="reportForm" #formDirective="ngForm" (ngSubmit)="SearchReport(formDirective)">
                     <div class="row justify-content-between">
                         <div class="col-sm-6 ps-0">
                             <div class="list-group list-group-flush report-list">
@@ -82,8 +82,8 @@
                                                 </ngx-mat-datetime-picker>
                                             </mat-form-field>
                                             
-                                            <mat-error *ngIf="f['timePeriod'].value.errors">
-                                                <span class="text-danger" *ngIf="f['timePeriod'].value.hasError('required')">This field is required</span>
+                                            <mat-error *ngIf="isSubmitted && f['timePeriod'].value?.errors">
+                                                <span class="text-danger" *ngIf="isSubmitted && f['timePeriod'].value.hasError('required')">This field is required</span>
                                             </mat-error>
                                         </div>
                                     </div>
