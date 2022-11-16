@@ -21,13 +21,14 @@ export class ViewReportComponent implements OnInit {
   fromDate: any;
   toDate: any;
   currentDate: any;
-  header: any;
+  header=new Array();
   key: any;
   dataSource:any;
-  displayedColumns:any;
+  displayedColumns=new Array();
   pageNumber: number = 1;
   pageSize: number = 10;
   reportResponseData=new Array();
+  colunms=new Array();
   constructor(public dialogRef: MatDialogRef<ViewReportComponent>,
     public CommonMethod: CommonMethodsService,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -108,42 +109,52 @@ export class ViewReportComponent implements OnInit {
 
   getReportData() {
     if (this.dialogData.pageNames == "Speed Range Report") {
-      this.header = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
-      this.displayedColumns= ['rowNumber', 'deviceDateTime', 'speed', 'address'];
+     // this.header = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
+      this.colunms= ['rowNumber', 'deviceDateTime', 'speed', 'address'];
     }
     else if (this.dialogData.pageNames == "Overspeed Report") {
-      this.header = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
-      this.displayedColumns = ['rowNumber', 'deviceDateTime', 'speed', 'address'];
+      //this.header = ["Sr No.", "Date", "Speed(Km/h)", "Address"];
+      this.colunms = [{ header:"Sr No.", column:'rowNumber', status:true },{header:"Date", column:'deviceDateTime', status:true },{header:"Speed(Km/h)", column:'speed', status:true },{header:"Address", column:'address', status:true }];
     }
     else if (this.dialogData.pageNames == "Address Report") {
-    this.header = ["Sr No.", "Date",  "Address"];
-    this.displayedColumns = ['rowNumber', 'deviceDateTime', 'address'];
+    //this.header = ["Sr No.", "Date",  "Address"];
+    this.colunms = ['rowNumber', 'deviceDateTime', 'address'];
     }
     else if (this.dialogData.pageNames == "Trip Report") {
-      this.header = ["Sr No.", " Distance", "Duration", "Start Date", "Start Address", "End Date", "End Address"];
-      this.displayedColumns = ['rowNumber', 'travelledDistance', 'tripDurationInMins', 'startDateTime', 'startaddress', 'endDateTime', 'endaddress'];
+      //this.header = ["Sr No.", " Distance", "Duration", "Start Date", "Start Address", "End Date", "End Address"];
+      this.colunms = ['rowNumber', 'travelledDistance', 'tripDurationInMins', 'startDateTime', 'startaddress', 'endDateTime', 'endaddress'];
     } 
     else if(this.dialogData.pageNames == "Stopage Report") {
-      this.header = ["SrNo.", "Vehicle no", "From", "To", "Duration", "Location", "STPL Device"];
-      this.displayedColumns = ['rowNumber', 'vehicleNo', 'dateOn', 'dateOff', 'tripDurationInMins', 'address','isMahaMiningDevice'];
+     // this.header = ["SrNo.", "Vehicle no", "From", "To", "Duration", "Location", "STPL Device"];
+      this.colunms = ['rowNumber', 'vehicleNo', 'dateOn', 'dateOff', 'tripDurationInMins', 'address','isMahaMiningDevice'];
     }
     else if(this.dialogData.pageNames == "Daywise Stoppage Report") {
-      this.header = ["SrNo.", "Vehicle no", "From Time", "To Time", "Duration"];
-      this.displayedColumns = ['rowNumber', 'vehicleNo', 'dateOn', 'dateOff', 'tripDurationInMins'];
+     // this.header = ["SrNo.", "Vehicle no", "From Time", "To Time", "Duration"];
+      this.colunms = ['rowNumber', 'vehicleNo', 'dateOn', 'dateOff', 'tripDurationInMins'];
     }
      else if(this.dialogData.pageNames == "Day Distance Report") {
-      this.header = ["SrNo.", "Vehicle no", "From Time", "To Time", "Total Distance[KM]", "STPL Device"];
-      this.displayedColumns = ['rowNumber', 'vehicleNo', 'fromDate', 'toDate', 'travelledDistance','isMahaMiningDevice'];
+     // this.header = ["SrNo.", "Vehicle no", "From Time", "To Time", "Total Distance[KM]", "STPL Device"];
+      this.colunms = ['rowNumber', 'vehicleNo', 'fromDate', 'toDate', 'travelledDistance','isMahaMiningDevice'];
     }
     else if(this.dialogData.pageNames == "Distance Report") {
-      this.header = ["SrNo.", "Vehicle no", "From Date Time", "To Date Time", "Distance travelled [KM]", "Time Taken [hr]", "STPL Device"];
-      this.displayedColumns = ['rowNumber', 'vehicleNo', 'fromDate', 'toDate', 'travelledDistance','runningTime','isMahaMiningDevice'];
+      //this.header = ["SrNo.", "Vehicle no", "From Date Time", "To Date Time", "Distance travelled [KM]", "Time Taken [hr]", "STPL Device"];
+      this.colunms = ['rowNumber', 'vehicleNo', 'fromDate', 'toDate', 'travelledDistance','runningTime','isMahaMiningDevice'];
     }
     else {
-      this.header = ["SrNo.", " Driver Name", "Mobile Number", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
-      this.displayedColumns = ['rowNumber', 'driverName', 'mobileNo', 'vehicleType', 'runningTime','stoppageTime','idleTime','maxSpeed','travelledDistance'];
+      //this.header = ["SrNo.", " Driver Name", "Mobile Number", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
+      this.colunms = ['rowNumber', 'driverName', 'mobileNo', 'vehicleType', 'runningTime','stoppageTime','idleTime','maxSpeed','travelledDistance'];
     }
     this.dataSource=this.reportResponseData;
+    this.selecteColumn()
+  }
+  selecteColumn(){
+    this.displayedColumns=[];
+    this.colunms.map((x:any)=>{
+      if(x.status==true ){
+        this.displayedColumns.push(x.column);
+        this.header.push(x.header);
+      }
+    })
   }
   onDownloadPDF(){
     this.excelService.downLoadPdf(this.reportResponseData, this.dialogData.pageNames,this.dialogData,this.header,this.displayedColumns);
