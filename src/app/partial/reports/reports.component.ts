@@ -147,8 +147,6 @@ export class ReportsComponent implements OnInit {
       ];
     }
     this.showTimePeriod = (label == 'Stopage Report' || label == 'Distance Report') ? true : false;
-    console.log(this.showTimePeriod + "     " + label);
-    // debugger
     if (label == 'Stopage Report' || label == 'Distance Report') {
       this.reportForm.controls["timePeriod"].setValidators([Validators.required]);
     } else {
@@ -161,7 +159,6 @@ export class ReportsComponent implements OnInit {
     //   this.selectTimePeriod('2')
     // } else {
     // }
-    console.log(this.reportForm.controls)
   }
 
   getVehicleData() {

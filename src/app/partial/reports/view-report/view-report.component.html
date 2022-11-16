@@ -177,7 +177,7 @@
     <div mat-dialog-actions>
         <div class="d-flex justify-content-between w-100 form-container">
             <button type="button" class="btn btn-light-main" (click)="onNoClick('No')">Cancel</button>
-            <button type="button" class="btn btn-outline-secondary" [matMenuTriggerFor]="menu">
+            <button type="button" class="btn btn-outline-secondary" [matMenuTriggerFor]="menu" [disabled]="reportResponseData.length==0">
                 <i class="fa-solid fa-download"></i>
             </button>
             <mat-menu #menu="matMenu">
