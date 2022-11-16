@@ -68,7 +68,7 @@ export class ReportsComponent implements OnInit {
       fromDate: ['', Validators.required],
       toDate: ['', Validators.required],
       VehicleNumber: ['', Validators.required],
-      timePeriod: ['', Validators.required]
+      timePeriod: []
     })
   }
   selectedTab(tab: any) {
@@ -147,8 +147,8 @@ export class ReportsComponent implements OnInit {
         { value: '4', viewValue: 'Custom' },
       ];
     }
-    this.showTimePeriod = (label == 'Stopage Report' || label == 'Overspeed Report' || label == 'Speed Range Report') ? true : false;
-    if (label == 'Stopage Report' || label == 'Overspeed Report' || label == 'Speed Range Report') {
+    this.showTimePeriod = (label == 'Stopage Report' || label == 'Distance Report') ? true : false;
+    if (label == 'Stopage Report' || label == 'Distance Report') {
       this.reportForm.controls["timePeriod"].setValidators([Validators.required]);
     } else {
       this.reportForm.controls["timePeriod"].clearValidators();

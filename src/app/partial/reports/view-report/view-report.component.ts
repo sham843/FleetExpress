@@ -93,7 +93,6 @@ export class ViewReportComponent implements OnInit {
       }
       this.dialogData.vehicleType=vehicleType;
     });
-    //let resData = this.reportResponseData.map((item: any) => Object.assign({}, item));
     this.reportResponseData.map((x: any) => {
       x.deviceDateTime?x.deviceDateTime = this.datepipe.transform(x.deviceDateTime, 'dd-MM-YYYY hh:mm a'):'';
       x.startDateTime? x.startDateTime=this.datepipe.transform(x.startDateTime, 'dd-MM-YYYY hh:mm a'):'';
@@ -104,52 +103,49 @@ export class ViewReportComponent implements OnInit {
       x.toDate? x.toDate=this.datepipe.transform(x.toDate, 'dd-MM-YYYY hh:mm a'):'';
       return x
     });
-    //resData = this.reportResponseData;
     this.getReportData();
   }
 
   getReportData() {
     if (this.dialogData.pageNames == "Speed Range Report") {
-     // this.header = ["Sr No.", " Date", "Speed(Km/h)", "Address"];
-      this.colunms= ['rowNumber', 'deviceDateTime', 'speed', 'address'];
+      this.colunms = [{ header:"Sr No.", column:'rowNumber', status:true },{header:"Date", column:'deviceDateTime', status:true },{header:"Speed(Km/h)", column:'speed', status:true },{header:"Address", column:'address', status:true }];
     }
     else if (this.dialogData.pageNames == "Overspeed Report") {
-      //this.header = ["Sr No.", "Date", "Speed(Km/h)", "Address"];
       this.colunms = [{ header:"Sr No.", column:'rowNumber', status:true },{header:"Date", column:'deviceDateTime', status:true },{header:"Speed(Km/h)", column:'speed', status:true },{header:"Address", column:'address', status:true }];
     }
     else if (this.dialogData.pageNames == "Address Report") {
-    //this.header = ["Sr No.", "Date",  "Address"];
-    this.colunms = ['rowNumber', 'deviceDateTime', 'address'];
+    this.colunms = [{ header:"Sr No.", column:'rowNumber', status:true },{header:"Date", column:'deviceDateTime', status:true },{header:"Address", column:'address', status:true }];
+    
     }
     else if (this.dialogData.pageNames == "Trip Report") {
-      //this.header = ["Sr No.", " Distance", "Duration", "Start Date", "Start Address", "End Date", "End Address"];
-      this.colunms = ['rowNumber', 'travelledDistance', 'tripDurationInMins', 'startDateTime', 'startaddress', 'endDateTime', 'endaddress'];
+      this.colunms = [{ header:"Sr No.", column:'rowNumber', status:true },{header:"Distance", column:'travelledDistance', status:true },{header:"Duration", column:'tripDurationInMins', status:true },
+      {header:"Start Date", column:'startDateTime', status:true },{header:"Start Address", column:'startaddress', status:true },{header:"End Date", column:'endDateTime', status:true },{header:"End Address", column:'endaddress', status:true }];
     } 
     else if(this.dialogData.pageNames == "Stopage Report") {
-     // this.header = ["SrNo.", "Vehicle no", "From", "To", "Duration", "Location", "STPL Device"];
-      this.colunms = ['rowNumber', 'vehicleNo', 'dateOn', 'dateOff', 'tripDurationInMins', 'address','isMahaMiningDevice'];
+      this.colunms = [{ header:"Sr No.", column:'rowNumber', status:true },{header:"Vehicle no", column:'vehicleNo', status:true },{header:"From", column:'dateOn', status:true },{header:"To", column:'dateOff', status:true }
+      ,{header:"Duration", column:'dateOff', status:true },{header:"To", column:'dateOff', status:true },{header:"STPL Device", column:'isMahaMiningDevice', status:true }];
     }
     else if(this.dialogData.pageNames == "Daywise Stoppage Report") {
-     // this.header = ["SrNo.", "Vehicle no", "From Time", "To Time", "Duration"];
-      this.colunms = ['rowNumber', 'vehicleNo', 'dateOn', 'dateOff', 'tripDurationInMins'];
+      this.colunms = [{ header:"Sr No.", column:'tripDurationInMins', status:true },{header:"Location", column:'address', status:true },{header:"From Time", column:'dateOn', status:true },{header:"To Time", column:'address', status:true },{header:"Duration", column:'tripDurationInMins', status:true }];
     }
      else if(this.dialogData.pageNames == "Day Distance Report") {
-     // this.header = ["SrNo.", "Vehicle no", "From Time", "To Time", "Total Distance[KM]", "STPL Device"];
-      this.colunms = ['rowNumber', 'vehicleNo', 'fromDate', 'toDate', 'travelledDistance','isMahaMiningDevice'];
+      this.colunms = [{ header:"Sr No.", column:'rowNumber', status:true },{header:"Vehicle no", column:'vehicleNo', status:true },{header:"From Time", column:'fromDate', status:true },{header:"To Time", column:'toDate', status:true }
+      ,{header:"Total Distance[KM]", column:'travelledDistance', status:true },{header:"STPL Device", column:'isMahaMiningDevice', status:true }];
     }
     else if(this.dialogData.pageNames == "Distance Report") {
-      //this.header = ["SrNo.", "Vehicle no", "From Date Time", "To Date Time", "Distance travelled [KM]", "Time Taken [hr]", "STPL Device"];
-      this.colunms = ['rowNumber', 'vehicleNo', 'fromDate', 'toDate', 'travelledDistance','runningTime','isMahaMiningDevice'];
+      this.colunms = [{ header:"Sr No.", column:'rowNumber', status:true },{header:"Vehicle no", column:'vehicleNo', status:true },{header:"From Date Time", column:'fromDate', status:true },{header:"To Date Time", column:'toDate', status:true }
+      ,{header:"Distance travelled [KM]", column:'travelledDistance', status:true },{header:"Time Taken [hr]", column:'runningTime', status:true },{header:"STPL Device", column:'isMahaMiningDevice', status:true }];
     }
     else {
-      //this.header = ["SrNo.", " Driver Name", "Mobile Number", "Veh.Type", "Running Time", "Stoppage Time", "Idle Time", "Max Speed", "Travelled Distance"];
-      this.colunms = ['rowNumber', 'driverName', 'mobileNo', 'vehicleType', 'runningTime','stoppageTime','idleTime','maxSpeed','travelledDistance'];
+      this.colunms = [{ header:"Sr No.", column:'rowNumber', status:true },{header:"Driver Name", column:'driverName', status:true },{header:"Mobile Number", column:'mobileNo', status:true },{header:"Veh.Type", column:'vehicleType', status:true }
+      ,{header:"Running Time", column:'runningTime', status:true },{header:"Stoppage Time", column:'stoppageTime', status:true },{header:"Idle Time", column:'idleTime', status:true },{header:"Max Speed", column:'maxSpeed', status:true },{header:"Travelled Distance", column:'travelledDistance', status:true }];
     }
     this.dataSource=this.reportResponseData;
     this.selecteColumn()
   }
   selecteColumn(){
     this.displayedColumns=[];
+    this.header=[];
     this.colunms.map((x:any)=>{
       if(x.status==true ){
         this.displayedColumns.push(x.column);
