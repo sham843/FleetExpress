@@ -146,7 +146,7 @@
             <div class="col-sm-6">
                 <mat-form-field appearance="standard" class="w-100">
                     <mat-label>Vehicle's available Date</mat-label>
-                    <input matInput [matDatepicker]="availabledate" formControlName="vehicleDate">
+                    <input matInput [matDatepicker]="availabledate" formControlName="vehicleDate" [min]="currentDate">
                     <mat-datepicker-toggle matSuffix [for]="availabledate"></mat-datepicker-toggle>
                     <mat-datepicker #availabledate></mat-datepicker>
                 </mat-form-field>
@@ -154,8 +154,8 @@
             <div class="col-sm-6">
                 <mat-form-field appearance="standard" class="w-100">
                     <mat-label>Vehicle’s available Time</mat-label>
-                    <input matInput [ngxTimepicker]="availabletime" formControlName="vehicleTime">
-                    <ngx-material-timepicker #availabletime></ngx-material-timepicker>
+                    <input matInput [ngxTimepicker]="availabletime" formControlName="vehicleTime" >
+                    <ngx-material-timepicker #availabletime ></ngx-material-timepicker>
                     <mat-icon matSuffix >access_time</mat-icon>
                 </mat-form-field>
             </div>

@@ -28,11 +28,10 @@ export class TicketRaisedComponent implements OnInit {
   get complaint() { return this.complaintForm.controls };
   constructor(public dialogRef: MatDialogRef<TicketRaisedComponent>,
      private fb:FormBuilder, private commonMethod:CommonMethodsService,
-     //public validationService:ValidationService, 
     private error:ErrorsService, private apiCall:ApiCallService,
     private spinner:NgxSpinnerService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private webStorage:WebStorageService
+    private webStorage:WebStorageService,
   ) { }
 
   ngOnInit(): void {
@@ -125,14 +124,14 @@ export class TicketRaisedComponent implements OnInit {
       const userFormData = this.complaintForm.value;
       const obj = {
         "id": 0,
-        "vehicleId": 0,
-        "subject": "",
+        "vehicleId": this.dialogData?.vehicleId,
+        "subject": "GPS Wire Cut",
         "message": "",
         "complaintDate": new Date().toISOString(),
-        "complaintFrom": 0,
+        "complaintFrom": this.webStorage.getUserId(),
         "forwardedTo": "",
-        "complaintTypeId": 0,
-        "complaintStatusId": 0,
+        "complaintTypeId": 1,
+        "complaintStatusId": 2,
         "stateId": userFormData?.stateId,
         "cityId": userFormData?.cityId,
         "createdBy": this.webStorage.getUserId(),
@@ -142,23 +141,22 @@ export class TicketRaisedComponent implements OnInit {
         "vehicleDate": new Date(userFormData?.vehicleDate).toISOString(),
         "vehicleTime": userFormData?.vehicleTime
       }
-      console.log(obj) 
-      //this.spinner.show();
-      // this.apiCall.setHttp('post', 'maintenance/save-update-complaint', true, obj, false, 'fleetExpressBaseUrl');
-      // this.subscription = this.apiCall.getHttp().subscribe({
-      //   next: (res: any) => {
-      //     this.spinner.hide();
-      //     if (res.statusCode === "200") {
-      //       this.commonMethod.snackBar('Complaint ticket raised sucssessfully',0)
-      //         this.onNoClick('Yes');
-      //     } else {
-      //         this.error.handelError(res.statusCode);
-      //     }
-      //   }
-      // },(error: any) => {
-      //   this.spinner.hide();
-      //   this.error.handelError(error.status)
-      // });
+      this.spinner.show();
+      this.apiCall.setHttp('post', 'maintenance/save-update-complaint', true, obj, false, 'fleetExpressBaseUrl');
+      this.subscription = this.apiCall.getHttp().subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+          if (res.statusCode === "200") {
+            this.commonMethod.snackBar('Complaint ticket raised sucssessfully',0)
+              this.onNoClick('Yes');
+          } else {
+              this.error.handelError(res.statusCode);
+          }
+        }
+      },(error: any) => {
+        this.spinner.hide();
+        this.error.handelError(error.status)
+      });
     }
   }
   
