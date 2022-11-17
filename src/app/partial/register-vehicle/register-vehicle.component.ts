@@ -87,6 +87,7 @@ export class RegisterVehicleComponent implements OnInit {
       }
       else {
         this.vehicleData = [];
+        this.totalVehicle=0;
       }
     },
       (error: any) => {

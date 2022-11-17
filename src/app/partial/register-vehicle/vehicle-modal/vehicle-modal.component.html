@@ -33,7 +33,7 @@
                             <input matInput formControlName="vehicleNo" required
                                 (keypress)="this.vs.alphaNumeric($event)" minlength="6" maxlength="10"
                                 [readonly]="this.cardTitle == 'Vehicle Details'"
-                                [value]="registerVehicleForm.get('vehicleNo')?.value | uppercase">
+                                oninput="this.value = this.value.toUpperCase()">
                             <mat-error *ngIf="f['vehicleNo'].errors">
                                 <span *ngIf="f['vehicleNo'].hasError('required')" class="text-danger">Vehicle number
                                     required</span>

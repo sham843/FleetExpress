@@ -64,7 +64,7 @@ export class VehicleModalComponent implements OnInit {
   }
   getFormControl() {
     this.registerVehicleForm = this.fb.group({
-      vehicleNo: [this.dialogData ? this.dialogData.vehicleNo : '', [Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(10), Validators.pattern('^([A-Z]{2}[0-9]{2}[A-Z]{2,3}[0-9]{4})|^([A-Z]{3}[0-9]{3,4})')])]],
+      vehicleNo: [this.dialogData ? this.dialogData.vehicleNo : '', [Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(10), Validators.pattern('^([A-Z]{2}[0-9]{2}[A-Z]{2,3}[0-9]{4})|^([A-Z]{3}[0-9]{3,4})|^([A-Z]{2}[0-9]{2}[A-Z]{1}[0-9]{4})')])]],
       fuelType: [this.dialogData ? this.dialogData.fuelTypeId : ''],
       manufacturer: [this.dialogData ? this.dialogData.manufacturer : '', Validators.required],
       model: [this.dialogData ? this.dialogData.model : '', Validators.required],

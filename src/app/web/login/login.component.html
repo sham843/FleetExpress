@@ -14,10 +14,12 @@
                                     <mat-label>Username</mat-label>
                                     <input matInput placeholder="Enter Username" formControlName="username"
                                         autocomplete="off" required [ngClass]="{ 'is-invalid':f['username'].errors}"
-                                        (keypress)="this.valService.noSpaces($event);this.valService.alphaNumeric($event)" maxlength="20">
+                                        (keypress)="this.valService.noSpaces($event);this.valService.alphaNumeric($event)" (blur)="clearSpace()" maxlength="20">
                                     <mat-error *ngIf="f['username'].errors">
                                         <span *ngIf="f['username'].errors?.required" class="text-danger">
                                             Username is required</span>
+                                           <!--  <span *ngIf="f['username'].errors?.pattern" class="text-danger">
+                                                Enter valid Username</span> -->
                                     </mat-error>
                                 </mat-form-field>
                             </div>

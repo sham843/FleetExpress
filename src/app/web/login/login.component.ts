@@ -78,7 +78,10 @@ export class LoginComponent implements OnInit {
 get f(){
   return this.loginForm.controls;
 }
-
+clearSpace(){
+ let replaceName=this.loginForm.value.username.replace(/\s/g, "");
+ this.loginForm.controls['username'].setValue(replaceName);
+}
 ngOnDestroy() {
   if(this.subscription){
     this.subscription.unsubscribe();

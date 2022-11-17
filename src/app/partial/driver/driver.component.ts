@@ -81,6 +81,7 @@ export class DriverComponent implements OnInit {
         !this.driverName.value ?this.checkdata=[]:'';
         this.spinner.hide();
         this.driverDetails = [];
+        this.totalItem =0;
       }
     },
       (error: any) => {
