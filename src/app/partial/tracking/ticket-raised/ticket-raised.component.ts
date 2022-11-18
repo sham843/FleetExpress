@@ -58,7 +58,7 @@ export class TicketRaisedComponent implements OnInit {
   }
   
   getStates(){
-    this.apiCall.setHttp('get', 'MasterAsyncRepository/GetState', true, false, false, 'fleetExpressMasterUrl');
+    this.apiCall.setHttp('get', 'master/GetState', true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
@@ -70,7 +70,7 @@ export class TicketRaisedComponent implements OnInit {
     }, (error: any) => { this.error.handelError(error.status) });
   }
   getCity(StateId:any){
-    this.apiCall.setHttp('get', 'MasterAsyncRepository/GetCity?StateId='+StateId, true, false, false, 'fleetExpressMasterUrl');
+    this.apiCall.setHttp('get', 'master/GetCity?StateId='+StateId, true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
@@ -94,7 +94,7 @@ export class TicketRaisedComponent implements OnInit {
         "vehicleId": this.dialogData?.vehicleId,
         "vehicleNumber":this.dialogData?.vehicleNo,
         "flag": "I",
-        "createdBy": 0,
+        "createdBy":this.webStorage.getUserId(),
         "createdDate": new Date().toISOString(),
         "isDeleted": false,
       }
@@ -130,8 +130,8 @@ export class TicketRaisedComponent implements OnInit {
         "complaintDate": new Date().toISOString(),
         "complaintFrom": this.webStorage.getUserId(),
         "forwardedTo": "",
-        "complaintTypeId": 1,
-        "complaintStatusId": 2,
+        "complaintTypeId": 2,
+        "complaintStatusId": 1,
         "stateId": userFormData?.stateId,
         "cityId": userFormData?.cityId,
         "createdBy": this.webStorage.getUserId(),
