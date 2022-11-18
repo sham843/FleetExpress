@@ -180,7 +180,13 @@ export class VehicleModalComponent implements OnInit {
       third = vhlaData.splice(0, 2).join('');
       forth = vhlaData.join('');
     }
-    else {
+    else if(this.registerVehicleForm.value.vehicleNo.length == 9){
+      let vhlaData = (this.registerVehicleForm.value.vehicleNo).split('');
+      first = vhlaData.splice(0, 2).join('');
+      second = vhlaData.splice(0, 2).join('');
+      third = vhlaData.splice(0, 1).join('');
+      forth = vhlaData.join('');
+    }else{
       let vhlaData = (this.registerVehicleForm.value.vehicleNo).split('');
       oldFirst = vhlaData.splice(0, 3).join('');
       oldSecond = vhlaData.join('');
