@@ -34,7 +34,6 @@ export class ApiCallService {
   getBaseurl(url: string) {
     switch (url) {
       case 'fleetExpressBaseUrl': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/'; break
-      case 'fleetExpressMasterUrl': return 'https://aws-stpltrack-vehicletracking.mahamining.com/api/'; break
       default: return ''; break;
     }
   }
