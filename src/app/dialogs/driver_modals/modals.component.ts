@@ -209,7 +209,7 @@ export class ModalsComponent implements OnInit {
           this.dialogRef.close('add');
         }
         else {
-          this.dialogRef.close('');
+          // this.dialogRef.close('');
           this.spinner.hide();
           this.commonMethods.snackBar(response.statusMessage,1);
         }
