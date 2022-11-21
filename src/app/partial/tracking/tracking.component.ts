@@ -166,14 +166,20 @@ export class TrackingComponent implements OnInit, AfterViewInit {
   }
 
   getAllVehicleListData(flag: boolean) {
-    this.apiCall.setHttp('get', 'tracking/get-vehicles-current-location?UserId=' + this.webStorage.getUserId() + '&VehicleNo=' + (!this.searchContent.value ? '' : this.searchContent.value) + '&GpsStatus=', true, false, false, 'fleetExpressBaseUrl');
+    this.allVehiclelData = [];
+    this.allVehiclelDataClone = [];
+    this.allRunningVehiclelData= [];
+    this.allStoppedVehiclelData= [];
+    this.allIdleVehiclelData= [];
+    this.allOfflineVehiclelData= [];
+    this.apiCall.setHttp('get', 'tracking/get-vehicles-current-location?UserId=' + this.webStorage.getUserId() + '&VehicleNo=' + (!this.searchContent.value ? '' : (this.searchContent.value).trim()) + '&GpsStatus=', true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
-          this.allVehiclelData = res.responseData;
+          this.allVehiclelData = res.responseData.responseData1;
           if (flag) {
-            this.allVehiclelDataClone = res.responseData;
-            res.responseData.find((x: any) => {
+            this.allVehiclelDataClone = res.responseData.responseData1;
+            res.responseData.responseData1.find((x: any) => {
               x.gpsStatus == 'Running' ? this.allRunningVehiclelData.push(x)
                 : x.gpsStatus == 'Stopped' ? this.allStoppedVehiclelData.push(x)
                   : x.gpsStatus == 'Idle' ? this.allIdleVehiclelData.push(x)
@@ -196,9 +202,6 @@ export class TrackingComponent implements OnInit, AfterViewInit {
             : flag == 'TotalVehicles' ? this.allVehiclelData = this.allVehiclelDataClone : '';
   }
 
-  submitvehicleMarkMaintance() {
-
-  }
   viewDetails(item:any){
     this.apiCall.setHttp('get', 'maintenance/get-maintenance-details?VehicleId=' + item.vehicleId, true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
@@ -228,7 +231,8 @@ export class TrackingComponent implements OnInit, AfterViewInit {
       data: obj,
     });
     dialogRef.afterClosed().subscribe(result => {
-      result == 'Yes' ? (flag == 'maintenance' ? this.getAllVehicleListData(true) : '') : ''
+      // result == 'Yes' ? flag == 'maintenance' ? this.getAllVehicleListData(true) : '') : ''
+      result == 'Yes' ? this.getAllVehicleListData(true) : ''
     });
   }
 
