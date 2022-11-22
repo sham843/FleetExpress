@@ -36,7 +36,6 @@ export class TicketRaisedComponent implements OnInit {
 
   ngOnInit(): void {
     this.dialogData = this.data;
-    console.log(this.dialogData);
     this.userData=this.webStorage.getUser()
     this.getMaintananceForm();
     this.dialogData['flagStatus']=='compliant'? this.getStates():'';
@@ -121,7 +120,6 @@ export class TicketRaisedComponent implements OnInit {
     if (this.complaintForm.invalid) {
       return;
     } else {
-      console.log(this.complaintForm.value);
       const userFormData = this.complaintForm.value;
       const obj = {
         "id": 0,

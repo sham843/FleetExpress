@@ -181,7 +181,6 @@ export class TrackingComponent implements OnInit, AfterViewInit {
             resp2= res.responseData.responseData2.find((xx:any)=> x.vehicleNo==xx.vehicleNumber);
             resp2 ? (x.flag = resp2.flag, x.complaintId=resp2.complaintId ) :  (x.flag = 0, x.complaintId=0 );
           })
-          console.log(res.responseData.responseData1);
           this.allVehiclelData = res.responseData.responseData1;
           if (flag) {
             this.allVehiclelDataClone = res.responseData.responseData1;
@@ -234,7 +233,6 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
-          console.log(res.responseData);
           this.viewComplaintDeatailsData=res.responseData;
           this.openTicketRaisedDialog(this.viewComplaintDeatailsData,'complentViewDetails')
         } else {
