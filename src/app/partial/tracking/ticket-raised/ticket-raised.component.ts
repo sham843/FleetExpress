@@ -36,9 +36,10 @@ export class TicketRaisedComponent implements OnInit {
 
   ngOnInit(): void {
     this.dialogData = this.data;
+    console.log(this.dialogData);
     this.userData=this.webStorage.getUser()
     this.getMaintananceForm();
-    this.dialogData['flag']=='compliant'? this.getStates():'';
+    this.dialogData['flagStatus']=='compliant'? this.getStates():'';
   }
   getMaintananceForm() {
     this.maintananceForm = this.fb.group({

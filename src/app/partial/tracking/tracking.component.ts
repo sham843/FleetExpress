@@ -73,7 +73,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     },
     strictBounds: true
   };
-
+  viewComplaintDeatailsData=new Array();
   constructor(private apiCall: ApiCallService, private webStorage: WebStorageService, private mapsAPILoader: MapsAPILoader, private _bottomSheet: MatBottomSheet,
     private error: ErrorsService, public dialog: MatDialog, private fb: FormBuilder, private httpClient: HttpClient,
     public validationService:ValidationService, private config: ConfigService
@@ -176,6 +176,12 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
+          res.responseData.responseData1.map((x:any)=>{
+            let  resp2=[];
+            resp2= res.responseData.responseData2.find((xx:any)=> x.vehicleNo==xx.vehicleNumber);
+            resp2 ? (x.flag = resp2.flag, x.complaintId=resp2.complaintId ) :  (x.flag = 0, x.complaintId=0 );
+          })
+          console.log(res.responseData.responseData1);
           this.allVehiclelData = res.responseData.responseData1;
           if (flag) {
             this.allVehiclelDataClone = res.responseData.responseData1;
@@ -202,7 +208,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
             : flag == 'TotalVehicles' ? this.allVehiclelData = this.allVehiclelDataClone : '';
   }
 
-  viewDetails(item:any){
+  viewManitananceDetails(item:any){
     this.apiCall.setHttp('get', 'maintenance/get-maintenance-details?VehicleId=' + item.vehicleId, true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
@@ -223,9 +229,24 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     }, (error: any) => { this.error.handelError(error.status) });
     
   }
+  viewComplaintDetails(item:any){
+    this.apiCall.setHttp('get', 'maintenance/get-complaint?UserId='+ this.webStorage.getUserId()+'&ComplaintId=' + item.complaintId, true, false, false, 'fleetExpressBaseUrl');
+    this.subscription = this.apiCall.getHttp().subscribe({
+      next: (res: any) => {
+        if (res.statusCode === "200") {
+          console.log(res.responseData);
+          this.viewComplaintDeatailsData=res.responseData;
+          this.openTicketRaisedDialog(this.viewComplaintDeatailsData,'complentViewDetails')
+        } else {
+          this.viewComplaintDeatailsData = [];
+        }
+      }
+    }, (error: any) => { this.error.handelError(error.status) });
+    
+  }
 
   openTicketRaisedDialog(data: any, flag: string) {
-    let obj = { flag: flag, ...data }
+    let obj = { flagStatus: flag, ...data }
     const dialogRef = this.dialog.open(TicketRaisedComponent, {
       width: '520px',
       data: obj,
