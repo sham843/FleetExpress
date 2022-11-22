@@ -206,6 +206,7 @@ export class SharedService {
     sliceArray.map(async (x: any, i: any) => { //get address by lat & log
       if(x.latitude){
       const addressByLatLong = await this.getAddress(x, i, 'address');
+      console.log(addressByLatLong ? true:false)
       getData.push(addressByLatLong);
       }else{
         const objStart={latitude:x.latOn, longitude:x.longOn};
@@ -216,34 +217,45 @@ export class SharedService {
         getData.push(addressStart);
       }
     });
-    setTimeout(() => { this.spinner.hide(); }, 2000, true);
+    setTimeout(() => { this.spinner.hide(); }, 5000, true);
+    
     return getData;
   }
 
   getAddress(cr: any, i: any, label:string) { // get address by lat long
     return new Promise((resolve) => {  //  return new Promise((resolve, reject) => {
       setTimeout(() => {
-        let geocoder: any = new google.maps.Geocoder;
-        var latlng = { lat: parseFloat(cr.latitude), lng: parseFloat(cr.longitude ) };
-        geocoder === undefined && (geocoder = new google.maps.Geocoder())
-        geocoder.geocode({ 'location': latlng }, (results: any, status: any) => {
-          let tempObj: any = new Object();
-          tempObj = { ...cr }
-          Object.keys(cr).map(function (p) { tempObj[p] = cr[p]; });
-          if (status === 'OK') {
-            if (results[0]) {
-              var address = results.length === 0 ? "Unknown location" : results[0].formatted_address;
-              label=='startaddress'? tempObj.startaddress = address :label=='endaddress'? tempObj.endaddress = address: tempObj.address  = address;
-              resolve(tempObj);
+        if(cr.latitude || cr.longitude){
+          let geocoder: any = new google.maps.Geocoder;
+          var latlng = { lat: parseFloat(cr.latitude), lng: parseFloat(cr.longitude ) };
+          geocoder === undefined && (geocoder = new google.maps.Geocoder())
+          geocoder.geocode({ 'location': latlng }, (results: any, status: any) => {
+            let tempObj: any = new Object();
+            tempObj = { ...cr }
+            Object.keys(cr).map(function (p) { tempObj[p] = cr[p]; });
+            if (status === 'OK') {
+              if (results[0]) {
+                var address = results.length === 0 ? "Unknown location" : results[0].formatted_address;
+                label=='startaddress'? tempObj.startaddress = address :label=='endaddress'? tempObj.endaddress = address: tempObj.address  = address;
+               resolve(tempObj);
+              } else {
+                label=='startaddress'? tempObj.startaddress=  "Unknown location" :label=='endaddress'? tempObj.endaddress=  "Unknown location": tempObj.address  =  "Unknown location";
+                resolve(tempObj);
+              }
             } else {
               label=='startaddress'? tempObj.startaddress=  "Unknown location" :label=='endaddress'? tempObj.endaddress=  "Unknown location": tempObj.address  =  "Unknown location";
               resolve(tempObj);
             }
-          } else {
-            label=='startaddress'? tempObj.startaddress=  "Unknown location" :label=='endaddress'? tempObj.endaddress=  "Unknown location": tempObj.address  =  "Unknown location";
-            resolve(tempObj);
-          }
-        })
+          })
+        }else{
+          let tempObj: any = new Object();
+          Object.keys(cr).map(function (p) { tempObj[p] = cr[p]; });
+          tempObj = { ...cr }
+          var  address  = "" ;
+          resolve(tempObj);
+          console.log(address)
+        }
+
       }, 200 * i)
     });
   }

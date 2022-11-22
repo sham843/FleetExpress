@@ -78,7 +78,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
   reportResponseData=new Array()
   constructor(private apiCall: ApiCallService, private webStorage: WebStorageService, private mapsAPILoader: MapsAPILoader, private _bottomSheet: MatBottomSheet,
     private error: ErrorsService, public dialog: MatDialog, private fb: FormBuilder, private httpClient: HttpClient,
-    public validationService:ValidationService, private config: ConfigService, private sharedService:SharedService
+    public validationService:ValidationService, private config: ConfigService, private sharedService:SharedService,
     ) { }
 
   ngOnInit(): void {
@@ -186,15 +186,17 @@ export class TrackingComponent implements OnInit, AfterViewInit {
           let resp: any = this.sharedService.getAddressBylatLong(1, res.responseData.responseData1, res.responseData.responseData1.length);
           this.reportResponseData = resp;
           this.allVehiclelData = this.reportResponseData;
-          if (flag) {
-            this.allVehiclelDataClone = this.reportResponseData;
-            this.reportResponseData.find((x: any) => {
-              x.gpsStatus == 'Running' ? this.allRunningVehiclelData.push(x)
-                : x.gpsStatus == 'Stopped' ? this.allStoppedVehiclelData.push(x)
-                  : x.gpsStatus == 'Idle' ? this.allIdleVehiclelData.push(x)
-                    : x.gpsStatus == 'Offline' ? this.allOfflineVehiclelData.push(x) : ''
-            });
-          }
+          setTimeout(()=>{
+            if (flag) {
+              this.allVehiclelDataClone = this.reportResponseData;
+              this.reportResponseData.find((x: any) => {
+                x.gpsStatus == 'Running' ? this.allRunningVehiclelData.push(x)
+                  : x.gpsStatus == 'Stopped' ? this.allStoppedVehiclelData.push(x)
+                    : x.gpsStatus == 'Idle' ? this.allIdleVehiclelData.push(x)
+                      : x.gpsStatus == 'Offline' ? this.allOfflineVehiclelData.push(x) : ''
+              });
+            }
+          },10000)
         } else {
           this.allVehiclelData = [];
           this.allVehiclelDataClone = [];
