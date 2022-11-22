@@ -115,7 +115,6 @@ export class ViewReportComponent implements OnInit {
     }
     else if (this.dialogData.pageNames == "Address Report") {
     this.colunms = [{ header:"Sr No.", column:'rowNumber', status:true },{header:"Date", column:'deviceDateTime', status:true },{header:"Address", column:'address', status:true }];
-    
     }
     else if (this.dialogData.pageNames == "Trip Report") {
       this.colunms = [{ header:"Sr No.", column:'rowNumber', status:true },{header:"Distance", column:'travelledDistance', status:true },{header:"Duration", column:'tripDurationInMins', status:true },
@@ -126,7 +125,7 @@ export class ViewReportComponent implements OnInit {
       ,{header:"Duration", column:'dateOff', status:true },{header:"To", column:'dateOff', status:true },{header:"STPL Device", column:'isMahaMiningDevice', status:true }];
     }
     else if(this.dialogData.pageNames == "Daywise Stoppage Report") {
-      this.colunms = [{ header:"Sr No.", column:'tripDurationInMins', status:true },{header:"Location", column:'address', status:true },{header:"From Time", column:'dateOn', status:true },{header:"To Time", column:'address', status:true },{header:"Duration", column:'tripDurationInMins', status:true }];
+      this.colunms = [{ header:"Sr No.", column:'rowNumber', status:true },{ header:"Duration", column:'tripDurationInMins', status:true },{header:"Location", column:'address', status:true },{header:"From Time", column:'dateOn', status:true },{header:"To Time", column:'address', status:true },{header:"Duration", column:'tripDurationInMins', status:true }];
     }
      else if(this.dialogData.pageNames == "Day Distance Report") {
       this.colunms = [{ header:"Sr No.", column:'rowNumber', status:true },{header:"Vehicle no", column:'vehicleNo', status:true },{header:"From Time", column:'fromDate', status:true },{header:"To Time", column:'toDate', status:true }
