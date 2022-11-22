@@ -15,6 +15,7 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { VehicleTrackingDetailsComponent } from './vehicle-tracking-details/vehicle-tracking-details.component';
 import { ValidationService } from 'src/app/services/validation.service';
 import { ViewReportComponent } from '../reports/view-report/view-report.component';
+import { SharedService } from 'src/app/services/shared.service';
 declare var google: any;
 @Component({
   selector: 'app-tracking',
@@ -74,9 +75,10 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     strictBounds: true
   };
   viewComplaintDeatailsData=new Array();
+  reportResponseData=new Array()
   constructor(private apiCall: ApiCallService, private webStorage: WebStorageService, private mapsAPILoader: MapsAPILoader, private _bottomSheet: MatBottomSheet,
     private error: ErrorsService, public dialog: MatDialog, private fb: FormBuilder, private httpClient: HttpClient,
-    public validationService:ValidationService, private config: ConfigService
+    public validationService:ValidationService, private config: ConfigService, private sharedService:SharedService
     ) { }
 
   ngOnInit(): void {
@@ -181,10 +183,12 @@ export class TrackingComponent implements OnInit, AfterViewInit {
             resp2= res.responseData.responseData2.find((xx:any)=> x.vehicleNo==xx.vehicleNumber);
             resp2 ? (x.flag = resp2.flag, x.complaintId=resp2.complaintId ) :  (x.flag = 0, x.complaintId=0 );
           })
-          this.allVehiclelData = res.responseData.responseData1;
+          let resp: any = this.sharedService.getAddressBylatLong(1, res.responseData.responseData1, res.responseData.responseData1.length);
+          this.reportResponseData = resp;
+          this.allVehiclelData = this.reportResponseData;
           if (flag) {
-            this.allVehiclelDataClone = res.responseData.responseData1;
-            res.responseData.responseData1.find((x: any) => {
+            this.allVehiclelDataClone = this.reportResponseData;
+            this.reportResponseData.find((x: any) => {
               x.gpsStatus == 'Running' ? this.allRunningVehiclelData.push(x)
                 : x.gpsStatus == 'Stopped' ? this.allStoppedVehiclelData.push(x)
                   : x.gpsStatus == 'Idle' ? this.allIdleVehiclelData.push(x)
@@ -233,7 +237,11 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
+          res.responseData.map((x:any)=>{
+            x.driverMobileNo=item.driverMobileNo
+          })
           this.viewComplaintDeatailsData=res.responseData;
+          
           this.openTicketRaisedDialog(this.viewComplaintDeatailsData,'complentViewDetails')
         } else {
           this.viewComplaintDeatailsData = [];

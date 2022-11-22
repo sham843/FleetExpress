@@ -235,7 +235,7 @@
             <mat-label>Driver Phone Number </mat-label>
         </div>
         <div class="col-sm-6">
-            <mat-label>{{': '+  dialogData[0]?.maintenanceTo ||'--'}}</mat-label>
+            <mat-label>{{': '+  dialogData[0]?.driverMobileNo ||'--'}}</mat-label>
         </div>
     </div>
     <div class="row">
@@ -251,7 +251,7 @@
             <mat-label>Available Time </mat-label>
         </div>
         <div class="col-sm-6">
-            <mat-label>{{': '+  (dialogData[0]?.time | date : 'dd-MM-yyyy hh:mm:ss a')||'--'}}</mat-label>
+            <mat-label>{{': '+  dialogData[0]?.complaintDate ||'--'}}</mat-label>
         </div>
     </div>
 </div>
