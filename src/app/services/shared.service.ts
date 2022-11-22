@@ -206,7 +206,6 @@ export class SharedService {
     sliceArray.map(async (x: any, i: any) => { //get address by lat & log
       if(x.latitude){
       const addressByLatLong = await this.getAddress(x, i, 'address');
-      console.log(addressByLatLong ? true:false)
       getData.push(addressByLatLong);
       }else{
         const objStart={latitude:x.latOn, longitude:x.longOn};

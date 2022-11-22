@@ -240,7 +240,8 @@ export class TrackingComponent implements OnInit, AfterViewInit {
       next: (res: any) => {
         if (res.statusCode === "200") {
           res.responseData.map((x:any)=>{
-            x.driverMobileNo=item.driverMobileNo
+            x.driverMobileNo=item.driverMobileNo;
+            x.address=item.address
           })
           this.viewComplaintDeatailsData=res.responseData;
           
