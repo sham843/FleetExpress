@@ -16,6 +16,7 @@ import { VehicleTrackingDetailsComponent } from './vehicle-tracking-details/vehi
 import { ValidationService } from 'src/app/services/validation.service';
 import { ViewReportComponent } from '../reports/view-report/view-report.component';
 import { SharedService } from 'src/app/services/shared.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 declare var google: any;
 @Component({
   selector: 'app-tracking',
@@ -79,6 +80,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
   constructor(private apiCall: ApiCallService, private webStorage: WebStorageService, private mapsAPILoader: MapsAPILoader, private _bottomSheet: MatBottomSheet,
     private error: ErrorsService, public dialog: MatDialog, private fb: FormBuilder, private httpClient: HttpClient,
     public validationService:ValidationService, private config: ConfigService, private sharedService:SharedService,
+    private spinner:NgxSpinnerService
     ) { }
 
   ngOnInit(): void {
@@ -174,9 +176,11 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     this.allStoppedVehiclelData= [];
     this.allIdleVehiclelData= [];
     this.allOfflineVehiclelData= [];
+    this.spinner.show();
     this.apiCall.setHttp('get', 'tracking/get-vehicles-current-location?UserId=' + this.webStorage.getUserId() + '&VehicleNo=' + (!this.searchContent.value ? '' : (this.searchContent.value).trim()) + '&GpsStatus=', true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
+        this.spinner.hide();
         if (res.statusCode === "200") {
           res.responseData.responseData1.map((x:any)=>{
             let  resp2=[];
@@ -202,7 +206,9 @@ export class TrackingComponent implements OnInit, AfterViewInit {
           this.allVehiclelDataClone = [];
         }
       }
-    }, (error: any) => { this.error.handelError(error.status) });
+    }, (error: any) => { 
+      this.spinner.hide();
+      this.error.handelError(error.status) });
   }
 
   clickOnTrackingTab(flag: string) {

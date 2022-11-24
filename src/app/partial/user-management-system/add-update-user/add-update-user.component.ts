@@ -198,6 +198,9 @@ export class AddUpdateUserComponent implements OnInit {
      } );
   }
   }
+  addRole(){
+    this.dialogData.seletedTab='role';
+  }
   submitRole(){ }
   onNoClick(flag: any): void {
     // if (flag == 'Yes') {
