@@ -166,7 +166,7 @@ export class DashboardComponent implements OnInit {
     this.maxSpeedObj=[];
     this.apiCall.setHttp('get', 'dashboard/get-vehicle-current-location-list?VehicleNo=' + '&UserId=' + this.webStorage.getUserId() + '&GpsStatus=Running', true, false, false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe((responseData: any) => {
-      if (responseData.statusCode === "200" || responseData.responseData.length > 0) {
+      if (responseData.statusCode === "200" || responseData.length > 0) {
         this.vehicleAllData = responseData.responseData;
         this.vehicleAllData.map((x:any)=>{
           x.deviceDatetime=new Date(x.deviceDatetime);
@@ -202,11 +202,14 @@ export class DashboardComponent implements OnInit {
         this.getBarChartData(this.vehiclesMoving);
       }
       else {
-          this.getBarChartData(this.config.vehicleArray);
+          this.getBarChartData(this.config.vehicleArray); 
           this.fastestVehicleObj=this.config.staticVehicleDataObj;
           this.avarageSpeedObj=this.config.staticVehicleDataObj;
       }
     },(error:any) => {
+      this.getBarChartData(this.config.vehicleArray);
+          this.fastestVehicleObj=this.config.staticVehicleDataObj;
+          this.avarageSpeedObj=this.config.staticVehicleDataObj;
       this.error.handelError(error.status);
   })
   }
