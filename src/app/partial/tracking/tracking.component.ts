@@ -183,6 +183,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
         this.spinner.hide();
         if (res.statusCode === "200") {
           res.responseData.responseData1.map((x:any)=>{
+            x.runningTime=this.config.timeConvert(x.gpsStatus == "Running" ? x.totalRunningTime:x.totalStopageTime);
             let  resp2=[];
             resp2= res.responseData.responseData2.find((xx:any)=> x.vehicleNo==xx.vehicleNumber);
             resp2 ? (x.flag = resp2.flag, x.complaintId=resp2.complaintId ) :  (x.flag = 0, x.complaintId=0 );

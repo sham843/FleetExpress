@@ -31,6 +31,16 @@ export class ConfigService {
     libraries: ['drawing', 'places']
   };
 
+
+  timeConvert(time:any){
+    let t = "";
+   let d =Math.floor(time/(24*60));
+   let h= Math.floor((time%(24*60)) / 60);
+   let m = Math.floor((time%(24*60)) % 60);
+    t =( d ? (d + " days: "):'' ) +( h ? (h + " Hrs : "):'') + (m+' Mints') ;
+    return t;
+  }
+
   //------------------------------------------ Maps Settings  starte heare -------------------------------------------//
 
   //--------------------------------------- dialog Data obj start heare ------------------------------------------//
