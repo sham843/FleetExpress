@@ -104,13 +104,13 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="vehicle-status">
                                             <div class="d-flex">
-                                                <span><img src="assets/images/Tracking/battery.svg" class="me-1">
-                                                    --</span>
+                                                <!-- <span><img src="assets/images/Tracking/battery.svg" class="me-1">
+                                                    --</span> -->
                                                 <span class="mx-3"><img src="assets/images/Tracking/network.svg"
                                                         class="me-1">
-                                                    --</span>
+                                                        {{item?.gsmStrength + '%' }}</span>
                                                 <span><img src="assets/images/Tracking/ON-vehicle.svg" class="me-1">
-                                                    --</span>
+                                                     {{item?.ignition==1?'ON': 'OFF' }}</span>
                                             </div>
                                         </div>
                                         <div class="share-call">
