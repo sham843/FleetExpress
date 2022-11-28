@@ -192,8 +192,8 @@ export class TrackingComponent implements OnInit, AfterViewInit {
           let resp: any = this.sharedService.getAddressBylatLong(1, res.responseData.responseData1, res.responseData.responseData1.length);
           this.reportResponseData = resp;
           this.allVehiclelData = this.reportResponseData;
-          this.allVehiclelDataClone = this.reportResponseData;
           setTimeout(()=>{
+            this.allVehiclelDataClone = this.reportResponseData;
             if (flag) {
               this.reportResponseData.find((x: any) => {
                 x.gpsStatus == 'Running' ? this.allRunningVehiclelData.push(x)
