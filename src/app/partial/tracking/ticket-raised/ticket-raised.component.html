@@ -24,7 +24,7 @@
                 <div class="col-sm-6">
                     <mat-form-field appearance="standard" class="w-100">
                         <mat-label>From Date and time</mat-label>
-                        <input matInput [ngxMatDatetimePicker]="fromDate" [max]="currentDate"
+                        <input matInput [ngxMatDatetimePicker]="fromDate" (click)="fromDate.open()"  [max]="currentDate"
                             formControlName="maintenanceFrom">
                         <mat-datepicker-toggle matSuffix [for]="$any(fromDate)"></mat-datepicker-toggle>
                         <ngx-mat-datetime-picker #fromDate>
@@ -34,7 +34,7 @@
                 <div class="col-sm-6">
                     <mat-form-field appearance="standard" class="w-100">
                         <mat-label>To Date and time</mat-label>
-                        <input matInput [ngxMatDatetimePicker]="toDate" formControlName="maintenanceTo"
+                        <input matInput [ngxMatDatetimePicker]="toDate" (click)="toDate.open()" formControlName="maintenanceTo"
                             [max]="currentDate" [min]="this.maintananceForm.controls['maintenanceFrom'].value">
                         <mat-datepicker-toggle matSuffix [for]="$any(toDate)"></mat-datepicker-toggle>
                         <ngx-mat-datetime-picker #toDate>
@@ -146,7 +146,7 @@
             <div class="col-sm-6">
                 <mat-form-field appearance="standard" class="w-100">
                     <mat-label>Vehicle's available Date</mat-label>
-                    <input matInput [matDatepicker]="availabledate" formControlName="vehicleDate" [min]="currentDate">
+                    <input matInput [matDatepicker]="availabledate" (click)="availabledate.open()" formControlName="vehicleDate" [min]="currentDate">
                     <mat-datepicker-toggle matSuffix [for]="availabledate"></mat-datepicker-toggle>
                     <mat-datepicker #availabledate></mat-datepicker>
                 </mat-form-field>
@@ -156,7 +156,7 @@
                     <mat-label>Vehicle’s available Time</mat-label>
                     <input matInput [ngxTimepicker]="availabletime" formControlName="vehicleTime" >
                     <ngx-material-timepicker #availabletime ></ngx-material-timepicker>
-                    <mat-icon matSuffix >access_time</mat-icon>
+                    <mat-icon matSuffix (click)="availabletime.open()">access_time</mat-icon>
                 </mat-form-field>
             </div>
         </div>
