@@ -17,6 +17,7 @@ import { ValidationService } from 'src/app/services/validation.service';
 import { ViewReportComponent } from '../reports/view-report/view-report.component';
 import { SharedService } from 'src/app/services/shared.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { DatePipe } from '@angular/common';
 declare var google: any;
 @Component({
   selector: 'app-tracking',
@@ -80,7 +81,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
   constructor(private apiCall: ApiCallService, private webStorage: WebStorageService, private mapsAPILoader: MapsAPILoader, private _bottomSheet: MatBottomSheet,
     private error: ErrorsService, public dialog: MatDialog, private fb: FormBuilder, private httpClient: HttpClient,
     public validationService:ValidationService, private config: ConfigService, private sharedService:SharedService,
-    private spinner:NgxSpinnerService
+    private spinner:NgxSpinnerService, private datePipe:DatePipe
     ) { }
 
   ngOnInit(): void {
@@ -191,9 +192,9 @@ export class TrackingComponent implements OnInit, AfterViewInit {
           let resp: any = this.sharedService.getAddressBylatLong(1, res.responseData.responseData1, res.responseData.responseData1.length);
           this.reportResponseData = resp;
           this.allVehiclelData = this.reportResponseData;
+          this.allVehiclelDataClone = this.reportResponseData;
           setTimeout(()=>{
             if (flag) {
-              this.allVehiclelDataClone = this.reportResponseData;
               this.reportResponseData.find((x: any) => {
                 x.gpsStatus == 'Running' ? this.allRunningVehiclelData.push(x)
                   : x.gpsStatus == 'Stopped' ? this.allStoppedVehiclelData.push(x)
@@ -226,6 +227,8 @@ export class TrackingComponent implements OnInit, AfterViewInit {
       next: (res: any) => {
         if (res.statusCode === "200") {
           res.responseData.map((x:any)=>{
+            x.maintenanceFrom=this.datePipe.transform(x.maintenanceFrom, 'dd-MM-yyyy hh:MM:ss a');
+            x.maintenanceTo=this.datePipe.transform(x.maintenanceTo , 'dd-MM-yyyy hh:MM:ss a');
             switch(x.maintenanceType){
               case 1: x.maintenanceTypeDetails='Scheduled';break;
               case 2: x.maintenanceTypeDetails='Repair';break;
