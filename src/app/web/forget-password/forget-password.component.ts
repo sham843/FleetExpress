@@ -47,7 +47,6 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getformControlData();
-    //this.countDown();
   }
   getformControlData() {
     this.sendOTPForm = this.fb.group({
@@ -68,7 +67,6 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
 
   // -------------------------------------------OTP-----------------------------------------------------------
   sendOTP() {
-    //this.countDown();
     let mobileNom = this.sendOTPForm.value.mobileNo || this.mobileNum;
     if (this.sendOTPForm.invalid) {
       this.spinner.hide();
@@ -85,7 +83,6 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
           this.generateOTPContain = false;
           this.OTPContainer = true;
           this.verifyOTPForm.reset();
-          // this.sendOTPForm.reset();
         }else{
           this.commonMethods.snackBar(res.statusMessage, 1);
         }
