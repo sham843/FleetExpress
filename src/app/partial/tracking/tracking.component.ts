@@ -18,6 +18,7 @@ import { ViewReportComponent } from '../reports/view-report/view-report.componen
 import { SharedService } from 'src/app/services/shared.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DatePipe } from '@angular/common';
+import * as moment from 'moment';
 declare var google: any;
 @Component({
   selector: 'app-tracking',
@@ -77,7 +78,11 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     strictBounds: true
   };
   viewComplaintDeatailsData=new Array();
-  reportResponseData=new Array()
+  reportResponseData=new Array();
+  ItineraryDetailsData=new Array();
+  maxTodayDateString:any;
+  maxTodayDate:any;
+  ItineraryDetailsData1=new Array();
   constructor(private apiCall: ApiCallService, private webStorage: WebStorageService, private mapsAPILoader: MapsAPILoader, private _bottomSheet: MatBottomSheet,
     private error: ErrorsService, public dialog: MatDialog, private fb: FormBuilder, private httpClient: HttpClient,
     public validationService:ValidationService, private config: ConfigService, private sharedService:SharedService,
@@ -283,8 +288,41 @@ export class TrackingComponent implements OnInit, AfterViewInit {
       fromDate: [],
       toDate: [],
     })
+    this.selectTimePeriod(this.itineraryForm.controls['timePeriod'].value);
   }
   get itinerary() { return this.itineraryForm.controls };
+  getItineraryDetails(){
+    this.vehicleNo='MH12DL3698';
+    if(this.itineraryForm.value.fromDate && this.itineraryForm.value.toDate){
+      this.vehicleDetailsData = [];
+      const obj={
+        fromDate:this.datePipe.transform(this.itineraryForm.value.fromDate, 'YYYY-MM-dd'),
+        toDate:this.datePipe.transform(this.itineraryForm.value.toDate, 'YYYY-MM-dd'),
+      }
+      this.ItineraryDetailsData=[];
+      this.ItineraryDetailsData1=[];
+      this.apiCall.setHttp('get', 'tracking/get-vehicle-vehicle-itinerary?vehicleNumber=' + this.vehicleNo + '&fromDate='+obj.fromDate+'&toDate='+obj.toDate, true, false, false, 'fleetExpressBaseUrl');
+      this.subscription = this.apiCall.getHttp().subscribe({
+        next: (res: any) => {
+          if (res.statusCode === "200") {
+            let resp: any = this.sharedService.getAddressBylatLong(1, res.responseData.responseData1, res.responseData.responseData1.length);
+            this.ItineraryDetailsData = resp;
+            console.log(this.ItineraryDetailsData);
+            this.ItineraryDetailsData1.push(res.responseData.responseData2) ;
+            
+          } else {
+            if (res.statusCode != "404") {
+              this.ItineraryDetailsData = [];
+              this.ItineraryDetailsData1= [];
+              this.error.handelError(res.statusCode)
+            }
+          }
+        }
+      },(error: any) => { this.error.handelError(error.status) });
+    }
+    
+  }
+
   getVehicleDetails(){
     this.vehicleDetailsData = []
     this.apiCall.setHttp('get', 'vehicle/search-vehicle?Search=' + this.vehicleNo, true, false, false, 'fleetExpressBaseUrl');
@@ -316,6 +354,57 @@ export class TrackingComponent implements OnInit, AfterViewInit {
         }
       }
     },(error: any) => { this.error.handelError(error.status) });
+  }
+
+  selectTimePeriod(value: any) {
+    const currentDateTime = (moment.utc().subtract(1, 'minute')).toISOString();
+    switch (value) {
+      case "1":
+        this.itineraryForm.patchValue({
+          fromDate: (moment.utc().startOf('day').subtract(5, 'hour').subtract(30, 'minute')).toISOString(),
+          toDate: currentDateTime,
+        })
+        this.getItineraryDetails();
+        break;
+      case "2": var time = moment.duration("24:00:00");
+        var date = moment();
+        const oneDaySpan = date.subtract(time);
+        this.itineraryForm.patchValue({
+          fromDate: moment(oneDaySpan).toISOString(),
+          toDate: currentDateTime,
+        })
+        this.getItineraryDetails()  ;
+        break;
+      case "3":
+        const startweek = moment().subtract(7, 'days').calendar();
+        this.itineraryForm.patchValue({
+          fromDate: moment(startweek).toISOString(),
+          toDate: currentDateTime,
+        })
+        this.getItineraryDetails();
+        break;
+      case "4":
+        this.itineraryForm.patchValue({
+          fromDate: '',
+          toDate: '',
+        })
+        break;
+    }
+  }
+  settodate(fromDate: any) {
+    this.maxTodayDateString = (moment(fromDate).add(7, 'days').format("YYYY-MM-DD HH:mm:ss"));
+    const maxTodayDateTime = moment(moment(this.maxTodayDateString)).toISOString();
+    this.maxTodayDate = moment(this.maxTodayDateString).toISOString() < moment().toISOString() ? moment(maxTodayDateTime).toISOString() : moment().toISOString();
+  }
+  checkValidDate() {
+    const reportData = this.itineraryForm.value;
+    if (reportData.fromDate && reportData.toDate) {
+      if (new Date(reportData.fromDate).toISOString() < new Date(reportData.toDate).toISOString()) {
+        this.itineraryForm.controls['toDate'].patchValue(new Date(reportData.toDate).toISOString())
+      } else {
+        this.itineraryForm.controls['toDate'].patchValue('')
+      }
+    }
   }
   //-------------------------------------------------------------- bottom sheet method end heare --------------------------------------------//
 
