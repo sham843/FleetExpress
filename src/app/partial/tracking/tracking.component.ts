@@ -16,6 +16,9 @@ import { VehicleTrackingDetailsComponent } from './vehicle-tracking-details/vehi
 import { ValidationService } from 'src/app/services/validation.service';
 import { ViewReportComponent } from '../reports/view-report/view-report.component';
 import { SharedService } from 'src/app/services/shared.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { DatePipe } from '@angular/common';
+import * as moment from 'moment';
 declare var google: any;
 @Component({
   selector: 'app-tracking',
@@ -75,10 +78,15 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     strictBounds: true
   };
   viewComplaintDeatailsData=new Array();
-  reportResponseData=new Array()
+  reportResponseData=new Array();
+  ItineraryDetailsData=new Array();
+  maxTodayDateString:any;
+  maxTodayDate:any;
+  ItineraryDetailsData1=new Array();
   constructor(private apiCall: ApiCallService, private webStorage: WebStorageService, private mapsAPILoader: MapsAPILoader, private _bottomSheet: MatBottomSheet,
     private error: ErrorsService, public dialog: MatDialog, private fb: FormBuilder, private httpClient: HttpClient,
     public validationService:ValidationService, private config: ConfigService, private sharedService:SharedService,
+    private spinner:NgxSpinnerService, private datePipe:DatePipe
     ) { }
 
   ngOnInit(): void {
@@ -174,11 +182,14 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     this.allStoppedVehiclelData= [];
     this.allIdleVehiclelData= [];
     this.allOfflineVehiclelData= [];
+    this.spinner.show();
     this.apiCall.setHttp('get', 'tracking/get-vehicles-current-location?UserId=' + this.webStorage.getUserId() + '&VehicleNo=' + (!this.searchContent.value ? '' : (this.searchContent.value).trim()) + '&GpsStatus=', true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
+        this.spinner.hide();
         if (res.statusCode === "200") {
           res.responseData.responseData1.map((x:any)=>{
+            x.runningTime=this.config.timeConvert(x.gpsStatus == "Running" ? x.totalRunningTime:x.totalStopageTime);
             let  resp2=[];
             resp2= res.responseData.responseData2.find((xx:any)=> x.vehicleNo==xx.vehicleNumber);
             resp2 ? (x.flag = resp2.flag, x.complaintId=resp2.complaintId ) :  (x.flag = 0, x.complaintId=0 );
@@ -187,8 +198,8 @@ export class TrackingComponent implements OnInit, AfterViewInit {
           this.reportResponseData = resp;
           this.allVehiclelData = this.reportResponseData;
           setTimeout(()=>{
+            this.allVehiclelDataClone = this.reportResponseData;
             if (flag) {
-              this.allVehiclelDataClone = this.reportResponseData;
               this.reportResponseData.find((x: any) => {
                 x.gpsStatus == 'Running' ? this.allRunningVehiclelData.push(x)
                   : x.gpsStatus == 'Stopped' ? this.allStoppedVehiclelData.push(x)
@@ -202,7 +213,9 @@ export class TrackingComponent implements OnInit, AfterViewInit {
           this.allVehiclelDataClone = [];
         }
       }
-    }, (error: any) => { this.error.handelError(error.status) });
+    }, (error: any) => { 
+      this.spinner.hide();
+      this.error.handelError(error.status) });
   }
 
   clickOnTrackingTab(flag: string) {
@@ -219,6 +232,8 @@ export class TrackingComponent implements OnInit, AfterViewInit {
       next: (res: any) => {
         if (res.statusCode === "200") {
           res.responseData.map((x:any)=>{
+            x.maintenanceFrom=this.datePipe.transform(x.maintenanceFrom, 'dd-MM-yyyy hh:MM:ss a');
+            x.maintenanceTo=this.datePipe.transform(x.maintenanceTo , 'dd-MM-yyyy hh:MM:ss a');
             switch(x.maintenanceType){
               case 1: x.maintenanceTypeDetails='Scheduled';break;
               case 2: x.maintenanceTypeDetails='Repair';break;
@@ -273,8 +288,41 @@ export class TrackingComponent implements OnInit, AfterViewInit {
       fromDate: [],
       toDate: [],
     })
+    this.selectTimePeriod(this.itineraryForm.controls['timePeriod'].value);
   }
   get itinerary() { return this.itineraryForm.controls };
+  getItineraryDetails(){
+    this.vehicleNo='MH12DL3698';
+    if(this.itineraryForm.value.fromDate && this.itineraryForm.value.toDate){
+      this.vehicleDetailsData = [];
+      const obj={
+        fromDate:this.datePipe.transform(this.itineraryForm.value.fromDate, 'YYYY-MM-dd'),
+        toDate:this.datePipe.transform(this.itineraryForm.value.toDate, 'YYYY-MM-dd'),
+      }
+      this.ItineraryDetailsData=[];
+      this.ItineraryDetailsData1=[];
+      this.apiCall.setHttp('get', 'tracking/get-vehicle-vehicle-itinerary?vehicleNumber=' + this.vehicleNo + '&fromDate='+obj.fromDate+'&toDate='+obj.toDate, true, false, false, 'fleetExpressBaseUrl');
+      this.subscription = this.apiCall.getHttp().subscribe({
+        next: (res: any) => {
+          if (res.statusCode === "200") {
+            let resp: any = this.sharedService.getAddressBylatLong(1, res.responseData.responseData1, res.responseData.responseData1.length);
+            this.ItineraryDetailsData = resp;
+            console.log(this.ItineraryDetailsData);
+            this.ItineraryDetailsData1.push(res.responseData.responseData2) ;
+            
+          } else {
+            if (res.statusCode != "404") {
+              this.ItineraryDetailsData = [];
+              this.ItineraryDetailsData1= [];
+              this.error.handelError(res.statusCode)
+            }
+          }
+        }
+      },(error: any) => { this.error.handelError(error.status) });
+    }
+    
+  }
+
   getVehicleDetails(){
     this.vehicleDetailsData = []
     this.apiCall.setHttp('get', 'vehicle/search-vehicle?Search=' + this.vehicleNo, true, false, false, 'fleetExpressBaseUrl');
@@ -306,6 +354,57 @@ export class TrackingComponent implements OnInit, AfterViewInit {
         }
       }
     },(error: any) => { this.error.handelError(error.status) });
+  }
+
+  selectTimePeriod(value: any) {
+    const currentDateTime = (moment.utc().subtract(1, 'minute')).toISOString();
+    switch (value) {
+      case "1":
+        this.itineraryForm.patchValue({
+          fromDate: (moment.utc().startOf('day').subtract(5, 'hour').subtract(30, 'minute')).toISOString(),
+          toDate: currentDateTime,
+        })
+        this.getItineraryDetails();
+        break;
+      case "2": var time = moment.duration("24:00:00");
+        var date = moment();
+        const oneDaySpan = date.subtract(time);
+        this.itineraryForm.patchValue({
+          fromDate: moment(oneDaySpan).toISOString(),
+          toDate: currentDateTime,
+        })
+        this.getItineraryDetails()  ;
+        break;
+      case "3":
+        const startweek = moment().subtract(7, 'days').calendar();
+        this.itineraryForm.patchValue({
+          fromDate: moment(startweek).toISOString(),
+          toDate: currentDateTime,
+        })
+        this.getItineraryDetails();
+        break;
+      case "4":
+        this.itineraryForm.patchValue({
+          fromDate: '',
+          toDate: '',
+        })
+        break;
+    }
+  }
+  settodate(fromDate: any) {
+    this.maxTodayDateString = (moment(fromDate).add(7, 'days').format("YYYY-MM-DD HH:mm:ss"));
+    const maxTodayDateTime = moment(moment(this.maxTodayDateString)).toISOString();
+    this.maxTodayDate = moment(this.maxTodayDateString).toISOString() < moment().toISOString() ? moment(maxTodayDateTime).toISOString() : moment().toISOString();
+  }
+  checkValidDate() {
+    const reportData = this.itineraryForm.value;
+    if (reportData.fromDate && reportData.toDate) {
+      if (new Date(reportData.fromDate).toISOString() < new Date(reportData.toDate).toISOString()) {
+        this.itineraryForm.controls['toDate'].patchValue(new Date(reportData.toDate).toISOString())
+      } else {
+        this.itineraryForm.controls['toDate'].patchValue('')
+      }
+    }
   }
   //-------------------------------------------------------------- bottom sheet method end heare --------------------------------------------//
 

@@ -55,8 +55,7 @@
                             {{role.subUserTypeName}}</mat-option>
                     </mat-select>
                 </mat-form-field>
-                <button type="button" class="btn btn-outline-primary btn-sm ms-2" data-bs-toggle="modal"
-                    data-bs-target="#AddRoleModal">
+                <button type="button" class="btn btn-outline-primary btn-sm ms-2" (click)="addRole()">
                     Add Role
                 </button>
                 <mat-error *ngIf="userformSubmitted && user['assignedRole'].errors"></mat-error>

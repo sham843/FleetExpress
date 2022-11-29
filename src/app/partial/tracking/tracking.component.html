@@ -71,7 +71,7 @@
                                         </a>
                                         
                                         <a *ngIf="item?.gpsStatus!='Offline'"
-                                            (click)="vehicleNo = item?.vehicleNo; selectedCanvasTab='Itinerary'"
+                                            (click)="vehicleNo = item?.vehicleNo; selectedCanvasTab='Itinerary'; getItineraryDetails()"
                                             data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom"
                                             aria-controls="offcanvasExample"
                                             [ngClass]="{'text-danger':item?.gpsStatus=='Offline','text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
@@ -98,19 +98,19 @@
                                     <div class="d-flex align-items-start mb-2">
                                         <img src="assets/images/Tracking/info-vehicle.svg" class="me-2 mt-1">
                                         <div class="vehicle-running">
-                                            {{item?.speed }} kmph| Running since : 3 days : 5 hrs | 480 km today
+                                            {{item?.speed }} kmph| {{item?.gpsStatus}} since : {{item?.runningTime}} | {{item?.todayDistance}} km today
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="vehicle-status">
                                             <div class="d-flex">
-                                                <span><img src="assets/images/Tracking/battery.svg" class="me-1">
-                                                    --</span>
+                                                <!-- <span><img src="assets/images/Tracking/battery.svg" class="me-1">
+                                                    --</span> -->
                                                 <span class="mx-3"><img src="assets/images/Tracking/network.svg"
                                                         class="me-1">
-                                                    --</span>
+                                                        {{item?.gsmStrength + '%' }}</span>
                                                 <span><img src="assets/images/Tracking/ON-vehicle.svg" class="me-1">
-                                                    --</span>
+                                                     {{item?.ignition==1?'ON': 'OFF' }}</span>
                                             </div>
                                         </div>
                                         <div class="share-call">
@@ -200,23 +200,22 @@
                                     data-bs-target="#Itinerary-tab-pane" type="button" role="tab"
                                     [ngClass]="{'active':selectedCanvasTab=='Itinerary'?true:false}"
                                     aria-controls="Itinerary-tab-pane" aria-selected="false"
-                                    (click)="selectedCanvasTab='Itinerary'">Itinerary</button>
+                                    (click)="getItineraryDetails(); selectedCanvasTab='Itinerary'">Itinerary</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="Driver-information-tab" data-bs-toggle="tab"
                                     [ngClass]="{'active':selectedCanvasTab=='Driver'?true:false}"
                                     data-bs-target="#Driver-information-tab-pane" type="button" role="tab"
-                                    (click)="getDriverDetails()" aria-controls="Driver-information-tab-pane"
-                                    aria-selected="false" (click)="selectedCanvasTab='Driver'">Driver
-                                    information</button>
+                                    (click)="getDriverDetails();selectedCanvasTab='Driver'" aria-controls="Driver-information-tab-pane"
+                                    aria-selected="false" >Driver information</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="Vehicle-Details-tab" data-bs-toggle="tab"
                                     data-bs-target="#Vehicle-Details-tab-pane" type="button" role="tab"
-                                    (click)="getVehicleDetails()"
+                                    (click)="getVehicleDetails();selectedCanvasTab='Vehicle'"
                                     [ngClass]="{'active':selectedCanvasTab=='Vehicle'?true:false}"
                                     aria-controls="Vehicle-Details-tab-pane" aria-selected="false"
-                                    (click)="selectedCanvasTab='Vehicle'">Vehicle Details</button>
+                                    >Vehicle Details</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="near-by-vehicles-tab" data-bs-toggle="tab"
@@ -238,15 +237,15 @@
                                                 <div class="itinerary-details">
                                                     <p class="text-main">All</p>
                                                     <div class="d-flex justify-content-between align-items-center">
-                                                        <div class="veh-time">17 hrs : 8 main</div>
-                                                        <div class="veh-stops"> 0.49 km</div>
+                                                        <div class="veh-time">{{ItineraryDetailsData1[0]?.allStateTime}}</div>
+                                                        <div class="veh-stops">{{ItineraryDetailsData1[0]?.allKM}} km</div>
                                                     </div>
                                                 </div>
                                                 <div class="itinerary-details">
                                                     <p class="text-muted">Stopped</p>
                                                     <div class="d-flex justify-content-between align-items-center">
-                                                        <div class="veh-time">16 hrs :29 min</div>
-                                                        <div class="veh-stops">3 stops</div>
+                                                        <div class="veh-time">{{ItineraryDetailsData1[0]?.stopDateTime}}</div>
+                                                        <div class="veh-stops">{{ItineraryDetailsData1[0]?.totalStops}} stops</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -257,7 +256,7 @@
                                                     id="itinerary-buttons">
                                                     <mat-form-field appearance="legacy" class="me-1"
                                                         style="width:100px !important;">
-                                                        <mat-select formControlName="timePeriod" required>
+                                                        <mat-select formControlName="timePeriod" required (selectionChange)="selectTimePeriod(itinerary['timePeriod'].value)">
                                                             <mat-option *ngFor="let item of timePeriodArray"
                                                                 [value]="item.value">
                                                                 {{item.viewValue}}
@@ -270,10 +269,10 @@
                                                         <mat-date-range-input [rangePicker]="picker" [max]="todayDate">
                                                             <input matStartDate placeholder="From Date"
                                                                 formControlName="fromDate" autocomplete="off"
-                                                                [max]="todayDate">
+                                                                [max]="todayDate" (dateChange)="getItineraryDetails()">
                                                             <input matEndDate placeholder="To Date"
                                                                 formControlName="toDate" autocomplete="off"
-                                                                [min]="itinerary['fromDate'].value ">
+                                                                [min]="itinerary['fromDate'].value" [max]="maxTodayDate">
                                                         </mat-date-range-input>
                                                         <mat-datepicker-toggle matSuffix [for]="picker">
                                                         </mat-datepicker-toggle>
@@ -343,16 +342,14 @@
                                     <div class="fixed-height-table">
                                         <table class="table dashboard-table mb-0">
                                             <tbody>
-                                                <tr>
+                                                <tr *ngFor="let item of ItineraryDetailsData">
                                                     <td>
-                                                        <span class="text-primary"><i
-                                                                class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs
-                                                            :
-                                                            21 min</span>
+                                                        <span class="text-primary" [ngClass]="{'text-success':item?.state==1,'text-warning':item?.state==2,'text-primary':item?.state==3}"><i
+                                                                class="fa-solid fa-circle me-2"></i>{{item.stateDescription}}
+                                                            </span>
                                                     </td>
                                                     <td>
-                                                        <span>Harjuna Post Office, Harjuna, Yavatmal,
-                                                            District, Maharashtra, 445002, India</span>
+                                                        <span>{{item.address}}</span>
                                                     </td>
                                                     <td>
                                                         <span class="text-muted">
@@ -361,11 +358,11 @@
                                                     </td>
                                                     <td>
                                                         <span class="text-muted">
-                                                            25 Jul 2022, 16:37
+                                                            {{item.stateTime | date:'medium'}}
                                                         </span>
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                <!-- <tr>
                                                     <td>
                                                         <span class="text-danger"><i
                                                                 class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs
@@ -452,7 +449,7 @@
                                                             25 Jul 2022, 16:37
                                                         </span>
                                                     </td>
-                                                </tr>
+                                                </tr> -->
                                             </tbody>
                                         </table>
                                     </div>
