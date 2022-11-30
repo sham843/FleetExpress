@@ -1,9 +1,9 @@
 //import { MapsAPILoader } from '@agm/core';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, AfterViewInit } from '@angular/core'
+import { Component, OnInit, AfterViewInit, EventEmitter, Output } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
@@ -26,6 +26,7 @@ declare var google: any;
   styleUrls: ['./tracking.component.scss']
 })
 export class TrackingComponent implements OnInit, AfterViewInit {
+  private categoriesSubject = new BehaviorSubject<Array<string>>([]);
   searchContent = new FormControl('');
   allVehiclelData = new Array();
   subscription !: Subscription;
@@ -83,6 +84,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
   maxTodayDateString:any;
   maxTodayDate:any;
   ItineraryDetailsData1=new Array();
+  @Output() scrollingFinished = new EventEmitter<void>();
   constructor(private apiCall: ApiCallService, private webStorage: WebStorageService, private mapsAPILoader: MapsAPILoader, private _bottomSheet: MatBottomSheet,
     private error: ErrorsService, public dialog: MatDialog, private fb: FormBuilder, private httpClient: HttpClient,
     public validationService:ValidationService, private config: ConfigService, private sharedService:SharedService,
@@ -194,10 +196,12 @@ export class TrackingComponent implements OnInit, AfterViewInit {
             resp2= res.responseData.responseData2.find((xx:any)=> x.vehicleNo==xx.vehicleNumber);
             resp2 ? (x.flag = resp2.flag, x.complaintId=resp2.complaintId ) :  (x.flag = 0, x.complaintId=0 );
           })
-          let resp: any = this.sharedService.getAddressBylatLong(1, res.responseData.responseData1, res.responseData.responseData1.length);
-          this.reportResponseData = resp;
+          //let resp: any = this.sharedService.getAddressBylatLong(1, res.responseData.responseData1, res.responseData.responseData1.length);
+          this.reportResponseData = res.responseData.responseData1;
           this.allVehiclelData = this.reportResponseData;
-          setTimeout(()=>{
+          this.getNextItems();
+          this.categoriesSubject.next(this.totalDtaArray);
+          //setTimeout(()=>{
             this.allVehiclelDataClone = this.reportResponseData;
             if (flag) {
               this.reportResponseData.find((x: any) => {
@@ -207,7 +211,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
                       : x.gpsStatus == 'Offline' ? this.allOfflineVehiclelData.push(x) : ''
               });
             }
-          },10000)
+         // },10000)
         } else {
           this.allVehiclelData = [];
           this.allVehiclelDataClone = [];
@@ -307,7 +311,6 @@ export class TrackingComponent implements OnInit, AfterViewInit {
           if (res.statusCode === "200") {
             let resp: any = this.sharedService.getAddressBylatLong(1, res.responseData.responseData1, res.responseData.responseData1.length);
             this.ItineraryDetailsData = resp;
-            console.log(this.ItineraryDetailsData);
             this.ItineraryDetailsData1.push(res.responseData.responseData2) ;
             
           } else {
@@ -406,6 +409,39 @@ export class TrackingComponent implements OnInit, AfterViewInit {
       }
     }
   }
+
+
+  onScrollingFinished(){
+    console.log('load more');
+    this.loadMore()
+  }
+  totalDtaArray:any[]=[];
+  loadMore(): void {
+    if (this.getNextItems()) {
+      this.categoriesSubject.next(this.totalDtaArray);
+      console.log(this.categoriesSubject);
+    }
+  }
+  getNextItems(): boolean {
+    if (this.totalDtaArray.length >= this.allVehiclelData.length) {
+      return false;
+    }
+    const remainingLength = Math.min( 5, this.allVehiclelData.length - this.totalDtaArray.length );
+    console.log(this.totalDtaArray.length)
+    // this.totalDtaArray=[];
+    this.totalDtaArray.push(
+      ...this.allVehiclelData.slice(
+        this.totalDtaArray.length,
+        this.totalDtaArray.length + remainingLength
+      )
+    );
+    let resp: any = this.sharedService.getAddressBylatLong(1, this.totalDtaArray, this.totalDtaArray.length);
+    this.totalDtaArray = resp;
+
+    return true;
+  }
+
+  
   //-------------------------------------------------------------- bottom sheet method end heare --------------------------------------------//
 
   openvechileTrackingDetailsSheet(): void {

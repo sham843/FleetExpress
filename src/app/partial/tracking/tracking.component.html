@@ -49,7 +49,7 @@
         <div class="col-sm-4">
             <div class="card border-0 rounded">
                 <div class="card-body fixed-height rounded" *ngIf="allVehiclelData.length">
-                    <div class="rounded" *ngFor="let item of allVehiclelData; let i=index">
+                    <div class="rounded" scrollTracker *ngFor="let item of totalDtaArray; let i=index" (mousedown)="onScrollingFinished()">
                         <ng-container>
                             <a class="d-flex vehicle p-3 bg-opacity-10 mb-1 rounded bg-opacity-10" placement="top"
                                 routerLinkActive="active" [class.active]="selectedIndex === i"
