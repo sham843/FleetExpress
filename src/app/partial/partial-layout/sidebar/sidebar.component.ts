@@ -17,6 +17,7 @@ import { SharedService } from 'src/app/services/shared.service';
 })
 export class SidebarComponent implements OnInit {
   menus: any = [];
+  sidebarMenu=new Array();
   lightIcon: any;
   lightIcon1: any;
   constructor(public sidebarservice: SidebarService, public sharedService: SharedService) {
@@ -27,7 +28,13 @@ export class SidebarComponent implements OnInit {
     this.sharedService.getTheme().subscribe((res: any) => {
       res ? this.lightIcon = res : this.lightIcon = localStorage.getItem('themeColor');
     })
+    this.getSidebarData();
   }
+  getSidebarData(){
+    let data:any=localStorage.getItem('loggedInData');
+    this.sidebarMenu=JSON.parse(data).responseData2;
+  }
+
   getSideBarState() {
     return this.sidebarservice.getSidebarState();
   }
