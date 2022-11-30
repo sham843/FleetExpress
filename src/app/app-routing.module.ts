@@ -26,7 +26,6 @@ const routes: Routes = [
       { path: '', loadChildren: () => import('./partial/partial-layout/partial-layout.module').then(m => m.PartialLayoutModule), data: { title: 'Login' } },
     ]
   },
-  // { path: 'forget-password', loadChildren: () => import('./web/forget-password/forget-password.module').then(m => m.ForgetPasswordModule), data: { title: 'Forget Password' }, },
   {path:'accessDenide',component:AccessDenideComponent},  
   { path: '**', component:PageNotFoundComponent}
 ];

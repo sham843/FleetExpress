@@ -32,7 +32,7 @@
                                             <div class="input-group">
                                                 <!-- <div class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></div>
                                                      <input type="text" class="form-control" placeholder="Search"> -->
-                                                <input type="text" class="form-control" placeholder="Search" [maxlength]="15" [formControl]="searchContent">
+                                                <input type="text" class="form-control" placeholder="Vehicle No./Name" [maxlength]="15" [formControl]="searchContent">
                                                 <div class="input-group-text" *ngIf="!searchContent.value"><i class="fa-solid fa-magnifying-glass"></i></div>
                                                 <div class="input-group-text" *ngIf="searchContent.value"><i class="fa fa-times"
                                                         (click)="searchContent.reset()"></i></div>

@@ -26,77 +26,14 @@
           <!-- <li class="header-menu">
             <span>Extra</span>
           </li> -->
-          <li>
-            <a routerLink="dashboard" routerLinkActive="active">
+          <li *ngFor="let menu of sidebarMenu">
+            <a routerLink="{{menu.pageURL}}" routerLinkActive="active">
               <div class="menu-item">
-                <img [src]="lightIcon=='dark' || lightIcon1=='dark'?'assets/images/sidebar/Dashboard-dark.svg':'assets/images/sidebar/Dashboard-light.svg'">
+                <img [attr.src]="lightIcon=='dark' || lightIcon1=='dark' ? 'assets/images/sidebar/' + menu.pageIconDark :'assets/images/sidebar/' + menu.pageIconLight">
+                <i class="bi bi-menu-button"></i>
               </div>
-              <span>Dashboard</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="tracking" routerLinkActive="active">
-              <div class="menu-item">
-                <img [src]="lightIcon=='dark'?'assets/images/sidebar/tracking-dark.svg':'assets/images/sidebar/tracking-light.svg'">
-              </div>
-              <span>Tracking</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="register-vehicle" routerLinkActive="active">
-              <div class="menu-item">
-                <img [src]="lightIcon=='dark'?'assets/images/sidebar/vehicle-dark.svg':'assets/images/sidebar/vehicle-light.svg'">
-              </div>
-              <span>Vehicle</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="driver" routerLinkActive="active">
-              <div class="menu-item">
-                <img [src]="lightIcon=='dark'?'assets/images/sidebar/Driver-Registration-dark.svg':'assets/images/sidebar/Driver-Registration-light.svg'">
-              </div>
-              <span>Driver</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="geofence" routerLinkActive="active">
-              <div class="menu-item">
-                <img [src]="lightIcon=='dark'?'assets/images/sidebar/Geofence-dark.svg':'assets/images/sidebar/Geofence-light.svg'">
-              </div>
-              <span>Geofence</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="payment" routerLinkActive="active">
-              <div class="menu-item">
-                <img [src]="lightIcon=='dark'?'assets/images/sidebar/payment-dark.svg':'assets/images/sidebar/payment-light.svg'">
-              </div>
-              <span>Payment</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="reports" routerLinkActive="active">
-              <div class="menu-item">
-                <img [src]="lightIcon=='dark'?'assets/images/sidebar/report-dark.svg':'assets/images/sidebar/report-light.svg'">
-              </div>
-              <span>Report</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="user-management-system" routerLinkActive="active">
-              <div class="menu-item">
-                <img [src]="lightIcon=='dark'?'assets/images/sidebar/UMS-dark.svg':'assets/images/sidebar/UMS-light.svg'">
-              </div>
-              <span>Users</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="settings" routerLinkActive="active">
-              <div class="menu-item">
-                <img [src]="lightIcon=='dark'?'assets/images/sidebar/settings-dark.svg':'assets/images/sidebar/settings-light.svg'">
-              </div>
-              <span>Settings</span>
-            </a>
+              <span>{{menu.pageName}}</span>
+            </a> 
           </li>
         </ul>
       </div>
