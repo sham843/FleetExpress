@@ -172,28 +172,15 @@ export class VehicleModalComponent implements OnInit {
   // -------------------------------------------------Add vehicle------------------------------------------------------------------
   saveVehicleDetails(formDirective: any) {
     this.highLightRow = '';
-    let first, second, third, forth, oldFirst, oldSecond;
-    if (this.registerVehicleForm.value.vehicleNo.length == 10) {
+     let first, second, third, forth;
       let vhlaData = (this.registerVehicleForm.value.vehicleNo).split('');
       first = vhlaData.splice(0, 2).join('');
       second = vhlaData.splice(0, 2).join('');
       third = vhlaData.splice(0, 2).join('');
       forth = vhlaData.join('');
-    }
-    else if(this.registerVehicleForm.value.vehicleNo.length == 9){
-      let vhlaData = (this.registerVehicleForm.value.vehicleNo).split('');
-      first = vhlaData.splice(0, 2).join('');
-      second = vhlaData.splice(0, 2).join('');
-      third = vhlaData.splice(0, 1).join('');
-      forth = vhlaData.join('');
-    }else{
-      let vhlaData = (this.registerVehicleForm.value.vehicleNo).split('');
-      oldFirst = vhlaData.splice(0, 3).join('');
-      oldSecond = vhlaData.join('');
-    }
     let param = {
-      "oldVehNo1": oldFirst ? oldFirst : '',
-      "oldVehNo2": oldSecond ? oldSecond : '',
+      "oldVehNo1":'',
+      "oldVehNo2":'',
       "newVehNo1": first ? first : '',
       "newVehNo2": second ? second : '',
       "newVehNo3": third ? third : '',

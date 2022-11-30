@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { ConfirmationComponent } from 'src/app/dialogs/confirmation/confirmation.component';
-import { ModalsComponent } from 'src/app/dialogs/driver_modals/modals.component';
+// import { ModalsComponent } from 'src/app/dialogs/driver_modals/modals.component';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
@@ -133,16 +133,7 @@ export class RegisterVehicleComponent implements OnInit {
       }
       else if (res != 'No' && label == 'assign') {
         if (res == 'Ok') {
-          const dialog = this.dialog.open(ModalsComponent, {
-            width: '900px',
-            data: '',
-            disableClose: this.config.disableCloseBtnFlag,
-            autoFocus: false
-          })
-          dialog.afterClosed().subscribe(res => {
-            if (res == 'Yes') {
-            }
-          })
+         
         }
         else {
           this.assignDriverToVehicle(event, editData, res);
