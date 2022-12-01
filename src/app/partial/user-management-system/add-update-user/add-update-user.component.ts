@@ -27,7 +27,7 @@ export class AddUpdateUserComponent implements OnInit {
   roleDtArr = new Array();
   editFlag!: boolean;
   editData !: object | any;
-  responsibilitiesData:any;
+  responsibilitiesData: any;
   get user() { return this.userForm.controls };
   get role() { return this.roleForm.controls };
   filterData = new Array();
@@ -40,7 +40,6 @@ export class AddUpdateUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.dialogData = this.data;
-    console.log("dialog",this.dialogData)
     this.editData = this.dialogData?.selectedDataObj;
     this.editFlag = this.editData ? true : false;
     this.getResponsibilities();
@@ -71,64 +70,64 @@ export class AddUpdateUserComponent implements OnInit {
       assignedRole: ['', Validators.required],
     })
     this.roleForm = this.fb.group({
-      roleName: [this.dialogData.data?this.dialogData.data.roleName:''],
-      assignedResponsibilities: [''],
+      roleName: [this.dialogData.data ? this.dialogData.data.roleName : '', [Validators.required, Validators.pattern('^[a-zA-Z][a-zA-Z\\s]+$')]],
+      assignedResponsibilities: ['', [Validators.required]],
     })
-    this.dialogData.data?this.responsibilitiesData=this.dialogData.data.responsiblitiesLists:this.responsibilitiesData=''
+    this.dialogData.data ? this.responsibilitiesData = this.dialogData.data.responsiblitiesLists : this.responsibilitiesData = ''
   }
-/*   {
-    "id": 2,
-    "roleName": "VehicleHandlers",
-    "isDeleted": false,
-    "userId": 0,
-    "responsiblitiesLists": [
-        {
-            "id": 1,
-            "responsiblities": "Dashboard",
-            "isResponsible": false
-        },
-        {
-            "id": 2,
-            "responsiblities": "Tracking",
-            "isResponsible": false
-        },
-        {
-            "id": 3,
-            "responsiblities": "Vehicle",
-            "isResponsible": false
-        },
-        {
-            "id": 4,
-            "responsiblities": "Driver",
-            "isResponsible": false
-        },
-        {
-            "id": 5,
-            "responsiblities": "Geofence",
-            "isResponsible": false
-        },
-        {
-            "id": 6,
-            "responsiblities": "Payment",
-            "isResponsible": true
-        },
-        {
-            "id": 7,
-            "responsiblities": "Report",
-            "isResponsible": true
-        },
-        {
-            "id": 8,
-            "responsiblities": "Users",
-            "isResponsible": false
-        },
-        {
-            "id": 9,
-            "responsiblities": "Settings",
-            "isResponsible": false
-        }
-    ]
-} */
+  /*   {
+      "id": 2,
+      "roleName": "VehicleHandlers",
+      "isDeleted": false,
+      "userId": 0,
+      "responsiblitiesLists": [
+          {
+              "id": 1,
+              "responsiblities": "Dashboard",
+              "isResponsible": false
+          },
+          {
+              "id": 2,
+              "responsiblities": "Tracking",
+              "isResponsible": false
+          },
+          {
+              "id": 3,
+              "responsiblities": "Vehicle",
+              "isResponsible": false
+          },
+          {
+              "id": 4,
+              "responsiblities": "Driver",
+              "isResponsible": false
+          },
+          {
+              "id": 5,
+              "responsiblities": "Geofence",
+              "isResponsible": false
+          },
+          {
+              "id": 6,
+              "responsiblities": "Payment",
+              "isResponsible": true
+          },
+          {
+              "id": 7,
+              "responsiblities": "Report",
+              "isResponsible": true
+          },
+          {
+              "id": 8,
+              "responsiblities": "Users",
+              "isResponsible": false
+          },
+          {
+              "id": 9,
+              "responsiblities": "Settings",
+              "isResponsible": false
+          }
+      ]
+  } */
   getVehicleData() {
     let vhlData = this.master.getVehicleListData();
     vhlData.subscribe({
@@ -274,7 +273,25 @@ export class AddUpdateUserComponent implements OnInit {
   addRole() {
     this.dialogData.seletedTab = 'role';
   }
-  submitRole() { }
+  submitRole() {
+    /*     {
+          "id": 0,
+          "roleName": "test",
+          "isDeleted": false,
+          "userId": 0,
+          "responsiblitiesLists": [
+            {
+              "id": 0,
+              "responsiblities": "",
+              "isResponsible": true
+            }
+          ]
+        } Roles/save-roles-and-responsiblity
+        */
+    if (this.roleForm.invalid) {
+      return
+    }
+  }
   onNoClick(flag: any): void {
     // if (flag == 'Yes') {
     //  let obj = { flag: 'Yes' };

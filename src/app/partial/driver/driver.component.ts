@@ -101,7 +101,6 @@ export class DriverComponent implements OnInit {
 
   // -----------------------------------------------comfirmation module----------------------------------------------------------
   confirmationDialog(flag: boolean, label: string, event?: any, drData?: any) {
-    console.log(flag,label,drData)
     // this.selectAll ? this.uncheckAllDriver() : ''; 
     let obj: any = ConfigService.dialogObj;
     if (label == 'status' && drData.isAssigned==0) {

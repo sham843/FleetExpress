@@ -412,14 +412,12 @@ export class TrackingComponent implements OnInit, AfterViewInit {
 
 
   onScrollingFinished(){
-    console.log('load more');
     this.loadMore()
   }
   totalDtaArray:any[]=[];
   loadMore(): void {
     if (this.getNextItems()) {
       this.categoriesSubject.next(this.totalDtaArray);
-      console.log(this.categoriesSubject);
     }
   }
   getNextItems(): boolean {
@@ -427,7 +425,6 @@ export class TrackingComponent implements OnInit, AfterViewInit {
       return false;
     }
     const remainingLength = Math.min( 5, this.allVehiclelData.length - this.totalDtaArray.length );
-    console.log(this.totalDtaArray.length)
     // this.totalDtaArray=[];
     this.totalDtaArray.push(
       ...this.allVehiclelData.slice(
