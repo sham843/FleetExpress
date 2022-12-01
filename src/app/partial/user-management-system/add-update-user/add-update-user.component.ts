@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ApiCallService } from 'src/app/services/api-call.service';
@@ -31,6 +31,7 @@ export class AddUpdateUserComponent implements OnInit {
   get user() { return this.userForm.controls };
   get role() { return this.roleForm.controls };
   filterData = new Array();
+  @ViewChild(FormGroupDirective) formGroupDirective!: FormGroupDirective;
   constructor(public dialogRef: MatDialogRef<AddUpdateUserComponent>,
     public CommonMethod: CommonMethodsService, private fb: FormBuilder,
     public validationService: ValidationService, private master: MasterService,
@@ -40,6 +41,7 @@ export class AddUpdateUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.dialogData = this.data;
+    console.log("data", this.dialogData)
     this.editData = this.dialogData?.selectedDataObj;
     this.editFlag = this.editData ? true : false;
     this.getResponsibilities();
@@ -49,7 +51,7 @@ export class AddUpdateUserComponent implements OnInit {
     this.getRoleData();
     if (this.editData) {
       var vehicleNumber = new Array();
-      this.editData.vehicle.forEach((element: any) => {
+      this.editData?.vehicle?.forEach((element: any) => {
         vehicleNumber.push(element.vehicleNumber)
       });
       this.userForm.patchValue({
@@ -69,65 +71,20 @@ export class AddUpdateUserComponent implements OnInit {
       assignedVehicle: ['', Validators.required],
       assignedRole: ['', Validators.required],
     })
+    /* ---------------Roll section--------------------- */
+    let responseIds: any = [];
+    this.dialogData.selectedDataObj?.responsiblitiesLists?.forEach((ele: any) => {
+      if (ele.isResponsible == true) {
+        responseIds.push(ele.id);
+      }
+    });
     this.roleForm = this.fb.group({
-      roleName: [this.dialogData.data ? this.dialogData.data.roleName : '', [Validators.required, Validators.pattern('^[a-zA-Z][a-zA-Z\\s]+$')]],
-      assignedResponsibilities: ['', [Validators.required]],
+      roleName: [this.dialogData?.selectedDataObj ? this.dialogData.selectedDataObj?.roleName : '', [Validators.required, Validators.pattern('^[a-zA-Z][a-zA-Z\\s]+$')]],
+      assignedResponsibilities: [responseIds || '', [Validators.required]],
     })
-    this.dialogData.data ? this.responsibilitiesData = this.dialogData.data.responsiblitiesLists : this.responsibilitiesData = ''
   }
-  /*   {
-      "id": 2,
-      "roleName": "VehicleHandlers",
-      "isDeleted": false,
-      "userId": 0,
-      "responsiblitiesLists": [
-          {
-              "id": 1,
-              "responsiblities": "Dashboard",
-              "isResponsible": false
-          },
-          {
-              "id": 2,
-              "responsiblities": "Tracking",
-              "isResponsible": false
-          },
-          {
-              "id": 3,
-              "responsiblities": "Vehicle",
-              "isResponsible": false
-          },
-          {
-              "id": 4,
-              "responsiblities": "Driver",
-              "isResponsible": false
-          },
-          {
-              "id": 5,
-              "responsiblities": "Geofence",
-              "isResponsible": false
-          },
-          {
-              "id": 6,
-              "responsiblities": "Payment",
-              "isResponsible": true
-          },
-          {
-              "id": 7,
-              "responsiblities": "Report",
-              "isResponsible": true
-          },
-          {
-              "id": 8,
-              "responsiblities": "Users",
-              "isResponsible": false
-          },
-          {
-              "id": 9,
-              "responsiblities": "Settings",
-              "isResponsible": false
-          }
-      ]
-  } */
+
+  // ----------------------------------------------------user section start------------------------------------------------------------------------------------
   getVehicleData() {
     let vhlData = this.master.getVehicleListData();
     vhlData.subscribe({
@@ -139,6 +96,7 @@ export class AddUpdateUserComponent implements OnInit {
         this.error.handelError(error.status);
       }
   }
+
   getRoleData() {
     this.apiCall.setHttp('get', 'userdetail/getallSubusertype_usertype?UserTypeId=1' + '&Subusertypeid=' + this.userData[0]?.subUserTypeId, true, false, false, 'fleetExpressBaseUrl');
     // this.subscription = 
@@ -155,22 +113,7 @@ export class AddUpdateUserComponent implements OnInit {
     },
       (error: any) => { this.error.handelError(error.status) });
   }
-  getResponsibilities() {
-    this.apiCall.setHttp('get', 'Roles/getRolesList', true, false, false, 'fleetExpressBaseUrl');
-    // this.subscription = 
-    this.apiCall.getHttp().subscribe({
-      next: (res: any) => {
-        if (res.statusCode === "200") {
-          this.responsibilitiesData = res.responseData;
-        } else {
-          if (res.statusCode != "404") {
-            this.error.handelError(res.statusCode)
-          }
-        }
-      }
-    },
-      (error: any) => { this.error.handelError(error.status) });
-  }
+
   removeSelectedValue(Vehicles: any) {
     const index: number = this.userForm.value.assignedVehicle.indexOf(Vehicles);
     let selectedVehicleObj = this.userForm.value.assignedVehicle;
@@ -270,34 +213,69 @@ export class AddUpdateUserComponent implements OnInit {
       });
     }
   }
+  // ----------------------------------------------------user section end---------------------------------------------------------------------------------------
+  // ----------------------------------------------------Roll section start-------------------------------------------------------------------------------------
+  getResponsibilities() {     // table data
+    this.apiCall.setHttp('get', 'Roles/getRolesList', true, false, false, 'fleetExpressBaseUrl');
+    // this.subscription = 
+    this.apiCall.getHttp().subscribe({
+      next: (res: any) => {
+        if (res.statusCode === "200") {
+          this.responsibilitiesData = res.responseData;
+        } else {
+          if (res.statusCode != "404") {
+            this.error.handelError(res.statusCode)
+          }
+        }
+      }
+    },
+      (error: any) => { this.error.handelError(error.status) });
+  }
+ 
   addRole() {
     this.dialogData.seletedTab = 'role';
   }
-  submitRole() {
-    /*     {
-          "id": 0,
-          "roleName": "test",
-          "isDeleted": false,
-          "userId": 0,
-          "responsiblitiesLists": [
-            {
-              "id": 0,
-              "responsiblities": "",
-              "isResponsible": true
-            }
-          ]
-        } Roles/save-roles-and-responsiblity
-        */
+  submitRole(formDirective: any) {    //Save and Update Roll
     if (this.roleForm.invalid) {
       return
     }
+    else {
+      let responseArray = new Array();
+      this.roleForm.value.assignedResponsibilities.find((ele: any) => {
+        let responseObj = {
+          "id": ele,
+          "responsiblities": "",
+          "isResponsible": true
+        }
+        responseArray.push(responseObj);
+      })
+      let obj = {
+        "id": (this.dialogData.cardTitle == 'Update Role' && this.dialogData.selectedDataObj) ? this.dialogData.selectedDataObj.id : 0,
+        "roleName": this.roleForm.value.roleName,
+        "isDeleted": false,
+        "userId": this.webStorage.getUserId(),
+        "responsiblitiesLists": responseArray
+      }
+      this.apiCall.setHttp('post', 'Roles/save-roles-and-responsiblity', true, obj, false, 'fleetExpressBaseUrl');
+      this.apiCall.getHttp().subscribe({
+        next: (res: any) => {
+          if (res.statusCode == '200') {
+            this.commonMethods.snackBar(res.statusMessage, 0);
+            // this.data = ''
+            formDirective.resetForm();
+            this.dialogRef.close('add');
+          }
+          else {
+            this.commonMethods.snackBar(res.statusMessage, 1);
+          }
+        }
+      }, (error: any) => {
+        this.error.handelError(error.status);
+      })
+    }
   }
   onNoClick(flag: any): void {
-    // if (flag == 'Yes') {
-    //  let obj = { flag: 'Yes' };
-    //  this.dialogRef.close(obj);
-    // } else {
-    this.dialogRef.close(flag);
-    //}
+    flag
+  this.dialogRef.close();
   }
 }

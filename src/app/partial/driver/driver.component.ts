@@ -73,9 +73,9 @@ export class DriverComponent implements OnInit {
         this.driverDetails = res.responseData.responseData1;
         !this.driverName.value ? this.checkdata = res.responseData.responseData1 : '';
         this.spinner.hide();
-        this.driverDetails.forEach((ele: any) => {
+       /*  this.driverDetails.forEach((ele: any) => {
           ele['isChecked'] = false;
-        });
+        }); */
         this.totalItem = res.responseData.responseData2.totalRecords;
       } else {
         !this.driverName.value ?this.checkdata=[]:'';
