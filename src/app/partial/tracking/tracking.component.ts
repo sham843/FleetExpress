@@ -395,7 +395,6 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     }
   }
   getItineraryDetails(){
-    this.vehicleNo='MH12DL3698';
     if(this.itineraryForm.value.fromDate && this.itineraryForm.value.toDate){
       this.vehicleDetailsData = [];
       const obj={
