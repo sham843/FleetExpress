@@ -1,6 +1,6 @@
 //import { MapsAPILoader } from '@agm/core';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, AfterViewInit, EventEmitter, Output } from '@angular/core'
+import { Component, OnInit, AfterViewInit, EventEmitter, Output, HostListener } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
@@ -290,7 +290,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
 // ------ loading data aginst srolling -------
   
   onScrollingFinished(){
-    console.log('load more');
+    // console.log('load more');
     this.loadMore()
   }
   totalDtaArray:any[]=[];
@@ -316,12 +316,24 @@ export class TrackingComponent implements OnInit, AfterViewInit {
       incomingTableData.push(this.totalDtaArray[i])
     }
     let resp: any = this.sharedService.getAddressBylatLong(1, incomingTableData, incomingTableData.length);
-    console.log(resp);
+     console.log(resp);
     setTimeout(()=>{
       this.tableVehicleData.push(...resp);
     },2000)
-    console.log(this.tableVehicleData)
+    // console.log(this.tableVehicleData)
     return true;
+  }
+
+  @HostListener("window:scroll", ['$event'])
+  divScroll(val: any): void {
+    if(val == 'div'){
+    }
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        // this.emitted = true;
+        this.loadMore();
+      } else if ((window.innerHeight + window.scrollY) < document.body.offsetHeight) {
+        // this.emitted = false;
+      }
   }
 
 
