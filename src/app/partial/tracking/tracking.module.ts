@@ -17,7 +17,7 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
   declarations: [
     TrackingComponent,
     TicketRaisedComponent,
-    VehicleTrackingDetailsComponent,
+    VehicleTrackingDetailsComponent
   ],
   imports: [
     CommonModule,
