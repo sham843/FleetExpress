@@ -319,7 +319,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     console.log(resp);
     setTimeout(()=>{
       this.tableVehicleData.push(...resp);
-    },1000)
+    },2000)
     console.log(this.tableVehicleData)
     return true;
   }
