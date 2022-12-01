@@ -9,13 +9,9 @@
                         <div class="input-group-text">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </div>
-                        <input type="text" class="form-control" placeholder="Search" [formControl]="searchContent"
+                        <input type="text" class="form-control" placeholder="Search Vehicle No." [formControl]="searchContent"
                             [maxLength]="15" (keyup)="setnumber(searchContent.value)"
                             (keypress)="validationService.noSpaces($event)">
-
-                        <!-- <div class="input-group-text" *ngIf="searchContent.value"><i class="fa fa-times"
-                                (click)="searchContent.reset()"></i>
-                        </div> -->
                     </div>
                 </div>
                 <div class="col-sm-2 border-end">
@@ -49,7 +45,7 @@
         <div class="col-sm-4">
             <div class="card border-0 rounded">
                 <div class="card-body fixed-height rounded" (scroll)="divScroll('div')" *ngIf="allVehiclelData.length">
-                    <div class="rounded" scrollTracker *ngFor="let item of tableVehicleData; let i=index" (scrollingFinished)="onScrollingFinished()">
+                    <div class="rounded"*ngFor="let item of tableVehicleData; let i=index">
                         <ng-container>
                             <a class="d-flex vehicle p-3 bg-opacity-10 mb-1 rounded bg-opacity-10" placement="top"
                                 routerLinkActive="active" [class.active]="selectedIndex === i"
