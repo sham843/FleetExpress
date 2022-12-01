@@ -127,7 +127,6 @@ export class ConfirmationComponent implements OnInit {
         autoFocus: false
       })
       dialog.afterClosed().subscribe((res: any) => {
-        console.log("vehicle driver",res);
         if (res == 'add') {
           this.getDriverData();
         }

@@ -103,7 +103,6 @@ export class VehicleModalComponent implements OnInit {
     setTimeout(() => {
       documentUrl.subscribe({
         next: (ele: any) => {
-          console.log("statuscode",ele.statusCode);
           if (ele.statusCode == "200") {
             this.spinner.hide();
             this.profilePhotoImg = ele.responseData;
@@ -252,7 +251,6 @@ export class VehicleModalComponent implements OnInit {
           formDirective.resetForm();
           this.dialogRef.close('');
           this.commonMethods.snackBar(response.responseData.responseData1[0].msg, 0)
-          console.log(response.responseData.responseData1[0].msg)
         } else {
           this.spinner.hide();
           this.dialogRef.close('');

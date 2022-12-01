@@ -76,17 +76,24 @@
                 <mat-label>Role Name</mat-label>
                 <input matInput placeholder="Enter Role Name" formControlName="roleName" class="text-capitalize"
                     (keypress)="validationService.alphaNumericWithSpaces($event)" [maxlength]="30">
+                    <mat-error>
+                        <span *ngIf="role['roleName'].errors?.['required']" class="text-danger">Role Name is Required</span>
+                        <span *ngIf="role['roleName'].errors?.['pattern']" class="text-danger">Please Enter Valid Role Name</span>
+                    </mat-error>
             </mat-form-field>
-            <mat-error *ngIf="userformSubmitted && user['roleName'].errors">
-            </mat-error>
         </div>
         <div class="col-sm-6">
             <mat-form-field [appearance]="config.matFormField" class="w-100">
                 <mat-label>Assign Responsibilities</mat-label>
                 <mat-select multiple formControlName="assignedResponsibilities">
-                    <mat-option *ngFor="let response of responsibilitiesData" [value]="response.id" checked="true">{{response.responsiblities}}
+                    <mat-option *ngFor="let response of responsibilitiesData" [value]="response.id">
+                        {{response.responsiblities}}
                     </mat-option>
                 </mat-select>
+                <mat-error>
+                    <span *ngIf="role['assignedResponsibilities'].errors?.['required']" class="text-danger">
+                        Assign Responsibilities is Required</span>
+                </mat-error>
             </mat-form-field>
         </div>
     </div>

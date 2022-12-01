@@ -81,7 +81,6 @@ export class RegisterVehicleComponent implements OnInit {
           this.vehicleNoWithSpace = vhlNo.join('  ');
           ele['vhlNos'] = this.vehicleNoWithSpace;
         });
-console.log("vehicle number",this.vehicleData[0].vhlNos);
         flag == 'search' ? (this.searchHideShow = false, this.clearSerachBtn = true) : '';
         this.totalItem = response.responseData.responseData2.totalRecords;
       }

@@ -161,7 +161,6 @@ export class SharedService {
               // this.subscription =
               this.apiCall.getHttp().subscribe({
                 next: (res: any) => {
-                  console.log(res.statusCode)
                   if (res.statusCode === "200") {
                     obj.next(res);
                   }
@@ -250,9 +249,7 @@ export class SharedService {
           let tempObj: any = new Object();
           Object.keys(cr).map(function (p) { tempObj[p] = cr[p]; });
           tempObj = { ...cr }
-          var  address  = "" ;
           resolve(tempObj);
-          console.log(address)
         }
 
       }, 200 * i)
