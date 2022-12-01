@@ -47,7 +47,7 @@
                                     <div class="text-center justify-content-center" *ngIf="showTab=='role'">
                                         <img src="../../../assets/images/No-Users-Role-Created.svg" alt="">
                                         <p class="my-3">No Users Role Created</p>
-                                        <button class="btn btn-main"  (click)="addUpdateDialog('role')">
+                                        <button class="btn btn-main"  (click)="addUpdateDialog('role','','add')">
                                             New Role
                                         </button>
                                     </div>
@@ -81,7 +81,7 @@
                                             <button *ngIf="showTab=='users'" class="btn btn-add" (click)="addUpdateDialog('user')">
                                                 <i class="fa-solid fa-plus"></i>
                                             </button>
-                                            <button *ngIf="showTab=='role'" class="btn btn-add" (click)="addUpdateDialog('role')">
+                                            <button *ngIf="showTab=='role'" class="btn btn-add" (click)="addUpdateDialog('role','','add')">
                                                 <i class="fa-solid fa-plus"></i>
                                             </button>
 
@@ -127,13 +127,10 @@
                                         <tbody *ngIf="showTab=='role'">
                                             <tr *ngFor="let role of roleTableData; let i=index" >
                                                 <td>{{i+1}}</td>
-                                                <td>{{role.pageName }}Manager</td>
-                                                <td>{{role.name}}
-                                                    Create Vehicle
-                                                </td>
+                                                <td>{{role.roleName}}</td>
                                                 <td>
                                                     <div class="d-flex">
-                                                        <button class="btn btn-light-main btn-icon me-2" (click)="addUpdateDialog('role', role)">
+                                                        <button class="btn btn-light-main btn-icon me-2" (click)="addUpdateDialog('role', role,'update')">
                                                             <i class="fa-regular fa-pen-to-square"></i>
                                                         </button>
                                                     </div>

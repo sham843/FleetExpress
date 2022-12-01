@@ -1,5 +1,5 @@
-import { Component, OnInit} from '@angular/core';
-import { FormControl} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
@@ -18,54 +18,71 @@ import { AddUpdateUserComponent } from './add-update-user/add-update-user.compon
   styleUrls: ['./user-management-system.component.scss']
 })
 export class UserManagementSystemComponent implements OnInit {
-  VehicleDtArr= new Array();
-  showTab !:string;
-  tableLables= new Array();
+  VehicleDtArr = new Array();
+  showTab !: string;
+  tableLables = new Array();
   subscription!: Subscription;
-  userData= new Array();
-  roleDtArr= new Array();
-  userformSubmitted:boolean=false;
-  userTableData= new Array();
-  roleTableData= new Array();
+  userData = new Array();
+  roleDtArr = new Array();
+  userformSubmitted: boolean = false;
+  userTableData = new Array();
+  roleTableData = new Array();
   selectAll!: boolean;
   selectAllRoles!: boolean;
-  selectedTableData= new Array();
-  selectedRoleTableData= new Array();
-  editFlag:boolean=false
-  totalUserTableData: number=0;
+  selectedTableData = new Array();
+  selectedRoleTableData = new Array();
+  editFlag: boolean = false
+  totalUserTableData: number = 0;
   searchContent = new FormControl();
-  highlightRowindex !:number|string;
+  highlightRowindex !: number | string;
   pageNumber: number = 1;
   pageSize: number = 10;
-  constructor(private apiCall:ApiCallService,
-    private commonMethods:CommonMethodsService,
-    public validationService:ValidationService,
-    private error:ErrorsService,
-    private spinner:NgxSpinnerService,
-    private dialog:MatDialog,
-    private webStorage:WebStorageService,
-    private configService:ConfigService) { }
+  constructor(private apiCall: ApiCallService,
+    private commonMethods: CommonMethodsService,
+    public validationService: ValidationService,
+    private error: ErrorsService,
+    private spinner: NgxSpinnerService,
+    private dialog: MatDialog,
+    private webStorage: WebStorageService,
+    private configService: ConfigService) { }
 
   ngOnInit(): void {
     this.userData.push(this.webStorage.getUser());
     this.selectedTab('users');
   }
-  ngAfterViewInit(){
-    this.searchContent.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(()=>{
-      this.pageNumber=1;
-     this.getUserTableData();
+
+  //---------------------------------------------------Common methods for both user and role-------------------------------------------------------------------------
+  ngAfterViewInit() {
+    this.searchContent.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
+      this.pageNumber = 1;
+      this.getUserTableData();
     });
- }
+  }
   onPagintion(pageNo: any) {
     this.pageNumber = pageNo;
-    this.selectedTableData=[];
+    this.selectedTableData = [];
     this.getUserTableData();
     this.getRoleTableData();
   }
-  getUserTableData(){
-    this.totalUserTableData=0;
-    this.userTableData=[];
-    this.apiCall.setHttp('get', 'userdetail/get-user-list?vehicleOwnerId='+this.userData[0]?.vehicleOwnerId+'&Subusertypeid=&SearchText='+this.searchContent.value+'&District=0&TalukaId=0&NoPage='+(!this.searchContent.value?this.pageNumber:0)+'&RowsPerPage='+(!this.searchContent.value?10:0), true, false, false, 'fleetExpressBaseUrl');
+
+  selectedTab(tab: any) {
+    if (tab == 'users') {
+      this.tableLables = [{ id: 1, label: 'SR.NO' }, { id: 2, label: 'NAME' }, { id: 3, label: 'MOBILE NUMBER' }, { id: 4, label: 'ROLE' }, { id: 5, label: 'UNBLOCK/BLOCK' }, { id: 6, label: 'ACTION' }]
+      this.showTab != tab ? this.getUserTableData() : '';
+    } else {
+      this.tableLables = [{ id: 1, label: 'SR.NO' }, { id: 2, label: 'ROLE NAME' }, { id: 4, label: 'ACTION' }]
+      this.showTab != tab ? this.getRoleTableData() : '';
+    }
+    this.showTab = tab;
+    this.pageNumber = 1;
+    this.searchContent.reset();
+  }
+  // -----------------------------------------------start user section-------------------------------------------------------------------
+  // -----------------------------------------------get user data--------------------------------------------------------------------
+  getUserTableData() {
+    this.totalUserTableData = 0;
+    this.userTableData = [];
+    this.apiCall.setHttp('get', 'userdetail/get-user-list?vehicleOwnerId=' + this.userData[0]?.vehicleOwnerId + '&Subusertypeid=&SearchText=' + this.searchContent.value + '&District=0&TalukaId=0&NoPage=' + (!this.searchContent.value ? this.pageNumber : 0) + '&RowsPerPage=' + (!this.searchContent.value ? 10 : 0), true, false, false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
@@ -75,82 +92,37 @@ export class UserManagementSystemComponent implements OnInit {
           this.userTableData = res.responseData.responseData1;
           this.totalUserTableData = res.responseData.responseData2.totalRecords;
         } else {
-            this.userTableData=[];
-            this.totalUserTableData=0;
+          this.userTableData = [];
+          this.totalUserTableData = 0;
         }
       },
-      error: ((error: any) => { this.userTableData=[]; this.error.handelError(error.status) })
+      error: ((error: any) => { this.userTableData = []; this.error.handelError(error.status) })
     });
-    
   }
-  getRoleTableData(){
-    this.apiCall.setHttp('get', 'userrights/getUserRights?UserTypeId=1&SubUserTypeId=10', true, false, false, 'fleetExpressBaseUrl');
-    this.apiCall.getHttp().subscribe({
-      next: (res: any) => {
-        if (res.statusCode === "200") {
-          this.roleTableData = res.responseData;
-        } else {
-          if (res.statusCode != "404") {
-            this.error.handelError(res.statusCode)
-          }
-        }
-      },
-    },(error: any) => { this.error.handelError(error.status) });
-  }
-  
-
-  selectedTab(tab:any){
-    if(tab=='users'){
-      this.tableLables=[{id:1,label:'SR.NO'},{id:2,label:'NAME'},{id:3,label:'MOBILE NUMBER'},{id:4,label:'ROLE'},{id:5,label:'UNBLOCK/BLOCK'},{id:6,label:'ACTION'}]
-      this.showTab!=tab?this.getUserTableData():'';
-    }else{
-      this.tableLables=[{id:1,label:'SR.NO'},{id:2,label:'ROLE NAME'},{id:3,label:'ASSIGN RESPONSIBILITIES'},{id:4,label:'ACTION'}]
-      this.showTab!=tab?this.getRoleTableData():'';
-    }
-    this.showTab=tab;
-    this.pageNumber=1;
-    this.searchContent.reset();
-  }
-  selectUsers(event: any, id: any){
-    for(var i = 0 ; i < this.userTableData.length; i++){
-      if(id != 0) {
+  selectUsers(event: any, id: any) {
+    for (var i = 0; i < this.userTableData.length; i++) {
+      if (id != 0) {
         this.selectAll = false;
-        if(this.userTableData[i].id == id){
+        if (this.userTableData[i].id == id) {
           this.userTableData[i].checked = event.checked;
         }
-      }else{
+      } else {
         this.userTableData[i].checked = event.checked;
       }
     }
     this.selectedTableData = [];
     this.selectedTableData = this.userTableData.filter((x: any) => x.checked == true);
-    this.selectAll =this.userTableData.length == this.selectedTableData.length ?  true : false;
-   
+    this.selectAll = this.userTableData.length == this.selectedTableData.length ? true : false;
   }
 
-  selectRoles(event: any, id: any){
-    for(var i = 0 ; i < this.roleTableData.length; i++){
-      if(id != 0) {
-        this.selectAllRoles = false;
-        if(this.roleTableData[i].id == id){
-          this.roleTableData[i].checked = event.checked;
-        }
-      }else{
-        this.roleTableData[i].checked = event.checked;
-      }
-    }
-    this.selectedRoleTableData = [];
-    this.selectedRoleTableData = this.roleTableData.filter((x: any) => x.checked == true);
-    this.selectAllRoles =this.roleTableData.length == this.selectedRoleTableData.length ?  true : false;
-   
-  }
-  checkBlock(rowData:any,value:any){ 
-    const obj={
-      userId:rowData.id,
+  // --------------------------------------block unblock user--------------------------------------------------------------------
+  checkBlock(rowData: any, value: any) {
+    const obj = {
+      userId: rowData.id,
       id: 0,
       blockedDate: new Date().toISOString(),
       blockBy: this.userData[0].id,
-      isBlock: value==false?0:1,
+      isBlock: value == false ? 0 : 1,
       remark: ""
     }
     this.apiCall.setHttp('put', 'userdetail/Block-Unblock-User_1', true, obj, false, 'fleetExpressBaseUrl');
@@ -158,7 +130,7 @@ export class UserManagementSystemComponent implements OnInit {
       next: (res: any) => {
         if (res.statusCode === "200") {
           this.getUserTableData();
-          this.commonMethods.snackBar(res.responseData,0);
+          this.commonMethods.snackBar(res.responseData, 0);
         } else {
           if (res.statusCode != "404") {
             this.error.handelError(res.responseData)
@@ -169,38 +141,12 @@ export class UserManagementSystemComponent implements OnInit {
       this.error.handelError(error.status)
     })
   }
-
-  confirmationDialog(flag: boolean,label:string, selectedRowObj?:any) {
-    let obj: any = ConfigService.dialogObj;
-
-    if(label == 'status'){
-      obj['p1'] = 'Are you sure you want to '+ (flag ? 'block':'unblock') +' user?' ;
-      obj['cardTitle'] = flag ? 'User Block' : 'User Unblock';
-      obj['successBtnText'] = flag ? 'Block' : 'Unblock';
-      obj['cancelBtnText'] = 'Cancel';
-    }else if(label == 'delete'){
-      obj['p1'] = 'Are you sure you want to delete this record';
-      obj['cardTitle'] = 'Delete';
-      obj['successBtnText'] = 'Delete';
-      obj['cancelBtnText'] = 'Cancel';
-    }
-    
-    const dialog = this.dialog.open(ConfirmationComponent, {
-      width: this.configService.dialogBoxWidth[0],
-      data: obj,
-      disableClose: this.configService.disableCloseBtnFlag,
-    })
-
-    dialog.afterClosed().subscribe(res => {
-      res == 'Yes' && label=='delete' ?  this.DeleteUserData():'';
-       res == 'Yes' && label=='status' ?   this.checkBlock(selectedRowObj, flag): selectedRowObj.isBlock = !flag; ;   
-    })
-  }
+  // -----------------------------------------------------delete user------------------------------------------------------------
   DeleteUserData() {
     this.spinner.show();
-    let objDeleteData= new Array();
-    this.selectAll=false;
-    for(let i=0; i < this.selectedTableData.length; i++){
+    let objDeleteData = new Array();
+    this.selectAll = false;
+    for (let i = 0; i < this.selectedTableData.length; i++) {
       const obj = {
         id: this.selectedTableData[i].id,
         isDeleted: 1
@@ -213,52 +159,112 @@ export class UserManagementSystemComponent implements OnInit {
         this.spinner.hide();
         if (res.statusCode === "200") {
           this.getUserTableData();
-          this.selectedTableData=[];
-          this.commonMethods.snackBar(res.statusMessage,0);
+          this.selectedTableData = [];
+          this.commonMethods.snackBar(res.statusMessage, 0);
         } else {
           if (res.statusCode != "404") {
             this.error.handelError(res.statusMessage)
           }
         }
       }
-    },(error: any) => {
+    }, (error: any) => {
       this.spinner.hide();
-     this.error.handelError(error.status) ;
+      this.error.handelError(error.status);
     });
   }
 
-  addUpdateDialog(status :string, selectedObj?:any) {
-    status=='user'?(this.selectAll || this.selectedTableData.length ? (this.uncheckAllUser(), this.selectedTableData = []):''):this.selectAllRoles || this.selectedRoleTableData.length ? (this.uncheckAllUser(), this.roleTableData = []):'';
-    this.highlightRowindex = selectedObj?.id ;
+  uncheckAllUser() {
+    this.selectAll = false;
+    this.userTableData.map((ele: any) => {
+      ele.checked = false
+    })
+  }
+  // ----------------------------------------------------------end user section--------------------------------------------------------
+  // -------------------------------------------------------Start role section----------------------------------------------------------
+  getRoleTableData() {
+    this.apiCall.setHttp('get', 'Roles/getRolesList-Table-View?pageNo=' + this.pageNumber + '&pageSize=' + this.pageSize, true, false, false, 'fleetExpressBaseUrl');
+    this.apiCall.getHttp().subscribe({
+      next: (res: any) => {
+        if (res.statusCode === "200") {
+          this.roleTableData = res.responseData.responseData1;
+        } else {
+          if (res.statusCode != "404") {
+            this.error.handelError(res.statusCode)
+          }
+        }
+      },
+    }, (error: any) => { this.error.handelError(error.status) });
+  }
+  selectRoles(event: any, id: any) {
+    for (var i = 0; i < this.roleTableData.length; i++) {
+      if (id != 0) {
+        this.selectAllRoles = false;
+        if (this.roleTableData[i].id == id) {
+          this.roleTableData[i].checked = event.checked;
+        }
+      } else {
+        this.roleTableData[i].checked = event.checked;
+      }
+    }
+    this.selectedRoleTableData = [];
+    this.selectedRoleTableData = this.roleTableData.filter((x: any) => x.checked == true);
+    this.selectAllRoles = this.roleTableData.length == this.selectedRoleTableData.length ? true : false;
+
+  }
+  uncheckAllRole() {
+    this.selectAllRoles = false;
+    this.roleTableData.map((ele: any) => {
+      ele.checked = false
+    })
+  }
+
+  //-------------------------------------------------------End role section-----------------------------------------------------------------
+
+  confirmationDialog(flag: boolean, label: string, selectedRowObj?: any) {   //blobk-unblock & delete modal
     let obj: any = ConfigService.dialogObj;
-      obj['cardTitle'] = status=='user' ? (!selectedObj?'Create User':'Update User') : (!selectedObj?'Create Role':'Update Role');
-      obj['seletedTab'] = status;
+    if (label == 'status') {
+      obj['p1'] = 'Are you sure you want to ' + (flag ? 'block' : 'unblock') + ' user?';
+      obj['cardTitle'] = flag ? 'User Block' : 'User Unblock';
+      obj['successBtnText'] = flag ? 'Block' : 'Unblock';
       obj['cancelBtnText'] = 'Cancel';
-      obj['submitBtnText'] = !selectedObj? 'Submit':'Update';
-      obj['selectedDataObj']=selectedObj
-     const dialog = this.dialog.open(AddUpdateUserComponent, {
+    } else if (label == 'delete') {
+      obj['p1'] = 'Are you sure you want to delete this record';
+      obj['cardTitle'] = 'Delete';
+      obj['successBtnText'] = 'Delete';
+      obj['cancelBtnText'] = 'Cancel';
+    }
+    const dialog = this.dialog.open(ConfirmationComponent, {
+      width: this.configService.dialogBoxWidth[0],
+      data: obj,
+      disableClose: this.configService.disableCloseBtnFlag,
+    })
+    dialog.afterClosed().subscribe(res => {
+      res == 'Yes' && label == 'delete' ? this.DeleteUserData() : '';
+      res == 'Yes' && label == 'status' ? this.checkBlock(selectedRowObj, flag) : selectedRowObj.isBlock = !flag;;
+    })
+  }
+
+
+  addUpdateDialog(status: string, selectedObj?: any, flag?: any) {                 // create and update User & role modal
+    status == 'user' ? (this.selectAll || this.selectedTableData.length ? (this.uncheckAllUser(), this.selectedTableData = []) : '') : this.selectAllRoles || this.selectedRoleTableData.length ? (this.uncheckAllUser(), this.roleTableData = []) : '';
+    this.highlightRowindex = selectedObj?.id;
+    let obj: any = ConfigService.dialogObj;
+    flag == 'update' ? obj.data = selectedObj : '';
+    obj['cardTitle'] = status == 'user' ? (!selectedObj ? 'Create User' : 'Update User') : (!selectedObj ? 'Create Role' : 'Update Role');
+    obj['seletedTab'] = status;
+    obj['cancelBtnText'] = 'Cancel';
+    obj['submitBtnText'] = !selectedObj ? 'Submit' : 'Update';
+    obj['selectedDataObj'] = selectedObj
+    const dialog = this.dialog.open(AddUpdateUserComponent, {
       width: this.configService.dialogBoxWidth[2],
       data: obj,
       disableClose: this.configService.disableCloseBtnFlag,
     })
-
     dialog.afterClosed().subscribe(res => {
-      res == 'Yes'? this.getUserTableData():'' ; 
-      this.highlightRowindex='';
-     }) 
-     
-  }
-  uncheckAllUser(){
-    this.selectAll = false;
-    this.userTableData.map((ele:any)=>{
-      ele.checked = false
+      res == 'Yes' ? this.getUserTableData() : '';
+      this.highlightRowindex = '';
     })
-  }
-  uncheckAllRole(){
-    this.selectAllRoles = false;
-    this.roleTableData.map((ele:any)=>{
-      ele.checked = false
-    })
+
   }
 
   ngOnDestroy() {
