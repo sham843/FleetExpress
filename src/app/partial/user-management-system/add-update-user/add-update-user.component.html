@@ -84,8 +84,8 @@
             <mat-form-field [appearance]="config.matFormField" class="w-100">
                 <mat-label>Assign Responsibilities</mat-label>
                 <mat-select multiple formControlName="assignedResponsibilities">
-                    <!-- <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}
-                    </mat-option> -->
+                    <mat-option *ngFor="let response of responsibilitiesData" [value]="response.id" checked="true">{{response.responsiblities}}
+                    </mat-option>
                 </mat-select>
             </mat-form-field>
         </div>

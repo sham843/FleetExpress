@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
@@ -8,6 +8,7 @@ import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
+import { ModalsComponent } from '../driver_modals/modals.component';
 @Component({
   selector: 'app-confirmation',
   templateUrl: './confirmation.component.html',
@@ -32,12 +33,13 @@ export class ConfirmationComponent implements OnInit {
     private webStorage: WebStorageService,
     private fb: FormBuilder,
     public config: ConfigService,
-    private sharedService:SharedService) { }
+    private sharedService: SharedService,
+    private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.dialogData = this.data;
     this.dialogData.cardTitle == 'Assign Driver' ? this.getDriverData() : '';
-    this.dialogData.cardTitle == 'Change Password' ? (this.getChangePwd(),this.dialogData?.p1=='') : '';
+    this.dialogData.cardTitle == 'Change Password' ? (this.getChangePwd(), this.dialogData?.p1 == '') : '';
   }
   // --------------------------------------get Driver Data------------------------------------------------------------------
   getDriverData() {
@@ -70,11 +72,11 @@ export class ConfirmationComponent implements OnInit {
       if (this.changePassForm.value.newPwd != this.changePassForm.value.reTypePwd) {
         this.commonMethods.snackBar("New Password and Confirm Password does not match", 1);
         return
-      } else if(this.changePassForm.value.currentPwd == this.changePassForm.value.newPwd){
+      } else if (this.changePassForm.value.currentPwd == this.changePassForm.value.newPwd) {
         this.commonMethods.snackBar("New Password must be different from Current Password.", 1);
-      }else{
+      } else {
         this.spinner.show();
-        this.apiCall.setHttp('get', 'login/change-password/'+this.changePassForm.value.currentPwd+'?&UserId=' + this.webStorage.getUserId() + '&NewPassword=' + this.changePassForm.value.reTypePwd , true, false, false, 'fleetExpressBaseUrl');
+        this.apiCall.setHttp('get', 'login/change-password/' + this.changePassForm.value.currentPwd + '?&UserId=' + this.webStorage.getUserId() + '&NewPassword=' + this.changePassForm.value.reTypePwd, true, false, false, 'fleetExpressBaseUrl');
         this.apiCall.getHttp().subscribe((response: any) => {
           if (response.responseData == "Password Changed Successfully...") {
             this.spinner.hide();
@@ -82,7 +84,7 @@ export class ConfirmationComponent implements OnInit {
             this.onNoClick('Yes');
             this.sharedService.logOut();
           }
-          else{
+          else {
             this.spinner.hide();
             this.commonMethods.snackBar(response.responseData, 1);
           }
@@ -117,8 +119,22 @@ export class ConfirmationComponent implements OnInit {
       let obj: any = { remark: this.remark.value, flag: 'Yes' };
       this.dialogRef.close(obj);
     }
-    else {
-      this.dialogRef.close(flag);
+    else if (flag == 'Ok' && this.dialogData.cardTitle == 'Assign Driver') {
+      const dialog = this.dialog.open(ModalsComponent, {
+        width: '900px',
+        data: '',
+        disableClose: this.config.disableCloseBtnFlag,
+        autoFocus: false
+      })
+      dialog.afterClosed().subscribe((res: any) => {
+        console.log("vehicle driver",res);
+        if (res == 'add') {
+          this.getDriverData();
+        }
+      })
+    }
+    else{
+      flag != 'Ok'?this.dialogRef.close(flag):'';
     }
 
   }
