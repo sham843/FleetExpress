@@ -84,6 +84,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
   maxTodayDateString:any;
   maxTodayDate:any;
   ItineraryDetailsData1=new Array();
+  tableVehicleData=new Array();
   @Output() scrollingFinished = new EventEmitter<void>();
   constructor(private apiCall: ApiCallService, private webStorage: WebStorageService, private mapsAPILoader: MapsAPILoader, private _bottomSheet: MatBottomSheet,
     private error: ErrorsService, public dialog: MatDialog, private fb: FormBuilder, private httpClient: HttpClient,
@@ -96,7 +97,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     this.long = this.config.long;
     this.mapCall(); // temp
     this.getAllVehicleListData(true);
-    this.getItineraryForm();
+     this.getItineraryForm();
   }
 
   setnumber(value:any){
@@ -229,7 +230,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
           : flag == 'Offline' ? this.allVehiclelData = this.allOfflineVehiclelData
             : flag == 'TotalVehicles' ? this.allVehiclelData = this.allVehiclelDataClone : '';
   }
-
+// ------ Dialog View section ----------------------------
   viewManitananceDetails(item:any){
     this.apiCall.setHttp('get', 'maintenance/get-maintenance-details?VehicleId=' + item.vehicleId, true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
@@ -253,6 +254,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     }, (error: any) => { this.error.handelError(error.status) });
     
   }
+
   viewComplaintDetails(item:any){
     this.apiCall.setHttp('get', 'maintenance/get-complaint?UserId='+ this.webStorage.getUserId()+'&ComplaintId=' + item.complaintId, true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
@@ -272,7 +274,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     }, (error: any) => { this.error.handelError(error.status) });
     
   }
-
+// --------- dialog open section ---------
   openTicketRaisedDialog(data: any, flag: string) {
     let obj = { flagStatus: flag, ...data }
     const dialogRef = this.dialog.open(TicketRaisedComponent, {
@@ -285,7 +287,48 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     });
   }
 
+// ------ loading data aginst srolling -------
+  
+  onScrollingFinished(){
+    console.log('load more');
+    this.loadMore()
+  }
+  totalDtaArray:any[]=[];
+  loadMore(): void {
+    if (this.getNextItems()) {
+      this.categoriesSubject.next(this.totalDtaArray);
+    }
+  }
+  getNextItems(): boolean {
+    if (this.totalDtaArray.length >= this.allVehiclelData.length) {
+      return false;
+    }
+    const remainingLength = Math.min( 5, this.allVehiclelData.length - this.totalDtaArray.length );
+    let previousTablelength= this.totalDtaArray.length
+    this.totalDtaArray.push(
+      ...this.allVehiclelData.slice(
+        this.totalDtaArray.length,
+        this.totalDtaArray.length + remainingLength
+      )
+    );
+    let incomingTableData=[]
+    for(let i=previousTablelength; i< this.totalDtaArray.length; i++){
+      incomingTableData.push(this.totalDtaArray[i])
+    }
+    let resp: any = this.sharedService.getAddressBylatLong(1, incomingTableData, incomingTableData.length);
+    console.log(resp);
+    setTimeout(()=>{
+      this.tableVehicleData.push(...resp);
+    },1000)
+    console.log(this.tableVehicleData)
+    return true;
+  }
+
+
   //----------------------------------------------------------- bottom sheet method start heare ---------------------------------------------//
+
+
+  // ----------Itinerary form section--------
   getItineraryForm() {
     this.itineraryForm = this.fb.group({
       timePeriod: ['1'],
@@ -295,70 +338,6 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     this.selectTimePeriod(this.itineraryForm.controls['timePeriod'].value);
   }
   get itinerary() { return this.itineraryForm.controls };
-  getItineraryDetails(){
-    this.vehicleNo='MH12DL3698';
-    if(this.itineraryForm.value.fromDate && this.itineraryForm.value.toDate){
-      this.vehicleDetailsData = [];
-      const obj={
-        fromDate:this.datePipe.transform(this.itineraryForm.value.fromDate, 'YYYY-MM-dd'),
-        toDate:this.datePipe.transform(this.itineraryForm.value.toDate, 'YYYY-MM-dd'),
-      }
-      this.ItineraryDetailsData=[];
-      this.ItineraryDetailsData1=[];
-      this.apiCall.setHttp('get', 'tracking/get-vehicle-vehicle-itinerary?vehicleNumber=' + this.vehicleNo + '&fromDate='+obj.fromDate+'&toDate='+obj.toDate, true, false, false, 'fleetExpressBaseUrl');
-      this.subscription = this.apiCall.getHttp().subscribe({
-        next: (res: any) => {
-          if (res.statusCode === "200") {
-            let resp: any = this.sharedService.getAddressBylatLong(1, res.responseData.responseData1, res.responseData.responseData1.length);
-            this.ItineraryDetailsData = resp;
-            this.ItineraryDetailsData1.push(res.responseData.responseData2) ;
-            
-          } else {
-            if (res.statusCode != "404") {
-              this.ItineraryDetailsData = [];
-              this.ItineraryDetailsData1= [];
-              this.error.handelError(res.statusCode)
-            }
-          }
-        }
-      },(error: any) => { this.error.handelError(error.status) });
-    }
-    
-  }
-
-  getVehicleDetails(){
-    this.vehicleDetailsData = []
-    this.apiCall.setHttp('get', 'vehicle/search-vehicle?Search=' + this.vehicleNo, true, false, false, 'fleetExpressBaseUrl');
-    this.subscription = this.apiCall.getHttp().subscribe({
-      next: (res: any) => {
-        if (res.statusCode === "200") {
-          this.vehicleDetailsData = res.responseData.responseData;
-        } else {
-          if (res.statusCode != "404") {
-            this.vehicleDetailsData = [];
-            this.error.handelError(res.statusCode)
-          }
-        }
-      }
-    },(error: any) => { this.error.handelError(error.status) });
-  }
-  getDriverDetails(){
-    this.driverDetailsData = []
-    this.apiCall.setHttp('get', 'vehicle/get-driver-List?VehicleNo='+this.vehicleNo, true, false, false, 'fleetExpressBaseUrl');
-    this.subscription = this.apiCall.getHttp().subscribe({
-      next: (res: any) => {
-        if (res.statusCode === "200") {
-          this.driverDetailsData = res.responseData;
-        } else {
-          if (res.statusCode != "404") {
-            this.driverDetailsData = [];
-            this.error.handelError(res.statusCode)
-          }
-        }
-      }
-    },(error: any) => { this.error.handelError(error.status) });
-  }
-
   selectTimePeriod(value: any) {
     const currentDateTime = (moment.utc().subtract(1, 'minute')).toISOString();
     switch (value) {
@@ -409,37 +388,74 @@ export class TrackingComponent implements OnInit, AfterViewInit {
       }
     }
   }
-
-
-  onScrollingFinished(){
-    console.log('load more');
-    this.loadMore()
-  }
-  totalDtaArray:any[]=[];
-  loadMore(): void {
-    if (this.getNextItems()) {
-      this.categoriesSubject.next(this.totalDtaArray);
-      console.log(this.categoriesSubject);
+  getItineraryDetails(){
+    this.vehicleNo='MH12DL3698';
+    if(this.itineraryForm.value.fromDate && this.itineraryForm.value.toDate){
+      this.vehicleDetailsData = [];
+      const obj={
+        fromDate:this.datePipe.transform(this.itineraryForm.value.fromDate, 'YYYY-MM-dd'),
+        toDate:this.datePipe.transform(this.itineraryForm.value.toDate, 'YYYY-MM-dd'),
+      }
+      this.ItineraryDetailsData=[];
+      this.ItineraryDetailsData1=[];
+      this.apiCall.setHttp('get', 'tracking/get-vehicle-vehicle-itinerary?vehicleNumber=' + this.vehicleNo + '&fromDate='+obj.fromDate+'&toDate='+obj.toDate, true, false, false, 'fleetExpressBaseUrl');
+      this.subscription = this.apiCall.getHttp().subscribe({
+        next: (res: any) => {
+          if (res.statusCode === "200") {
+            let resp: any = this.sharedService.getAddressBylatLong(1, res.responseData.responseData1, res.responseData.responseData1.length);
+            this.ItineraryDetailsData = resp;
+            this.ItineraryDetailsData1.push(res.responseData.responseData2) ;
+            
+          } else {
+            if (res.statusCode != "404") {
+              this.ItineraryDetailsData = [];
+              this.ItineraryDetailsData1= [];
+              this.error.handelError(res.statusCode)
+            }
+          }
+        }
+      },(error: any) => { this.error.handelError(error.status) });
     }
+    
   }
-  getNextItems(): boolean {
-    if (this.totalDtaArray.length >= this.allVehiclelData.length) {
-      return false;
-    }
-    const remainingLength = Math.min( 5, this.allVehiclelData.length - this.totalDtaArray.length );
-    console.log(this.totalDtaArray.length)
-    // this.totalDtaArray=[];
-    this.totalDtaArray.push(
-      ...this.allVehiclelData.slice(
-        this.totalDtaArray.length,
-        this.totalDtaArray.length + remainingLength
-      )
-    );
-    let resp: any = this.sharedService.getAddressBylatLong(1, this.totalDtaArray, this.totalDtaArray.length);
-    this.totalDtaArray = resp;
+ // ----------vehicle Data view section--------
+  getVehicleDetails(){
+    this.vehicleDetailsData = []
+    this.apiCall.setHttp('get', 'vehicle/search-vehicle?Search=' + this.vehicleNo, true, false, false, 'fleetExpressBaseUrl');
+    this.subscription = this.apiCall.getHttp().subscribe({
+      next: (res: any) => {
+        if (res.statusCode === "200") {
+          this.vehicleDetailsData = res.responseData.responseData;
+        } else {
+          if (res.statusCode != "404") {
+            this.vehicleDetailsData = [];
+            this.error.handelError(res.statusCode)
+          }
+        }
+      }
+    },(error: any) => { this.error.handelError(error.status) });
+  }
 
-    return true;
+   // ----------Driver Data view section--------
+  getDriverDetails(){
+    this.driverDetailsData = []
+    this.apiCall.setHttp('get', 'vehicle/get-driver-List?VehicleNo='+this.vehicleNo, true, false, false, 'fleetExpressBaseUrl');
+    this.subscription = this.apiCall.getHttp().subscribe({
+      next: (res: any) => {
+        if (res.statusCode === "200") {
+          this.driverDetailsData = res.responseData;
+        } else {
+          if (res.statusCode != "404") {
+            this.driverDetailsData = [];
+            this.error.handelError(res.statusCode)
+          }
+        }
+      }
+    },(error: any) => { this.error.handelError(error.status) });
   }
+
+  
+
 
   
   //-------------------------------------------------------------- bottom sheet method end heare --------------------------------------------//
