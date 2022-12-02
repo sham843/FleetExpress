@@ -76,6 +76,7 @@ export class SettingsComponent implements OnInit {
   }
   openNotificationData(status: string, objData?: any) {
     let obj: any = ConfigService.dialogObj;
+    obj['cardTitle']= (status=='ALlVehicle'?'All Vehicles Alerts': objData.vehicleNo+' Vehicle Alerts' )
     obj['seletedTab'] = status;
     obj['data'] = objData;
     const dialog = this.dialog.open(VehicleAlertNotificationsComponent, {
