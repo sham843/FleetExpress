@@ -30,132 +30,162 @@
             </div>
         </div>
         <!-- <div class="tab-content" id="pills-tabContent"> -->
-            <div class="tab-pane fade show active" id="pills-user" role="tabpanel" aria-labelledby="pills-user-tab"
-                tabindex="0">
-                <div class="card card-body border-0">
-                    <div class="card card-body plain-card" *ngIf="(showTab=='users' && !userTableData) || (showTab=='role' && !roleTableData)">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="card card-body plain-card card-fullheight">
-                                    <div class="text-center justify-content-center" *ngIf="showTab=='users'">
-                                        <img src="../../../assets/images/No-Users-Created.svg" alt="">
-                                        <p class="my-3">No Users Created</p>
-                                        <button class="btn btn-main" (click)="addUpdateDialog('user')">
-                                            New User
-                                        </button>
-                                    </div>
-                                    <div class="text-center justify-content-center" *ngIf="showTab=='role'">
-                                        <img src="../../../assets/images/No-Users-Role-Created.svg" alt="">
-                                        <p class="my-3">No Users Role Created</p>
-                                        <button class="btn btn-main"  (click)="addUpdateDialog('role','','add')">
-                                            New Role
-                                        </button>
-                                    </div>
+        <div class="tab-pane fade show active" id="pills-user" role="tabpanel" aria-labelledby="pills-user-tab"
+            tabindex="0">
+            <div class="card card-body border-0">
+                <div class="card card-body plain-card"
+                    *ngIf="(showTab=='users' && !userTableData) || (showTab=='role' && !roleTableData)">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card card-body plain-card card-fullheight">
+                                <div class="text-center justify-content-center" *ngIf="showTab=='users'">
+                                    <img src="../../../assets/images/No-Users-Created.svg" alt="">
+                                    <p class="my-3">No Users Created</p>
+                                    <button class="btn btn-main" (click)="addUpdateDialog('user')">
+                                        New User
+                                    </button>
+                                </div>
+                                <div class="text-center justify-content-center" *ngIf="showTab=='role'">
+                                    <img src="../../../assets/images/No-Users-Role-Created.svg" alt="">
+                                    <p class="my-3">No Users Role Created</p>
+                                    <button class="btn btn-main" (click)="addUpdateDialog('role','')">
+                                        New Role
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row" *ngIf="(showTab=='users' && userTableData) || (showTab=='role' && roleTableData)">
-                        <div class="col-sm-12">
-                            <div class="card form-card">
-                                <div class="card-header">
-                                    <div class="row justify-content-between">
-                                        <div class="col-sm-4">
-                                            <div class="row align-items-center">
-                                                <div class="col-sm-auto">
-                                                    {{showTab=='users'?'User':'Role'}} List
-                                                </div>
-                                                <div class="col-sm-8">
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" [placeholder]="showTab=='users'?'User Name/Mobile No.':'Roll Name'"  [maxlength]="15" [formControl]="searchContent">
-                                                        <div class="input-group-text" *ngIf="!searchContent.value"><i class="fa-solid fa-magnifying-glass"></i></div>
-                                                        <div class="input-group-text" *ngIf="searchContent.value"><i class="fa fa-times" (click)="searchContent.reset()"></i></div>
+                </div>
+                <div class="row" *ngIf="(showTab=='users' && userTableData) || (showTab=='role' && roleTableData)">
+                    <div class="col-sm-12">
+                        <div class="card form-card">
+                            <div class="card-header">
+                                <div class="row justify-content-between">
+                                    <div class="col-sm-4">
+                                        <div class="row align-items-center">
+                                            <div class="col-sm-auto">
+                                                {{showTab=='users'?'User':'Role'}} List
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control"
+                                                        [placeholder]="showTab=='users'?'User Name/Mobile No.':'Roll Name'"
+                                                        [maxlength]="15" [formControl]="searchContent">
+                                                    <div class="input-group-text" *ngIf="!searchContent.value"><i
+                                                            class="fa-solid fa-magnifying-glass"></i></div>
+                                                    <div class="input-group-text" *ngIf="searchContent.value"><i
+                                                            class="fa fa-times" (click)="searchContent.reset()"></i>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-4 text-end">
-                                            <button [disabled]="!selectedTableData.length" class="btn btn-danger rounded-circle me-3" (click)="confirmationDialog(true, 'delete')">
-                                                <i class="fa-solid fa-trash-can"></i>
-                                            </button>
-                                            <button *ngIf="showTab=='users'" class="btn btn-add" (click)="addUpdateDialog('user')">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </button>
-                                            <button *ngIf="showTab=='role'" class="btn btn-add" (click)="addUpdateDialog('role','','add')">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </button>
-
-                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 text-end">
+                                        <!-- [disabled]="!selectedTableData.length" -->
+                                        <button class="btn btn-danger rounded-circle me-3"
+                                            [disabled]="roleCheckArray.length==0"
+                                            (click)="confirmationDialog(true, 'delete','',showTab)">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                        <button *ngIf="showTab=='users'" class="btn btn-add"
+                                            (click)="addUpdateDialog('user')">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                        <button *ngIf="showTab=='role'" class="btn btn-add"
+                                            (click)="addUpdateDialog('role','')">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
                                     </div>
                                 </div>
-                                <div class="card-body">
-                                    <table class="table dashboard-table" *ngIf="userTableData.length!=0 || roleTableData.length!=0">
-                                        <thead>
-                                            <tr>
-                                                <th *ngFor="let element of tableLables"
-                                                    [ngClass]="{ 'srno': element.id==1 }">{{element.label}}</th>
-                                                <th >
-                                                    <mat-checkbox *ngIf="showTab=='users'" (change)='selectUsers($event,0)' value="" [(ngModel)]="selectAll"></mat-checkbox>
-                                                    <mat-checkbox *ngIf="showTab=='role'" (change)='selectRoles($event,0)' value="" [(ngModel)]="selectAllRoles"></mat-checkbox>
-                                                </th>
+                            </div>
+                            <div class="card-body">
+                                <table class="table dashboard-table"
+                                    *ngIf="userTableData.length!=0 || roleTableData.length!=0">
+                                    <thead>
+                                        <tr>
+                                            <th *ngFor="let element of tableLables"
+                                                [ngClass]="{ 'srno': element.id==1 }">{{element.label}}</th>
+                                            <th>
+                                                <mat-checkbox *ngIf="showTab=='users'" (change)='selectUsers($event,0)'
+                                                    value="" [(ngModel)]="selectAll"></mat-checkbox>
+                                                <mat-checkbox [disabled]="!roleTableData?.length"
+                                                    (change)='removeCheckRole($event,0)' value=""
+                                                    [(ngModel)]="selectAllRoles"></mat-checkbox>
+                                            </th>
 
-                                            </tr>
-                                        </thead>
-                                        <tbody *ngIf="showTab=='users'" > 
-                                            <tr *ngFor="let user of userTableData | paginate: {itemsPerPage: pageSize, 
-                                                currentPage: pageNumber, totalItems:totalUserTableData}; let i=index " [ngClass]="{'highLightRow':user?.id==highlightRowindex}">
-                                                <td>{{((pageNumber + 1) * 10 + i + 1)-20}}</td>
-                                                <td>{{user.name}}</td>
-                                                <td><a href="tel:{{user.mobileNo1}}" style="text-decoration: none;">{{user.mobileNo1}}</a></td>
-                                                <td>{{user.subUserTypeName}}</td>
-                                                <td >
-                                                    <mat-slide-toggle (change)="confirmationDialog(user.isBlock,'status', user)"  [(ngModel)]="user.isBlock"></mat-slide-toggle>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex">
-                                                        <button class="btn btn-light-main btn-icon me-2" (click)="addUpdateDialog('user', user)">
-                                                            <i class="fa-regular fa-pen-to-square"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                                <td *ngIf="showTab=='users'">
-                                                    <mat-checkbox [(ngModel)]="user.checked" value=""
-                                                        (change)="selectUsers($event,user.id)"></mat-checkbox>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                        <tbody *ngIf="showTab=='role'">
-                                            <tr *ngFor="let role of roleTableData; let i=index" >
-                                                <td>{{i+1}}</td>
-                                                <td>{{role.roleName}}</td>
-                                                <td>
-                                                    <div class="d-flex">
-                                                        <button class="btn btn-light-main btn-icon me-2" (click)="addUpdateDialog('role', role,'update')">
-                                                            <i class="fa-regular fa-pen-to-square"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <mat-checkbox></mat-checkbox>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    
-                                    <div *ngIf="(userTableData.length==0 && showTab=='users')|| roleTableData.length==0 && showTab=='role'">
-                                        <div class="alert alert-danger text-center py-2">
-                                            No data found
-                                        </div>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="showTab=='users'">
+                                        <tr *ngFor="let user of userTableData | paginate: {itemsPerPage: pageSize, 
+                                                currentPage: pageNumber, totalItems:totalUserTableData}; let i=index "
+                                            [ngClass]="{'highLightRow':user?.id==highlightRowindex}">
+                                            <td>{{((pageNumber + 1) * 10 + i + 1)-20}}</td>
+                                            <td>{{user.name}}</td>
+                                            <td><a href="tel:{{user.mobileNo1}}"
+                                                    style="text-decoration: none;">{{user.mobileNo1}}</a></td>
+                                            <td>{{user.subUserTypeName}}</td>
+                                            <td>
+                                                <mat-slide-toggle
+                                                    (change)="confirmationDialog(user.isBlock,'status', user)"
+                                                    [(ngModel)]="user.isBlock"></mat-slide-toggle>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <button class="btn btn-light-main btn-icon me-2"
+                                                        (click)="addUpdateDialog('user', user)">
+                                                        <i class="fa-regular fa-pen-to-square"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td *ngIf="showTab=='users'">
+                                                <mat-checkbox [(ngModel)]="user.checked" value=""
+                                                    (change)="selectUsers($event,user.id)"></mat-checkbox>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="showTab=='role'">
+                                        <tr *ngFor="let role of roleTableData | paginate: {itemsPerPage: pageSize, 
+                                            currentPage: pageNumber, totalItems:totalRoleTableData}; let i=index ">
+                                            <td>{{i+1}}</td>
+                                            <td>{{role.roleName}}</td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <button class="btn btn-light-main btn-icon me-2"
+                                                        (click)="addUpdateDialog('role', role)">
+                                                        <i class="fa-regular fa-pen-to-square"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td>
+
+                                                <mat-checkbox [(ngModel)]="role.checked"
+                                                    (change)="removeCheckRole($event,role.id)" value=""></mat-checkbox>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div
+                                    *ngIf="(userTableData.length==0 && showTab=='users')|| roleTableData.length==0 && showTab=='role'">
+                                    <div class="alert alert-danger text-center py-2">
+                                        No data found
                                     </div>
-                                    <pagination-controls   previousLabel="" nextLabel=""
-                                    (pageChange)="onPagintion($event)" class="text-end m-2" >
-                                </pagination-controls>
+                                </div>
+                                <div *ngIf="totalUserTableData > 10 && showTab=='users'">
+                                    <pagination-controls previousLabel="" nextLabel=""
+                                        (pageChange)="onPagintion($event,'user')" class="text-end m-2">
+                                    </pagination-controls>
+                                </div>
+                                <div *ngIf="totalRoleTableData > 10 && showTab=='role'">
+                                    <pagination-controls previousLabel="" nextLabel=""
+                                        (pageChange)="onPagintion($event,'role')" class="text-end m-2">
+                                    </pagination-controls>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         <!-- </div> -->
     </div>
 </div>

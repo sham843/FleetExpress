@@ -69,13 +69,13 @@
         </div>
     </div>
 </form>
-<form *ngIf="dialogData?.seletedTab=='role'" [formGroup]="roleForm" (ngSubmit)="submitRole()">
+<form *ngIf="dialogData?.seletedTab=='role'" [formGroup]="roleForm" #formDirective="ngForm" (ngSubmit)="submitRole(formDirective)">
     <div class="row justify-content-between">
         <div class="col-sm-6">
             <mat-form-field [appearance]="config.matFormField" class="w-100">
                 <mat-label>Role Name</mat-label>
                 <input matInput placeholder="Enter Role Name" formControlName="roleName" class="text-capitalize"
-                    (keypress)="validationService.alphaNumericWithSpaces($event)" [maxlength]="30">
+                    (keypress)="validationService.noSpacesAtStart($event)" [maxlength]="30">
                     <mat-error>
                         <span *ngIf="role['roleName'].errors?.['required']" class="text-danger">Role Name is Required</span>
                         <span *ngIf="role['roleName'].errors?.['pattern']" class="text-danger">Please Enter Valid Role Name</span>

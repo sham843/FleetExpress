@@ -31,12 +31,14 @@ export class UserManagementSystemComponent implements OnInit {
   selectAllRoles!: boolean;
   selectedTableData = new Array();
   selectedRoleTableData = new Array();
+  totalRoleTableData: any;
   editFlag: boolean = false
   totalUserTableData: number = 0;
-  searchContent = new FormControl();
+  searchContent = new FormControl('');
   highlightRowindex !: number | string;
   pageNumber: number = 1;
   pageSize: number = 10;
+  roleCheckArray = new Array();
   constructor(private apiCall: ApiCallService,
     private commonMethods: CommonMethodsService,
     public validationService: ValidationService,
@@ -55,14 +57,13 @@ export class UserManagementSystemComponent implements OnInit {
   ngAfterViewInit() {
     this.searchContent.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
       this.pageNumber = 1;
-      this.getUserTableData();
+      this.showTab == 'role' ? this.getRoleTableData() : this.getUserTableData();
     });
   }
-  onPagintion(pageNo: any) {
+  onPagintion(pageNo: any, flag: any) {
     this.pageNumber = pageNo;
     this.selectedTableData = [];
-    this.getUserTableData();
-    this.getRoleTableData();
+    flag == 'user' ? this.getUserTableData() : this.getRoleTableData();
   }
 
   selectedTab(tab: any) {
@@ -182,11 +183,14 @@ export class UserManagementSystemComponent implements OnInit {
   // ----------------------------------------------------------end user section--------------------------------------------------------
   // -------------------------------------------------------Start role section----------------------------------------------------------
   getRoleTableData() {
-    this.apiCall.setHttp('get', 'Roles/getRolesList-Table-View?pageNo=' + this.pageNumber + '&pageSize=' + this.pageSize, true, false, false, 'fleetExpressBaseUrl');
+    this.roleCheckArray = [];
+    this.apiCall.setHttp('get', 'Roles/getRolesList-Table-View?pageNo=' + this.pageNumber + '&pageSize=' + this.pageSize + '&searchText=' + (this.searchContent.value || ''), true, false, false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
           this.roleTableData = res.responseData.responseData1;
+          this.totalRoleTableData = res.responseData.responseData2.totalRecords;
+          // 
         } else {
           if (res.statusCode != "404") {
             this.error.handelError(res.statusCode)
@@ -211,16 +215,66 @@ export class UserManagementSystemComponent implements OnInit {
     this.selectAllRoles = this.roleTableData.length == this.selectedRoleTableData.length ? true : false;
 
   }
+  removeCheckRole(event: any, driverId: number) {
+    for (var i = 0; i < this.roleTableData.length; i++) {
+      if (driverId != 0) {
+        this.selectAllRoles = false;
+        if (this.roleTableData[i].driverId == driverId) {
+          this.roleTableData[i].checked = event.checked;
+        }
+      } else {
+        this.roleTableData[i].checked = event.checked;
+      }
+    }
+    this.roleCheckArray = [];
+    this.roleCheckArray = this.roleTableData.filter((x: any) => x.checked == true);
+    this.selectAllRoles = this.roleTableData.length == this.roleCheckArray.length ? true : false;
+  }
+
   uncheckAllRole() {
     this.selectAllRoles = false;
     this.roleTableData.map((ele: any) => {
       ele.checked = false
+      this.roleCheckArray = [];
     })
   }
-
+  deleteRole() {
+    let param = new Array();
+    this.roleCheckArray.find((ele: any) => {
+      let obj =  {
+        "id": ele.id,
+        "roleName": ele.roleName,
+        "isDeleted": true,
+        "userId": this.webStorage.getUserId(),
+        "responsiblitiesLists": [
+          {
+            "id": 0,
+            "responsiblities": "",
+            "isResponsible": true
+          }
+        ]
+      }
+      param.push(obj);
+    });
+    this.spinner.show();
+    this.apiCall.setHttp('delete', 'Roles/delete-roles-and-responsiblity',true, param, false, 'fleetExpressBaseUrl');
+    // this.subscription = 
+    this.apiCall.getHttp().subscribe((response: any) => {
+      if (response.statusCode == "200") {
+        this.getRoleTableData();
+        this.uncheckAllRole();
+        this.spinner.hide();
+      }
+    },
+      (error: any) => {
+        this.spinner.hide();
+        this.error.handelError(error.status);
+      })
+  }
   //-------------------------------------------------------End role section-----------------------------------------------------------------
 
-  confirmationDialog(flag: boolean, label: string, selectedRowObj?: any) {   //blobk-unblock & delete modal
+  confirmationDialog(flag: boolean, label: string, selectedRowObj?: any, tabName?: any) {   //blobk-unblock & delete modal
+    label != 'delete'?this.selectAllRoles || this.roleCheckArray ? (this.uncheckAllRole(), this.roleCheckArray = []) : '':'';
     let obj: any = ConfigService.dialogObj;
     if (label == 'status') {
       obj['p1'] = 'Are you sure you want to ' + (flag ? 'block' : 'unblock') + ' user?';
@@ -239,34 +293,40 @@ export class UserManagementSystemComponent implements OnInit {
       disableClose: this.configService.disableCloseBtnFlag,
     })
     dialog.afterClosed().subscribe(res => {
+      if (res == 'Yes' && label == 'delete' && tabName == 'role') {
+        this.deleteRole();
+      }
       res == 'Yes' && label == 'delete' ? this.DeleteUserData() : '';
       res == 'Yes' && label == 'status' ? this.checkBlock(selectedRowObj, flag) : selectedRowObj.isBlock = !flag;;
     })
   }
 
 
-  addUpdateDialog(status: string, selectedObj?: any, flag?: any) {                 // create and update User & role modal
+  addUpdateDialog(status: string, selectedObj?: any) {  
+  this.selectAllRoles || this.roleCheckArray ? (this.uncheckAllRole(), this.roleCheckArray = []) : '';               // create and update User & role modal
     status == 'user' ? (this.selectAll || this.selectedTableData.length ? (this.uncheckAllUser(), this.selectedTableData = []) : '') : this.selectAllRoles || this.selectedRoleTableData.length ? (this.uncheckAllUser(), this.roleTableData = []) : '';
     this.highlightRowindex = selectedObj?.id;
     let obj: any = ConfigService.dialogObj;
-    flag == 'update' ? obj.data = selectedObj : '';
     obj['cardTitle'] = status == 'user' ? (!selectedObj ? 'Create User' : 'Update User') : (!selectedObj ? 'Create Role' : 'Update Role');
     obj['seletedTab'] = status;
     obj['cancelBtnText'] = 'Cancel';
     obj['submitBtnText'] = !selectedObj ? 'Submit' : 'Update';
-    obj['selectedDataObj'] = selectedObj
+    obj['selectedDataObj'] =selectedObj;
     const dialog = this.dialog.open(AddUpdateUserComponent, {
       width: this.configService.dialogBoxWidth[2],
       data: obj,
       disableClose: this.configService.disableCloseBtnFlag,
     })
     dialog.afterClosed().subscribe(res => {
-      res == 'Yes' ? this.getUserTableData() : '';
       this.highlightRowindex = '';
+      if (res == 'add' && status == 'role') {
+        this.getRoleTableData();
+      }
+      else{
+        res == 'Yes' ? this.getUserTableData() : '';
+      }
     })
-
   }
-
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
