@@ -10,221 +10,88 @@
                         data-bs-target="#pills-notifications" type="button" role="tab"
                         aria-controls="pills-notifications" aria-selected="true" (click)="showvehicleNotification('Notifications')">Notifications</button>
                 </li> -->
-               <!--  <li class="nav-item" role="presentation">
+                <!--  <li class="nav-item" role="presentation">
                     <button type="button" class="nav-link" id="pills-change-password-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-change-password" type="button" role="tab"
                         aria-controls="pills-change-password" aria-selected="false" (click)="showvehicleNotification('ChangePassword')">Change Password</button>
                 </li> -->
                 <li class="nav-item" role="presentation">
-                    <button type="button" class="nav-link active" id="pills-vehicle-notifications-tab" data-bs-toggle="pill"
-                        data-bs-target="#pills-vehicle-notifications" type="button" role="tab"
-                        aria-controls="pills-vehicle-notifications" aria-selected="false" >Vehicle Notifications</button>
-                        <!-- (click)="showvehicleNotification('VehicleNotifications')" -->
+                    <button type="button" class="nav-link active" id="pills-vehicle-notifications-tab"
+                        data-bs-toggle="pill" data-bs-target="#pills-vehicle-notifications" type="button" role="tab"
+                        aria-controls="pills-vehicle-notifications" aria-selected="false">Vehicle Notifications</button>
+                    <!-- (click)="showvehicleNotification('VehicleNotifications')" -->
                 </li>
                 <div class="vr mx-4" *ngIf="vehicleNotificationFlag"></div>
-                <div class="d-flex justify-content-between align-items-center small" *ngIf="this.totalVehicleNotificationsData>0">
-                    <span class="me-4">Total Vehicle Notifications : </span> <h6 class="mb-0">{{this.totalVehicleNotificationsData}}</h6>
+                <div class="d-flex justify-content-between align-items-center small"
+                    *ngIf="this.totaltableDataCount>0">
+                    <span class="me-2">Total Vehicle Notifications :</span>
+                    <h6 class="mb-0">{{this.totaltableDataCount}}</h6>
                 </div>
             </ul>
         </div>
         <div class="card border-0 rounded">
             <div class="card-body">
                 <div class="tab-content" id="pills-tabContent">
-                    <!-- <div class="tab-pane fade show active" id="pills-notifications" role="tabpanel"
-                        aria-labelledby="pills-notifications-tab" tabindex="0">
-                            <div class="row">
-                                <div class="col-sm-6" *ngFor="let alert of notificationsData">
-                                    <ul class="list-group list-group-flush" >
-                                        <ng-container *ngIf="alert?.alertType=='overspeed' || alert?.alertType=='tilt' ; else template">
-                                            <li class="list-group-item border-bottom">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <span class="noti-title text-capitalize">{{alert?.alertType}}</span>
-                                                    <div class="d-flex w-75 justify-content-between align-items-center ">
-                                                        <mat-slider [tickInterval]="getSliderTickInterval()" class="w-100 ms-2" ></mat-slider>
-                                                        <span class="badge bg-extra-light text-dark p-2"><label>{{value}}
-                                                                {{alert?.alertType=='overspeed'?'kmph':'degree'}}</label></span>
-                                                    </div>
-                                                    <div class="form-check form-switch">
-                                                        <mat-slide-toggle  [id]="alert?.alertType" [(ngModel)]="alert.isNotification" 
-                                                        (change)="switchNotification(alert,'alert')"></mat-slide-toggle>
-                                                    </div>
+                    <div class="row justify-content-between">
+                        <div class="col-sm-12">
+                            <div class="card form-card">
+                                <div class="card-header">
+                                    <div class="row justify-content-between">
+                                        <div class="col-sm-6">
+                                            <div class="row align-items-center">
+                                                <div class="col-sm-auto">
+                                                    Vehicle Notifications List
                                                 </div>
-                                            </li>
-                                        </ng-container>
-                                        <ng-template #template>
-                                            <li class="list-group-item d-flex justify-content-between align-items-center border-bottom"
-                                                *ngIf="!alert?.isVisibleToOfficer">
-                                                <span class="noti-title  text-capitalize">{{alert?.alertType}}</span>
-                                                <div class="form-check form-switch">
-                                                    <mat-slide-toggle [id]="alert?.alertType" [(ngModel)]="alert.isNotification"
-                                                    (change)="switchNotification(alert,'alert')"></mat-slide-toggle>
-                                                </div>
-                                            </li>
-                                        </ng-template>
-                                    </ul>
-                                </div>
-                            </div>
-                    </div> -->
-                    <!-- <div class="tab-pane fade" id="pills-vehicle-notifications" role="tabpanel"
-                        aria-labelledby="pills-vehicle-notifications-tab" tabindex="0"> -->
-                        <div class="row justify-content-between">
-                            <div class="col-sm-12">
-                                <div class="card form-card">
-                                    <div class="card-header">
-                                        <div class="row justify-content-between">
-                                            <div class="col-sm-6">
-                                                <div class="row align-items-center">
-                                                    <div class="col-sm-auto">
-                                                        Vehicle Notifications List
-                                                    </div>
-                                                    <div class="col-sm-5">
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" placeholder="Search"
-                                                                [formControl]="searchContent">
-                                                            <div class="input-group-text" *ngIf="!searchContent.value">
-                                                                <i class="fa-solid fa-magnifying-glass"></i></div>
-                                                            <div class="input-group-text" *ngIf="searchContent.value"><i
-                                                                    class="fa fa-times"
-                                                                    (click)="searchContent.reset()"></i></div>
+                                                <div class="col-sm-5">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" placeholder="Search"
+                                                            [formControl]="searchContent">
+                                                        <div class="input-group-text" *ngIf="!searchContent.value">
+                                                            <i class="fa-solid fa-magnifying-glass"></i>
+                                                        </div>
+                                                        <div class="input-group-text" *ngIf="searchContent.value"><i
+                                                                class="fa fa-times" (click)="searchContent.reset()"></i>
                                                         </div>
                                                     </div>
-                                                   
                                                 </div>
                                             </div>
-                                            <div class="col-sm text-end">
-                                                <button class="btn btn-light-main btn-icon me-2 btn-sm" (click)="openNotificationData('ALlVehicle')">All Vehicle Alerts</button>
-                                            </div>
+                                        </div>
+                                        <div class="col-sm text-end">
+                                            <button class="btn btn-light-main btn-icon me-2 btn-sm"
+                                                (click)="openNotificationData('ALlVehicle')">All Vehicle Alerts</button>
                                         </div>
                                     </div>
-                                    <table class="table dashboard-table mb-0">
-                                        <thead >
-                                            <tr >
-                                                <th *ngFor="let label of columnsToDisplay" >{{label}}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody >
-                                            <tr *ngFor="let element of vehiclenotificationsData | paginate: {itemsPerPage: pageSize, 
-                                                currentPage: pageNumber, totalItems:totalVehicleNotificationsData}; let i=index">
-                                                <td>{{element.rowNumber}}</td>
-                                                <td><img src="assets/images/Vehicle-profile.svg" style="width:30px"> </td>
-                                                <td>{{element.vehicleNo}}</td>
-                                                <td>{{element.vehTypeName}}</td>
-                                                <td>
-                                                    <button class="btn btn-light-main btn-icon me-2" (click)="openNotificationData('vehicle',element)">
-                                                        <i class="fa-regular fa-pen-to-square"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div *ngIf="!vehiclenotificationsData.length">
-                                        <div class="alert alert-danger text-center py-2">
-                                            No data found
-                                        </div>
-                                    </div>
-                                    <pagination-controls   previousLabel="" nextLabel=""
-                                    (pageChange)="onPageChange($event)" class="text-end m-2" >
-                                </pagination-controls>
-
-                                    <!-- <div class="card-body p-0">
-                                          <table mat-table [dataSource]="vehiclenotificationsData" multiTemplateDataRows 
-                                            class="table dashboard-table">
-                                            <ng-container matColumnDef="SR.NO" >
-                                                <th mat-header-cell *matHeaderCellDef style="width:80px !important;"> SR.NO </th>
-                                                <td mat-cell matCellDef="let element let i=index">{{((pageNumber + 1)  10 + i + 1)-20}} </td>
-                                                <td mat-cell *matCellDef="let element; let j=index">{{element.rowNumber}}</td>
-                                            </ng-container>
-                                            <ng-container matColumnDef="vehicle-icon">
-                                                <th mat-header-cell *matHeaderCellDef style="width:50px !important;"></th>
-                                                <td mat-cell *matCellDef="let element"> 
-                                                    <img src="assets/images/Vehicle-profile.svg" style="width:30px">    
-                                                </td>
-                                            </ng-container>
-                                            <ng-container matColumnDef="VEHICLE NO">
-                                                <th mat-header-cell *matHeaderCellDef style="width:150px !important;"> VEHICLE NO.</th>
-                                                <td mat-cell *matCellDef="let element"> {{element.vehicleNo}} </td>
-                                            </ng-container>
-                                            <ng-container matColumnDef="VEHICLE TYPE">
-                                                <th mat-header-cell *matHeaderCellDef>VEHICLE TYPE </th>
-                                                <td mat-cell *matCellDef="let element"> {{element.vehTypeName}} </td>
-                                            </ng-container>
-                                            <!-- <ng-container matColumnDef="expand">
-                                                <th mat-header-cell *matHeaderCellDef aria-label="row actions" style="width:50px">&nbsp;
-                                                </th>
-                                                <td mat-cell *matCellDef="let element" style="width:50px">
-                                                    <button mat-icon-button aria-label="expand row"
-                                                        (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
-                                                        <mat-icon *ngIf="expandedElement !== element">
-                                                            keyboard_arrow_down</mat-icon>
-                                                        <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up
-                                                        </mat-icon>
-                                                    </button>
-                                                </td>
-                                            </ng-container> -->
-
-                                            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-                                            <!-- <ng-container matColumnDef="expandedDetail">
-                                                <td mat-cell *matCellDef="let element"
-                                                    [attr.colspan]="columnsToDisplayWithExpand.length">
-                                                    <div class="example-element-detail"
-                                                        [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-                                                        <div class="row">
-                                                            <div class="col-sm-6" *ngFor="let alert of vehiclesAlertsData">
-                                                                <ul class="list-group list-group-flush" >
-                                                                    <ng-container *ngIf="alert?.alertType=='overspeed' || alert?.alertType=='tilt' ; else templateVehicle">
-                                                                        <li class="list-group-item border-bottom">
-                                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                                <span class="noti-title text-capitalize">{{alert?.alertType}}</span>
-                                                                                <div class="d-flex w-75 justify-content-between align-items-center">
-                                                                                    <mat-slider [tickInterval]="getSliderTickInterval()" class="w-100" ></mat-slider>
-                                                                                    <span class="badge bg-extra-light text-dark p-2"><label>{{value}}
-                                                                                            {{alert?.alertType=='overspeed'?'kmph':'degree'}}</label></span>
-                                                                                </div>
-                                                                                <div class="form-check form-switch">
-                                                                                    <mat-slide-toggle  [id]="alert?.alertType+1" [(ngModel)]="alert.isVisible" 
-                                                                                    (change)="switchNotification(alert,'vehicleAlert')"></mat-slide-toggle>
-                                                                                </div>
-                                                                            </div>
-                                
-                                                                        </li>
-                                                                    </ng-container>
-                                                                    <ng-template #templateVehicle>
-                                                                        <li class="list-group-item d-flex justify-content-between align-items-center border-bottom"
-                                                                            *ngIf="!alert?.isVisibleToOfficer">
-                                                                            <span class="noti-title  text-capitalize">{{alert?.alertType}}</span>
-                                                                            <div class="form-check form-switch">
-                                                                                <mat-slide-toggle [id]="alert?.alertType+1" [(ngModel)]="alert.isVisible"
-                                                                                (change)="switchNotification(alert,'vehicleAlert')" ></mat-slide-toggle>
-                                                                            </div>
-                                                                        </li>
-                                                                    </ng-template>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </ng-container>
-
-                                            <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
-                                            <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
-                                                class="example-element-row"
-                                                [class.example-expanded-row]="expandedElement === element"
-                                                (click)="(expandedElement = expandedElement === element ? null : element); getVehiclesAlertsData(element.vehicleNo)">
-                                            </tr>
-                                            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']"
-                                                class="example-detail-row"></tr>
-                                        </table>
-                                        <div *ngIf="!vehiclenotificationsData.length">
-                                            <div class="alert alert-danger text-center py-2">
-                                                No data found
-                                            </div>
-                                        </div>
-
-                                    </div> -->
                                 </div>
+                                <table class="table dashboard-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th *ngFor="let label of columnsToDisplay">{{label}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let element of vehiclenotificationsData | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems : totaltableDataCount } ;let i=index">
+                                            <td >{{element.rowNumber}}</td>
+                                            <td><img src="assets/images/Vehicle-profile.svg" style="width:30px"> </td>
+                                            <td >{{element.vehicleNo}}</td>
+                                            <td>{{element.vehTypeName}}</td>
+                                            <td>
+                                                <button class="btn btn-light-main btn-icon me-2"
+                                                    (click)="openNotificationData('vehicle',element)">
+                                                    <i class="fa-regular fa-pen-to-square"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div *ngIf="!vehiclenotificationsData.length">
+                                    <div class="alert alert-danger text-center py-2">
+                                        No data found
+                                    </div>
+                                </div>
+                                <pagination-controls  class="text-end m-2" (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
                             </div>
                         </div>
-                    <!-- </div> -->
+                    </div>
                 </div>
             </div>
         </div>

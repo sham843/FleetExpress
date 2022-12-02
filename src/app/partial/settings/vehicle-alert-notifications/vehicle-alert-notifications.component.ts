@@ -6,8 +6,6 @@ import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
-
-
 @Component({
   selector: 'app-vehicle-alert-notifications',
   templateUrl: './vehicle-alert-notifications.component.html',
@@ -31,8 +29,7 @@ export class VehicleAlertNotificationsComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<VehicleAlertNotificationsComponent>,
     public CommonMethod: CommonMethodsService,
     private apiCall: ApiCallService, 
-    private webStorage: WebStorageService ,
-     private commonMethods: CommonMethodsService, 
+    private webStorage: WebStorageService,
     private spinner: NgxSpinnerService, 
     private error:ErrorsService,
     @Inject(MAT_DIALOG_DATA) public data: any, public config: ConfigService) { }
@@ -50,8 +47,7 @@ export class VehicleAlertNotificationsComponent implements OnInit {
       this.apiCall.getHttp().subscribe({
         next: (res: any) => {
           if (res.statusCode === "200") {
-            this.vehiclesAlertsData = res.responseData;
-
+            this.vehiclesAlertsData = this.dialogData?.seletedTab!='vehicle'? res.responseData: res.responseData.customNotificationOption;
           } else {
             if (res.statusCode != "404") {
               this.error.handelError(res.statusCode)
@@ -61,17 +57,22 @@ export class VehicleAlertNotificationsComponent implements OnInit {
       }, (error: any) => { this.error.handelError(error.status) });
   }
 
-  switchNotification(rowData:any, status:string){ 
-    this.spinner.show();
-    const url = (status=='alert'?'notification/set-Visibity-Notification?alertype='+ rowData.alertType +'&Isnotification='+ rowData.isNotification
-    :'notification/set-Visibity-Notification?alertype='+ rowData.alertType +'&Isvisible='+ rowData.isvisible+'&vehicleNo='+this.selectedVehicleNumber)
-    this.apiCall.setHttp('PUT', url, true, false, false, 'fleetExpressBaseUrl');
-    // this.subscription = 
+  switchNotification(){ 
+    const dataArray=this.vehiclesAlertsData;
+    const obj={
+        "vehicleId": this.dialogData?.data?.vehicleId,
+        "vehicleNumber": this.dialogData?.data?.vehicleNo,
+        "customNotificationOption": dataArray
+    }
+     this.spinner.show();
+    const url = (this.dialogData?.seletedTab!='vehicle'?'settingsNotification/save-update-glopal-notification?vehicleOwnerId='
+    :'settingsNotification/save-update-vehiclewise-notification?vehicleOwnerId=')+this.webStorage.getVehicleOwnerId();
+    this.apiCall.setHttp('Post', url, true, (this.dialogData?.seletedTab!='vehicle'?dataArray:obj), false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         this.spinner.hide();
         if (res.statusCode === "200") {
-          this.commonMethods.snackBar(res.statusMessage,0);
+          this.CommonMethod.snackBar(res.statusMessage,0);
         } else {
           if (res.statusCode != "404") {
             this.error.handelError(res.statusMessage)
@@ -79,19 +80,12 @@ export class VehicleAlertNotificationsComponent implements OnInit {
         }
       }
     },(error: any) => { 
-      this.spinner.hide();
+     this.spinner.hide();
       this.error.handelError(error.status)
      } );
   }
-  
-
-  onNoClick(flag: any): void {
-    // if (flag == 'Yes') {
-    //  let obj = { flag: 'Yes' };
-    //  this.dialogRef.close(obj);
-    // } else {
-    this.dialogRef.close(flag);
-    //}
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 }
 
