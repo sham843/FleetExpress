@@ -106,9 +106,9 @@
                                             <th *ngFor="let element of tableLables"
                                                 [ngClass]="{ 'srno': element.id==1 }">{{element.label}}</th>
                                             <th>
-                                                <mat-checkbox *ngIf="showTab=='users'" (change)='selectUsers($event,0)'
+                                                <mat-checkbox *ngIf="showTab=='users'" [disabled]="!userTableData.length" (change)='selectUsers($event,0)'
                                                     value="" [(ngModel)]="selectAll"></mat-checkbox>
-                                                <mat-checkbox [disabled]="!roleTableData?.length"
+                                                <mat-checkbox *ngIf="showTab!='users'" [disabled]="!roleTableData.length"
                                                     (change)='removeCheckRole($event,0)' value=""
                                                     [(ngModel)]="selectAllRoles"></mat-checkbox>
                                             </th>
