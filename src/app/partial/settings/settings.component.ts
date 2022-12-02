@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { ErrorsService } from 'src/app/services/errors.service';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { FormControl } from '@angular/forms';
 import { ConfigService } from 'src/app/services/config.service';
@@ -11,21 +10,11 @@ import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0' })),
-      state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
+  styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
   columnsToDisplay: any = ['SR.NO', '', 'VEHICLE NO', 'VEHICLE TYPE', ''];
-  submitted: boolean = false;
-  notificationsData = new Array();
   vehiclenotificationsData = new Array();
-  subscription!: Subscription;
   currentPage: number = 1;
   itemsPerPage: number = 10;
   pageSize : number=10;
@@ -33,7 +22,7 @@ export class SettingsComponent implements OnInit {
   searchContent = new FormControl();
   vehicleNotificationFlag: boolean = false;
   totaltableDataCount !: number;
-  highlightedRow!: number;
+  highlightedRow: any;
   vehiclesAlertsData = new Array();
   selectedVehicleNumber!: string;
   constructor(
@@ -58,9 +47,6 @@ export class SettingsComponent implements OnInit {
     // this.pageSize = this.itemsPerPage * (pageNum - 1);
     this.getVehiclenotificationsData();
   }
-  clickedRow(index: any) {
-    this.highlightedRow = index;
-  }
   getVehiclenotificationsData() {
     this.vehiclenotificationsData = []
     this.spinner.show();
@@ -80,7 +66,9 @@ export class SettingsComponent implements OnInit {
       this.spinner.hide();
        this.error.handelError(error.status) });
   }
+
   openNotificationData(status: string, objData?: any) {
+    this.highlightedRow = objData?.rowNumber;
     let obj: any = ConfigService.dialogObj;
     obj['cardTitle']= (status=='ALlVehicle'?'All Vehicles Alerts': objData.vehicleNo+' Vehicle Alerts' )
     obj['seletedTab'] = status;
@@ -92,10 +80,9 @@ export class SettingsComponent implements OnInit {
     })
     dialog.afterClosed().subscribe(res => {
       res == 'Yes' ? this.getVehiclenotificationsData() : '';
+      this.highlightedRow='';
     })
   }
-
-
   getVehiclesAlertsData(vehicleNo: any) {
     if (this.selectedVehicleNumber == vehicleNo) {
       return;
@@ -111,13 +98,6 @@ export class SettingsComponent implements OnInit {
           }
         }
       }, (error: any) => { this.error.handelError(error.status) });
-    }
-  }
-
-
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
     }
   }
 }

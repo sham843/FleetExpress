@@ -69,7 +69,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let element of vehiclenotificationsData | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems : totaltableDataCount } ;let i=index">
+                                        <tr *ngFor="let element of vehiclenotificationsData | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems : totaltableDataCount } ;
+                                        let i=index" [ngClass]="{'highLightRow':element.rowNumber== highlightedRow}">
                                             <td >{{element.rowNumber}}</td>
                                             <td><img src="assets/images/Vehicle-profile.svg" style="width:30px"> </td>
                                             <td >{{element.vehicleNo}}</td>
