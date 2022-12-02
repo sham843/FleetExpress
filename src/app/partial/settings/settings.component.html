@@ -5,23 +5,24 @@
     <div class="col-sm-12">
         <div class="display-bar">
             <ul class="nav nav-pills mb-0" id="pills-tab" role="tablist">
-                <li class="nav-item" role="presentation">
+                <!-- <li class="nav-item" role="presentation">
                     <button type="button" class="nav-link active" id="pills-notifications-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-notifications" type="button" role="tab"
                         aria-controls="pills-notifications" aria-selected="true" (click)="showvehicleNotification('Notifications')">Notifications</button>
-                </li>
+                </li> -->
                <!--  <li class="nav-item" role="presentation">
                     <button type="button" class="nav-link" id="pills-change-password-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-change-password" type="button" role="tab"
                         aria-controls="pills-change-password" aria-selected="false" (click)="showvehicleNotification('ChangePassword')">Change Password</button>
                 </li> -->
                 <li class="nav-item" role="presentation">
-                    <button type="button" class="nav-link" id="pills-vehicle-notifications-tab" data-bs-toggle="pill"
+                    <button type="button" class="nav-link active" id="pills-vehicle-notifications-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-vehicle-notifications" type="button" role="tab"
-                        aria-controls="pills-vehicle-notifications" aria-selected="false" (click)="showvehicleNotification('VehicleNotifications')">Vehicle Notifications</button>
+                        aria-controls="pills-vehicle-notifications" aria-selected="false" >Vehicle Notifications</button>
+                        <!-- (click)="showvehicleNotification('VehicleNotifications')" -->
                 </li>
                 <div class="vr mx-4" *ngIf="vehicleNotificationFlag"></div>
-                <div class="d-flex justify-content-between align-items-center small" *ngIf="vehicleNotificationFlag">
+                <div class="d-flex justify-content-between align-items-center small" *ngIf="this.totalVehicleNotificationsData>0">
                     <span class="me-4">Total Vehicle Notifications : </span> <h6 class="mb-0">{{this.totalVehicleNotificationsData}}</h6>
                 </div>
             </ul>
@@ -29,7 +30,7 @@
         <div class="card border-0 rounded">
             <div class="card-body">
                 <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane fade show active" id="pills-notifications" role="tabpanel"
+                    <!-- <div class="tab-pane fade show active" id="pills-notifications" role="tabpanel"
                         aria-labelledby="pills-notifications-tab" tabindex="0">
                             <div class="row">
                                 <div class="col-sm-6" *ngFor="let alert of notificationsData">
@@ -63,73 +64,9 @@
                                     </ul>
                                 </div>
                             </div>
-                    </div>
-
-<!-- 
-                    <div class="tab-pane fade" id="pills-change-password" role="tabpanel"
-                        aria-labelledby="pills-change-password-tab" tabindex="0">
-                        <div class="row justify-content-between">
-                            <form [formGroup]="changePassForm">
-                                <div class="col-sm-4 form-container">
-                                    <mat-form-field [appearance]="config.matFormField" class="w-100 form-group">
-                                        <mat-label>Current password</mat-label>
-                                        <input matInput [type]="CurrentPasswordHide ? 'password' : 'text'" autocomplete="nope"
-                                            formControlName="currentPwd"
-                                            [ngClass]="{ 'is-invalid':fpass['currentPwd'].errors }">
-                                        <button type="button" mat-icon-button matSuffix (click)="CurrentPasswordHide = !CurrentPasswordHide"
-                                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="CurrentPasswordHide">
-                                            <mat-icon>{{CurrentPasswordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                                        </button>
-                                        <mat-error>
-                                            <span *ngIf="fpass['currentPwd'].errors?.['required']"
-                                                class="text-danger">Current Password is required</span>
-                                            <span *ngIf="fpass['currentPwd'].errors?.['pattern']"
-                                                class="text-danger">Current Password is invalid format</span>
-                                        </mat-error>
-                                    </mat-form-field>
-
-                                    <mat-form-field [appearance]="config.matFormField" class="w-100 form-group">
-                                        <mat-label>New password</mat-label>
-                                        <input matInput [type]="newPasswordHide ? 'password' : 'text'" formControlName="newPwd"
-                                            [ngClass]="{ 'is-invalid':fpass['newPwd'].errors }">
-                                        <button type="button" mat-icon-button matSuffix (click)="newPasswordHide = !newPasswordHide"
-                                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="newPasswordHide">
-                                            <mat-icon>{{newPasswordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                                        </button>
-                                        <mat-error>
-                                            <span *ngIf="fpass['newPwd'].errors?.['required']" class="text-danger">New
-                                                Password is required</span>
-                                            <span *ngIf="fpass['newPwd'].errors?.['pattern']" class="text-danger">New
-                                                Password is invalid format</span>
-                                        </mat-error>
-                                    </mat-form-field>
-
-                                    <mat-form-field [appearance]="config.matFormField" class="w-100 form-group">
-                                        <mat-label>Retype password</mat-label>
-                                        <input matInput [type]="retypePasswordHide ? 'password' : 'text'" formControlName="reTypePwd"
-                                            [ngClass]="{'is-invalid':fpass['reTypePwd'].errors}">
-                                        <button type="button" mat-icon-button matSuffix (click)="retypePasswordHide = !retypePasswordHide"
-                                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="retypePasswordHide">
-                                            <mat-icon>{{retypePasswordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                                        </button>
-                                        <mat-error>
-                                            <span *ngIf="fpass['reTypePwd'].errors?.['required']"
-                                                class="text-danger">ReType Password is required</span>
-                                            <span *ngIf="fpass['reTypePwd'].errors?.['pattern']" class="text-danger">New
-                                                Password is invalid format</span>
-                                        </mat-error>
-                                    </mat-form-field>
-                                    <div class="text-end">
-                                        <button type="submit" class="btn btn-main" (click)="onChangePassword()">Submit</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
- -->
-
-                    <div class="tab-pane fade" id="pills-vehicle-notifications" role="tabpanel"
-                        aria-labelledby="pills-vehicle-notifications-tab" tabindex="0">
+                    </div> -->
+                    <!-- <div class="tab-pane fade" id="pills-vehicle-notifications" role="tabpanel"
+                        aria-labelledby="pills-vehicle-notifications-tab" tabindex="0"> -->
                         <div class="row justify-content-between">
                             <div class="col-sm-12">
                                 <div class="card form-card">
@@ -140,7 +77,7 @@
                                                     <div class="col-sm-auto">
                                                         Vehicle Notifications List
                                                     </div>
-                                                    <div class="col-sm-8">
+                                                    <div class="col-sm-5">
                                                         <div class="input-group">
                                                             <input type="text" class="form-control" placeholder="Search"
                                                                 [formControl]="searchContent">
@@ -151,16 +88,50 @@
                                                                     (click)="searchContent.reset()"></i></div>
                                                         </div>
                                                     </div>
+                                                   
                                                 </div>
+                                            </div>
+                                            <div class="col-sm text-end">
+                                                <button class="btn btn-light-main btn-icon me-2 btn-sm" (click)="openNotificationData('ALlVehicle')">All Vehicle Alerts</button>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card-body p-0">
+                                    <table class="table dashboard-table mb-0">
+                                        <thead >
+                                            <tr >
+                                                <th *ngFor="let label of columnsToDisplay" >{{label}}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody >
+                                            <tr *ngFor="let element of vehiclenotificationsData | paginate: {itemsPerPage: pageSize, 
+                                                currentPage: pageNumber, totalItems:totalVehicleNotificationsData}; let i=index">
+                                                <td>{{element.rowNumber}}</td>
+                                                <td><img src="assets/images/Vehicle-profile.svg" style="width:30px"> </td>
+                                                <td>{{element.vehicleNo}}</td>
+                                                <td>{{element.vehTypeName}}</td>
+                                                <td>
+                                                    <button class="btn btn-light-main btn-icon me-2" (click)="openNotificationData('vehicle',element)">
+                                                        <i class="fa-regular fa-pen-to-square"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div *ngIf="!vehiclenotificationsData.length">
+                                        <div class="alert alert-danger text-center py-2">
+                                            No data found
+                                        </div>
+                                    </div>
+                                    <pagination-controls   previousLabel="" nextLabel=""
+                                    (pageChange)="onPageChange($event)" class="text-end m-2" >
+                                </pagination-controls>
+
+                                    <!-- <div class="card-body p-0">
                                           <table mat-table [dataSource]="vehiclenotificationsData" multiTemplateDataRows 
                                             class="table dashboard-table">
                                             <ng-container matColumnDef="SR.NO" >
                                                 <th mat-header-cell *matHeaderCellDef style="width:80px !important;"> SR.NO </th>
-                                                <!-- <td mat-cell matCellDef="let element let i=index">{{((pageNumber + 1)  10 + i + 1)-20}} </td> -->
+                                                <td mat-cell matCellDef="let element let i=index">{{((pageNumber + 1)  10 + i + 1)-20}} </td>
                                                 <td mat-cell *matCellDef="let element; let j=index">{{element.rowNumber}}</td>
                                             </ng-container>
                                             <ng-container matColumnDef="vehicle-icon">
@@ -177,7 +148,7 @@
                                                 <th mat-header-cell *matHeaderCellDef>VEHICLE TYPE </th>
                                                 <td mat-cell *matCellDef="let element"> {{element.vehTypeName}} </td>
                                             </ng-container>
-                                            <ng-container matColumnDef="expand">
+                                            <!-- <ng-container matColumnDef="expand">
                                                 <th mat-header-cell *matHeaderCellDef aria-label="row actions" style="width:50px">&nbsp;
                                                 </th>
                                                 <td mat-cell *matCellDef="let element" style="width:50px">
@@ -189,10 +160,10 @@
                                                         </mat-icon>
                                                     </button>
                                                 </td>
-                                            </ng-container>
+                                            </ng-container> -->
 
                                             <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-                                            <ng-container matColumnDef="expandedDetail">
+                                            <!-- <ng-container matColumnDef="expandedDetail">
                                                 <td mat-cell *matCellDef="let element"
                                                     [attr.colspan]="columnsToDisplayWithExpand.length">
                                                     <div class="example-element-detail"
@@ -249,11 +220,11 @@
                                             </div>
                                         </div>
 
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    <!-- </div> -->
                 </div>
             </div>
         </div>

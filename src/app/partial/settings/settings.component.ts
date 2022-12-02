@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 
-import { NgxSpinnerService } from 'ngx-spinner';
+// import { NgxSpinnerService } from 'ngx-spinner';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { CommonMethodsService } from 'src/app/services/common-methods.service';
+// import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import {FormControl} from '@angular/forms';
 import { ConfigService } from 'src/app/services/config.service';
+import { MatDialog } from '@angular/material/dialog';
+import { VehicleAlertNotificationsComponent } from './vehicle-alert-notifications/vehicle-alert-notifications.component';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
@@ -21,8 +23,8 @@ import { ConfigService } from 'src/app/services/config.service';
   ],
 })
 export class SettingsComponent implements OnInit {
-  columnsToDisplay:any=['SR.NO','vehicle-icon','VEHICLE NO','VEHICLE TYPE'];
-  columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
+  columnsToDisplay:any=['SR.NO','vehicle-icon','VEHICLE NO','VEHICLE TYPE',''];
+  columnsToDisplayWithExpand = [...this.columnsToDisplay];
 /*   changePassForm!:FormGroup;
   CurrentPasswordHide:boolean = true;
   newPasswordHide:boolean=true;
@@ -55,15 +57,13 @@ export class SettingsComponent implements OnInit {
   }
 
   constructor(
-    private spinner:NgxSpinnerService,
     private error:ErrorsService,
-    private commonMethods:CommonMethodsService,
+    private dialog: MatDialog,
     private apiCall:ApiCallService,
-    public config:ConfigService,) { }
+    public config:ConfigService,
+    ) { }
 
   ngOnInit(): void {
-    // this.getChangePwd();
-    this.getnotificationsData();
     this.getVehiclenotificationsData();
   }
   
@@ -72,29 +72,6 @@ export class SettingsComponent implements OnInit {
      this.getVehiclenotificationsData();
     });
  }
-/* getChangePwd(){
-  this.changePassForm=this.fb.group({
-    currentPwd:['',[Validators.compose([Validators.required,Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$')])]],
-    newPwd:['',[Validators.compose([Validators.required,Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$')])]],
-    reTypePwd:['',[Validators.compose([Validators.required,Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$')])]]                                 
-  })
-  // this.notificationForm=this.fb.group({
-  //   BoxopenOff:[],
-  //   BoxopenOn:[],
-  //   GeofenceIn:[],
-  //   GeofenceOut:[],
-  //   IgnitionOff:[],
-  //   IgnitionOn:[],
-  //   PowerCut:[],
-  //   PowerConnected:[],
-  //   Lowbatteryremoved:[],
-  //   ConnectbacktomainBattery:[],
-  //   DisconnectBattery:[],
-  //   Lowbattery:[],  
-  //   OverSpeed:[],
-  //   Tilt:[]                              
-  // })
-} */
 public onPageChange(pageNum: number): void {
   this.pageNumber=pageNum;
   this.pageSize = this.itemsPerPage * (pageNum - 1);
@@ -103,65 +80,14 @@ public onPageChange(pageNum: number): void {
 clickedRow(index:any){
   this.highlightedRow=index;
 }
-/* onChangePassword(){
-  this.submitted=true;
-  if(this.changePassForm.invalid){
-    return;
-  }
-  else{
-    if(this.changePassForm.value != this.changePassForm.value){
-      this.commonMethods.snackBar("new password and confirm password not match",0);
-      return
-    }else{
-      this.spinner.show();
-    this.apiCall.setHttp('get', 'login/change-password?UserId='+this.webStorage.getUserId()+'&NewPassword='+this.changePassForm.value.reTypePwd+'&OldPassword='+this.changePassForm.value.currentPwd, true, false, false, 'fleetExpressBaseUrl');
-      this.apiCall.getHttp().subscribe((response: any) => {
-        if (response.statusCode == "200") {
-          this.spinner.hide();
-        }
-      },
-      (error:any)=>{
-        this.error.handelError(error.status)
-      })
-    }
-  }
-} */
-/* get fpass(){
-  return this.changePassForm.controls;
-} */
-// get f(){
-//   return this.notificationForm.controls;
-// }
-showvehicleNotification(tabLabel:any){
-  if(tabLabel=='VehicleNotifications'){
-    this.vehicleNotificationFlag=true;
-  }else{
-    this.vehicleNotificationFlag=false;
-  }
-}
-getnotificationsData() {
-  this.apiCall.setHttp('get', 'notification/get-alert-types', true, false, false, 'fleetExpressBaseUrl');
-  this.apiCall.getHttp().subscribe({
-    next: (res: any) => {
-      if (res.statusCode === "200") {
-        this.notificationsData = res.responseData;
-      } else {
-        if (res.statusCode != "404") {
-          this.error.handelError(res.statusCode)
-        }
-      }
-    }
-  },(error: any) => { this.error.handelError(error.status) });
-}
 getVehiclenotificationsData() {
   this.vehiclenotificationsData=[]
-  this.apiCall.setHttp('get', 'notification/get-Alert-linking?NoPage='+(this.searchContent.value?0:1)+'&RowsPerPage=10&SearchText='+this.searchContent.value, true, false, false, 'fleetExpressBaseUrl');
+  this.apiCall.setHttp('get', 'notification/get-Alert-linking?NoPage='+(this.searchContent.value?0:1)+'&RowsPerPage=' + (!this.searchContent.value ? 10 : 0)+'&SearchText='+this.searchContent.value, true, false, false, 'fleetExpressBaseUrl');
   this.apiCall.getHttp().subscribe({
-    next: (res: any) => {
+    next: (res: any) =>{
       if (res.statusCode === "200") {
-        this.vehiclenotificationsData = res.responseData.responseData1 ;
-        this.totalVehicleNotificationsData=res.responseData.responseData2?.totalRecords
-
+        this.vehiclenotificationsData = res.responseData.data ;
+        this.totalVehicleNotificationsData=parseInt(res.responseData.totalCount)
       } else {
         if (res.statusCode != "404") {
           this.vehiclenotificationsData=[];
@@ -174,49 +100,43 @@ getVehiclenotificationsData() {
     }
   },(error: any) => { this.error.handelError(error.status) });
 }
-  getVehiclesAlertsData(vehicleNo: any) {
-    if (this.selectedVehicleNumber == vehicleNo) {
-        return;
-    } else {
-      this.selectedVehicleNumber = vehicleNo;
-      this.apiCall.setHttp('get', 'notification/get-vehicleWise-Notification-List?vehicleNo=' + vehicleNo, true, false, false, 'fleetExpressBaseUrl');
-      this.apiCall.getHttp().subscribe({
-        next: (res: any) => {
-          if (res.statusCode === "200") {
-            this.vehiclesAlertsData = res.responseData.responseData1;
-          } else {
-            if (res.statusCode != "404") {
-              this.error.handelError(res.statusCode)
-            }
+openNotificationData(status: string, objData?:any ) { 
+    let obj: any = ConfigService.dialogObj;
+    obj['seletedTab'] = status;
+    obj['data']=objData
+    const dialog = this.dialog.open(VehicleAlertNotificationsComponent, {
+      width: this.config.dialogBoxWidth[3],
+      data: obj,
+      disableClose: this.config.disableCloseBtnFlag,
+    })
+    dialog.afterClosed().subscribe(res => {
+      res == 'Yes' ? this.getVehiclenotificationsData() : '';
+      // this.highlightRowindex = '';
+    })
+}
+
+
+getVehiclesAlertsData(vehicleNo: any) {
+  if (this.selectedVehicleNumber == vehicleNo) {
+      return;
+  } else {
+    this.selectedVehicleNumber = vehicleNo;
+    this.apiCall.setHttp('get', 'notification/get-vehicleWise-Notification-List?vehicleNo=' + vehicleNo, true, false, false, 'fleetExpressBaseUrl');
+    this.apiCall.getHttp().subscribe({
+      next: (res: any) => {
+        if (res.statusCode === "200") {
+          this.vehiclesAlertsData = res.responseData.responseData1;
+        } else {
+          if (res.statusCode != "404") {
+            this.error.handelError(res.statusCode)
           }
         }
-      }, (error: any) => { this.error.handelError(error.status) });
-    }
-  }
-
-switchNotification(rowData:any, status:string){ 
-  this.spinner.show();
-  const url = (status=='alert'?'notification/set-Visibity-Notification?alertype='+ rowData.alertType +'&Isnotification='+ rowData.isNotification
-  :'notification/set-Visibity-Notification?alertype='+ rowData.alertType +'&Isvisible='+ rowData.isvisible+'&vehicleNo='+this.selectedVehicleNumber)
-  this.apiCall.setHttp('PUT', url, true, false, false, 'fleetExpressBaseUrl');
-  // this.subscription = 
-  this.apiCall.getHttp().subscribe({
-    next: (res: any) => {
-      this.spinner.hide();
-      if (res.statusCode === "200") {
-        this.commonMethods.snackBar(res.statusMessage,0);
-      } else {
-        if (res.statusCode != "404") {
-          this.error.handelError(res.statusMessage)
-        }
       }
-      this.getnotificationsData();
-    }
-  },(error: any) => { 
-    this.spinner.hide();
-    this.error.handelError(error.status)
-   } );
+    }, (error: any) => { this.error.handelError(error.status) });
+  }
 }
+
+
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
