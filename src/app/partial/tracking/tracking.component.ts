@@ -201,7 +201,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
           //let resp: any = this.sharedService.getAddressBylatLong(1, res.responseData.responseData1, res.responseData.responseData1.length);
           this.reportResponseData = res.responseData.responseData1;
           this.allVehiclelData = this.reportResponseData;
-          this.getNextItems();
+          !this.searchContent.value ?this.getNextItems():'';
           this.categoriesSubject.next(this.totalDtaArray);
           //setTimeout(()=>{
             this.allVehiclelDataClone = this.reportResponseData;
