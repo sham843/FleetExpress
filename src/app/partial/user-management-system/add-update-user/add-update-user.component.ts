@@ -98,7 +98,7 @@ export class AddUpdateUserComponent implements OnInit {
   }
 
   getRoleData() {
-    this.apiCall.setHttp('get', 'userdetail/getallSubusertype_usertype?UserTypeId=1' + '&Subusertypeid=' + this.userData[0]?.subUserTypeId, true, false, false, 'fleetExpressBaseUrl');
+    this.apiCall.setHttp('get', 'Roles/getRolesList-Dropdown-View' , true, false, false, 'fleetExpressBaseUrl');
     // this.subscription = 
     this.apiCall.getHttp().subscribe({
       next: (res: any) => {

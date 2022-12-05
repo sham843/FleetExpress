@@ -51,8 +51,8 @@
                 <mat-form-field [appearance]="config.matFormField" class="w-10">
                     <mat-label>Assign Role</mat-label>
                     <mat-select formControlName="assignedRole">
-                        <mat-option *ngFor="let role of roleDtArr" [value]="role.subUserTypeId">
-                            {{role.subUserTypeName}}</mat-option>
+                        <mat-option *ngFor="let role of roleDtArr" [value]="role.id">
+                            {{role.roleName}}</mat-option>
                     </mat-select>
                 </mat-form-field>
                 <button type="button" class="btn btn-outline-primary btn-sm ms-2" (click)="addRole()">
