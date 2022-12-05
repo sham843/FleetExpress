@@ -26,6 +26,8 @@ export class UserManagementSystemComponent implements OnInit {
   roleDtArr = new Array();
   userformSubmitted: boolean = false;
   userTableData = new Array();
+  checkRoledata = new Array();
+  checkUserdata = new Array();
   roleTableData = new Array();
   selectAll!: boolean;
   selectAllRoles!: boolean;
@@ -91,6 +93,7 @@ export class UserManagementSystemComponent implements OnInit {
             x.isblocked = x.isblocked == 1 ? true : false;
           })
           this.userTableData = res.responseData.responseData1;
+          !this.searchContent.value ? this.checkUserdata = res.responseData.responseData1 : '';
           this.totalUserTableData = res.responseData.responseData2.totalRecords;
         } else {
           this.userTableData = [];
@@ -189,6 +192,7 @@ export class UserManagementSystemComponent implements OnInit {
       next: (res: any) => {
         if (res.statusCode === "200") {
           this.roleTableData = res.responseData.responseData1;
+          !this.searchContent.value ? this.checkRoledata = res.responseData.responseData1 : '';
           this.totalRoleTableData = res.responseData.responseData2.totalRecords;
           // 
         } else {
@@ -241,7 +245,7 @@ export class UserManagementSystemComponent implements OnInit {
   deleteRole() {
     let param = new Array();
     this.roleCheckArray.find((ele: any) => {
-      let obj =  {
+      let obj = {
         "id": ele.id,
         "roleName": ele.roleName,
         "isDeleted": true,
@@ -257,7 +261,7 @@ export class UserManagementSystemComponent implements OnInit {
       param.push(obj);
     });
     this.spinner.show();
-    this.apiCall.setHttp('delete', 'Roles/delete-roles-and-responsiblity',true, param, false, 'fleetExpressBaseUrl');
+    this.apiCall.setHttp('delete', 'Roles/delete-roles-and-responsiblity', true, param, false, 'fleetExpressBaseUrl');
     // this.subscription = 
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
@@ -274,7 +278,7 @@ export class UserManagementSystemComponent implements OnInit {
   //-------------------------------------------------------End role section-----------------------------------------------------------------
 
   confirmationDialog(flag: boolean, label: string, selectedRowObj?: any, tabName?: any) {   //blobk-unblock & delete modal
-    label != 'delete'?this.selectAllRoles || this.roleCheckArray ? (this.uncheckAllRole(), this.roleCheckArray = []) : '':'';
+    label != 'delete' ? this.selectAllRoles || this.roleCheckArray ? (this.uncheckAllRole(), this.roleCheckArray = []) : '' : '';
     let obj: any = ConfigService.dialogObj;
     if (label == 'status') {
       obj['p1'] = 'Are you sure you want to ' + (flag ? 'block' : 'unblock') + ' user?';
@@ -302,8 +306,8 @@ export class UserManagementSystemComponent implements OnInit {
   }
 
 
-  addUpdateDialog(status: string, selectedObj?: any) {  
-  this.selectAllRoles || this.roleCheckArray ? (this.uncheckAllRole(), this.roleCheckArray = []) : '';               // create and update User & role modal
+  addUpdateDialog(status: string, selectedObj?: any) {
+    this.selectAllRoles || this.roleCheckArray ? (this.uncheckAllRole(), this.roleCheckArray = []) : '';               // create and update User & role modal
     status == 'user' ? (this.selectAll || this.selectedTableData.length ? (this.uncheckAllUser(), this.selectedTableData = []) : '') : this.selectAllRoles || this.selectedRoleTableData.length ? (this.uncheckAllUser(), this.roleTableData = []) : '';
     this.highlightRowindex = selectedObj?.id;
     let obj: any = ConfigService.dialogObj;
@@ -311,7 +315,7 @@ export class UserManagementSystemComponent implements OnInit {
     obj['seletedTab'] = status;
     obj['cancelBtnText'] = 'Cancel';
     obj['submitBtnText'] = !selectedObj ? 'Submit' : 'Update';
-    obj['selectedDataObj'] =selectedObj;
+    obj['selectedDataObj'] = selectedObj;
     const dialog = this.dialog.open(AddUpdateUserComponent, {
       width: this.configService.dialogBoxWidth[2],
       data: obj,
@@ -322,7 +326,7 @@ export class UserManagementSystemComponent implements OnInit {
       if (res == 'add' && status == 'role') {
         this.getRoleTableData();
       }
-      else{
+      else {
         res == 'Yes' ? this.getUserTableData() : '';
       }
     })
