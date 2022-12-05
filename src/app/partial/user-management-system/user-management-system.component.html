@@ -112,7 +112,7 @@
                                                     <mat-checkbox *ngIf="showTab=='users'"
                                                         (change)='selectUsers($event,0)' value=""
                                                         [(ngModel)]="selectAll"></mat-checkbox>
-                                                    <mat-checkbox [disabled]="!roleTableData?.length"
+                                                    <mat-checkbox *ngIf="showTab!='users'" [disabled]="!roleTableData.length"
                                                         (change)='removeCheckRole($event,0)' value=""
                                                         [(ngModel)]="selectAllRoles"></mat-checkbox>
                                                 </th>
