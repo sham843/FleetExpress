@@ -3,6 +3,7 @@ import { Component, HostBinding, OnInit, Renderer2 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from 'src/app/dialogs/confirmation/confirmation.component';
 import { ConfigService } from 'src/app/services/config.service';
+import { ErrorsService } from 'src/app/services/errors.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { SidebarService } from '../sidebar/sidebar.service';
 
@@ -20,7 +21,8 @@ export class HeaderComponent implements OnInit {
     private dialog: MatDialog,
     private config: ConfigService,
     private overlay: OverlayContainer,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private errorService:ErrorsService
   ) { }
 
   themeChange(darkMode: any) {
@@ -77,7 +79,7 @@ export class HeaderComponent implements OnInit {
       disableClose: this.config.disableCloseBtnFlag,
     })
     dialog.afterClosed().subscribe(res => {
-      res == 'Yes'?this.sharedService.logOut() :'';
+      res == 'Yes'?this.errorService.logOut() :'';
      /*  (res == 'Yes' && label == 'status') ? this.sharedService.logOut() :'';
       (res == 'Yes' && label == 'password'?this.sharedService.logOut() :'') */
     }

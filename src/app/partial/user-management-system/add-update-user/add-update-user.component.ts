@@ -41,7 +41,6 @@ export class AddUpdateUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.dialogData = this.data;
-    console.log("data", this.dialogData)
     this.editData = this.dialogData?.selectedDataObj;
     this.editFlag = this.editData ? true : false;
     this.getResponsibilities();
@@ -57,7 +56,7 @@ export class AddUpdateUserComponent implements OnInit {
       this.userForm.patchValue({
         fName: this.editData.name,
         mobileNumber: this.editData.mobileNo1,
-        assignedRole: parseInt(this.editData.userType),
+        assignedRole: parseInt(this.editData.roleId),
       })
       this.userForm.controls['assignedVehicle'].setValue(vehicleNumber);
     }
@@ -153,8 +152,8 @@ export class AddUpdateUserComponent implements OnInit {
             id: x.vehicleId,
             isAssigned: 0,
             userId: this.editData.id,
-            vehicleRegistrationNo: x.vehicleNumber
-
+            vehicleRegistrationNo: x.vehicleNumber,
+            VehicleType:x.vehicleTypeName
           }
           vehicleunassignedData.push(vehicleunassigned)
         })
@@ -176,13 +175,14 @@ export class AddUpdateUserComponent implements OnInit {
         "talukaId": 0,
         "mobileNo1": userFormData.mobileNumber,
         "userName": userFormData.mobileNumber,
-        "user_Type": userFormData.assignedRole,
+        "user_Type": 10,
         "emailId": "",
         "acivationKey1": "",
         "createdBy": this.userData[0]?.id,
         "flag": this.editFlag == false ? "I" : 'U',
         "vehicleOwnerId": this.userData[0]?.vehicleOwnerId,
-        "vehicle": vehiclearray
+        "vehicle": vehiclearray,
+        "roleId":userFormData.assignedRole
       }
       this.spinner.show();
       this.apiCall.setHttp('post', 'userdetail/save-update-user-for-tracking', true, obj, false, 'fleetExpressBaseUrl');
@@ -263,7 +263,8 @@ export class AddUpdateUserComponent implements OnInit {
             this.commonMethods.snackBar(res.statusMessage, 0);
             // this.data = ''
             formDirective.resetForm();
-            this.dialogRef.close('add');
+            this.onNoClick('Yes');
+            // this.dialogRef.close('add');
           }
           else {
             this.commonMethods.snackBar(res.statusMessage, 1);
@@ -275,7 +276,6 @@ export class AddUpdateUserComponent implements OnInit {
     }
   }
   onNoClick(flag: any): void {
-    flag
-  this.dialogRef.close();
+  this.dialogRef.close(flag);
   }
 }
