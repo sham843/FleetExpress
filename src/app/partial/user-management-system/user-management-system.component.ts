@@ -63,6 +63,7 @@ export class UserManagementSystemComponent implements OnInit {
     });
   }
   onPagintion(pageNo: any, flag: any) {
+    this.selectAllRoles = false;
     this.pageNumber = pageNo;
     this.selectedTableData = [];
     flag == 'user' ? this.getUserTableData() : this.getRoleTableData();
