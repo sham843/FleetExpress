@@ -1,6 +1,5 @@
 
 import { Injectable } from '@angular/core';
-
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonMethodsService } from './common-methods.service';
 
@@ -39,7 +38,7 @@ export class ErrorsService {
                     case 307: msg = "Temporary Redirect"; break;
                     case 308: msg = "Permanent Redirect"; break;
                     case 400: msg = "Bad Request"; break;
-                    case 401: msg = "Unauthorized"; break;
+                    case 401: msg = "Unauthorized"; this.logOut(); break;
                     case 402: msg = "Payment Required"; break;
                     case 403: msg = "Forbidden"; break;
                     case 404: msg = "Data Not Found"; break;
@@ -83,5 +82,11 @@ export class ErrorsService {
       }
     }
     this.commonMethods.snackBar(msg, 1)
+  }
+  logOut() {
+    sessionStorage.clear();
+    var element = document.getElementById("bodyTag");
+    element?.classList.remove("darkTheme");
+    this.commonMethods.routerLinkRedirect('login');
   }
 }

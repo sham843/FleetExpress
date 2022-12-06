@@ -6,7 +6,6 @@ import { ApiCallService } from 'src/app/services/api-call.service';
 import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
-import { SharedService } from 'src/app/services/shared.service';
 import { WebStorageService } from 'src/app/services/web-storage.service';
 import { ModalsComponent } from '../driver_modals/modals.component';
 @Component({
@@ -33,7 +32,7 @@ export class ConfirmationComponent implements OnInit {
     private webStorage: WebStorageService,
     private fb: FormBuilder,
     public config: ConfigService,
-    private sharedService: SharedService,
+    private errorService: ErrorsService,
     private dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -82,7 +81,7 @@ export class ConfirmationComponent implements OnInit {
             this.spinner.hide();
             this.commonMethods.snackBar(response.responseData, 0);
             this.onNoClick('Yes');
-            this.sharedService.logOut();
+            this.errorService.logOut();
           }
           else {
             this.spinner.hide();

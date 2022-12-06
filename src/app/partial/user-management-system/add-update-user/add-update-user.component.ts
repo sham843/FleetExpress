@@ -41,7 +41,6 @@ export class AddUpdateUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.dialogData = this.data;
-    console.log("data", this.dialogData)
     this.editData = this.dialogData?.selectedDataObj;
     this.editFlag = this.editData ? true : false;
     this.getResponsibilities();
@@ -153,7 +152,8 @@ export class AddUpdateUserComponent implements OnInit {
             id: x.vehicleId,
             isAssigned: 0,
             userId: this.editData.id,
-            vehicleRegistrationNo: x.vehicleNumber
+            vehicleRegistrationNo: x.vehicleNumber,
+            VehicleType:x.vehicleTypeName
           }
           vehicleunassignedData.push(vehicleunassigned)
         })
