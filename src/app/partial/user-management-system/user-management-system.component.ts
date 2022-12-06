@@ -323,12 +323,14 @@ export class UserManagementSystemComponent implements OnInit {
     })
     dialog.afterClosed().subscribe(res => {
       this.highlightRowindex = '';
-      if (res == 'add' && status == 'role') {
-        this.getRoleTableData();
-      }
-      else {
-        res == 'Yes' ? this.getUserTableData() : '';
-      }
+      res == 'Yes' ? (status=='user' ? this.getUserTableData(): this.getRoleTableData()) : '';
+      // if (res == 'add' && status == 'role') {
+      //   this.getRoleTableData();
+
+      // }
+      // else {
+      //   res == 'Yes' ? this.getUserTableData() : '';
+      // }
     })
   }
   ngOnDestroy() {
