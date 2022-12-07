@@ -194,7 +194,6 @@ export class UserManagementSystemComponent implements OnInit {
           this.roleTableData = res.responseData.responseData1;
           !this.searchContent.value ? this.checkRoledata = res.responseData.responseData1 : '';
           this.totalRoleTableData = res.responseData.responseData2.totalRecords;
-          // 
         } else {
           if (res.statusCode != "404") {
             this.error.handelError(res.statusCode)
@@ -262,7 +261,6 @@ export class UserManagementSystemComponent implements OnInit {
     });
     this.spinner.show();
     this.apiCall.setHttp('delete', 'Roles/delete-roles-and-responsiblity', true, param, false, 'fleetExpressBaseUrl');
-    // this.subscription = 
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.getRoleTableData();
