@@ -73,13 +73,6 @@ export class RegisterVehicleComponent implements OnInit {
         this.totalVehicle = response.responseData.responseData2.totalRecords;
         this.vehicleData.forEach((ele: any) => {
           ele.isBlock == 1 ? ele['isBlockFlag'] = true : ele['isBlockFlag'] = false;
-          let vhlNo; 
-          vhlNo = ele.vehicleNo.split('');
-          vhlNo.splice(2, 0, "  ");
-          vhlNo.splice(5, 0, "  ");
-          vhlNo.splice(8, 0, "  ");
-          this.vehicleNoWithSpace = vhlNo.join('  ');
-          ele['vhlNos'] = this.vehicleNoWithSpace;
         });
         flag == 'search' ? (this.searchHideShow = false, this.clearSerachBtn = true) : '';
         this.totalItem = response.responseData.responseData2.totalRecords;

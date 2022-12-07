@@ -24,7 +24,7 @@
                 <div class="col-sm-4">
                     <div class="d-flex small">
                         <div class="me-2">Total {{showTab=='users'?'User':'Role ' }}:</div>
-                        <div class="fw-bold">{{showTab=='users'?totalUserTableData:roleTableData.length }}</div>
+                        <div class="fw-bold">{{showTab=='users'?totalUserTableData:totalRoleTableData}}</div>
                     </div>
                 </div>
             </div>
@@ -150,7 +150,7 @@
                                         <tbody *ngIf="showTab=='role'">
                                             <tr *ngFor="let role of roleTableData | paginate: {itemsPerPage: pageSize, 
                                             currentPage: pageNumber, totalItems:totalRoleTableData}; let i=index ">
-                                                <td>{{i+1}}</td>
+                                                <td>{{((pageNumber + 1) * 10 + i + 1)-20}}</td>
                                                 <td>{{role.roleName}}</td>
                                                 <td>
                                                     <div class="d-flex">

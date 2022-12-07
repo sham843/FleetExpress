@@ -26,7 +26,7 @@ export class ConfigService {
   viewType: string = 'roadmap';
 
   static googleApiObj: object = { // google api key
-    apiKey: 'AIzaSyAkNBALkBX7trFQFCrcHO2I85Re2MmzTo8',
+    apiKey: 'AIzaSyAN8C59RgB8bJ0rbNUJV6JKVloXLyBw3pY',
     language: 'en',
     libraries: ['drawing', 'places']
   };

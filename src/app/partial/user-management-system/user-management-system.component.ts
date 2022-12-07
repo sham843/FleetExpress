@@ -298,11 +298,12 @@ export class UserManagementSystemComponent implements OnInit {
       disableClose: this.configService.disableCloseBtnFlag,
     })
     dialog.afterClosed().subscribe(res => {
+      this.uncheckAllRole();this.roleCheckArray = [];
       if (res == 'Yes' && label == 'delete' && tabName == 'role') {
         this.deleteRole();
       }
       res == 'Yes' && label == 'delete' ? this.DeleteUserData() : '';
-      res == 'Yes' && label == 'status' ? this.checkBlock(selectedRowObj, flag) : selectedRowObj.isBlock = !flag;;
+      res == 'Yes' && label == 'status' ? this.checkBlock(selectedRowObj, flag) : selectedRowObj.isBlock = !flag; 
     })
   }
 
