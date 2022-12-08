@@ -25,7 +25,7 @@ export class TicketRaisedComponent implements OnInit {
   cityData=new Array();
   userData :any;
   shareLocationForm!:FormGroup;
-  LocsharingOption=[{lable:'Whats All', id:1},{lable:'Email', id:2},{lable:'SMS', id:3}];
+  LocsharingOption=[{lable:"What's App", id:1},{lable:'Email', id:2},{lable:'SMS', id:3}];
   get maintanance() { return this.maintananceForm.controls };
   get complaint() { return this.complaintForm.controls };
   get locnShare() { return this.shareLocationForm.controls };
