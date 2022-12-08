@@ -24,8 +24,11 @@ export class TicketRaisedComponent implements OnInit {
   stateData=new Array();
   cityData=new Array();
   userData :any;
+  shareLocationForm!:FormGroup;
+  LocsharingOption=[{lable:'Whats All', id:1},{lable:'Email', id:2},{lable:'SMS', id:3}];
   get maintanance() { return this.maintananceForm.controls };
   get complaint() { return this.complaintForm.controls };
+  get locnShare() { return this.shareLocationForm.controls };
   constructor(public dialogRef: MatDialogRef<TicketRaisedComponent>,
      private fb:FormBuilder, private commonMethod:CommonMethodsService,
     private error:ErrorsService, private apiCall:ApiCallService,
@@ -49,12 +52,18 @@ export class TicketRaisedComponent implements OnInit {
     })
     this.complaintForm = this.fb.group({
       userMobileNumber: [this.userData?.mobileNo1],
-      DriverMobileNumber: [this.dialogData?.driverMobileNo ],
+      DriverMobileNumber: [this.dialogData?.driverMobileNo],
       stateId: ['', Validators.required],
       cityId: ['', Validators.required],
       vehicleDate: ['', Validators.required],
       vehicleTime: ['', Validators.required]
     })
+    this.shareLocationForm = this.fb.group({
+      sharingOption: [],
+      userMobileNumber: ['', Validators.required],
+      userEmail: ['', Validators.required],
+    })
+
   }
   
   getStates(){
@@ -167,6 +176,10 @@ export class TicketRaisedComponent implements OnInit {
     // } else {
     //   this.dialogRef.close(flag);
     // }
+  }
+
+  selectedOption(sharingOption:any){
+console.log(sharingOption);
   }
 
 }

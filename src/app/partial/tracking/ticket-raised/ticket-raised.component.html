@@ -62,7 +62,46 @@
             class="fas fa-times"></i></button>
 </div> -->
 
-<div class="row mb-4" *ngIf="this.dialogData['flagStatus']=='shareLocation'">
+<form *ngIf="this.dialogData['flagStatus']=='shareLocation'" [formGroup]="shareLocationForm"
+    (ngSubmit)="submitvehicleMarkMaintance()">
+    <div class="form-container">
+        <div class="mb-0">
+            <div class="row">
+                <div class="col-sm-6">
+                    <mat-form-field appearance="standard" class="w-100">
+                        <label class="form-label">Share Via</label>
+                        <mat-select formControlName="sharingOption" (selectionChange)="selectedOption(locnShare['sharingOption'].value)">
+                            <mat-option *ngFor="let item of LocsharingOption" [value]="item?.id">
+                                {{item?.lable}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-6">
+                    <mat-form-field appearance="standard" class="w-100" >
+                        <mat-label>Mobile Number</mat-label>
+                        <input matInput formControlName="userMobileNumber" [maxLength]="10">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-6">
+                    <mat-form-field appearance="standard" class="w-100"  >
+                        <mat-label>Email Id</mat-label>
+                        <input matInput formControlName="userEmail">
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-container w-100">
+        <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-light-main" type="button" mat-dialog-close
+                (click)="onNoClick('No')">Close</button>
+            <button type="button" class="btn btn-main" cdkFocusInitial (click)="onNoClick('Yes')" type="submit">Share
+                Location</button>
+        </div>
+    </div>
+</form>
+<!-- <div class="row mb-4" *ngIf="this.dialogData['flagStatus']=='shareLocation'">
     <div class="col-sm-8">
         <mat-form-field appearance="standard" class="w-100">
             <mat-label>Select Time Period</mat-label>
@@ -82,15 +121,15 @@
             </div>
         </div>
     </div>
-</div>
-<div class="form-container w-100" *ngIf="this.dialogData['flagStatus']=='shareLocation'">
+</div> -->
+<!-- <div class="form-container w-100" *ngIf="this.dialogData['flagStatus']=='shareLocation'">
     <div class="d-flex justify-content-between">
         <button type="button" class="btn btn-light-main" type="button" mat-dialog-close
             (click)="onNoClick('No')">Close</button>
         <button type="button" class="btn btn-main" cdkFocusInitial (click)="onNoClick('Yes')" type="submit">Share
             Location</button>
     </div>
-</div>
+</div> -->
 
 
 <div class="position-relative mb-3" *ngIf="this.dialogData['flagStatus']=='compliant'">
