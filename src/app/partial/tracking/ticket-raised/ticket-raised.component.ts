@@ -24,8 +24,8 @@ export class TicketRaisedComponent implements OnInit {
   stateData=new Array();
   cityData=new Array();
   userData :any;
-  shareLocationForm!:FormGroup;
-  LocsharingOption=[{lable:"What's App", id:1},{lable:'Email', id:2},{lable:'SMS', id:3}];
+  shareLocationForm!:FormGroup; 
+  LocsharingOption=[{lable:"What's App", id:1, url:'assets/images/Tracking/whatsapp.svg'},{lable:'Email', id:2, url:'assets/images/Tracking/gmail.svg'},{lable:'SMS', id:3, url:'assets/images/Tracking/sms.svg'}];
   get maintanance() { return this.maintananceForm.controls };
   get complaint() { return this.complaintForm.controls };
   get locnShare() { return this.shareLocationForm.controls };
@@ -59,9 +59,9 @@ export class TicketRaisedComponent implements OnInit {
       vehicleTime: ['', Validators.required]
     })
     this.shareLocationForm = this.fb.group({
-      sharingOption: [],
-      userMobileNumber: ['', Validators.required],
-      userEmail: ['', Validators.required],
+      sharingOption: ['',Validators.required],
+      userMobileNumber: [],
+      userEmail: [],
     })
 
   }
@@ -178,8 +178,32 @@ export class TicketRaisedComponent implements OnInit {
     // }
   }
 
-  selectedOption(sharingOption:any){
-console.log(sharingOption);
+  selectedOption(){
+    if(this.locnShare['sharingOption'].value==2){
+      this.locnShare['userEmail'].setValidators([Validators.required, Validators.pattern('[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}')]);
+      this.locnShare['userMobileNumber'].clearValidators();
+    }else{
+      this.locnShare['userMobileNumber'].setValidators([Validators.required, Validators.pattern('^[6-9][0-9]{9}$')]);
+      this.locnShare['userEmail'].clearValidators();
+    }
+    this.locnShare['userMobileNumber'].updateValueAndValidity();
+    this.locnShare['userEmail'].updateValueAndValidity();
+  }
+
+  shareLocation() {
+    console.log(this.dialogData)
+    if (this.shareLocationForm.invalid) {
+      return;
+    } else {
+      if(this.locnShare['sharingOption'].value==1){
+        const url = 'https://wa.me/' + this.locnShare['userMobileNumber'].value  + '?text=Dear user,\nVehicle live location details,\nVehicle no: '+ this.dialogData?.vehicleNo+',\nLive Location:xxxxxxxxx';
+        const encoded = encodeURI(url);
+        window.open(encoded)
+      }else{
+        console.log(this.locnShare)
+      }
+     
+    }
   }
 
 }
