@@ -38,6 +38,7 @@ export class TicketRaisedComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    
     this.dialogData = this.data;
     this.userData=this.webStorage.getUser()
     this.getMaintananceForm();
@@ -182,25 +183,48 @@ export class TicketRaisedComponent implements OnInit {
     if(this.locnShare['sharingOption'].value==2){
       this.locnShare['userEmail'].setValidators([Validators.required, Validators.pattern('[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}')]);
       this.locnShare['userMobileNumber'].clearValidators();
+      this.locnShare['userMobileNumber'].setValue('')
     }else{
       this.locnShare['userMobileNumber'].setValidators([Validators.required, Validators.pattern('^[6-9][0-9]{9}$')]);
       this.locnShare['userEmail'].clearValidators();
+      this.locnShare['userEmail'].setValue('')
     }
     this.locnShare['userMobileNumber'].updateValueAndValidity();
     this.locnShare['userEmail'].updateValueAndValidity();
   }
-
   shareLocation() {
     console.log(this.dialogData)
     if (this.shareLocationForm.invalid) {
       return;
     } else {
       if(this.locnShare['sharingOption'].value==1){
-        const url = 'https://wa.me/' + this.locnShare['userMobileNumber'].value  + '?text=Dear user,\nVehicle live location details,\nVehicle no: '+ this.dialogData?.vehicleNo+',\nLive Location:xxxxxxxxx';
+        const url = 'https://wa.me/' + this.locnShare['userMobileNumber'].value  + '?text=Dear user,\nVehicle live location details,\nVehicle no: '+ this.dialogData?.vehicleNo+',\nLive Location: http://fleetdemo.mahamining.com/vehicleTracking';
         const encoded = encodeURI(url);
         window.open(encoded)
       }else{
-        console.log(this.locnShare)
+        let formData=this.shareLocationForm.value
+        const obj = {
+         "emailAddress": formData.sharingOption==2?formData.userEmail:'',
+         "mobileNumber": formData.sharingOption==3?formData.userMobileNumber:'',
+         "vehicleNumber": this.dialogData?.vehicleNo,
+         "vehicleLocation": 'http://fleetdemo.mahamining.com/vehicleTracking'
+        }
+        this.spinner.show();
+        this.apiCall.setHttp('post', 'tracking/send-sms-email-vehicleLocation', true, obj, false, 'fleetExpressBaseUrl');
+      this.subscription = this.apiCall.getHttp().subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+          if (res.statusCode === "200") {
+            this.commonMethod.snackBar(res.statusMessage,0)
+              this.onNoClick('Yes');
+          } else {
+              this.error.handelError(res.statusCode);
+          }
+        }
+      },(error: any) => {
+        this.spinner.hide();
+        this.error.handelError(error.status)
+      })
       }
      
     }
