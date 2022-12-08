@@ -23,6 +23,7 @@ import { ConfirmationComponent } from './dialogs/confirmation/confirmation.compo
 import { ModalsComponent } from './dialogs/driver_modals/modals.component';
 import { AddUpdateUserComponent } from './partial/user-management-system/add-update-user/add-update-user.component';
 import { MakePaymentComponent } from './partial/payment/make-payment/make-payment.component';
+import { VehicleTrackingComponent } from './web/vehicle-tracking/vehicle-tracking.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -40,6 +41,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ModalsComponent,
     AddUpdateUserComponent,
     MakePaymentComponent,
+    VehicleTrackingComponent,
   ],
   imports: [
     BrowserModule,
