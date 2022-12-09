@@ -1,6 +1,6 @@
 //import { MapsAPILoader } from '@agm/core';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, AfterViewInit, EventEmitter, Output, HostListener } from '@angular/core'
+import { Component, OnInit, AfterViewInit, EventEmitter, Output, HostListener, ViewChild, ElementRef } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
@@ -86,6 +86,8 @@ export class TrackingComponent implements OnInit, AfterViewInit {
   ItineraryDetailsData1=new Array();
   tableVehicleData=new Array();
   totalDtaArray:any[]=[];
+  @ViewChild('mainScreen') elementView !: ElementRef;
+  @ViewChild('divcontent') elementView1 !: ElementRef;
   @Output() scrollingFinished = new EventEmitter<void>();
   constructor(private apiCall: ApiCallService, private webStorage: WebStorageService, private mapsAPILoader: MapsAPILoader, private _bottomSheet: MatBottomSheet,
     private error: ErrorsService, public dialog: MatDialog, private fb: FormBuilder, private httpClient: HttpClient,
@@ -283,7 +285,6 @@ export class TrackingComponent implements OnInit, AfterViewInit {
       data: obj,
     });
     dialogRef.afterClosed().subscribe(result => {
-      // result == 'Yes' ? flag == 'maintenance' ? this.getAllVehicleListData(true) : '') : ''
       result == 'Yes' ? this.getAllVehicleListData(true) : ''
     });
   }
@@ -319,15 +320,26 @@ export class TrackingComponent implements OnInit, AfterViewInit {
   }
 
   @HostListener("window:scroll", ['$event'])
+  
   divScroll(val: any): void {
+    const srolltop=this.elementView.nativeElement.scrollTop;
+     const cleintHeight=this.elementView.nativeElement.clientHeight;
+    const scrollHeight=this.elementView.nativeElement.scrollHeight;
     if(val == 'div'){
     }
-      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        // this.emitted = true;
-        this.loadMore();
-      } else if ((window.innerHeight + window.scrollY) < document.body.offsetHeight) {
-        // this.emitted = false;
-      }
+    if ((srolltop+cleintHeight) >= scrollHeight) {
+      // this.emitted = true;
+      this.loadMore();
+    } else if ((srolltop+cleintHeight)< scrollHeight) {
+      // this.emitted = false;
+    }
+
+      // if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+      //   // this.emitted = true;
+      //   this.loadMore();
+      // } else if ((window.innerHeight + window.scrollY) < document.body.offsetHeight) {
+      //   // this.emitted = false;
+      // }
   }
 
 
