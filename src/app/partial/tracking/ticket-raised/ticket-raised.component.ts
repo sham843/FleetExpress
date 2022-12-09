@@ -197,17 +197,19 @@ export class TicketRaisedComponent implements OnInit {
     if (this.shareLocationForm.invalid) {
       return;
     } else {
+      let hostUrl=window.location.origin;
       if(this.locnShare['sharingOption'].value==1){
-        const url = 'https://wa.me/' + this.locnShare['userMobileNumber'].value  + '?text=Dear user,\nVehicle live location details,\nVehicle no: '+ this.dialogData?.vehicleNo+',\nLive Location: http://fleetdemo.mahamining.com/vehicleTracking';
+        const url = 'https://wa.me/' + this.locnShare['userMobileNumber'].value  + '?text=Dear user,\nVehicle live location details,\nVehicle no: '+ this.dialogData?.vehicleNo+',\nLive Location:'+ hostUrl +'/vehicleTracking';
         const encoded = encodeURI(url);
         window.open(encoded)
+        this.onNoClick('Yes');
       }else{
-        let formData=this.shareLocationForm.value
+        let formData=this.shareLocationForm.value;
         const obj = {
          "emailAddress": formData.sharingOption==2?formData.userEmail:'',
          "mobileNumber": formData.sharingOption==3?formData.userMobileNumber:'',
          "vehicleNumber": this.dialogData?.vehicleNo,
-         "vehicleLocation": 'http://fleetdemo.mahamining.com/vehicleTracking'
+         "vehicleLocation": hostUrl+'vehicleTracking'
         }
         this.spinner.show();
         this.apiCall.setHttp('post', 'tracking/send-sms-email-vehicleLocation', true, obj, false, 'fleetExpressBaseUrl');
