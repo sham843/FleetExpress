@@ -209,7 +209,7 @@ export class TicketRaisedComponent implements OnInit {
          "emailAddress": formData.sharingOption==2?formData.userEmail:'',
          "mobileNumber": formData.sharingOption==3?formData.userMobileNumber:'',
          "vehicleNumber": this.dialogData?.vehicleNo,
-         "vehicleLocation": hostUrl+'vehicleTracking'
+         "vehicleLocation": hostUrl+'/vehicleTracking'
         }
         this.spinner.show();
         this.apiCall.setHttp('post', 'tracking/send-sms-email-vehicleLocation', true, obj, false, 'fleetExpressBaseUrl');
