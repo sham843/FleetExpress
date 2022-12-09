@@ -62,7 +62,63 @@
             class="fas fa-times"></i></button>
 </div> -->
 
-<div class="row mb-4" *ngIf="this.dialogData['flagStatus']=='shareLocation'">
+<form *ngIf="this.dialogData['flagStatus']=='shareLocation'" [formGroup]="shareLocationForm"
+    (ngSubmit)="submitvehicleMarkMaintance()">
+    <div class="form-container">
+        <div class="mb-0">
+            <div class="row">
+                <div class="col-sm-6">
+                    <mat-form-field appearance="standard" class="w-100">
+                        <mat-label class="form-label">Share Via</mat-label>
+                        <mat-select formControlName="sharingOption" (selectionChange)="selectedOption()"  [ngClass]="{ 'is-invalid':locnShare['sharingOption'].errors }">
+                            <mat-option *ngFor="let item of LocsharingOption" [value]="item?.id">
+                                <img [src]="item.url" class="share-icon me-2">
+                                {{item?.lable}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>
+                            <span *ngIf="locnShare['sharingOption'].errors?.['required']"
+                                class="text-danger">This field is Required</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-6" *ngIf="locnShare['sharingOption'].value!=2">
+                    <mat-form-field appearance="standard" class="w-100" >
+                        <mat-label>Mobile Number</mat-label>
+                        <input matInput formControlName="userMobileNumber" [maxLength]="10"  [ngClass]="{ 'is-invalid':locnShare['userMobileNumber'].errors }">
+                        <mat-error>
+                            <span *ngIf="locnShare['userMobileNumber'].errors?.['required']"
+                                class="text-danger">This field is Required</span>
+                            <span *ngIf="locnShare['userMobileNumber'].errors?.['pattern']"
+                                class="text-danger">>Enter Valid Mobile Number</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-6" *ngIf="locnShare['sharingOption'].value==2">
+                    <mat-form-field appearance="standard" class="w-100"  >
+                        <mat-label>Email Id</mat-label>
+                        <input matInput formControlName="userEmail"  [ngClass]="{ 'is-invalid':locnShare['userEmail'].errors }">
+                        <mat-error>
+                            <span *ngIf="locnShare['userEmail'].errors?.['required']"
+                                class="text-danger">This field is Required</span>
+                            <span *ngIf="locnShare['userEmail'].errors?.['pattern']"
+                                class="text-danger">Enter Valid Email </span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-container w-100">
+        <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-light-main" type="button" mat-dialog-close
+                (click)="onNoClick('No')">Close</button>
+            <button type="button" class="btn btn-main" cdkFocusInitial (click)="shareLocation()" type="submit">Share
+                Location</button>
+        </div>
+    </div>
+</form>
+<!-- <div class="row mb-4" *ngIf="this.dialogData['flagStatus']=='shareLocation'">
     <div class="col-sm-8">
         <mat-form-field appearance="standard" class="w-100">
             <mat-label>Select Time Period</mat-label>
@@ -82,15 +138,15 @@
             </div>
         </div>
     </div>
-</div>
-<div class="form-container w-100" *ngIf="this.dialogData['flagStatus']=='shareLocation'">
+</div> -->
+<!-- <div class="form-container w-100" *ngIf="this.dialogData['flagStatus']=='shareLocation'">
     <div class="d-flex justify-content-between">
         <button type="button" class="btn btn-light-main" type="button" mat-dialog-close
             (click)="onNoClick('No')">Close</button>
         <button type="button" class="btn btn-main" cdkFocusInitial (click)="onNoClick('Yes')" type="submit">Share
             Location</button>
     </div>
-</div>
+</div> -->
 
 
 <div class="position-relative mb-3" *ngIf="this.dialogData['flagStatus']=='compliant'">
