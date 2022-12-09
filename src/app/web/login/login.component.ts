@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit {
     this.defaultLoginForm();
     this.reCaptcha();
   }
+  //----------------------------------------------------------form controls---------------------------------------------------------- 
   defaultLoginForm() {
     this.loginForm = this.fb.group({
       username: ['',[Validators.required,Validators.maxLength(20)]],   
@@ -38,12 +39,12 @@ export class LoginComponent implements OnInit {
       captcha: ['',[Validators.compose([Validators.required])]]
     })
   }
-
+ //----------------------------------------------------------Captcha----------------------------------------------------------
   reCaptcha(){
     this.loginForm.controls['captcha'].reset();
     this.commonMethods.createCaptchaCarrerPage();
   }
-  
+  //----------------------------------------------------------Submit Data---------------------------------------------------------- 
   onLoginSubmit() {
     if (this.loginForm.invalid) {
       return;
@@ -78,7 +79,7 @@ export class LoginComponent implements OnInit {
 get f(){
   return this.loginForm.controls;
 }
-clearSpace(){
+clearSpace(){     //remove space in username
  let replaceName=this.loginForm.value.username.replace(/\s/g, "");
  this.loginForm.controls['username'].setValue(replaceName);
 }

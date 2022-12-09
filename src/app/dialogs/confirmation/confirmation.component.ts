@@ -22,6 +22,7 @@ export class ConfirmationComponent implements OnInit {
   CurrentPasswordHide: boolean = true;
   newPasswordHide: boolean = true;
   retypePasswordHide: boolean = true;
+
   constructor(public dialogRef: MatDialogRef<ConfirmationComponent>,
     public CommonMethod: CommonMethodsService,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -40,7 +41,7 @@ export class ConfirmationComponent implements OnInit {
     this.dialogData.cardTitle == 'Assign Driver' ? this.getDriverData() : '';
     this.dialogData.cardTitle == 'Change Password' ? (this.getChangePwd(), this.dialogData?.p1 == '') : '';
   }
-  // --------------------------------------get Driver Data------------------------------------------------------------------
+  //----------------------------------------------get Driver Data------------------------------------------------------------------
   getDriverData() {
     this.apiCall.setHttp('get', 'driver/get-driver-details', true, false, false, 'fleetExpressBaseUrl');
     this.apiCall.getHttp().subscribe((response: any) => {
@@ -52,10 +53,7 @@ export class ConfirmationComponent implements OnInit {
         this.error.handelError(error.status);
       })
   }
-  sortFunc() {
-    return 1;
-  }
-  // ------------------------------------------change password--------------------------------------------------------------------
+  //-------------------------------------------change password--------------------------------------------------------------------
   getChangePwd() {
     this.changePassForm = this.fb.group({
       currentPwd: ['', [Validators.compose([Validators.required, Validators.pattern('^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,20}$')])]],
@@ -98,7 +96,7 @@ export class ConfirmationComponent implements OnInit {
   get fpass() {
     return this.changePassForm.controls;
   }
-
+//---------------------------------------------------------Modal Close Method----------------------------------------------------------
   onNoClick(flag: any): void {
     if (this.data.inputType && flag == 'Yes') {
       if (this.CommonMethod.checkDataType(this.remark.value) == false) {

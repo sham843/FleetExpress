@@ -33,7 +33,6 @@ export class DriverComponent implements OnInit {
   maxDate = new Date();
   subscription!: Subscription;
   checkArray = new Array();
-  flagArray = new Array();
   deleteBtn: boolean = false;
   selectAll!: boolean;
   checkdata = new Array();
@@ -73,9 +72,6 @@ export class DriverComponent implements OnInit {
         this.driverDetails = res.responseData.responseData1;
         !this.driverName.value ? this.checkdata = res.responseData.responseData1 : '';
         this.spinner.hide();
-       /*  this.driverDetails.forEach((ele: any) => {
-          ele['isChecked'] = false;
-        }); */
         this.totalItem = res.responseData.responseData2.totalRecords;
       } else {
         !this.driverName.value ?this.checkdata=[]:'';
@@ -100,21 +96,20 @@ export class DriverComponent implements OnInit {
   }
 
   // -----------------------------------------------comfirmation module----------------------------------------------------------
-  confirmationDialog(flag: boolean, label: string, event?: any, drData?: any) {
-    // this.selectAll ? this.uncheckAllDriver() : ''; 
+  confirmationDialog(flag: boolean, label: string, event?: any, drData?: any) { 
     let obj: any = ConfigService.dialogObj;
-    if (label == 'status' && drData.isAssigned==0) {
+    if (label == 'status' && drData.isAssigned==0) {     //Block driver
       obj['p1'] = flag ? 'Are you sure you want to Block "' +drData.name+ '" Driver?' : 'Are you sure you want to Unblock "' +drData.name+ '" Driver?';
       obj['cardTitle'] = flag ? 'Block Driver' : 'Unblock Driver';
       obj['successBtnText'] = flag ? 'Block' : 'Unblock';
       obj['cancelBtnText'] = 'Cancel';
-    }else if(label == 'status' && drData.isAssigned==1){
+    }else if(label == 'status' && drData.isAssigned==1){     // driver is assign 
       obj['p1'] =flag ?drData.name+ ' is assigned to "' +drData.vehicleNo+ '" still you want to block?': 'Are you sure you want to Unblock "' +drData.name+ '" Driver?';
       obj['cardTitle'] = flag ? 'Block Driver' : 'Unblock Driver';
       obj['successBtnText'] = flag ? 'Block' : 'Unblock';
       obj['cancelBtnText'] = 'Cancel';
     }
-     else if (label == 'delete') {
+     else if (label == 'delete') {   //delete driver
       obj['p1'] = 'Are you sure you want to delete this record';
       obj['cardTitle'] = 'Delete';
       obj['successBtnText'] = 'Delete';
@@ -150,7 +145,6 @@ export class DriverComponent implements OnInit {
     }
     this.spinner.show();
     this.apiCall.setHttp('put', 'driver/Block-Unblock-Driver_1', true, param, false, 'fleetExpressBaseUrl');
-    // this.subscription = 
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.spinner.hide();
@@ -206,7 +200,6 @@ export class DriverComponent implements OnInit {
     });
     this.spinner.show();
     this.apiCall.setHttp('delete', 'driver/Delete-Driver', true, param, false, 'fleetExpressBaseUrl');
-    // this.subscription = 
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.getDriverDetails();
@@ -219,6 +212,8 @@ export class DriverComponent implements OnInit {
         this.error.handelError(error.status);
       })
   }
+
+  // -----------------------------------------------------pagination -------------------------------------------------------------------------
   onPagintion(pageNo: any) {
     this.selectAll = false;
     this.paginationNo = pageNo;
@@ -229,6 +224,7 @@ export class DriverComponent implements OnInit {
       this.subscription.unsubscribe();
     }
   }
+  // ----------------------------------------------------open modal----------------------------------------------------------------------------
   commonModule(label: string, driverData?: any) {
     this.selectAll || this.checkArray ? (this.uncheckAllDriver(), this.checkArray = []) : '';
     let obj: any;

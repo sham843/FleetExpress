@@ -53,7 +53,6 @@ export class CreateGeofenceComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.data){
-      console.log(this.data);
       this.editFlag = true;
       this.getVehicleData();
       this.data.selectedRecord = {
@@ -72,7 +71,6 @@ export class CreateGeofenceComponent implements OnInit {
   }
 
   defaultGeoFanceForm(data:any) {
-    console.log("data?.vehicleId",data?.vehicleId)
     this.geofenceForm = this.fb.group({
       id: [data?.poiId || 0],
       vehicleOwnerId: [''],

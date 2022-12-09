@@ -23,20 +23,19 @@ export class ModalsComponent implements OnInit {
   maxDate=new Date();
   max = new Date(this.validation.isOver18().toString());
   min = new Date('01-01-1901');
+  date = new Date();
   driverProfile: string | any = 'assets/images/Driver-profile.svg';
   profilePhotoupd!: string;
   licenceDoc!: string;
   panDoc!: string;
   aadharDoc!: string;
-  editId: number = 0;
-  date = new Date();
   panUpdFlag: boolean = false;
   aadharUpdFlag: boolean = false;
   licenceUpdFlag: boolean = false;
   buttonFlag: boolean = true;
   addressFlag: boolean = false;
+  editId: number = 0;
   cardTitle!: string;
-  inputvalue:any;
   @ViewChild('profileUpload') profileUpload: any;
   @ViewChild('panUpload') panUpload: any;
   @ViewChild('aadharUpload') aadharUpload: any;
@@ -170,7 +169,7 @@ export class ModalsComponent implements OnInit {
       this.driverRegForm.controls['permanentAddress'].setValue('');
     }
   }
-  //  ------------------------------------------------------add driver-----------------------------------------------------------------
+  //------------------------------------------------------add driver-----------------------------------------------------------------
   onSubmit(formDirective: any) {
     if (this.driverRegForm.invalid) {
       return;
@@ -203,13 +202,11 @@ export class ModalsComponent implements OnInit {
       this.apiCall.getHttp().subscribe((response: any) => {
         if (response.statusCode == "200") {
           this.spinner.hide();
-          // this.closeModel.nativeElement.click();
           this.commonMethods.snackBar(response.statusMessage, 0);
           formDirective.resetForm();
           this.dialogRef.close('add');
         }
         else {
-          // this.dialogRef.close('');
           this.spinner.hide();
           this.commonMethods.snackBar(response.statusMessage,1);
         }

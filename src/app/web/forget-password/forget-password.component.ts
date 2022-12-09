@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
-// import { interval, map, takeWhile } from 'rxjs';
 import { Subscription } from 'rxjs/internal/Subscription';
 
 import { ApiCallService } from 'src/app/services/api-call.service';
@@ -9,8 +8,6 @@ import { CommonMethodsService } from 'src/app/services/common-methods.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { ValidationService } from 'src/app/services/validation.service';
-// import { clearInterval } from 'timers';
-
 @Component({
   selector: 'app-forget-password',
   templateUrl: './forget-password.component.html',
@@ -48,6 +45,7 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getformControlData();
   }
+
   getformControlData() {
     this.sendOTPForm = this.fb.group({
       mobileNo: ['', [Validators.required, Validators.pattern('^[6-9][0-9]{9}$')]],
@@ -65,7 +63,7 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
     })
   }
 
-  // -------------------------------------------OTP-----------------------------------------------------------
+  //--------------------------------------------------------------OTP---------------------------------------------------------------
   sendOTP() {
     let mobileNom = this.sendOTPForm.value.mobileNo || this.mobileNum;
     if (this.sendOTPForm.invalid) {
@@ -93,7 +91,7 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
       this.spinner.hide();
     }
   }
-  // -----------------------------------------Timer------------------------------------------------------------------------
+  //---------------------------------------------------------------Timer------------------------------------------------------------------------
   public timerValue: any;
   countDown() {
     this.resendTimer = 60;
@@ -149,7 +147,7 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
       this.spinner.hide();
     }
   }
-  // ---------------------------------------------------------------------submit---------------------------------------
+  // ---------------------------------------------------------------------submit-------------------------------------------------------
   onSubmit() {
     this.passwordChenged = true;
     if (this.changePassword.invalid) {
@@ -179,9 +177,11 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
       }
     }
   }
+
   get sendOtp() { return this.sendOTPForm.controls };
   get verifyOtp() { return this.verifyOTPForm.controls };
   get passChange() { return this.changePassword.controls };
+  
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();

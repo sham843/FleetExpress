@@ -3,7 +3,6 @@
     <button type="button" class="btn-modal-close" mat-icon-button mat-dialog-close (click)="onNoClick(formDirective)"><i
             class="fas fa-times"></i></button>
 </div>
- 
 <div>
     <form [formGroup]="driverRegForm" #formDirective="ngForm" (ngSubmit)="onSubmit(formDirective)">
         <div class="row">
@@ -25,7 +24,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-sm-9">
                 <div class="row align-items-end">
                     <div class="col-sm-6">
@@ -112,7 +110,6 @@
                                         required</span>
                                 </mat-error>
                             </mat-form-field>
-                            <!-- formControlName="licenceDoc" -->
                             <input type="file" name="myfile" #licenceUpload style="display: none;"
                                 (change)="documentUpload($event,'licence')" accept=".pdf" />
                             <button type="button" *ngIf="!this.licenceDoc?.length" mat-icon-button
@@ -142,7 +139,6 @@
                                 </mat-error>
                             </mat-form-field>
                             <div>
-                                <!-- formControlName="aadharCardDoc" -->
                                 <input type="file" name="myfile" #aadharUpload style="display: none;"
                                     (change)="documentUpload($event,'aadhar')" accept=".pdf" />
                                 <button type="button" *ngIf="!this.aadharDoc?.length" mat-icon-button
@@ -173,7 +169,6 @@
                                 </mat-error>
                             </mat-form-field>
                             <div>
-                                <!--[ngModel]="inputvalue" (ngModelChange)="inputvalue = $event.toUpperCase()" -->
                                 <input type="file" name="myfile" #panUpload style="display: none;"
                                     (change)="documentUpload($event,'pan')" accept=".pdf" />
                                 <button type="button" *ngIf="!this.panDoc?.length" mat-icon-button
@@ -194,9 +189,7 @@
                                 maxlength="150" required rows="4"></textarea>
                             <mat-error *ngIf="f['presentAddress'].errors">
                                 <span class="text-danger" *ngIf="f['presentAddress'].hasError('required')">Present
-                                    Address
-                                    is
-                                    required</span>
+                                    Address is required</span>
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -226,7 +219,6 @@
             <div class="form-container w-100">
                 <div class="d-flex justify-content-between">
                     <button type="button" class="btn btn-light-main" (click)="onNoClick(formDirective)">Cancel</button>
-
                     <button type="submit" class="btn btn-main">{{buttonFlag?'Save':'Update'}}</button>
                 </div>
             </div>
