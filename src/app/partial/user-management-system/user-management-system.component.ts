@@ -81,9 +81,7 @@ export class UserManagementSystemComponent implements OnInit {
     this.pageNumber = 1;
     this.searchContent.reset();
   }
-  // -----------------------------------------------start user section-------------------------------------------------------------------
-  // -----------------------------------------------get user data--------------------------------------------------------------------
-  getUserTableData() {
+   getUserTableData() {
     this.totalUserTableData = 0;
     this.userTableData = [];
     this.apiCall.setHttp('get', 'userdetail/get-user-list?vehicleOwnerId=' + this.userData[0]?.vehicleOwnerId + '&Subusertypeid=&SearchText=' + this.searchContent.value + '&District=0&TalukaId=0&NoPage=' + (!this.searchContent.value ? this.pageNumber : 0) + '&RowsPerPage=' + (!this.searchContent.value ? 10 : 0), true, false, false, 'fleetExpressBaseUrl');
@@ -120,7 +118,6 @@ export class UserManagementSystemComponent implements OnInit {
     this.selectAll = this.userTableData.length == this.selectedTableData.length ? true : false;
   }
 
-  // --------------------------------------block unblock user--------------------------------------------------------------------
   checkBlock(rowData: any, value: any) {
     const obj = {
       userId: rowData.id,
@@ -146,7 +143,6 @@ export class UserManagementSystemComponent implements OnInit {
       this.error.handelError(error.status)
     })
   }
-  // -----------------------------------------------------delete user------------------------------------------------------------
   DeleteUserData() {
     this.spinner.show();
     let objDeleteData = new Array();
@@ -184,7 +180,6 @@ export class UserManagementSystemComponent implements OnInit {
       ele.checked = false
     })
   }
-  // ----------------------------------------------------------end user section--------------------------------------------------------
   // -------------------------------------------------------Start role section----------------------------------------------------------
   getRoleTableData() {
     this.roleCheckArray = [];
@@ -203,7 +198,9 @@ export class UserManagementSystemComponent implements OnInit {
       },
     }, (error: any) => { this.error.handelError(error.status) });
   }
-  selectRoles(event: any, id: any) {
+  
+  //-----------------------------------------------------Checkbox for multiple delete------------------------------------------------- 
+  selectRoles(event: any, id: any) {    //check 
     for (var i = 0; i < this.roleTableData.length; i++) {
       if (id != 0) {
         this.selectAllRoles = false;
@@ -219,7 +216,8 @@ export class UserManagementSystemComponent implements OnInit {
     this.selectAllRoles = this.roleTableData.length == this.selectedRoleTableData.length ? true : false;
 
   }
-  removeCheckRole(event: any, driverId: number) {
+
+  removeCheckRole(event: any, driverId: number) {   //uncheck
     for (var i = 0; i < this.roleTableData.length; i++) {
       if (driverId != 0) {
         this.selectAllRoles = false;
@@ -235,14 +233,15 @@ export class UserManagementSystemComponent implements OnInit {
     this.selectAllRoles = this.roleTableData.length == this.roleCheckArray.length ? true : false;
   }
 
-  uncheckAllRole() {
+  uncheckAllRole() {               //uncheck all role
     this.selectAllRoles = false;
     this.roleTableData.map((ele: any) => {
       ele.checked = false
       this.roleCheckArray = [];
     })
   }
-  deleteRole() {
+
+  deleteRole() {                    //Delete role
     let param = new Array();
     this.roleCheckArray.find((ele: any) => {
       let obj = {
@@ -279,12 +278,12 @@ export class UserManagementSystemComponent implements OnInit {
   confirmationDialog(flag: boolean, label: string, selectedRowObj?: any, tabName?: any) {   //blobk-unblock & delete modal
     label != 'delete' ? this.selectAllRoles || this.roleCheckArray ? (this.uncheckAllRole(), this.roleCheckArray = []) : '' : '';
     let obj: any = ConfigService.dialogObj;
-    if (label == 'status') {
+    if (label == 'status') {     //block
       obj['p1'] = 'Are you sure you want to ' + (flag ? 'block' : 'unblock') + ' user?';
       obj['cardTitle'] = flag ? 'User Block' : 'User Unblock';
       obj['successBtnText'] = flag ? 'Block' : 'Unblock';
       obj['cancelBtnText'] = 'Cancel';
-    } else if (label == 'delete') {
+    } else if (label == 'delete') {   //delete
       obj['p1'] = 'Are you sure you want to delete this record';
       obj['cardTitle'] = 'Delete';
       obj['successBtnText'] = 'Delete';
@@ -305,7 +304,7 @@ export class UserManagementSystemComponent implements OnInit {
     })
   }
 
-
+//------------------------------------------------------------------Add Update Dialog------------------------------------------------------- 
   addUpdateDialog(status: string, selectedObj?: any) {
     this.selectAllRoles || this.roleCheckArray ? (this.uncheckAllRole(), this.roleCheckArray = []) : '';               // create and update User & role modal
     status == 'user' ? (this.selectAll || this.selectedTableData.length ? (this.uncheckAllUser(), this.selectedTableData = []) : '') : this.selectAllRoles || this.selectedRoleTableData.length ? (this.uncheckAllUser(), this.roleTableData = []) : '';

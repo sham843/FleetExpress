@@ -36,7 +36,6 @@ export class VehicleAlertNotificationsComponent implements OnInit {
 
   ngOnInit(): void {
     this.dialogData = this.data;
-    console.log(this.dialogData);
     this.getVehiclesAlertsData();
   }
 

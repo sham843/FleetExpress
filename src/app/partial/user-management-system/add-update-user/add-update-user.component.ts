@@ -82,8 +82,6 @@ export class AddUpdateUserComponent implements OnInit {
       assignedResponsibilities: [responseIds || '', [Validators.required]],
     })
   }
-
-  // ----------------------------------------------------user section start------------------------------------------------------------------------------------
   getVehicleData() {
     let vhlData = this.master.getVehicleListData();
     vhlData.subscribe({
@@ -213,11 +211,10 @@ export class AddUpdateUserComponent implements OnInit {
       });
     }
   }
-  // ----------------------------------------------------user section end---------------------------------------------------------------------------------------
+
   // ----------------------------------------------------Roll section start-------------------------------------------------------------------------------------
   getResponsibilities() {     // table data
     this.apiCall.setHttp('get', 'Roles/getRolesList', true, false, false, 'fleetExpressBaseUrl');
-    // this.subscription = 
     this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
@@ -235,6 +232,7 @@ export class AddUpdateUserComponent implements OnInit {
   addRole() {
     this.dialogData.seletedTab = 'role';
   }
+
   submitRole(formDirective: any) {    //Save and Update Roll
     if (this.roleForm.invalid) {
       return
@@ -261,10 +259,8 @@ export class AddUpdateUserComponent implements OnInit {
         next: (res: any) => {
           if (res.statusCode == '200') {
             this.commonMethods.snackBar(res.statusMessage, 0);
-            // this.data = ''
             formDirective.resetForm();
             this.onNoClick('Yes');
-            // this.dialogRef.close('add');
           }
           else {
             this.commonMethods.snackBar(res.statusMessage, 1);

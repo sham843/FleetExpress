@@ -19,7 +19,6 @@ import { VehicleModalComponent } from './vehicle-modal/vehicle-modal.component';
 })
 export class RegisterVehicleComponent implements OnInit {
   vehicleNo = new FormControl();
-  vehicleNoWithSpace: any;
   vehicleData = new Array();
   paginationNo: number = 1;
   pageSize: number = 10;
@@ -59,7 +58,7 @@ export class RegisterVehicleComponent implements OnInit {
       })
   }
 
-  // --------------------------------------------get vehicle data--------------------------------------------------------------------
+  //--------------------------------------------get vehicle data--------------------------------------------------------------------
   getVehiclesData(flag?: any) {
     this.checkedVehicle = [];
     this.spinner.show();
@@ -143,7 +142,6 @@ export class RegisterVehicleComponent implements OnInit {
       "id": 0,
       "driverId": flag == 'assign' ? id : data.driverId,
       "vehicleId":data?.vehicleId,
-      // "vehicleId": flag == 'assign' ? data?.vehicleId : 0,
       "assignedby": this.webStorage.getUserId(),
       "assignedDate": this.date.toISOString(),
       "isDeleted": 0,
@@ -194,7 +192,6 @@ export class RegisterVehicleComponent implements OnInit {
     }
     this.spinner.show();
     this.apiCall.setHttp('delete', 'vehicle/Delete-vehicle', true, param, false, 'fleetExpressBaseUrl');
-    // this.subscription = 
     this.apiCall.getHttp().subscribe((response: any) => {
       if (response.statusCode == "200") {
         this.uncheckVehicle();
@@ -260,6 +257,8 @@ export class RegisterVehicleComponent implements OnInit {
     }
     )
   }
+
+  //--------------------------------------------------------------------Pagination------------------------------------------------------- 
   onPagintion(pageNo: any) {
     this.selectAll = false;
     this.paginationNo = pageNo;

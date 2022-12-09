@@ -20,7 +20,7 @@
                             <textarea matInput ngDefaultControl [formControl]="remark" rows="4"> </textarea>
                         </mat-form-field>
                     </div>
-                    <!-----------------------------------------------------------------Assign driver modal ---------------------------------------->
+<!-----------------------------------------------------------------Assign driver modal------------------------------------------------------->
 
                     <ng-container *ngIf="dialogData.cardTitle== 'Assign Driver'">
                         <div class="row gx-2 align-items-center mt-4 mb-3">
@@ -47,8 +47,8 @@
                             </div>
                         </div>
                     </ng-container>
-                    <!----------------------------------------------------------------------End assign driver modal---------------------------------->
-                    <!----------------------------------------------------------------------start chnage password modal------------------------------->
+<!----------------------------------------------------------------------End assign driver modal---------------------------------->
+<!----------------------------------------------------------------------start chnage password modal------------------------------->
                     <ng-container *ngIf="dialogData.cardTitle== 'Change Password'">
                              <form [formGroup]="changePassForm">
                                     <div class="row">
@@ -140,7 +140,7 @@
                                 </form> 
                     </ng-container>
 
-                    <!-----------------------------------------------------------------------End change password modal-------------------------------->
+<!-----------------------------------------------------------------------End change password modal-------------------------------->
 
                     <div class="row" *ngIf="dialogData.cardTitle != 'Change Password'">
                         <div class="d-flex justify-content-between">
