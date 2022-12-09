@@ -195,17 +195,16 @@ export class TrackingComponent implements OnInit, AfterViewInit {
         this.spinner.hide();
         if (res.statusCode === "200") {
           res.responseData.responseData1.map((x:any)=>{
+            x.gpsStatus = "Running"
             x.runningTime=this.config.timeConvert(x.gpsStatus == "Running" ? x.totalRunningTime:x.totalStopageTime);
             let  resp2=[];
             resp2= res.responseData.responseData2.find((xx:any)=> x.vehicleNo==xx.vehicleNumber);
             resp2 ? (x.flag = resp2.flag, x.complaintId=resp2.complaintId ) :  (x.flag = 0, x.complaintId=0 );
           })
-          //let resp: any = this.sharedService.getAddressBylatLong(1, res.responseData.responseData1, res.responseData.responseData1.length);
           this.reportResponseData = res.responseData.responseData1;
           this.allVehiclelData = this.reportResponseData;
           !this.searchContent.value ?this.getNextItems():'';
           this.categoriesSubject.next(this.totalDtaArray);
-          //setTimeout(()=>{
             this.allVehiclelDataClone = this.reportResponseData;
             if (flag) {
               this.reportResponseData.find((x: any) => {
@@ -215,7 +214,6 @@ export class TrackingComponent implements OnInit, AfterViewInit {
                       : x.gpsStatus == 'Offline' ? this.allOfflineVehiclelData.push(x) : ''
               });
             }
-         // },10000)
         } else {
           this.allVehiclelData = [];
           this.allVehiclelDataClone = [];
@@ -296,6 +294,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
       this.categoriesSubject.next(this.totalDtaArray);
     }
   }
+
   getNextItems(): boolean {
     if (this.totalDtaArray.length >= this.allVehiclelData.length) {
       return false;
@@ -325,28 +324,17 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     const srolltop=this.elementView.nativeElement.scrollTop;
      const cleintHeight=this.elementView.nativeElement.clientHeight;
     const scrollHeight=this.elementView.nativeElement.scrollHeight;
-    if(val == 'div'){
+    if (val == 'div') {
     }
-    if ((srolltop+cleintHeight) >= scrollHeight) {
-      // this.emitted = true;
+    if ((srolltop + cleintHeight) >= scrollHeight) {
       this.loadMore();
-    } else if ((srolltop+cleintHeight)< scrollHeight) {
+    } else if ((srolltop + cleintHeight) < scrollHeight) {
       // this.emitted = false;
     }
-
-      // if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-      //   // this.emitted = true;
-      //   this.loadMore();
-      // } else if ((window.innerHeight + window.scrollY) < document.body.offsetHeight) {
-      //   // this.emitted = false;
-      // }
   }
 
-
   //----------------------------------------------------------- bottom sheet method start heare ---------------------------------------------//
-
-
-  // ----------Itinerary form section--------
+  // --------------------------Itinerary form section--------------------------------------
   getItineraryForm() {
     this.itineraryForm = this.fb.group({
       timePeriod: ['1'],
@@ -356,40 +344,13 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     this.selectTimePeriod(this.itineraryForm.controls['timePeriod'].value);
   }
   get itinerary() { return this.itineraryForm.controls };
-  selectTimePeriod(value: any) {
-    const currentDateTime = (moment.utc().subtract(1, 'minute')).toISOString();
-    switch (value) {
-      case "1":
-        this.itineraryForm.patchValue({
-          fromDate: (moment.utc().startOf('day').subtract(5, 'hour').subtract(30, 'minute')).toISOString(),
-          toDate: currentDateTime,
-        })
-        this.getItineraryDetails();
-        break;
-      case "2": var time = moment.duration("24:00:00");
-        var date = moment();
-        const oneDaySpan = date.subtract(time);
-        this.itineraryForm.patchValue({
-          fromDate: moment(oneDaySpan).toISOString(),
-          toDate: currentDateTime,
-        })
-        this.getItineraryDetails()  ;
-        break;
-      case "3":
-        const startweek = moment().subtract(7, 'days').calendar();
-        this.itineraryForm.patchValue({
-          fromDate: moment(startweek).toISOString(),
-          toDate: currentDateTime,
-        })
-        this.getItineraryDetails();
-        break;
-      case "4":
-        this.itineraryForm.patchValue({
-          fromDate: '',
-          toDate: '',
-        })
-        break;
-    }
+  selectTimePeriod(timePeriod: any) {
+    const dateObj = this.config.setFromDateTodate(timePeriod)
+    this.itineraryForm.patchValue({
+      fromDate: dateObj?.fromDate,
+      toDate: dateObj?.todate,
+    })
+    timePeriod!=4 ?this.getItineraryDetails():'';
   }
   settodate(fromDate: any) {
     this.maxTodayDateString = (moment(fromDate).add(7, 'days').format("YYYY-MM-DD HH:mm:ss"));

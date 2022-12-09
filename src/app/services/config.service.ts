@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,37 @@ export class ConfigService {
    let m = Math.floor((time%(24*60)) % 60);
     t =( d ? (d + " days: "):'' ) +( h ? (h + " Hrs : "):'') + (m+' Mints') ;
     return t;
+  }
+  fromDate!:string;
+  toDate!:string;
+  setFromDateTodate(timePeriod:any){
+    const currentDateTime = (moment.utc().subtract(1, 'minute')).toISOString();
+    switch (timePeriod) {
+      case "1":
+        this.fromDate = (moment.utc().startOf('day').subtract(5, 'hour').subtract(30, 'minute')).toISOString();
+        this.toDate= currentDateTime;
+        break;
+      case "2": var time = moment.duration("24:00:00");
+        var date = moment();
+        const oneDaySpan = date.subtract(time);
+        this.fromDate = moment(oneDaySpan).toISOString();
+        this.toDate= currentDateTime;
+        break;
+      case "3":
+        const startweek = moment().subtract(7, 'days').calendar();
+        this.fromDate = moment(startweek).toISOString();
+        this.toDate= currentDateTime;
+        break;
+      case "4":
+        this.fromDate= '';
+        this.toDate= '';
+        break;
+    }
+    const obj={
+      fromDate:this.fromDate,
+      todate:this.toDate
+    }
+   return obj
   }
 
   //------------------------------------------ Maps Settings  starte heare -------------------------------------------//

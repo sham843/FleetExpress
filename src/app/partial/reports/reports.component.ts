@@ -172,37 +172,12 @@ export class ReportsComponent implements OnInit {
         this.error.handelError(error.status);
       }
   }
-  selectTimePeriod(value: any) {
-    const currentDateTime = (moment.utc().subtract(1, 'minute')).toISOString();
-    switch (value) {
-      case "1":
-        this.reportForm.patchValue({
-          fromDate: (moment.utc().startOf('day').subtract(5, 'hour').subtract(30, 'minute')).toISOString(),
-          toDate: currentDateTime,
-        })
-        break;
-      case "2": var time = moment.duration("24:00:00");
-        var date = moment();
-        const oneDaySpan = date.subtract(time);
-        this.reportForm.patchValue({
-          fromDate: moment(oneDaySpan).toISOString(),
-          toDate: currentDateTime,
-        })
-        break;
-      case "3":
-        const startweek = moment().subtract(7, 'days').calendar();
-        this.reportForm.patchValue({
-          fromDate: moment(startweek).toISOString(),
-          toDate: currentDateTime,
-        })
-        break;
-      case "4":
-        this.reportForm.patchValue({
-          fromDate: '',
-          toDate: '',
-        })
-        break;
-    }
+  selectTimePeriod(timePeriod: any) {
+    const dateObj = this.config.setFromDateTodate(timePeriod)
+    this.reportForm.patchValue({
+      fromDate: dateObj?.fromDate,
+      toDate: dateObj?.todate,
+    })
   }
   settodate(fromDate: any) {
     const label = this.selectedTablabel;
