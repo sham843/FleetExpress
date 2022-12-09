@@ -168,7 +168,6 @@ export class TrackingComponent implements OnInit, AfterViewInit {
 // ---------------------------------------------view vehicle data---------------------------------------------------------------
 
   viewVehicleData(){
-
       let obj: any='Vehicle Tracking';
       const dialog = this.dialog.open(ViewReportComponent, {
         width: '900px',
@@ -176,7 +175,6 @@ export class TrackingComponent implements OnInit, AfterViewInit {
         disableClose: this.config.disableCloseBtnFlag,
       })
       dialog.afterClosed().subscribe(() => {
-       
       }
       )
   }
@@ -195,7 +193,6 @@ export class TrackingComponent implements OnInit, AfterViewInit {
         this.spinner.hide();
         if (res.statusCode === "200") {
           res.responseData.responseData1.map((x:any)=>{
-            x.gpsStatus = "Running"
             x.runningTime=this.config.timeConvert(x.gpsStatus == "Running" ? x.totalRunningTime:x.totalStopageTime);
             let  resp2=[];
             resp2= res.responseData.responseData2.find((xx:any)=> x.vehicleNo==xx.vehicleNumber);
@@ -299,7 +296,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     if (this.totalDtaArray.length >= this.allVehiclelData.length) {
       return false;
     }
-    const remainingLength = Math.min( 5, this.allVehiclelData.length - this.totalDtaArray.length );
+    const remainingLength = Math.min( 6, this.allVehiclelData.length - this.totalDtaArray.length );
     let previousTablelength= this.totalDtaArray.length
     this.totalDtaArray.push(
       ...this.allVehiclelData.slice(
