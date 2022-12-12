@@ -65,9 +65,8 @@
                                             [ngbPopover]="item.flag==0?popContent:''" placement="end">
                                             <p class="vehicle-no">{{item?.vehicleNo}} </p>
                                         </a>
-                                        <!-- showVehicles() -->
                                         <a *ngIf="item?.gpsStatus!='Offline'"
-                                            (click)="vehicleNo = item?.vehicleNo; selectedCanvasTab='Itinerary';"
+                                            (click)="vehicleNo = item?.vehicleNo; selectedCanvasTab='Itinerary';  getItineraryDetails()"
                                             data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom"
                                             aria-controls="offcanvasExample"
                                             [ngClass]="{'text-danger':item?.gpsStatus=='Offline','text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
@@ -137,7 +136,7 @@
             </div>
         </div>
         <div class="col-sm-8">
-            <div class="card card-body p-0 rounded">
+            <div class="card card-body p-0 rounded ">
                 <div class="position-relative">
                     <div class="distance-details d-flex align-items-center justify-content-between">
                         <div class="d-flex align-items-center">
@@ -196,7 +195,7 @@
                                     data-bs-target="#Itinerary-tab-pane" type="button" role="tab"
                                     [ngClass]="{'active':selectedCanvasTab=='Itinerary'?true:false}"
                                     aria-controls="Itinerary-tab-pane" aria-selected="false"
-                                    (click)="getItineraryDetails(); selectedCanvasTab='Itinerary'">Itinerary</button>
+                                    (click)="getItineraryDetails(); selectedCanvasTab='Itinerary' ">Itinerary</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="Driver-information-tab" data-bs-toggle="tab"
@@ -310,27 +309,7 @@
                                                             <button type="button" class="btn btn-outline-secondary mx-2"  (click)="viewVehicleData()">
                                                                 <i class="fa-solid fa-eye"></i>
                                                             </button>
-                                                   <!--  <button class="btn" type="button" [matMenuTriggerFor]="menu"><i
-                                                            class="fa-solid fa-download"></i></button>
-                                                    <mat-menu #menu="matMenu">
-
-                                                        <button mat-menu-item>
-                                                            <div
-                                                                class="d-flex justify-content-between align-items-center">
-                                                                <span>PDF</span>
-                                                                <span class="text-danger"><i
-                                                                        class="fa-solid fa-file-pdf"></i></span>
-                                                            </div>
-                                                        </button>
-                                                        <button mat-menu-item>
-                                                            <div
-                                                                class="d-flex justify-content-between align-items-center">
-                                                                <span>Excel</span>
-                                                                <span class="text-success"><i
-                                                                        class="fa-solid fa-file-excel"></i></span>
-                                                            </div>
-                                                        </button>
-                                                    </mat-menu> -->
+                                                
                                                 </div>
                                             </form>
                                         </div>
@@ -358,96 +337,12 @@
                                                         </span>
                                                     </td>
                                                 </tr>
-                                                <!-- <tr>
-                                                    <td>
-                                                        <span class="text-danger"><i
-                                                                class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs
-                                                            :
-                                                            21 min</span>
-                                                    </td>
-                                                    <td>
-                                                        <span>Harjuna Post Office, Harjuna, Yavatmal,
-                                                            District, Maharashtra, 445002, India</span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="text-muted">
-                                                            <i class="fa-regular fa-floppy-disk"></i>
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="text-muted">
-                                                            25 Jul 2022, 16:37
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <span class="text-success"><i
-                                                                class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs
-                                                            :
-                                                            21 min</span>
-                                                    </td>
-                                                    <td>
-                                                        <span>Harjuna Post Office, Harjuna, Yavatmal,
-                                                            District, Maharashtra, 445002, India</span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="text-muted">
-                                                            <i class="fa-regular fa-floppy-disk"></i>
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="text-muted">
-                                                            25 Jul 2022, 16:37
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <span class="text-warning"><i
-                                                                class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs
-                                                            :
-                                                            21 min</span>
-                                                    </td>
-                                                    <td>
-                                                        <span>Harjuna Post Office, Harjuna, Yavatmal,
-                                                            District, Maharashtra, 445002, India</span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="text-muted">
-                                                            <i class="fa-regular fa-floppy-disk"></i>
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="text-muted">
-                                                            25 Jul 2022, 16:37
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <span class="text-warning"><i
-                                                                class="fa-solid fa-circle me-2"></i>Stopped Since 14 hrs
-                                                            :
-                                                            21 min</span>
-                                                    </td>
-                                                    <td>
-                                                        <span>Harjuna Post Office, Harjuna, Yavatmal,
-                                                            District, Maharashtra, 445002, India</span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="text-muted">
-                                                            <i class="fa-regular fa-floppy-disk"></i>
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="text-muted">
-                                                            25 Jul 2022, 16:37
-                                                        </span>
-                                                    </td>
-                                                </tr> -->
                                             </tbody>
                                         </table>
+                                        <div *ngIf="!ItineraryDetailsData.length "
+                                            class="card-body fixed-height p-1">
+                                            <div class="alert alert-danger text-center py-2"> No data found</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -610,6 +505,10 @@
                                                 </tr>
                                             </tbody>
                                         </table>
+                                        <div *ngIf="!nearbyVehicleData.length "
+                                        class="card-body fixed-height p-1">
+                                        <div class="alert alert-danger text-center py-2"> No data found</div>
+                                    </div>
                                     </div>
                                 </div>
                             </div>

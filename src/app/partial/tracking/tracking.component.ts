@@ -169,6 +169,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     });
 
     //#endregion scrren recorder end Fn
+    
   }
   // ---------------------------------------------view vehicle data---------------------------------------------------------------
 
@@ -341,6 +342,8 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     });
   }
 
+  
+
 
   //----------------------------------------------------------- bottom sheet method start heare ---------------------------------------------//
   // --------------------------Itinerary form section--------------------------------------
@@ -388,7 +391,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
       this.apiCall.setHttp('get', 'tracking/get-vehicle-vehicle-itinerary?vehicleNumber=' + this.vehicleNo + '&fromDate=' + obj.fromDate + '&toDate=' + obj.toDate, true, false, false, 'fleetExpressBaseUrl');
       this.subscription = this.apiCall.getHttp().subscribe({
         next: (res: any) => {
-          if (res.statusCode === "200") {
+          if (res.statusCode === "200" && res.responseData1.lenth >0) {
             let resp: any = this.sharedService.getAddressBylatLong(1, res.responseData.responseData1, res.responseData.responseData1.length);
             this.ItineraryDetailsData = resp;
             this.ItineraryDetailsData1.push(res.responseData.responseData2);
@@ -451,7 +454,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     this.apiCall.setHttp('get', 'tracking/get-near-by-vehicle?vehicleNumber=' + this.vehicleNo +'&vehicleId='+vehicleId+'&vehicleOwnerid='+this.webStorage.getVehicleOwnerId()+'&latitude='+latitude+'&longitude='+longitude+'&kiloMeters='+(this.searchVehicles.value?this.searchVehicles.value:0), true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
-        if (res.statusCode === "200") {
+        if (res.statusCode === "200" && res.responseData.length>0) {
           res.responseData.map((x:any)=>{
             x.distance=(x.distance/1000).toFixed(2);
             x.vehicleNo=x.vehicleNumber;
