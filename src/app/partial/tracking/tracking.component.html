@@ -47,7 +47,7 @@
                 <div class="card-body fixed-height rounded" #mainScreen (scroll)="divScroll('div')" *ngIf="allVehiclelData.length">
                     <div class="rounded"*ngFor="let item of tableVehicleData; let i=index" >
                         <ng-container>
-                            <a class="d-flex vehicle p-3 bg-opacity-10 mb-1 rounded bg-opacity-10" placement="top" #divcontent
+                            <a class="d-flex vehicle p-3 bg-opacity-10 mb-1 rounded bg-opacity-10" placement="top"
                                 routerLinkActive="active" [class.active]="selectedIndex === i"
                                 (click)="selectedIndex = i"
                                 [ngClass]="{'bg-danger':item?.gpsStatus=='Offline','bg-success':item?.gpsStatus=='Running','bg-warning':item?.gpsStatus=='Stopped','bg-primary':item?.gpsStatus=='Idle'}">
@@ -65,9 +65,9 @@
                                             [ngbPopover]="item.flag==0?popContent:''" placement="end">
                                             <p class="vehicle-no">{{item?.vehicleNo}} </p>
                                         </a>
-                                        
+                                        <!-- showVehicles() -->
                                         <a *ngIf="item?.gpsStatus!='Offline'"
-                                            (click)="vehicleNo = item?.vehicleNo; selectedCanvasTab='Itinerary'; getItineraryDetails()"
+                                            (click)="vehicleNo = item?.vehicleNo; selectedCanvasTab='Itinerary';"
                                             data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom"
                                             aria-controls="offcanvasExample"
                                             [ngClass]="{'text-danger':item?.gpsStatus=='Offline','text-success':item?.gpsStatus=='Running','text-warning':item?.gpsStatus=='Stopped','text-primary':item?.gpsStatus=='Idle'}">
@@ -112,7 +112,7 @@
                                         <div class="share-call">
                                             <a class="me-3" (click)="openTicketRaisedDialog(item,'shareLocation')"><img
                                                     src="assets/images/Tracking/share.svg"></a>
-                                            <a><img src="assets/images/Tracking/call-vehicle.svg"></a>
+                                            <a  [href]="'tel:'+ item?.driverMobileNo"><img src="assets/images/Tracking/call-vehicle.svg"></a>
                                         </div>
                                     </div>
                                 </div>
@@ -218,7 +218,7 @@
                                     [ngClass]="{'active':selectedCanvasTab=='NearBy'?true:false}"
                                     data-bs-target="#near-by-vehicles-tab-pane" type="button" role="tab"
                                     aria-controls="near-by-vehicles-tab-pane" aria-selected="false"
-                                    (click)="selectedCanvasTab='NearBy'">Near By
+                                    (click)="selectedCanvasTab='NearBy'; getAllNearByVehicleListData()">Near By
                                     Vehicles</button>
                             </li>
                         </ul>
@@ -558,15 +558,17 @@
                                         <div class="col-sm-auto">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
-                                                    id="flexSwitchCheckDefault">
+                                                    id="flexSwitchCheckDefault"  [(ngModel)]="showVehicles">
                                             </div>
                                         </div>
                                         <div class="col-sm-auto">
                                             <p>Enter Radius :</p>
                                         </div>
                                         <div class="col-sm-auto">
-                                            <input class="form-control border-primary" type="text"
-                                                placeholder="Enter Radius in KM">
+                                            <input class="form-control border-primary" [readonly]="!showVehicles" type="text"
+                                                placeholder="Enter Radius in KM" [formControl]="searchVehicles"
+                                                [maxLength]="15" (keyup)="setnumber(searchVehicles.value)"
+                                                (keypress)="validationService.noSpaces($event)">
                                         </div>
                                     </div>
                                     <div class="fixed-height-table">
@@ -582,24 +584,24 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>MH 09 HS 4028</td>
-                                                    <td>Yavatmal District Maharashtra</td>
-                                                    <td>02 km</td>
-                                                    <td>26-08-2022 4:25 PM</td>
+                                                <tr *ngFor="let item of nearbyVehicleData; let i=index">
+                                                    <td>{{item.vehicleNumber}}</td>
+                                                    <td>{{item.address}}</td>
+                                                    <td>{{item.distance}}  km</td>
+                                                    <td>{{item.lastDateReceived | date: 'dd-MM-yyyy hh:mm a'}}</td>
                                                     <td>
                                                         <div class="d-flex">
-                                                            <span class="text-success me-2"><i
+                                                            <span class="me-2" [ngClass]="{'text-danger':item?.vehicleStatus=='Offline','text-success':item?.vehicleStatus=='Running','text-warning':item?.vehicleStatus=='Stopped','text-primary':item?.vehicleStatus=='Idle'}"><i
                                                                     class="fa-solid fa-circle"></i></span>
-                                                            <span>Running</span>
+                                                            <span>{{item.vehicleStatus}}</span>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="d-flex">
-                                                            <button class="btn btn-light-main text-main me-2 btn-icon">
+                                                            <a [href]="'tel:'+ item?.mobileNumber" class="btn btn-light-main text-main me-2 btn-icon">
                                                                 <i class="fa-solid fa-phone-volume"></i>
-                                                            </button>
-                                                            <button
+                                                            </a>
+                                                            <button (click)="openTicketRaisedDialog(item,'shareLocation')"
                                                                 class="btn bg-success bg-opacity-10 text-success btn-icon">
                                                                 <i class="fa-solid fa-route"></i>
                                                             </button>

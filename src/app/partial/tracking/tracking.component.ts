@@ -28,6 +28,7 @@ declare var google: any;
 export class TrackingComponent implements OnInit, AfterViewInit {
   private categoriesSubject = new BehaviorSubject<Array<string>>([]);
   searchContent = new FormControl('');
+  searchVehicles = new FormControl('');
   allVehiclelData = new Array();
   subscription !: Subscription;
   selectedTab!: string;
@@ -49,17 +50,17 @@ export class TrackingComponent implements OnInit, AfterViewInit {
   vehicleNo!: string;
   playPauseBtnFlag: boolean = false;
   recBtnFlag: boolean = false;
-  zoom:number = 12;
-  selectedCanvasTab!:string;
+  zoom: number = 12;
+  selectedCanvasTab!: string;
   timePeriodArray = [
     { value: '1', viewValue: 'Today' },
     { value: '2', viewValue: '24hr' },
     { value: '3', viewValue: 'Weekly' },
     { value: '4', viewValue: 'From-To' },
   ];
-  videoUrl!:string;
-  videoBtnClickFlag:boolean = false;
-  viewDeatailsData=new Array();
+  videoUrl!: string;
+  videoBtnClickFlag: boolean = false;
+  viewDeatailsData = new Array();
   map: any;
   line: any;
   trackingData = new Array();
@@ -78,32 +79,33 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     },
     strictBounds: true
   };
-  viewComplaintDeatailsData=new Array();
-  reportResponseData=new Array();
-  ItineraryDetailsData=new Array();
-  maxTodayDateString:any;
-  maxTodayDate:any;
-  ItineraryDetailsData1=new Array();
-  tableVehicleData=new Array();
-  totalDtaArray:any[]=[];
+  viewComplaintDeatailsData = new Array();
+  reportResponseData = new Array();
+  ItineraryDetailsData = new Array();
+  maxTodayDateString: any;
+  maxTodayDate: any;
+  ItineraryDetailsData1 = new Array();
+  tableVehicleData = new Array();
+  totalDtaArray: any[] = [];
+  showVehicles:boolean=false;
+  nearbyVehicleData=new Array();
   @ViewChild('mainScreen') elementView !: ElementRef;
-  @ViewChild('divcontent') elementView1 !: ElementRef;
   @Output() scrollingFinished = new EventEmitter<void>();
   constructor(private apiCall: ApiCallService, private webStorage: WebStorageService, private mapsAPILoader: MapsAPILoader, private _bottomSheet: MatBottomSheet,
     private error: ErrorsService, public dialog: MatDialog, private fb: FormBuilder, private httpClient: HttpClient,
-    public validationService:ValidationService, private config: ConfigService, private sharedService:SharedService,
-    private spinner:NgxSpinnerService, private datePipe:DatePipe
-    ) { }
+    public validationService: ValidationService, private config: ConfigService, private sharedService: SharedService,
+    private spinner: NgxSpinnerService, private datePipe: DatePipe
+  ) { }
 
   ngOnInit(): void {
     this.lat = this.config.lat;
     this.long = this.config.long;
     this.mapCall(); // temp
     this.getAllVehicleListData(true);
-     this.getItineraryForm();
+    this.getItineraryForm();
   }
 
-  setnumber(value:any){
+  setnumber(value: any) {
     this.searchContent.setValue(value.toUpperCase())
   }
 
@@ -123,9 +125,12 @@ export class TrackingComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.searchContent.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
+    this.searchContent.valueChanges? this.searchContent.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
       this.getAllVehicleListData(false);
-    });
+    }):'';
+    this.searchVehicles.valueChanges?this.searchVehicles.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
+     // this.getAllNearByVehicleListData();
+    }):'';
 
     //#region screen recorder fn start heare ---------------
     const start: any = document.getElementById("start");
@@ -149,7 +154,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
       recorder.ondataavailable = (e: any) => chunks.push(e.data);
       recorder.onstop = () => {
         const completeBlob = new Blob(chunks, { type: chunks[0].type });
-        video.href =URL.createObjectURL(completeBlob);
+        video.href = URL.createObjectURL(completeBlob);
       };
       recorder.start();
     }
@@ -165,60 +170,65 @@ export class TrackingComponent implements OnInit, AfterViewInit {
 
     //#endregion scrren recorder end Fn
   }
-// ---------------------------------------------view vehicle data---------------------------------------------------------------
+  // ---------------------------------------------view vehicle data---------------------------------------------------------------
 
-  viewVehicleData(){
-      let obj: any='Vehicle Tracking';
-      const dialog = this.dialog.open(ViewReportComponent, {
-        width: '900px',
-        data: obj,
-        disableClose: this.config.disableCloseBtnFlag,
-      })
-      dialog.afterClosed().subscribe(() => {
-      }
-      )
+  viewVehicleData() {
+    let obj: any = 'Vehicle Tracking';
+    const dialog = this.dialog.open(ViewReportComponent, {
+      width: '900px',
+      data: obj,
+      disableClose: this.config.disableCloseBtnFlag,
+    })
+    dialog.afterClosed().subscribe(() => {
+    }
+    )
   }
 
   getAllVehicleListData(flag: boolean) {
     this.allVehiclelData = [];
     this.allVehiclelDataClone = [];
-    this.allRunningVehiclelData= [];
-    this.allStoppedVehiclelData= [];
-    this.allIdleVehiclelData= [];
-    this.allOfflineVehiclelData= [];
+    this.allRunningVehiclelData = [];
+    this.allStoppedVehiclelData = [];
+    this.allIdleVehiclelData = [];
+    this.allOfflineVehiclelData = [];
+    this.tableVehicleData = [];
+    this.totalDtaArray = [];
     this.spinner.show();
     this.apiCall.setHttp('get', 'tracking/get-vehicles-current-location?UserId=' + this.webStorage.getUserId() + '&VehicleNo=' + (!this.searchContent.value ? '' : (this.searchContent.value).trim()) + '&GpsStatus=', true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         this.spinner.hide();
         if (res.statusCode === "200") {
-          res.responseData.responseData1.map((x:any)=>{
-            x.runningTime=this.config.timeConvert(x.gpsStatus == "Running" ? x.totalRunningTime:x.totalStopageTime);
-            let  resp2=[];
-            resp2= res.responseData.responseData2.find((xx:any)=> x.vehicleNo==xx.vehicleNumber);
-            resp2 ? (x.flag = resp2.flag, x.complaintId=resp2.complaintId ) :  (x.flag = 0, x.complaintId=0 );
+          res.responseData.responseData1.map((x: any) => {
+            // x.gpsStatus = "Running";
+            x.runningTime = this.config.timeConvert(x.gpsStatus == "Running" ? x.totalRunningTime : x.totalStopageTime);
+            let resp2 = [];
+            resp2 = res.responseData.responseData2.find((xx: any) => x.vehicleNo == xx.vehicleNumber);
+            resp2 ? (x.flag = resp2.flag, x.complaintId = resp2.complaintId) : (x.flag = 0, x.complaintId = 0);
           })
           this.reportResponseData = res.responseData.responseData1;
           this.allVehiclelData = this.reportResponseData;
-          !this.searchContent.value ?this.getNextItems():'';
+          // !this.searchContent.value ?this.getNextItems():'';
+          this.getNextItems();
           this.categoriesSubject.next(this.totalDtaArray);
-            this.allVehiclelDataClone = this.reportResponseData;
-            if (flag) {
-              this.reportResponseData.find((x: any) => {
-                x.gpsStatus == 'Running' ? this.allRunningVehiclelData.push(x)
-                  : x.gpsStatus == 'Stopped' ? this.allStoppedVehiclelData.push(x)
-                    : x.gpsStatus == 'Idle' ? this.allIdleVehiclelData.push(x)
-                      : x.gpsStatus == 'Offline' ? this.allOfflineVehiclelData.push(x) : ''
-              });
-            }
+          this.allVehiclelDataClone = this.reportResponseData;
+          if (flag) {
+            this.reportResponseData.find((x: any) => {
+              x.gpsStatus == 'Running' ? this.allRunningVehiclelData.push(x)
+                : x.gpsStatus == 'Stopped' ? this.allStoppedVehiclelData.push(x)
+                  : x.gpsStatus == 'Idle' ? this.allIdleVehiclelData.push(x)
+                    : x.gpsStatus == 'Offline' ? this.allOfflineVehiclelData.push(x) : ''
+            });
+          }
         } else {
           this.allVehiclelData = [];
           this.allVehiclelDataClone = [];
         }
       }
-    }, (error: any) => { 
+    }, (error: any) => {
       this.spinner.hide();
-      this.error.handelError(error.status) });
+      this.error.handelError(error.status)
+    });
   }
 
   clickOnTrackingTab(flag: string) {
@@ -228,51 +238,98 @@ export class TrackingComponent implements OnInit, AfterViewInit {
           : flag == 'Offline' ? this.allVehiclelData = this.allOfflineVehiclelData
             : flag == 'TotalVehicles' ? this.allVehiclelData = this.allVehiclelDataClone : '';
   }
-// ------ Dialog View section ----------------------------
-  viewManitananceDetails(item:any){
+
+  // ------ loading data aginst srolling -------
+
+  loadMore(): void {
+    if (this.getNextItems()) {
+      this.categoriesSubject.next(this.totalDtaArray);
+    }
+  }
+
+  getNextItems(): boolean {
+    if (this.totalDtaArray.length >= this.allVehiclelData.length) {
+      return false;
+    }
+    const remainingLength = Math.min(6, this.allVehiclelData.length - this.totalDtaArray.length);
+    let previousTablelength = this.totalDtaArray.length
+    this.totalDtaArray.push(
+      ...this.allVehiclelData.slice(
+        this.totalDtaArray.length,
+        this.totalDtaArray.length + remainingLength
+      )
+    );
+    let incomingTableData = []
+    for (let i = previousTablelength; i < this.totalDtaArray.length; i++) {
+      incomingTableData.push(this.totalDtaArray[i])
+    }
+    let resp: any = this.sharedService.getAddressBylatLong(1, incomingTableData, incomingTableData.length);
+    setTimeout(() => {
+      this.tableVehicleData.push(...resp);
+    }, 1500)
+    return true;
+  }
+
+  @HostListener("window:scroll", ['$event'])
+
+  divScroll(val: any): void {
+    const srolltop = this.elementView.nativeElement.scrollTop;
+    const cleintHeight = this.elementView.nativeElement.clientHeight;
+    const scrollHeight = this.elementView.nativeElement.scrollHeight;
+    if (val == 'div') {
+    }
+    if ((srolltop + cleintHeight) >= scrollHeight) {
+      this.loadMore();
+    } else if ((srolltop + cleintHeight) < scrollHeight) {
+      // this.emitted = false;
+    }
+  }
+
+  // ------ Dialog View section ----------------------------
+  viewManitananceDetails(item: any) {
     this.apiCall.setHttp('get', 'maintenance/get-maintenance-details?VehicleId=' + item.vehicleId, true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
-          res.responseData.map((x:any)=>{
-            x.maintenanceFrom=this.datePipe.transform(x.maintenanceFrom, 'dd-MM-yyyy hh:MM:ss a');
-            x.maintenanceTo=this.datePipe.transform(x.maintenanceTo , 'dd-MM-yyyy hh:MM:ss a');
-            switch(x.maintenanceType){
-              case 1: x.maintenanceTypeDetails='Scheduled';break;
-              case 2: x.maintenanceTypeDetails='Repair';break;
-              case 3: x.maintenanceTypeDetails='Accident';break;
+          res.responseData.map((x: any) => {
+            x.maintenanceFrom = this.datePipe.transform(x.maintenanceFrom, 'dd-MM-yyyy hh:MM:ss a');
+            x.maintenanceTo = this.datePipe.transform(x.maintenanceTo, 'dd-MM-yyyy hh:MM:ss a');
+            switch (x.maintenanceType) {
+              case 1: x.maintenanceTypeDetails = 'Scheduled'; break;
+              case 2: x.maintenanceTypeDetails = 'Repair'; break;
+              case 3: x.maintenanceTypeDetails = 'Accident'; break;
             }
           })
-          this.viewDeatailsData=res.responseData;
-          this.openTicketRaisedDialog(this.viewDeatailsData,'ManitananceViewDetails')
+          this.viewDeatailsData = res.responseData;
+          this.openTicketRaisedDialog(this.viewDeatailsData, 'ManitananceViewDetails')
         } else {
           this.viewDeatailsData = [];
         }
       }
     }, (error: any) => { this.error.handelError(error.status) });
-    
+
   }
 
-  viewComplaintDetails(item:any){
-    this.apiCall.setHttp('get', 'maintenance/get-complaint?UserId='+ this.webStorage.getUserId()+'&ComplaintId=' + item.complaintId, true, false, false, 'fleetExpressBaseUrl');
+  viewComplaintDetails(item: any) {
+    this.apiCall.setHttp('get', 'maintenance/get-complaint?UserId=' + this.webStorage.getUserId() + '&ComplaintId=' + item.complaintId, true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
-          res.responseData.map((x:any)=>{
-            x.driverMobileNo=item.driverMobileNo;
-            x.address=item.address
+          res.responseData.map((x: any) => {
+            x.driverMobileNo = item.driverMobileNo;
+            x.address = item.address
           })
-          this.viewComplaintDeatailsData=res.responseData;
-          
-          this.openTicketRaisedDialog(this.viewComplaintDeatailsData,'complentViewDetails')
+          this.viewComplaintDeatailsData = res.responseData;
+
+          this.openTicketRaisedDialog(this.viewComplaintDeatailsData, 'complentViewDetails')
         } else {
           this.viewComplaintDeatailsData = [];
         }
       }
     }, (error: any) => { this.error.handelError(error.status) });
-    
+
   }
-// --------- dialog open section ---------
+  // --------- dialog open section ---------
   openTicketRaisedDialog(data: any, flag: string) {
     let obj = { flagStatus: flag, ...data }
     const dialogRef = this.dialog.open(TicketRaisedComponent, {
@@ -284,51 +341,6 @@ export class TrackingComponent implements OnInit, AfterViewInit {
     });
   }
 
-// ------ loading data aginst srolling -------
-  
-  loadMore(): void {
-    if (this.getNextItems()) {
-      this.categoriesSubject.next(this.totalDtaArray);
-    }
-  }
-
-  getNextItems(): boolean {
-    if (this.totalDtaArray.length >= this.allVehiclelData.length) {
-      return false;
-    }
-    const remainingLength = Math.min( 6, this.allVehiclelData.length - this.totalDtaArray.length );
-    let previousTablelength= this.totalDtaArray.length
-    this.totalDtaArray.push(
-      ...this.allVehiclelData.slice(
-        this.totalDtaArray.length,
-        this.totalDtaArray.length + remainingLength
-      )
-    );
-    let incomingTableData=[]
-    for(let i=previousTablelength; i< this.totalDtaArray.length; i++){
-      incomingTableData.push(this.totalDtaArray[i])
-    }
-    let resp: any = this.sharedService.getAddressBylatLong(1, incomingTableData, incomingTableData.length);
-    setTimeout(()=>{
-      this.tableVehicleData.push(...resp);
-    },2000)
-    return true;
-  }
-
-  @HostListener("window:scroll", ['$event'])
-  
-  divScroll(val: any): void {
-    const srolltop=this.elementView.nativeElement.scrollTop;
-     const cleintHeight=this.elementView.nativeElement.clientHeight;
-    const scrollHeight=this.elementView.nativeElement.scrollHeight;
-    if (val == 'div') {
-    }
-    if ((srolltop + cleintHeight) >= scrollHeight) {
-      this.loadMore();
-    } else if ((srolltop + cleintHeight) < scrollHeight) {
-      // this.emitted = false;
-    }
-  }
 
   //----------------------------------------------------------- bottom sheet method start heare ---------------------------------------------//
   // --------------------------Itinerary form section--------------------------------------
@@ -347,7 +359,7 @@ export class TrackingComponent implements OnInit, AfterViewInit {
       fromDate: dateObj?.fromDate,
       toDate: dateObj?.todate,
     })
-    timePeriod!=4 ?this.getItineraryDetails():'';
+    timePeriod != 4 ? this.getItineraryDetails() : '';
   }
   settodate(fromDate: any) {
     this.maxTodayDateString = (moment(fromDate).add(7, 'days').format("YYYY-MM-DD HH:mm:ss"));
@@ -364,37 +376,37 @@ export class TrackingComponent implements OnInit, AfterViewInit {
       }
     }
   }
-  getItineraryDetails(){
-    if(this.itineraryForm.value.fromDate && this.itineraryForm.value.toDate){
+  getItineraryDetails() {
+    if (this.itineraryForm.value.fromDate && this.itineraryForm.value.toDate) {
       this.vehicleDetailsData = [];
-      const obj={
-        fromDate:this.datePipe.transform(this.itineraryForm.value.fromDate, 'YYYY-MM-dd'),
-        toDate:this.datePipe.transform(this.itineraryForm.value.toDate, 'YYYY-MM-dd'),
+      const obj = {
+        fromDate: this.datePipe.transform(this.itineraryForm.value.fromDate, 'YYYY-MM-dd'),
+        toDate: this.datePipe.transform(this.itineraryForm.value.toDate, 'YYYY-MM-dd'),
       }
-      this.ItineraryDetailsData=[];
-      this.ItineraryDetailsData1=[];
-      this.apiCall.setHttp('get', 'tracking/get-vehicle-vehicle-itinerary?vehicleNumber=' + this.vehicleNo + '&fromDate='+obj.fromDate+'&toDate='+obj.toDate, true, false, false, 'fleetExpressBaseUrl');
+      this.ItineraryDetailsData = [];
+      this.ItineraryDetailsData1 = [];
+      this.apiCall.setHttp('get', 'tracking/get-vehicle-vehicle-itinerary?vehicleNumber=' + this.vehicleNo + '&fromDate=' + obj.fromDate + '&toDate=' + obj.toDate, true, false, false, 'fleetExpressBaseUrl');
       this.subscription = this.apiCall.getHttp().subscribe({
         next: (res: any) => {
           if (res.statusCode === "200") {
             let resp: any = this.sharedService.getAddressBylatLong(1, res.responseData.responseData1, res.responseData.responseData1.length);
             this.ItineraryDetailsData = resp;
-            this.ItineraryDetailsData1.push(res.responseData.responseData2) ;
-            
+            this.ItineraryDetailsData1.push(res.responseData.responseData2);
+
           } else {
             if (res.statusCode != "404") {
               this.ItineraryDetailsData = [];
-              this.ItineraryDetailsData1= [];
+              this.ItineraryDetailsData1 = [];
               this.error.handelError(res.statusCode)
             }
           }
         }
-      },(error: any) => { this.error.handelError(error.status) });
+      }, (error: any) => { this.error.handelError(error.status) });
     }
-    
+
   }
- // ----------vehicle Data view section--------
-  getVehicleDetails(){
+  // ----------vehicle Data view section--------
+  getVehicleDetails() {
     this.vehicleDetailsData = []
     this.apiCall.setHttp('get', 'vehicle/search-vehicle?Search=' + this.vehicleNo, true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
@@ -408,13 +420,13 @@ export class TrackingComponent implements OnInit, AfterViewInit {
           }
         }
       }
-    },(error: any) => { this.error.handelError(error.status) });
+    }, (error: any) => { this.error.handelError(error.status) });
   }
 
-   // ----------Driver Data view section--------
-  getDriverDetails(){
+  // ----------Driver Data view section--------
+  getDriverDetails() {
     this.driverDetailsData = []
-    this.apiCall.setHttp('get', 'vehicle/get-driver-List?VehicleNo='+this.vehicleNo, true, false, false, 'fleetExpressBaseUrl');
+    this.apiCall.setHttp('get', 'vehicle/get-driver-List?VehicleNo=' + this.vehicleNo, true, false, false, 'fleetExpressBaseUrl');
     this.subscription = this.apiCall.getHttp().subscribe({
       next: (res: any) => {
         if (res.statusCode === "200") {
@@ -426,13 +438,41 @@ export class TrackingComponent implements OnInit, AfterViewInit {
           }
         }
       }
-    },(error: any) => { this.error.handelError(error.status) });
+    }, (error: any) => { this.error.handelError(error.status) });
+  }
+//----------------------------------------------- Near By Vehicles -------------------------------------------------------
+  getAllNearByVehicleListData() {
+    this.driverDetailsData = [];
+    this.vehicleNo='MH12DL3698';
+    const vehicleId=40;
+    const latitude='-73.99279';
+    const longitude='40.719296';
+    //?vehicleId=40&vehicleOwnerid=256&vehicleNumber=MH12DL3698&latitude=-73.99279&longitude=40.719296&kiloMeters=1000
+    this.apiCall.setHttp('get', 'tracking/get-near-by-vehicle?vehicleNumber=' + this.vehicleNo +'&vehicleId='+vehicleId+'&vehicleOwnerid='+this.webStorage.getVehicleOwnerId()+'&latitude='+latitude+'&longitude='+longitude+'&kiloMeters='+(this.searchVehicles.value?this.searchVehicles.value:0), true, false, false, 'fleetExpressBaseUrl');
+    this.subscription = this.apiCall.getHttp().subscribe({
+      next: (res: any) => {
+        if (res.statusCode === "200") {
+          res.responseData.map((x:any)=>{
+            x.distance=(x.distance/1000).toFixed(2);
+            x.vehicleNo=x.vehicleNumber;
+          })
+          let resp: any = this.sharedService.getAddressBylatLong(1, res.responseData, res.responseData.length);
+          setTimeout(() => {
+            this.nearbyVehicleData = resp;
+          }, 1500)
+          
+        } else {
+          if (res.statusCode != "404") {
+            this.nearbyVehicleData = [];
+            this.error.handelError(res.statusCode)
+          }
+        }
+      }
+    }, (error: any) => { this.error.handelError(error.status) });
   }
 
-  
 
 
-  
   //-------------------------------------------------------------- bottom sheet method end heare --------------------------------------------//
 
   openvechileTrackingDetailsSheet(): void {
