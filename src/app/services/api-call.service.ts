@@ -4,12 +4,12 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
 import { CommonMethodsService } from './common-methods.service';
 import { WebStorageService } from './web-storage.service';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiCallService {
-
   vhlCount: any;
   UserLoginDetails: any;
   userObj: any;
@@ -27,16 +27,12 @@ export class ApiCallService {
   constructor(private http: HttpClient,
     private webStorage: WebStorageService,
     private spinner: NgxSpinnerService,
+    private config: ConfigService,
     private commonMethods: CommonMethodsService) {
   }
 
 
-  getBaseurl(url: string) {
-    switch (url) {
-      case 'fleetExpressBaseUrl': return 'https://aws-stpltrack-vehicletracking.mahamining.com/fleet-express/'; break
-      default: return ''; break;
-    }
-  }
+
   vehicleCount() {
     return new Observable(obj => {
       this.setHttp('get', 'vehicle/get-vehiclelists?', true, false, false, 'fleetExpressBaseUrl');
@@ -94,7 +90,7 @@ export class ApiCallService {
     } catch (e) { }
     this.clearHttp();
     this.httpObj.type = type;
-    this.httpObj.url = this.getBaseurl(baseUrl) + url;
+    this.httpObj.url = this.config.returnBaseUrl(baseUrl) + url;
     if (isHeader) {
       let tempObj: any = {
         "UserId": this.webStorage.getUserId().toString(),

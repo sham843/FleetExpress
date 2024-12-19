@@ -6,6 +6,16 @@ import * as moment from 'moment';
 })
 export class ConfigService {
 
+  returnBaseUrl(url: string) {
+    switch (url) {
+      case 'fleetExpressBaseUrl': return 'https://demoapi.fleetexpress.in/fleet-express/'; break  //dev Base url
+      case 'masterUrl': return 'https://aws-stpltrack-gps-inventory.mahamining.com/'; break //dev Base url
+
+      // case 'fleetExpressBaseUrl': return 'https://vehicle-tracking.fleetexpress.in/fleet-express/'; // -- Production Base url
+      default: return ''; break;
+    }
+  }
+
   dialogBoxWidth = ['320px', '800px', '700px', '1024px'];  // Set angular material dialog box width
 
   disableCloseBtnFlag: boolean = true// When click on body material dialog box is not closed flag
@@ -33,44 +43,44 @@ export class ConfigService {
   };
 
 
-  timeConvert(time:any){
+  timeConvert(time: any) {
     let t = "";
-   let d =Math.floor(time/(24*60));
-   let h= Math.floor((time%(24*60)) / 60);
-   let m = Math.floor((time%(24*60)) % 60);
-    t =( d ? (d + " days: "):'' ) +( h ? (h + " Hrs : "):'') + (m+' Mints') ;
+    let d = Math.floor(time / (24 * 60));
+    let h = Math.floor((time % (24 * 60)) / 60);
+    let m = Math.floor((time % (24 * 60)) % 60);
+    t = (d ? (d + " days: ") : '') + (h ? (h + " Hrs : ") : '') + (m + ' Mints');
     return t;
   }
-  fromDate!:string;
-  toDate!:string;
-  setFromDateTodate(timePeriod:any){
+  fromDate!: string;
+  toDate!: string;
+  setFromDateTodate(timePeriod: any) {
     const currentDateTime = (moment.utc().subtract(1, 'minute')).toISOString();
     switch (timePeriod) {
       case "1":
         this.fromDate = (moment.utc().startOf('day').subtract(5, 'hour').subtract(30, 'minute')).toISOString();
-        this.toDate= currentDateTime;
+        this.toDate = currentDateTime;
         break;
       case "2": var time = moment.duration("24:00:00");
         var date = moment();
         const oneDaySpan = date.subtract(time);
         this.fromDate = moment(oneDaySpan).toISOString();
-        this.toDate= currentDateTime;
+        this.toDate = currentDateTime;
         break;
       case "3":
         const startweek = moment().subtract(7, 'days').calendar();
         this.fromDate = moment(startweek).toISOString();
-        this.toDate= currentDateTime;
+        this.toDate = currentDateTime;
         break;
       case "4":
-        this.fromDate= '';
-        this.toDate= '';
+        this.fromDate = '';
+        this.toDate = '';
         break;
     }
-    const obj={
-      fromDate:this.fromDate,
-      todate:this.toDate
+    const obj = {
+      fromDate: this.fromDate,
+      todate: this.toDate
     }
-   return obj
+    return obj
   }
 
   //------------------------------------------ Maps Settings  starte heare -------------------------------------------//
@@ -97,41 +107,41 @@ export class ConfigService {
     {
       "rowNumber": 1,
       "vehicleNo": "PP22PP2222",
-      "speed":80,
-      "deviceDatetime" :  "2022-01-01T10:15:50+05:30"
+      "speed": 80,
+      "deviceDatetime": "2022-01-01T10:15:50+05:30"
     },
     {
       "rowNumber": 2,
       "vehicleNo": "ZZ22ZZ2222",
-      "speed":80,
-      "deviceDatetime" :  "2022-01-01T10:15:50+05:30"
+      "speed": 80,
+      "deviceDatetime": "2022-01-01T10:15:50+05:30"
     },
     {
       "rowNumber": 3,
       "vehicleNo": "JK55JK5555",
-      "speed":80,
-      "deviceDatetime" :  "2022-01-01T10:15:50+05:30"
+      "speed": 80,
+      "deviceDatetime": "2022-01-01T10:15:50+05:30"
     },
     {
       "rowNumber": 4,
       "vehicleNo": "GH12SC8000",
-      "speed":80,
-      "deviceDatetime" :  "2022-01-01T10:15:50+05:30"
+      "speed": 80,
+      "deviceDatetime": "2022-01-01T10:15:50+05:30"
     },
     {
       "rowNumber": 5,
       "vehicleNo": "MH12SH2595",
-      "speed":80,
-      "deviceDatetime" :  "2022-01-01T10:15:50+05:30"
+      "speed": 80,
+      "deviceDatetime": "2022-01-01T10:15:50+05:30"
     },
   ]
 
-  staticVehicleDataObj={
+  staticVehicleDataObj = {
     'gaugeType': "arch",
-    'gaugeValue' :80,
-    'gaugeLabel' : "Speed",
-    'gaugeAppendText' : "km/hr",
-    'gaugeThick' : 15,
-    'guageCap':  'round'
+    'gaugeValue': 80,
+    'gaugeLabel': "Speed",
+    'gaugeAppendText': "km/hr",
+    'gaugeThick': 15,
+    'guageCap': 'round'
   }
 }
